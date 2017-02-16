@@ -43,11 +43,11 @@ Da una cátedra.
 - solicita registro al posgrado
 - [registra curso](registrar_curso.md)
 - solicitud de aula
+- solicita registro como tutor
 
 #### Tutores
 
 Participa de los comités académicos.
-- solicita registro como tutor
 
 ##### Dentro del comité académico
 - valida solicitudes de registro de tutor
