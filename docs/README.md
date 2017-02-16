@@ -7,9 +7,9 @@ El diseño del sistema se registra en casos de uso y estructura de datos.
 Son textos breves que describen la funcionalidad deseada para cada
 tipo de usuario. Hay tres categorías generales:
 
-[Usuarios en la coordinación del posgrado](coordinacion/)
-[Usuarios Académicos](academicos/)
-[Usuarios Alumnos](alumnos/)
+- [Usuarios en la coordinación del posgrado](coordinacion/)
+- [Usuarios Académicos](academicos/)
+- [Usuarios Alumnos](alumnos/)
 
 
 ## Usuarios anónimos
