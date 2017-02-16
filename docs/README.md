@@ -29,6 +29,8 @@ posgrado.
 - solicitud de aula
   - trámite de aula
 
+- ratifica candidatura de estudiantes
+
 #### Enlace
 
 Hace solicitudes al comité académico.
@@ -44,15 +46,24 @@ Da una cátedra.
 - [registra curso](registrar_curso.md)
 - solicitud de aula
 - solicita registro como tutor
+- solicitud de apoyo económico
+- genera reporte de actividades
 
 #### Tutores
 
-Participa de los comités académicos.
+Es un profesor que participa de los comités académicos o tutorales.
+- solicitar baja de tutor
+- aviso de ausencia por sabático u otra razón
+- asentir a participación en comités tutorales, jurados de candidatura
+  y jurado de grado
+- validación de actividad complementaria
+- generar acta de candidatura
 
 ##### Dentro del comité académico
+
 - valida solicitudes de registro de tutor
 - autorizar cursos, se publica
-
+- observa examen de candidatura
 - autorizar solicitudes de alumnos
   - cambio de comité tutoral
   - cambio de título de proyecto
@@ -76,6 +87,8 @@ Persona inscrita al programa de posgrado.
 - selección de jurado de grado
 - selección de jurado de candidatura
 - solicitud de aula
+- registro de actividad complementaria
+- solicitud de candidatura
 
 #### Graduado
 
