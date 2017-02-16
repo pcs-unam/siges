@@ -1,96 +1,26 @@
-# Casos de Uso
+# Sistema de Gestión Programas de Posgrados
 
-## Actores
+El diseño del sistema se registra en casos de uso y estructura de datos.
 
-### Coordinación
+## Casos de Uso
 
-#### Coordinador
+Son textos breves que describen la funcionalidad deseada para cada
+tipo de usuario. Hay tres categorías generales:
 
-Usuario facultado para crear asistentes de proceso, con acceso a todas
-las tablas.
+[Usuarios en la coordinación del posgrado](coordinacion/)
+[Usuarios Académicos](academicos/)
+[Usuarios Alumnos](alumnos/)
 
-#### Asistente de proceso
 
-Colaborador de la Coordinación que toma parte de la gestión del
-posgrado.
+## Usuarios anónimos
 
-- Alimentar SAEP
+Para usar el sistema se requiere que las personas se registren.
 
-- Descargar históricos semestrales desde SAEP
+Antes de registrarse un usuario es anónimo, sus casos de uso son:
 
-- Alimentar CONACYT
+- solicitar registro al posgrado como profesor
+- solicitar registro al posgrado como alumno
 
-- [Proceso de Admisión](proceso_de_admision.md)
--
-  [Publicación de convocatoria para registro de curso](convocatoria_registro_de_cursos.md)
-  
-- Publicación de convocatoria de registro de tutores
-- Reunir el comité académico
-- solicitud de aula
-  - trámite de aula
-
-- ratifica candidatura de estudiantes
-
-#### Enlace
-
-Hace solicitudes al comité académico.
-Hace consultas.
-- solicitud de aula
-
-### Académicos
-
-#### Profesores
-
-Da una cátedra.
-- solicita registro al posgrado
-- [registra curso](registrar_curso.md)
-- solicitud de aula
-- solicita registro como tutor
-- solicitud de apoyo económico
-- genera reporte de actividades
-
-#### Tutores
-
-Es un profesor que participa de los comités académicos o tutorales.
-- solicitar baja de tutor
-- aviso de ausencia por sabático u otra razón
-- asentir a participación en comités tutorales, jurados de candidatura
-  y jurado de grado
-- validación de actividad complementaria
-- generar acta de candidatura
-
-##### Dentro del comité académico
-
-- valida solicitudes de registro de tutor
-- autorizar cursos, se publica
-- observa examen de candidatura
-- autorizar solicitudes de alumnos
-  - cambio de comité tutoral
-  - cambio de título de proyecto
-  - suspensiones
-  - cambio de campo de conocimiento
-  - prórrogas
-  - cambios al jurados de grado
-  - cambios al jurado de candidatura
-
-### Alumnos
-
-#### Aspirante
-
-Persona registrada en el sistema que en el trámite de admisión al
-posgrado.
-- seleccíon de comité tutoral
-
-#### Estudiante
-
-Persona inscrita al programa de posgrado.
-- selección de jurado de grado
-- selección de jurado de candidatura
-- solicitud de aula
-- registro de actividad complementaria
-- solicitud de candidatura
-
-#### Graduado
-
-Persona que obtiene el grado que ofrece el programa. 
+¿Habrá casos en los que un alumno se registre después como profesor y
+viceversa? 
 
