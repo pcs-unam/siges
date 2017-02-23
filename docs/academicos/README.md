@@ -11,7 +11,7 @@ Un profesor imparte una cátedra en el programa.
 
 - [registra curso](registrar_curso.md)
 - solicitud de aula
-- solicita registro como tutor
+- [solicita registro como tutor](registrar_profesor_como_tutor.md)
 - solicitud de apoyo económico
 - genera reporte de actividades
 
@@ -19,6 +19,8 @@ Un profesor imparte una cátedra en el programa.
 
 Un tutor es un profesor que participa de los comités académicos o
 tutorales.
+
+Tiene nivel de acreditación: maestría o doctorado.
 
 Algunos casos de uso:
 
@@ -31,13 +33,15 @@ Algunos casos de uso:
 
 ## Tutores miembros del comité académico
 
+El comité académico está dividido en subcomités.
+
 Algunos casos de uso:
 
 - validar solicitudes de registro de tutor
 - autorizar cursos
 - asentar observaciones a exámenes de candidatura
 
-- autorizar solicitudes de alumnos
+- Revisión y comentario de solicitudes de alumnos
   - cambio de comité tutoral
   - cambio de título de proyecto
   - suspensiones
@@ -49,3 +53,5 @@ Algunos casos de uso:
 
 
 
+
+Rodrigo, Comité Académico, Subcomité Experimental
