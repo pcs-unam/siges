@@ -10,9 +10,8 @@ comité académico.
 Un profesor imparte una cátedra en el programa.
 
 - [registra curso](registrar_curso.md)
-- solicitud de aula
 - [solicita registro como tutor](registrar_profesor_como_tutor.md)
-- solicitud de apoyo económico
+- [solicitud de apoyo económico](solicitud_de_apoyo_economico.md)
 - genera reporte de actividades
 
 ## Tutores
