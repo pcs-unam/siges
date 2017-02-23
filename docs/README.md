@@ -12,14 +12,18 @@ tipo de usuario. Hay tres categorías generales:
 - [Usuarios Alumnos](alumnos/)
 
 
+## Usuarios registrados
+- Registra solicitud miscelanea
+- solicitar registro al posgrado como profesor
+- solicitar registro al posgrado como alumno
+
 ## Usuarios anónimos
 
 Para usar el sistema se requiere que las personas se registren.
 
 Antes de registrarse un usuario es anónimo, sus casos de uso son:
 
-- solicitar registro al posgrado como profesor
-- solicitar registro al posgrado como alumno
+
 
 ¿Habrá casos en los que un alumno se registre después como profesor y
 viceversa? 
