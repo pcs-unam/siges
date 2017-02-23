@@ -9,6 +9,10 @@ coordinador y los asistentes de proceso.
 - designar usuarios con perfil de asistentes de proceso
 - reunir comité académico (¿qué tutores lo conforman?)
 
+## Secretaria Técnica
+
+- Ratifica dictámenes del comité académico
+
 ## Asistente de proceso
 
 Colaborador de la Coordinación que toma parte de la gestión del
@@ -22,6 +26,7 @@ posgrado.
 - ratifica candidatura de estudiantes
 
 ### Aulas
+
 La coordinación del posgrado puede intermediar la gestión de aulas. ¿Registraremos esa gestión en este sistema?
 
 ### Proceso de admisión
