@@ -37,7 +37,7 @@ El comité académico está dividido en subcomités.
 Algunos casos de uso:
 
 - validar solicitudes de registro de tutor
-- autorizar cursos
+- [autorizar cursos](autorizar_cruso.md)
 - asentar observaciones a exámenes de candidatura
 
 - Revisión y comentario de solicitudes de alumnos
