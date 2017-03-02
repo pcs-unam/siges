@@ -11,7 +11,7 @@ a los miembros elegidos donde se les indicará ingresar al sistema para [confirm
 En caso de que haya un rechazo por alguno de los miemros elegidos, el sistema deberá enviarle una notificación al alumno
 para que ingrese al sistema a generar una nueva elección.
 
-Una vez que los tutores aprueban la solicitud del estudiante, se enviá la propuesta de Comité Tutoral al Comité Acadedmico.
+Una vez que los tutores aprueban la solicitud del estudiante, se [enviá la propuesta de Comité Tutoral al Comité Acadedmico](predictaminar_propuestas_de_comite_tutoral.md).
 
 ## Solicitar al Comité Academico la elección de los Tutores
 En algunos casos el estudiante prefiere que el Comité Académico designe su Comité Tutoral.
