@@ -36,6 +36,6 @@ Después de registrar la solicitud de curso, podrá ser revisar tanto la coordin
 
 La resolución del comité acádemico podrá verse en el perfil del profesor el cual imprimirá su carta de aceptación o rechazo.
 
-En caso de habér sido aceptado el curso aparecerá en la lista de cursos del semestre solicitado el cual podrán ver todos los usuarios.
+En caso de habér sido aceptado el curso aparecerá en una lista la cual podrán ver todos los usuarios.
 
 La información del curso se podrá subir a SAEP para generar los grupos y actas de evaluación. 
