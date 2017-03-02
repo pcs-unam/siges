@@ -11,7 +11,7 @@ coordinador y los asistentes de proceso.
 
 ## Secretaria Técnica
 
-- Ratifica dictámenes del comité académico
+- [Ratificación de predictámenes del comité académico](ratificacion_predictamenes.md)
 
 ## Asistente de proceso
 
