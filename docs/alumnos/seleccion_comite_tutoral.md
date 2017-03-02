@@ -15,4 +15,4 @@ Una vez que los tutores aprueban la solicitud del estudiante, se enviá la propu
 
 ## Solicitar al Comité Academico la elección de los Tutores
 En algunos casos el estudiante prefiere que el Comité Académico designe su Comité Tutoral.
-Deberá existir una opción con esta decisión que se le hará llegar al Comité Académico.
+Existe una opción con esta decisión que se le hará llegar al Comité Académico.
