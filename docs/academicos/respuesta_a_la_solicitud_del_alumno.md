@@ -8,3 +8,5 @@ lo hayan elegido para formar parte de su comité tutoral.
 Al legir un alumno, mostrará su información como titulo de proyecto, tutor principal y a los otros miembros que haya elegido.
 En esta opción habrá dos respuestas:
 Acepto o Rechazo y un campo libre para poner algún comentario en caso de rechazar la solicitud.
+
+De ser rechazada la solicitud, se enviará una notificación al alumno para elegir otro miembro. 
