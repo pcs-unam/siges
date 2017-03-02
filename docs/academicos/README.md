@@ -25,8 +25,9 @@ Algunos casos de uso:
 
 - solicitar baja de tutor
 - aviso de ausencia por sabático u otra razón
-- asentir a participación en comités tutorales, jurados de candidatura
-  y jurado de grado
+- [asentir a participación en comités tutorales](respuesta_a_la_solicitud_del_alumno.md)
+- jurados de candidatura
+- jurado de grado
 - validación de actividad complementaria de alumno bajo su tutoría
 - generar acta de candidatura
 
@@ -37,7 +38,7 @@ El comité académico está dividido en subcomités.
 Algunos casos de uso:
 
 - validar solicitudes de registro de tutor
-- [autorizar cursos](autorizar_cruso.md)
+- autorizar cursos
 - asentar observaciones a exámenes de candidatura
 
 - Revisión y comentario de solicitudes de alumnos
