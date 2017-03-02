@@ -12,6 +12,8 @@ coordinador y los asistentes de proceso.
 ## Secretaria Técnica
 
 - [Ratificación de predictámenes del comité académico](ratificacion_predictamenes.md)
+- [Ratificar dictamen SIN predictamen](dicaminar.md)
+Casos de solicitudes en los que el responsable para dictaminar no haya hecho su parte.
 
 ## Asistente de proceso
 
