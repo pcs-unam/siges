@@ -5,14 +5,13 @@
 Persona registrada en el sistema que está en el trámite de admisión al
 posgrado.
 
-- seleccíon de comité tutoral
+- [seleccíon de comité tutoral](seleccion_comite_tutoral.md)
 
 ## Estudiante
 
 Persona inscrita al programa de posgrado.
 - selección de jurado de grado
 - selección de jurado de candidatura
-- solicitud de aula
 - registro de actividad complementaria
 - solicitud de candidatura
 
