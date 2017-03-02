@@ -1,4 +1,4 @@
 # Alimentar SAEP
 
 ## Cargar Cruso
-El asistente de procesos deberá subir al sistema de SAEP la lista de cursos aprobados por el comité académico y la coordinación.
+El asistente de procesos descargará los datos de los cursos aprobados en el orden que los solicita SAEP.
