@@ -12,3 +12,7 @@ En caso de que haya un rechazo por alguno de los miemros elegidos, el sistema de
 para que ingrese al sistema a generar una nueva elección.
 
 Una vez que los tutores aprueban la solicitud del estudiante, se enviá la propuesta de Comité Tutoral al Comité Acadedmico.
+
+## Solicitar al Comité Academico la elección de los Tutores
+En algunos casos el estudiante prefiere que el Comité Académico designe su Comité Tutoral.
+Deberá existir una opción con esta decisión que se le hará llegar al Comité Académico.
