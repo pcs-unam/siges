@@ -21,8 +21,7 @@ Persona inscrita al programa de posgrado.
   - cambios a jurados de grado
   - cambios a jurados de candidatura
   - cambio de campo de conocimiento
-  
-  - suspensiones
+  - [suspensiones](solicitud_suspension.md)
   - prórrogas
 
 
