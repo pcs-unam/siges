@@ -36,11 +36,10 @@ Algunos casos de uso:
 El comité académico está dividido en subcomités.
 
 Algunos casos de uso:
-
+- [Revisión y comentario de solicitudes de profesores](revision_comentarios_solicitudes_profesores.md)
 - validar solicitudes de registro de tutor
 - autorizar cursos
 - asentar observaciones a exámenes de candidatura
-
 - [Revisión y comentario de solicitudes de alumnos](revision_comentarios_solicitudes_alumnos.md)
 
 
