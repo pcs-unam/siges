@@ -16,7 +16,7 @@ Persona inscrita al programa de posgrado.
 - solicitud de candidatura
 
 - Solicitudes:
-  - cambio de comité tutoral
+  - [cambio de comité tutoral](cambio_comite_tutoral.md)
   - [cambio de título de proyecto](cambio_titulo_proyecto.md)
   - cambios a jurados de grado
   - cambios a jurados de candidatura
