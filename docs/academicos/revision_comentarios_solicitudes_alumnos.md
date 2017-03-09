@@ -4,7 +4,7 @@
 
 
 ##cambio de título de proyecto
-
+los miembros del comite revisan y pueden predictaminar aprobado o rechazada y comentarios, esta se revisará en la sesión de comité académico con la coordinación
 
 ##suspensiones
 
