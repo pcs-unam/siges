@@ -1,10 +1,13 @@
 #Revisión y comentario de solicitudes de alumnos
+Los casos son similares, en cada uno de ellos el comité académico podrá ver la solicitud y predictaminar si es aprobada
+o rechazada, en caso de ser rechazada será obligatorio llenar el campo de observaciones en caso de ser aprobado el campo
+de observaciones será opcional.
 
 ##cambio de comité tutoral
 
 
 ##cambio de título de proyecto
-los miembros del comite revisan y pueden predictaminar aprobado o rechazada y comentarios, esta se revisará en la sesión de comité académico con la coordinación
+
 
 ##suspensiones
 
