@@ -28,7 +28,7 @@ Algunos casos de uso:
 - [asentir a participación en comités tutorales](respuesta_a_la_solicitud_del_alumno.md)
 - jurados de candidatura
 - jurado de grado
-- validación de actividad complementaria de alumno bajo su tutoría
+- [validación de actividad complementaria](validacion_actividad_complementaria.md)
 - generar acta de candidatura
 
 ## Tutores miembros del comité académico
