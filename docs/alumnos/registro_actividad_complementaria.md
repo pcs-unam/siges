@@ -21,8 +21,7 @@ seleccionar una opción:
 
 Una vez que se envió la solicitud deberá llegar una notificación a los miembros de su comité tutor para dar el visto bueno
 
-Ya que tenga el visto bueno de todos los miembros de su comité tutor se podrá generar el acta de evaluación la cual
-el estudiante podrá descargar desde su página de usuario.
+Ya que tenga el visto bueno de todos los miembros de su comité tutor se podrá generar el acta de evaluación la cual podrá descargar y deberá llevar en físico debidamente firmada a la coordinación
 
 Debe haber un botón de editar (activo siempre y cuando todos los miembros de su comité no hayan puesto su visto bueno)
 En caso de que ya exista el visto bueno de todos los miembros y se decida cambiar, se deberá solicitar a la coordinación
