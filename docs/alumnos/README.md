@@ -11,9 +11,8 @@ posgrado.
 
 Persona inscrita al programa de posgrado.
 - selección de jurado de grado
-- selección de jurado de candidatura
 - [registro de actividad complementaria](registro_actividad_complementaria.md)
-- solicitud de candidatura
+- [solicitud de candidatura](solicitud_candidatura.md)
 
 - Solicitudes:
   - [cambio de comité tutoral](cambio_comite_tutoral.md)
