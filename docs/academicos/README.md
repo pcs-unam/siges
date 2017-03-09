@@ -41,7 +41,7 @@ Algunos casos de uso:
 - autorizar cursos
 - asentar observaciones a exámenes de candidatura
 
-- Revisión y comentario de solicitudes de alumnos
+- [Revisión y comentario de solicitudes de alumnos](revision_comentarios_solicitudes_alumnos.md)
   - cambio de comité tutoral
   - cambio de título de proyecto
   - suspensiones
@@ -51,7 +51,3 @@ Algunos casos de uso:
   - cambios a jurados de candidatura
 
 
-
-
-
-Rodrigo, Comité Académico, Subcomité Experimental
