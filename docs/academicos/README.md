@@ -42,12 +42,6 @@ Algunos casos de uso:
 - asentar observaciones a exámenes de candidatura
 
 - [Revisión y comentario de solicitudes de alumnos](revision_comentarios_solicitudes_alumnos.md)
-  - cambio de comité tutoral
-  - cambio de título de proyecto
-  - suspensiones
-  - cambio de campo de conocimiento
-  - prórrogas
-  - cambios a jurados de grado
-  - cambios a jurados de candidatura
+
 
 
