@@ -20,9 +20,9 @@ Persona inscrita al programa de posgrado.
   - [cambio de título de proyecto](cambio_titulo_proyecto.md)
   - cambios a jurados de grado
   - cambios a jurados de candidatura
-  - cambio de campo de conocimiento
+  - [cambio de campo de conocimiento](solicitud_cambio_campo.md)
   - [suspensiones](solicitud_suspension.md)
-  - prórrogas
+ 
 
 
 ## Graduado
