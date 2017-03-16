@@ -29,7 +29,7 @@ Algunos casos de uso:
 - jurados de candidatura
 - jurado de grado
 - [validación de actividad complementaria](validacion_actividad_complementaria.md)
-- [Dictaminar Examen de Cadidatura](secretario_dictamina_la_evaluacion_de_candidatura.md)generar acta de candidatura
+- [Dictaminar Examen de Cadidatura](secretario_dictamina_la_evaluacion_de_candidatura.md)generar acta de candidatura.md)
 
 
 ## Tutores miembros del comité académico
