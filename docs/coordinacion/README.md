@@ -26,6 +26,7 @@ posgrado.
 - Publicar Convocatoria para registro de curso
 - Publicar convocatoria de registro de tutores
 - ratifica candidatura de estudiantes
+- [Elaborar oficios para Candidatura](oficios_para_firma_de_los_miembros_del_Jurado.md)
 
 ### Aulas
 
