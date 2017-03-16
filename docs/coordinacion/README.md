@@ -13,6 +13,7 @@ coordinador y los asistentes de proceso.
 
 - [Ratificación de predictámenes del comité académico](ratificacion_predictamenes.md)
 - [Ratificar dictamen SIN predictamen](dicaminar.md)
+- [Administrar sesiones de comité académico](administrar_sesiones_ca.md)
 Casos de solicitudes en los que el responsable para dictaminar no haya hecho su parte.
 
 ## Asistente de proceso
