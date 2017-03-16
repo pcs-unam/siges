@@ -33,21 +33,21 @@ posgrado.
 La coordinación del posgrado puede intermediar la gestión de aulas. ¿Registraremos esa gestión en este sistema?
 
 ## Proceso de admisión
-# Generar una convocatoria
+### Generar una convocatoria
 - Asignar formación general
 - Crear calendario de actividades
 
-# Registro de aspirantes
+### Registro de aspirantes
 - Crear usuario
 - Crear solictud (maestría o doctorado)
 - Cargar de docuementos
 - Asignación de referencia bancaria
 
-# Primer filtro
+### Primer filtro
 - Cargar resultados
 
-# Segundo filtro
+### Segundo filtro
 - Carga resultados
 
-# Resultados
+### Resultados
 - Publicación de resultados
