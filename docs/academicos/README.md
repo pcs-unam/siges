@@ -30,7 +30,6 @@ Algunos casos de uso:
 - jurado de grado
 - [validación de actividad complementaria](validacion_actividad_complementaria.md)
 - generar acta de candidatura
-- [Confirmar Fecha de Candidatura](fecha_propuesta_de_examen_de_candidatura.md)
 
 
 ## Tutores miembros del comité académico
