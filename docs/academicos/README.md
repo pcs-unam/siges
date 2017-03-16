@@ -31,13 +31,14 @@ Algunos casos de uso:
 - [validación de actividad complementaria](validacion_actividad_complementaria.md)
 - generar acta de candidatura
 
+
 ## Tutores miembros del comité académico
 
 El comité académico está dividido en subcomités.
 
 Algunos casos de uso:
 - [Revisión y comentario de solicitudes de profesores](revision_comentarios_solicitudes_profesores.md)
-- asentar observaciones a exámenes de candidatura
+- [Asentar el Jurado de Candidatura](jurado_candidatura.md)
 - [Revisión y comentario de solicitudes de alumnos](revision_comentarios_solicitudes_alumnos.md)
 
 

@@ -6,14 +6,14 @@ coordinador y los asistentes de proceso.
 
 ## Coordinador
 
-- designar usuarios con perfil de asistentes de proceso
-- reunir comité académico (¿qué tutores lo conforman?)
+- [Designar usuarios con perfil de asistentes de proceso](designar_usuarios.md)
+- [Generar comité académico](generar_comite_academico.md)
 
 ## Secretaria Técnica
 
 - [Ratificación de predictámenes del comité académico](ratificacion_predictamenes.md)
-- [Ratificar dictamen SIN predictamen](dicaminar.md)
-Casos de solicitudes en los que el responsable para dictaminar no haya hecho su parte.
+- [Ratificar dictamen SIN predictamen](dicaminar.md) Casos de solicitudes en los que el responsable para dictaminar no haya hecho su parte.
+- [Administrar sesiones de comité académico](administrar_sesiones_ca.md)
 
 ## Asistente de proceso
 
