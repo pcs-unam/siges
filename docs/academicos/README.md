@@ -37,7 +37,7 @@ El comité académico está dividido en subcomités.
 
 Algunos casos de uso:
 - [Revisión y comentario de solicitudes de profesores](revision_comentarios_solicitudes_profesores.md)
-- [Asentar_Jurado de Candidatura](jurado_candidatura.md)
+- [Asentar el Jurado de Candidatura](jurado_candidatura.md)
 - [Revisión y comentario de solicitudes de alumnos](revision_comentarios_solicitudes_alumnos.md)
 
 
