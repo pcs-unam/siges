@@ -6,7 +6,7 @@ coordinador y los asistentes de proceso.
 
 ## Coordinador
 
-- designar usuarios con perfil de asistentes de proceso
+- [Designar usuarios con perfil de asistentes de proceso](designar_usuarios.md)
 - reunir comité académico (¿qué tutores lo conforman?)
 
 ## Secretaria Técnica
