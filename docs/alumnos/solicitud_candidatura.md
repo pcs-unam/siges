@@ -13,10 +13,6 @@ Se desplegará el formulario con los siguientes campos:
  para elegir a un miembro que no este acreditado y a su vez pueda subir su curriculum del invesetigador y capturar su correo electrónco
  para futuros avisos por ese medio al respecto. 
  
- Una vez aprobada la solicitud, esta debe de generar un documento Invitación a los miembros de jurado con las indicaciones de 
- como realizar el proceso de candidatura.
- 
- El estudiante por su cuenta debe de organizarse con jurado para acordar una fecha de cuando se llevará acabo la Candidatura, una vez confirmada deberá especificarla en la misma "Solicitud de Candidatura" para que de igual mananera se genere otro documento que correspondería al acta en la cual se deberá firmar al finalizar el examen.
  
  El secretario en conseso con el jurado es quien asentará los comentarios en el acta y dictaminar si aprueba  la candidatura o no.
  
