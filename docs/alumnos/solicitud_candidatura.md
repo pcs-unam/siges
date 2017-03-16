@@ -10,11 +10,8 @@ Se desplegará el formulario con los siguientes campos:
   - Emergente
  
  En cada cargo existe un botón con el padrón de tutores acreditados en el Programa, pero también deberá existir una opción 
- para elegir a un miembro que no este acreditado y a su vez pueda subir su curriculum del invesetigador.
- 
- 
- 
- Una vez capturada la solicitud, está a su vez se enviará al Comité Académico para su revisión y se ratifique su solicitud.
+ para elegir a un miembro que no este acreditado y a su vez pueda subir su curriculum del invesetigador y capturar su correo electrónco
+ para futuros avisos por ese medio al respecto. 
  
  Una vez aprobada la solicitud, esta debe de generar un documento Invitación a los miembros de jurado con las indicaciones de 
  como realizar el proceso de candidatura.
