@@ -1,7 +1,7 @@
-----
+---
 Categoría: Estudiantes
 caso: E9
-----
+---
 
 # Solicitud de Suspensión
 
