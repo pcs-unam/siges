@@ -27,7 +27,12 @@ Las reglas para la composicón del jurado son:
 - Hasta	 dos	 miembros	 pueden	 ser	 externos	 al	 Posgrado;	 acreditados	 o	 no,	 pero	vinculados	con	el	tema	del	proyecto	que	desarrolla	el	alumno. Los	miembros	no	acreditados	deberán	ser	ratificados	por	el	Comité	Académico.	
 
 
+
+
+
 ## Véase también
+
+La coordinación de la fecha para el examen quedará fuera del sistema. Unicamente se registrará la fecha acordada por todos. La tarea de registrar la fecha del examen corresponde al Presidente del jurado.
 
 El secretario en conseso con el jurado asentará los comentarios en el acta, junto con el dictamen.
 
