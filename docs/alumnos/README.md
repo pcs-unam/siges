@@ -15,7 +15,6 @@ Persona inscrita al programa de posgrado.
 - selección de jurado de grado
 - [registro de actividad complementaria](registro_actividad_complementaria.md)
 - [solicitud de candidatura](solicitud_candidatura.md)
-- [Fecha para Examen de Candidatura](fecha_exame_candidatura.md)
 
 - Solicitudes:
   - [cambio de comité tutoral](cambio_comite_tutoral.md)
