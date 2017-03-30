@@ -1,10 +1,12 @@
+---
+Categoría: Académicos
+caso: A2
+---
 
 # Solicitar registro como tutor
 
-Un profesor quiere ser tutor. Somete una solicitud que será revisada por el comité académico.
-
-Tras someter su solicitud el profesor puede darle seguimiento: ¿ha sido aprobada por el comité? ¿ha sido ratificada la aprobación por la secretaria académica?
-
+Un profesor quiere ser tutor. Somete una solicitud que será revisada
+por el comité académico.
 
 ## Datos requeridos para la solicitud:
 
@@ -38,3 +40,8 @@ Tras someter su solicitud el profesor puede darle seguimiento: ¿ha sido aprobad
 - Campo de conocimiento o línea de investigación
 - Principales proyectos recientes
 
+
+
+# Véase también
+
+Comité académico ratifica solicitud de registro como tutor.

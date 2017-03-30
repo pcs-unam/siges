@@ -1,12 +1,21 @@
-Una vez que el alumno lo haya elegido para formar parte de su comité tutor recibirá un correo electrónico con una invitación
-para ingresar al sistema, en el cuerpo del correo dirá
-"Ha sido elegido para formar parte de un comité tutoral, para aceptar la solicitud deberá ingresar a la siguiente liga:"
+---
+categoría: Académicos
+caso: A4
+---
 
-En el panel habrá una opción que diga "asentir Comité Tutor" en ella se enlistarán todos los alumnos que
-lo hayan elegido para formar parte de su comité tutoral.
+# Responder a solicitud de conformar comité tutor
 
-Al legir un alumno, mostrará su información como titulo de proyecto, tutor principal y a los otros miembros que haya elegido.
-En esta opción habrá dos respuestas:
-Acepto o Rechazo y un campo libre para poner algún comentario en caso de rechazar la solicitud.
+Cuando un estudiante lo elige para formar parte de su comité tutor, el
+académico recibirá un correo electrónico con una invitación. 
 
-De ser rechazada la solicitud, se enviará una notificación al alumno para elegir otro miembro. 
+En el cuerpo del correo dirá "Usted ha sido elegido para formar parte
+de un comité tutoral, para aceptar la solicitud deberá ingresar a la
+siguiente liga: <liga>"
+
+Se mostrará la información del solicitante: título de proyecto, tutor
+principal y a los otros miembros que haya elegido. Habrá dos
+respuestas: Acepto o Rechazo y un campo libre para poner algún
+comentario en caso de rechazar la solicitud.
+
+De ser rechazada la solicitud, se enviará una notificación al alumno
+para elegir otro miembro.

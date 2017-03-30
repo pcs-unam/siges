@@ -11,7 +11,11 @@ Un profesor imparte una cátedra en el programa.
 
 - [registra curso](registrar_curso.md)
 - [solicita registro como tutor](registrar_profesor_como_tutor.md)
-- [solicitud de apoyo económico](solicitud_de_apoyo_economico.md)
+- [solicita apoyo económico](solicitud_de_apoyo_economico.md)
+
+Tras registrar una solicitud puede dar seguimiento al estado que
+guarda en su página de bienvenida.
+
 - genera reporte de actividades
 
 ## Tutores
@@ -40,6 +44,4 @@ Algunos casos de uso:
 - [Revisión y comentario de solicitudes de profesores](revision_comentarios_solicitudes_profesores.md)
 - [Asentar el Jurado de Candidatura](jurado_candidatura.md)
 - [Revisión y comentario de solicitudes de alumnos](revision_comentarios_solicitudes_alumnos.md)
-
-
 
