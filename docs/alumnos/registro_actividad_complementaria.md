@@ -1,3 +1,8 @@
+---
+categoría: Alumnos
+caso: A3
+---
+
 # Registro de actividad complementaria
 
 El alumno de doctorado debe registrar una actividad complementaria cada semestre llenando los siguientes campos, solo puede
