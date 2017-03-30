@@ -1,3 +1,10 @@
+---
+categoría: Estudiante
+caso: E1
+---
+
+# Seleccin de comité tutoral
+
 El alumno junto con su Tutor Principal deberá elegir dos miembros
 académicos del padrón de tutores acreditados del Programa para formar
 parte de su Comité Tutor.
