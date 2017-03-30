@@ -1,6 +1,6 @@
 ---
-categoría: Alumnos
-caso: A3
+categoría: Estudiantes
+caso: E2
 ---
 
 # Registro de actividad complementaria
@@ -26,14 +26,13 @@ seleccionar una opción:
   - Objetivo de la estancia (campo de texto libre)
   - Nombre del evaluador responsable (campo de texto libre)
   
-## Publicación de requistio para obtención del grado
+## Publicación de requisito para obtención del grado
   - Nombre de la publicación (campo de texto libre)
   - Nombre del evaluador responsable (tutor principal del alumno) 
 
-Una vez que se envió la solicitud deberá llegar una notificación a los miembros de su comité tutor para dar el visto bueno
+Una vez que se envió la solicitud deberá llegar una notificación a los miembros de su comité tutor para dar el visto bueno.
 
-Ya que tenga el visto bueno de todos los miembros de su comité tutor se podrá generar el acta de evaluación la cual podrá descargar y deberá llevar en físico debidamente firmada a la coordinación
+# Generación de Acta
 
-Debe haber un botón de editar (activo siempre y cuando todos los miembros de su comité no hayan puesto su visto bueno)
-En caso de que ya exista el visto bueno de todos los miembros y se decida cambiar, se deberá solicitar a la coordinación
-la activación del botón editar.
+Ya que tenga el visto bueno de todos los miembros de su comité tutor se podrá generar el acta de evaluación la cual podrá descargar y deberá llevar en físico debidamente firmada a la coordinación.
+
