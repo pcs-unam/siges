@@ -22,7 +22,9 @@ En cada cargo existe un botón con el padrón de tutores acreditados en el Progr
 También existirá la opción de elegir a un miembro que no sea tutor acreditado. Si se elige deberá subirse el curriculum del miembro y capturar su correo electrónco. 
 
 Las reglas para la composicón del jurado son:
-
+- Solo	un	miembro	del	comité	tutor,	el	cual	no	debe	ser	el	tutor	principal	ni	el	cotutor del	alumno,	quien	fungirá	como	secretario.
+- Dos	 o	 más	 miembros	 del	 jurado	 deberán	 ser	 tutores	 adscritos	 al	 Posgrado	 en Ciencias	de	la	Sostenibilidad	de	la	UNAM.
+- Hasta	 dos	 miembros	 pueden	 ser	 externos	 al	 Posgrado;	 acreditados	 o	 no,	 pero	vinculados	con	el	tema	del	proyecto	que	desarrolla	el	alumno. Los	miembros	no	acreditados	deberán	ser	ratificados	por	el	Comité	Académico.	
 
 
 ## Véase también
