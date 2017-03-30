@@ -5,7 +5,9 @@
 Persona registrada en el sistema que está en el trámite de admisión al
 posgrado.
 
+### Aspirante de Doctorado
 - [seleccíon de comité tutoral](seleccion_comite_tutoral.md)
+
 
 ## Estudiante
 
