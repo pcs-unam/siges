@@ -17,8 +17,13 @@ Se desplegará el formulario con los siguientes campos:
   - Miembro 3
   - Emergente
  
-En cada cargo existe un botón con el padrón de tutores acreditados en el Programa. También existirá la opción 
-de elegir a un miembro que no sea tutor acreditado. Si se elige deberá subirse el curriculum del miembro y capturar su correo electrónco. 
+En cada cargo existe un botón con el padrón de tutores acreditados en el Programa.
+
+También existirá la opción de elegir a un miembro que no sea tutor acreditado. Si se elige deberá subirse el curriculum del miembro y capturar su correo electrónco. 
+
+Las reglas para la composicón del jurado son:
+
+
 
 ## Véase también
 
