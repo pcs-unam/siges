@@ -18,6 +18,6 @@ Seria bueno que para cada tramite existan hipervinculos a los reglamentos y norm
 
 # Véase también
 
-Tutor da VoBo de suspensin.
+Tutor da VoBo de suspensión.
 
 Comité Académico ratifica suspensión.
