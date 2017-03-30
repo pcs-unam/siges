@@ -1,4 +1,9 @@
-El estudiante elige la opción "Solicitud de Cambio de Miebros de Comité Tutoral"
+---
+categoría: Estudiantes
+caso: E6
+---
+
+# Cambios al Comité Tutoral
 
 Este formulario permite a un estudiante solicitar cambios a su comité tutoral.
 
