@@ -65,7 +65,7 @@ class GradoAcademico(models.Model):
     facultad = models.CharField(max_length=100)
 
     fecha_titulacion = models.DateField()
-    promedio = models.DecimalField(max_digits=2, decimal_places=2)
+    promedio = models.DecimalField(max_digits=4, decimal_places=2)
 
 
 
