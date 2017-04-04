@@ -4,6 +4,27 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
+
+class Institucion(models.Model):
+    nombre = models.CharField(max_length=100)
+    pais = models.CharField(max_length=100)
+    estado = models.CharField(max_length=100)
+    tipo = models.CharField(max_length=15, choices=(('UNAM', 'UNAM'),
+                                                    ('Sector Salud', 'Sector Salud'),
+                                                    ('Hospitales', 'Hospitales'),
+                                                    ('Gobierno', 'Gobierno'),
+                                                    ('Otro', 'otro')))
+
+
+
+class Entidad(models.Model):
+    nombre = models.CharField(max_length=100)    
+
+
+class CampoConocimiento(models.Model):
+    nombre = models.CharField(max_length=100)    
+
+    
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -44,7 +65,7 @@ class GradoAcademico(models.Model):
     facultad = models.CharField(max_length=100)
 
     fecha_titulacion = models.DateField()
-    promedio = models.DecimalField(max_digits=2, max_places=2)
+    promedio = models.DecimalField(max_digits=2, decimal_places=2)
 
 
 
@@ -75,15 +96,6 @@ class Academico(models.Model):
 
 
 
-class Institucion(models.Model):
-    nombre = models.CharField(max_length=100)
-    pais = models.CharField(max_length=100)
-    estado = models.CharField(max_length=100)
-    tipo = models.CharField(max_length=15, choices=(('UNAM', 'UNAM'),
-                                                    ('Sector Salud', 'Sector Salud'),
-                                                    ('Hospitales', 'Hospitales'),
-                                                    ('Gobierno', 'Gobierno'),
-                                                    ('Otro', 'otro')))
 
 class Adscripcion(models.Model):
     academico = models.ForeignKey(Academico, on_delete=models.CASCADE)
