@@ -9,22 +9,22 @@ class Institucion(models.Model):
     nombre = models.CharField(max_length=100)
     pais = models.CharField(max_length=100)
     estado = models.CharField(max_length=100)
-    tipo = models.CharField(max_length=15, choices=(('UNAM', 'UNAM'),
-                                                    ('Sector Salud', 'Sector Salud'),
-                                                    ('Hospitales', 'Hospitales'),
-                                                    ('Gobierno', 'Gobierno'),
-                                                    ('Otro', 'otro')))
-
+    tipo = models.CharField(max_length=15,
+                            choices=(('UNAM', 'UNAM'),
+                                     ('Sector Salud', 'Sector Salud'),
+                                     ('Hospitales', 'Hospitales'),
+                                     ('Gobierno', 'Gobierno'),
+                                     ('Otro', 'otro')))
 
 
 class Entidad(models.Model):
-    nombre = models.CharField(max_length=100)    
+    nombre = models.CharField(max_length=100)
 
 
 class CampoConocimiento(models.Model):
-    nombre = models.CharField(max_length=100)    
+    nombre = models.CharField(max_length=100)
 
-    
+
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -48,28 +48,23 @@ class Perfil(models.Model):
                                                      ('F', 'femenino'),
                                                      ('N', 'no especificado')))
 
-    nacionalidad  = models.CharField(max_length=100)
+    nacionalidad = models.CharField(max_length=100)
     fecha_nacimiento = models.DateField('date published')
-
-
 
 
 class GradoAcademico(models.Model):
     user = models.ForeignKey(User)
 
-    grado = models.CharField(max_length=15, choices=(('licenciatura', 'licenciatura'),
-                                                     ('maestria', 'maestria'),
-                                                     ('doctorado', 'doctorado')))
+    grado = models.CharField(max_length=15,
+                             choices=(('licenciatura', 'licenciatura'),
+                                      ('maestria', 'maestria'),
+                                      ('doctorado', 'doctorado')))
 
     institucion = models.ForeignKey(Institucion)
     facultad = models.CharField(max_length=100)
 
     fecha_titulacion = models.DateField()
     promedio = models.DecimalField(max_digits=4, decimal_places=2)
-
-
-
-
 
 
 class Academico(models.Model):
@@ -90,11 +85,9 @@ class Academico(models.Model):
     profesor = models.BooleanField()
 
     fecha_acreditacion = models.DateField()
-    acreditacion = models.CharField(max_length=15, choices=(('doctorado', 'doctorado'),
-                                                         ('maestría', 'maestría')))
-
-
-
+    acreditacion = models.CharField(max_length=15,
+                                    choices=(('doctorado', 'doctorado'),
+                                             ('maestría', 'maestría')))
 
 
 class Adscripcion(models.Model):
@@ -103,9 +96,8 @@ class Adscripcion(models.Model):
     nombramiento = models.CharField(max_length=100)
     telefono = models.CharField(max_length=100)
 
-    numero_trabajador = models.CharField("en caso de trabajar en la UNAM", max_length=100)
-
-
+    numero_trabajador = models.CharField("en caso de trabajar en la UNAM",
+                                         max_length=100)
 
 
 class Estudiante(models.Model):
@@ -117,11 +109,12 @@ class Estudiante(models.Model):
     doctorado_directo = models.BooleanField()
     campo_conocimiento = models.ForeignKey(CampoConocimiento)
     nombre_proyecto = models.CharField(max_length=200)
-    estado = models.CharField(max_length=15, choices=(('graduado', 'graduado'),
-                                                      ('egresado', 'egresado'),
-                                                      ('vigente', 'vigente'),
-                                                      ('baja', 'baja'),
-                                                      ('suspenso', 'suspenso')))
+    estado = models.CharField(max_length=15,
+                              choices=(('graduado', 'graduado'),
+                                       ('egresado', 'egresado'),
+                                       ('vigente', 'vigente'),
+                                       ('baja', 'baja'),
+                                       ('suspenso', 'suspenso')))
     fecha_baja = models.DateField()
     motivo_baja = models.CharField(max_length=200)
 
