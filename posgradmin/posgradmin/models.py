@@ -88,6 +88,7 @@ class Academico(models.Model):
     acreditacion = models.CharField(max_length=15,
                                     choices=(('doctorado', 'doctorado'),
                                              ('maestría', 'maestría')))
+    entidad = models.ForeignKey(Entidad)
 
 
 class Adscripcion(models.Model):
@@ -101,6 +102,7 @@ class Adscripcion(models.Model):
 
 
 class Estudiante(models.Model):
+    user = models.ForeignKey(User)
     ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado")
     semestre = models.PositiveSmallIntegerField("semestre de ingreso al posgrado")
     entidad = models.ForeignKey(Entidad)
@@ -133,3 +135,23 @@ class Beca(models.Model):
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
     tipo = models.CharField(max_length=100)
+
+
+class Asunto(models.Model):
+    titulo = models.CharField(max_length=100)
+    tipo = models.CharField(max_length=100)
+    solicitante = models.ForeignKey(User)
+    fecha_creacion = models.DateTimeField(auto_now=True)
+    # sesion del CA
+    # archivos anexos
+    descripcion = models.CharField(max_length=300)
+    acuerdo = models.CharField(max_length=300)
+    fecha_resolucion = models.DateTimeField()
+    estado = models.CharField(max_length=30)
+
+
+class Comentario(models.Model):
+    asunto = models.ForeignKey(Asunto)
+    fecha = models.DateTimeField()
+    comentario = models.CharField(max_length=300)
+    # anexo?
