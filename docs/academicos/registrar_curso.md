@@ -29,7 +29,7 @@ registra su solicitud con los siguientes datos:
 - Bibliografía
 - Bibliografía complementaria
 - Sugerencias didácticas. Se puede seleccionar cualqueira de estas opciones: Exposición oral, Exposición audiovisual, Ejercicios dentro de clase, Ejercicio fuera del aula, Seminarios, Lecturas obligatorias, Trabajo de investigación, Prácticas de campo, otras
-- Mecanismos de evaluación del aprendizaje de los alumnos. Se puede seleccionar más de una opción de las siguietnes: Exámenes parciales, Examen final escrito, Trabajos y tareas fuera del aula, Exposición de sminarios por los alumnos, Participación en clase, Asistencia, Seminario, Otras
+- Mecanismos de evaluación del aprendizaje de los estudiantes. Se puede seleccionar más de una opción de las siguietnes: Exámenes parciales, Examen final escrito, Trabajos y tareas fuera del aula, Exposición de seminarios por los estudiantes, Participación en clase, Asistencia, Seminario, Otras
 - Perfil profesiográfico
 
 Podrá generar una solicitud con base en una anterior.

@@ -1,4 +1,4 @@
-# Casos de uso de Alumnos
+# Casos de uso de Estudiantes
 
 ## Aspirante
 

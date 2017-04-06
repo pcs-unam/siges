@@ -17,5 +17,5 @@ principal y a los otros miembros que haya elegido. Habrá dos
 respuestas: Acepto o Rechazo y un campo libre para poner algún
 comentario en caso de rechazar la solicitud.
 
-De ser rechazada la solicitud, se enviará una notificación al alumno
+De ser rechazada la solicitud, se enviará una notificación al estudiante
 para elegir otro miembro.

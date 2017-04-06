@@ -9,13 +9,13 @@ tipo de usuario. Hay tres categorías generales:
 
 - [Usuarios en la coordinación del posgrado](coordinacion/)
 - [Usuarios Académicos](academicos/)
-- [Usuarios Alumnos](alumnos/)
+- [Usuarios Estudiantes](estudiantes/)
 
 
 ## Usuarios registrados
 - Registra solicitud miscelanea
 - solicitar registro al posgrado como profesor
-- solicitar registro al posgrado como alumno
+- solicitar registro al posgrado como estudiante
 
 ## Usuarios anónimos
 
@@ -25,6 +25,6 @@ Antes de registrarse un usuario es anónimo, sus casos de uso son:
 
 
 
-¿Habrá casos en los que un alumno se registre después como profesor y
+¿Habrá casos en los que un estudiante se registre después como profesor y
 viceversa? 
 

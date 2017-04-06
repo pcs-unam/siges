@@ -5,7 +5,7 @@ caso: E2
 
 # Registro de actividad complementaria
 
-El alumno de doctorado debe registrar una actividad complementaria cada semestre llenando los siguientes campos, solo puede
+El estudiante de doctorado debe registrar una actividad complementaria cada semestre llenando los siguientes campos, solo puede
 seleccionar una opción:
 
 ## Curso
@@ -28,7 +28,7 @@ seleccionar una opción:
   
 ## Publicación de requisito para obtención del grado
   - Nombre de la publicación (campo de texto libre)
-  - Nombre del evaluador responsable (tutor principal del alumno) 
+  - Nombre del evaluador responsable (tutor principal del estudiante) 
 
 Una vez que se envió la solicitud deberá llegar una notificación a los miembros de su comité tutor para dar el visto bueno.
 

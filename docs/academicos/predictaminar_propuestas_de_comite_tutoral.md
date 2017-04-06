@@ -1,7 +1,7 @@
 # Predictamen de solicitud de Comité Tutoral
 
 En el panel hay una opción para predictaminar las propuestas de Comité tutoral hechas por los estudiantes de la entidad a su cargo.
-Se enlistarán a los alumnos en orden alfabetico comenzando por apellido, trás elegir un estudiante se mostrarán los siguientes datos:
+Se enlistarán a los estudiantes en orden alfabetico comenzando por apellido, trás elegir un estudiante se mostrarán los siguientes datos:
 - Nombre del Estudiante
 - Tutor Principal
 - Titulo de Proyecto

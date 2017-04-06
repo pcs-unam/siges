@@ -5,6 +5,6 @@ Una vez que el comité académico en conjunto con la coordinación durante la se
 final incluyendo los comentarios. 
 
 ##Solicitud cambio de título de proyecto
-Una vez que el comité académico en conjunto con la coordianción hayan evaluado la solicitud generada por el alumno darán el dictámen
+Una vez que el comité académico en conjunto con la coordianción hayan evaluado la solicitud generada por el estudiante darán el dictámen
 final, incluyendo comentarios.
 
