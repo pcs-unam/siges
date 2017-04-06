@@ -4,6 +4,7 @@ El tutor debe ingresar a su perfil y le aparecerá la notificación de su estudi
  - Semestre de suspensión
  - Fecha de solicitud 
  - Motivo de Suspensión
+
 Deberá existir un botón que diga aprobado o rechazado y un campo libre para comentarios al respecto.
 
 Ya aprobada o rechazada por el tutor, esta se envia al comite académico para que se revise como caso en la respectiva 
