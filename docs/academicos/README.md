@@ -35,6 +35,7 @@ Algunos casos de uso:
 - [validación de actividad complementaria](validacion_actividad_complementaria.md)
 - [Dictaminar Examen de Cadidatura](secretario_dictamina_la_evaluacion_de_candidatura.md)
 - [asentir suspensión](asentir_suspensión.md)
+- [Confriamción para ser tutor o miembro de comité tutoral](confirmacion_para_ser_tutor.md)
 
 
 ## Tutores miembros del comité académico
