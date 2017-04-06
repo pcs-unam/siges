@@ -1,4 +1,4 @@
-Una vez que el estudiante desde su perfil solicito su supensión, esta solicitud antes de llegar al Comité Académico para su aprobación,
+Una vez que el estudiante desde su perfil solicitó supensión, esta solicitud antes de llegar al Comité Académico para su aprobación,
 El tutor debe ingresar a su perfil y le aparecerá la notificación de su estudiante donde se muestran los siguientes datos:
  - Nombre del Estudiante
  - Semestre de suspensión
@@ -8,3 +8,7 @@ Deberá existir un botón que diga aprobado o rechazado y un campo libre para co
 
 Ya aprobada o rechazada por el tutor, esta se envia al comite académico para que se revise como caso en la respectiva 
 sesión del Subcomité Académico.
+
+Nota: Por relgameto RGEP, Artículo 11. Los alumnos tienen derecho a:
+a) Suspender sus estudios hasta por un plazo máximo de dos semestres sin afectar
+su situación académica. 
