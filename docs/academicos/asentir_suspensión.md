@@ -1,5 +1,8 @@
-Una vez que el estudiante desde su perfil solicitó supensión, esta solicitud antes de llegar al Comité Académico para su aprobación,
+#Aprobar Solicitud de Suspensión
+
+
 El tutor debe ingresar a su perfil y le aparecerá la notificación de su estudiante donde se muestran los siguientes datos:
+
  - Nombre del Estudiante
  - Semestre de suspensión
  - Fecha de solicitud 
