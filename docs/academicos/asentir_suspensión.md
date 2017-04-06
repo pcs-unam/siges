@@ -1,4 +1,4 @@
-#Aprobar Solicitud de Suspensión
+# Aprobación de la Solicitud de Suspensión
 
 
 El tutor debe ingresar a su perfil y le aparecerá la notificación de su estudiante donde se muestran los siguientes datos:
