@@ -36,6 +36,7 @@ Algunos casos de uso:
 - [Dictaminar Examen de Cadidatura](secretario_dictamina_la_evaluacion_de_candidatura.md)
 - [asentir suspensión](asentir_suspensión.md)
 - [Confriamción para ser tutor o miembro de comité tutoral](confirmacion_para_ser_tutor.md)
+- [Predictaminar propuesta de comité tutoral](predictaminar_propuesta_comitetutoral.md)
 
 
 ## Tutores miembros del comité académico
