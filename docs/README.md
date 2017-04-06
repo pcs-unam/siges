@@ -19,12 +19,14 @@ tipo de usuario. Hay tres categorías generales:
 
 ## Usuarios anónimos
 
-Para usar el sistema se requiere que las personas se registren.
-
 Antes de registrarse un usuario es anónimo, sus casos de uso son:
 
+- Registrarse en el sistema. El registro podría cubrirse
+  con
+  [este módulo](http://django-registration.readthedocs.io/en/2.2/). Un
+  usuario registrado se vuelve alumno si atraviesa el proceso de
+  inscripción. También puede solicitar ser registrado como profesor.
 
-
-¿Habrá casos en los que un estudiante se registre después como profesor y
-viceversa? 
+- Leer materiales accesibles en zonas públicas del sistema, como
+  reglamentos y anuncios.
 

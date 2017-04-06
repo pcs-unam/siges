@@ -34,6 +34,7 @@ Algunos casos de uso:
 - jurado de grado
 - [validación de actividad complementaria](validacion_actividad_complementaria.md)
 - [Dictaminar Examen de Cadidatura](secretario_dictamina_la_evaluacion_de_candidatura.md)
+- [asentir suspensión](asentir_suspensión.md)
 
 
 ## Tutores miembros del comité académico
