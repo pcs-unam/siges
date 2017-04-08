@@ -1,24 +1,27 @@
-#Revisión y comentario de solicitudes de estudiante
+# Revisión y comentario de solicitudes
 Los casos son similares, en cada uno de ellos el comité académico podrá ver la solicitud y predictaminar si es aprobada
 o rechazada, en caso de ser rechazada será obligatorio llenar el campo de observaciones en caso de ser aprobado el campo
 de observaciones será opcional.
 
-##cambio de comité tutoral
+## Cambio de comité tutoral
 
 
-##cambio de título de proyecto
+## Predictaminar propuesta de comité tutoral
 
 
-##suspensiones
+## Cambio de título de proyecto
 
 
-##cambio de campo de conocimiento
+## Suspensiones
 
 
-##prórrogas
+## Cambio de campo de conocimiento
 
 
-##cambios a jurados de grado
+## Prórrogas
 
 
-##cambios a jurados de candidatura
+## Cambios a jurados de grado
+
+
+## Cambios a jurados de candidatura
