@@ -37,7 +37,7 @@ Algunos casos de uso:
 - [asentir suspensión](asentir_suspensión.md)
 - [Confriamción para ser tutor o miembro de comité tutoral](confirmacion_para_ser_tutor.md)
 - [Predictaminar propuesta de comité tutoral](predictaminar_propuesta_comitetutoral.md)
-
+- Visto bueno varios casos*
 
 ## Tutores miembros del comité académico
 
