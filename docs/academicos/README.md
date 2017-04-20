@@ -45,7 +45,5 @@ El comité académico es el organo que se encarga de revisar, autorizar o rechaz
 
 Algunos casos de uso:
 - [Revisión y comentarios de solicitudes](revision_comentarios_solicitudes.md)
-- [Revisión y comentario de solicitudes de profesores](revision_comentarios_solicitudes_profesores.md)
 - [Asentar el Jurado de Candidatura](jurado_candidatura.md)
-- [Revisión y comentario de solicitudes de estudiantes](revision_comentarios_solicitudes_alumnos.md)
 
