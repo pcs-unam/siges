@@ -4,35 +4,28 @@ algunas de ellas se manejan bajo el mismo mecanismo. Algunos casos son similares
 o rechazada, en caso de ser rechazada será obligatorio llenar el campo de observaciones en caso de ser aprobado el campo
 de observaciones será opcional.
 
-# Solicitudes de tutores y profesores
+## Solicitudes de tutores y profesores
 
-# Solicitudes de estudiantes
+## Solicitudes de estudiantes
 
-## Cambio de comité tutoral
+### Cambio de comité tutoral
 
+### Predictaminar propuesta de comité tutoral
 
-## Predictaminar propuesta de comité tutoral
+### Cambio de título de proyecto
 
+### Suspensiones
 
-## Cambio de título de proyecto
+### Cambio de campo de conocimiento
 
+### Prórrogas
 
-## Suspensiones
+### Cambios a jurados de grado
 
+### Cambios a jurados de candidatura
 
-## Cambio de campo de conocimiento
+## Solicitudes de aspirantes
 
-
-## Prórrogas
-
-
-## Cambios a jurados de grado
-
-
-## Cambios a jurados de candidatura
-
-# Solicitudes de aspirantes
-
-# Solicitudes miselanea 
+## Solicitudes miselanea 
 
 
