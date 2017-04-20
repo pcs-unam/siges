@@ -41,9 +41,10 @@ Algunos casos de uso:
 
 ## Tutores miembros del comité académico
 
-El comité académico está dividido en subcomités.
+El comité académico es el organo que se encarga de revisar, autorizar o rechazar todas las solicitudes que presentan los estudiantes, profesores, tutores, entidades, aspirantes y la misma coordinación, este se conforma por los representantes de cada una de las entidades participantes que a su vez estan divididos por: director de la entidad, representante de tutores, representate de entidad y auxiliares  y están divididos en subcomités.
 
 Algunos casos de uso:
+- [Revisión y comentarios de solicitudes](revision_comentarios_solicitudes.md)
 - [Revisión y comentario de solicitudes de profesores](revision_comentarios_solicitudes_profesores.md)
 - [Asentar el Jurado de Candidatura](jurado_candidatura.md)
 - [Revisión y comentario de solicitudes de estudiantes](revision_comentarios_solicitudes_alumnos.md)
