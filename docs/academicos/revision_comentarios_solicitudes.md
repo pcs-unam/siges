@@ -6,6 +6,10 @@ de observaciones será opcional.
 
 ## Solicitudes de tutores y profesores
 
+### validar solicitudes de registro de tutor
+
+### autorizar cursos
+
 ## Solicitudes de estudiantes
 
 ### Cambio de comité tutoral
