@@ -18,7 +18,7 @@ de observaciones será opcional.
 
 ### Impartición de cursos
 
-### Renuncia como miembre de comité tutoral
+### Renuncia como miembro de comité tutoral
 
 ### Solicitud de apoyo económico
 
@@ -30,15 +30,19 @@ de observaciones será opcional.
 
 ### Cambio de comité tutoral
 
-### Predictaminar propuesta de comité tutoral
+### Propuesta de comité tutoral
 
 ### Cambio de título de proyecto
 
 ### Suspensiones
 
-### Cambio de campo de conocimiento
+### Cambio de campo de conocimiento o línea de investigación
 
 ### Prórrogas
+
+### Solicitud de apoyo económico
+
+### Asunto general
 
 ### Cambios a jurados de grado
 
@@ -47,5 +51,6 @@ de observaciones será opcional.
 ## Solicitudes de aspirantes
 
 ## Solicitudes miselanea 
+
 
 
