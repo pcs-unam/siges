@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from posgradmin.views import MyView
+from posgradmin.views import AsuntoNuevoView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 
     url(r'coordinacion/generar_comite_academico',
-        MyView.as_view()),
+        AsuntoNuevoView.as_view()),
 # ./coordinacion/ratificacion_predictamenes.md
 # ./coordinacion/alimentar_saep.md
 # ./coordinacion/administrar_sesiones_ca.md
