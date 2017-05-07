@@ -178,7 +178,7 @@ class Estudiante(models.Model):
     def __unicode__(self):
         return u"%s en %s" % (self.user, self.plan)
 
-    
+
 class Beca(models.Model):
     estudiante = models.ForeignKey(Estudiante)
 
@@ -191,13 +191,16 @@ class Beca(models.Model):
 
 
 class Asunto(models.Model):
-    titulo = models.CharField(max_length=100)
-    tipo = models.CharField(max_length=100)
+    resumen = models.CharField(max_length=100)
+    tipo = models.CharField(max_length=100,
+                            choices=[('solicitud', 'solicitud'),
+                                     ('cambio', 'cambio'),
+                                     ('etc', 'etc')])
     solicitante = models.ForeignKey(User)
     fecha_creacion = models.DateTimeField(auto_now=True)
     # sesion del CA
     # archivos anexos
-    descripcion = models.CharField(max_length=300)
+    descripcion = models.TextField()
     acuerdo = models.CharField(max_length=300)
     fecha_resolucion = models.DateTimeField()
     estado = models.CharField(max_length=30)
