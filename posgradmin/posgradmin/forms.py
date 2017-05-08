@@ -99,7 +99,7 @@ class AsuntoForm(forms.Form):
         Field('resumen', size=70),
 
         # Field('resumen', css_class='input-xlarge'),
-        Field('descripcion', rows="3", css_class='input-xlarge'),
+        Field('descripcion', rows="3", cols="70", css_class='input-xlarge'),
         Field('anexo'),
 
         FormActions(
