@@ -122,7 +122,7 @@ class Academico(models.Model):
 
     def __unicode__(self):
         return u"%s" % self.user
-    
+
     class Meta:
         verbose_name_plural = "Académicos"
 
@@ -197,7 +197,7 @@ class Asunto(models.Model):
                                      ('cambio', 'cambio'),
                                      ('etc', 'etc')])
     solicitante = models.ForeignKey(User)
-    fecha_creacion = models.DateTimeField(auto_now=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     # sesion del CA
     # archivos anexos
     descripcion = models.TextField()
@@ -207,6 +207,12 @@ class Asunto(models.Model):
 
     def __unicode__(self):
         return u"%s [%s]" % (self.titulo, self.tipo)
+
+
+class Anexo(models.Model):
+    asunto = models.ForeignKey(Asunto)
+    archivo = models.FileField()
+    fecha = models.DateTimeField(auto_now_add=True)
 
 
 class Comentario(models.Model):
