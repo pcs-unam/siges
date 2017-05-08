@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from posgradmin.models import Asunto, Anexo
-from posgradmin.forms import *
+from posgradmin.forms import AsuntoForm
 from pprint import pprint
 
 asuntos_profesoriles = (
@@ -43,6 +43,7 @@ asunto_otro = (
     ('otro',
      'Otro'),)
 
+
 class AsuntoNuevoView(View):
 
     form_class = AsuntoForm
@@ -74,12 +75,7 @@ class AsuntoNuevoView(View):
             if 'anexo' in request.FILES:
                 nx = Anexo(asunto=a,
                            archivo=request.FILES['anexo'])
-                # with open('some/file/name.txt', 'wb+') as destination:
-                #     for chunk in f.chunks():
-                #         destination.write(chunk)
                 nx.save()
-            # handle_uploaded_file(request.FILES['file'])
-
 
             return HttpResponseRedirect('/asuntos/%s' % a.id)
         else:
