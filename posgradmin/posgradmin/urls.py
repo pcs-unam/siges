@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 
-    url(r'coordinacion/generar_comite_academico',
+    url(r'asuntos/nuevo',
         AsuntoNuevoView.as_view()),
 # ./coordinacion/ratificacion_predictamenes.md
 # ./coordinacion/alimentar_saep.md

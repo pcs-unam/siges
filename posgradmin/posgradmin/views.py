@@ -2,11 +2,10 @@
 
 from django.views.generic import ListView
 from django.views import View
-from django.shortcuts import render
-from posgradmin.models import Asunto
+from django.shortcuts import render, HttpResponseRedirect
+from posgradmin.models import Asunto, Anexo
 from posgradmin.forms import *
-
-
+from pprint import pprint
 
 asuntos_profesoriles = (
         ("registrar_curso",
@@ -54,11 +53,40 @@ class AsuntoNuevoView(View):
     template_name = 'posgradmin/try.html'
 
     def get(self, request, *args, **kwargs):
+        form = self.form_class()
 
         return render(request,
                       self.template_name,
-                      {'form': self.form_class(),
+                      {'form': form,
                        'title': 'Asunto nuevo'})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            a = Asunto()
+            a.resumen = request.POST['resumen']
+            a.tipo = request.POST['tipo']
+            a.solicitante = request.user
+            a.descripcion = request.POST['descripcion']
+            a.estado = 'nuevo'
+            a.save()
+
+            if 'anexo' in request.FILES:
+                nx = Anexo(asunto=a,
+                           archivo=request.FILES['anexo'])
+                # with open('some/file/name.txt', 'wb+') as destination:
+                #     for chunk in f.chunks():
+                #         destination.write(chunk)
+                nx.save()
+            # handle_uploaded_file(request.FILES['file'])
+
+
+            return HttpResponseRedirect('/asuntos/%s' % a.id)
+        else:
+            return render(request,
+                          self.template_name,
+                          {'form': form,
+                           'title': 'Asunto nuevo'})
 
 
 class AsuntoList(ListView):

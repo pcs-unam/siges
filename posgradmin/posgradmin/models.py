@@ -199,20 +199,25 @@ class Asunto(models.Model):
     solicitante = models.ForeignKey(User)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     # sesion del CA
-    # archivos anexos
-    descripcion = models.TextField()
-    acuerdo = models.CharField(max_length=300)
-    fecha_resolucion = models.DateTimeField()
+    descripcion = models.TextField(blank=True)
+
     estado = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return u"%s [%s]" % (self.titulo, self.tipo)
+        return u"%s [%s]" % (self.resumen, self.tipo)
 
 
 class Anexo(models.Model):
     asunto = models.ForeignKey(Asunto)
     archivo = models.FileField()
     fecha = models.DateTimeField(auto_now_add=True)
+
+
+class Acuerdo(models.Model):
+    asunto = models.ForeignKey(Asunto)
+    archivo = models.FileField()
+    fecha = models.DateTimeField(auto_now_add=True)
+    # id asamblea
 
 
 class Comentario(models.Model):
