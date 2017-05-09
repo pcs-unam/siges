@@ -105,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-la'
 
 TIME_ZONE = 'UTC'
 
@@ -129,3 +129,6 @@ ACCOUNT_ACTIVATION_DAYS = 2
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
+
+
+LOGIN_REDIRECT_URL = '/inicio/'
