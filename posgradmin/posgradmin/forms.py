@@ -51,7 +51,7 @@ class PerfilModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
 
-        super(EstudianteModelForm, self).__init__(*args, **kwargs)
+        super(PerfilModelForm, self).__init__(*args, **kwargs)
 
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields
