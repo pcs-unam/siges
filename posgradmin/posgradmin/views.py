@@ -3,8 +3,8 @@
 from django.views.generic import ListView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
-from posgradmin.models import Asunto, Anexo, Perfil
-from posgradmin.forms import AsuntoForm, EstudianteModelForm
+from posgradmin.models import Asunto, Anexo, Perfil, Estudiante, Academico
+from posgradmin.forms import AsuntoForm, PerfilModelForm, EstudianteModelForm
 from pprint import pprint
 
 asuntos_profesoriles = (
@@ -89,6 +89,35 @@ class AsuntoList(ListView):
     model = Asunto
 
 
+class PerfilRegistroView(View):
+
+    form_class = PerfilModelForm
+
+    template_name = 'posgradmin/try.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+
+        return render(request,
+                      self.template_name,
+                      {'form': form,
+                       'title': 'Completar Perfil'})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            p = Perfil()
+            p.user = request.user
+            p.save()
+
+            return HttpResponseRedirect('/perfil/')
+        else:
+            return render(request,
+                          self.template_name,
+                          {'form': form,
+                           'title': 'Registrar como Estudiante'})
+
+
 class EstudianteRegistroView(View):
 
     form_class = EstudianteModelForm
@@ -106,14 +135,44 @@ class EstudianteRegistroView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            p = Perfil()
-            p.user = request.user
-            p.save()
+            e = Estudiante()
+            e.user = request.user
+            e.save()
 
-            return HttpResponseRedirect('/estudiante/perfil' % a.id)
+            return HttpResponseRedirect('/estudiante/%s' % e.id)
         else:
             return render(request,
                           self.template_name,
                           {'form': form,
-                           'title': 'Registrar como Estudiante'})
-    
+                           'title': 'Registrarse como Estudiante'})
+
+
+
+
+# class AcademicoRegistroView(View):
+
+#     form_class = AcademicoModelForm
+
+#     template_name = 'posgradmin/try.html'
+
+#     def get(self, request, *args, **kwargs):
+#         form = self.form_class()
+
+#         return render(request,
+#                       self.template_name,
+#                       {'form': form,
+#                        'title': 'Registrarse como Estudiante'})
+
+#     def post(self, request, *args, **kwargs):
+#         form = self.form_class(request.POST, request.FILES)
+#         if form.is_valid():
+#             e = Estudiante()
+#             e.user = request.user
+#             e.save()
+
+#             return HttpResponseRedirect('/estudiante/%s' % e.id)
+#         else:
+#             return render(request,
+#                           self.template_name,
+#                           {'form': form,
+#                            'title': 'Registrarse como Estudiante'})

@@ -16,12 +16,15 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from posgradmin.views import AsuntoList, AsuntoNuevoView, EstudianteRegistroView
+from posgradmin.views import AsuntoList, AsuntoNuevoView, PerfilRegistroView, EstudianteRegistroView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 
+    url(r'perfil/registro',
+        PerfilRegistroView.as_view()),
+    
     url(r'estudiante/registro',
         EstudianteRegistroView.as_view()),
 
