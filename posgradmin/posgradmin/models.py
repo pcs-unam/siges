@@ -65,7 +65,8 @@ class Perfil(models.Model):
                                                      ('N', 'no especificado')))
 
     nacionalidad = models.CharField(max_length=100)
-    fecha_nacimiento = models.DateField('date published')
+
+    fecha_nacimiento = models.DateField('fecha de nacimiento')
 
     def __unicode__(self):
         return u"%s" % self.user
