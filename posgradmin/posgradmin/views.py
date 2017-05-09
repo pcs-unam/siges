@@ -7,6 +7,20 @@ from posgradmin.models import Asunto, Anexo, Perfil, Estudiante, Academico
 from posgradmin.forms import AsuntoForm, PerfilModelForm, EstudianteModelForm, AcademicoModelForm
 from pprint import pprint
 
+
+class InicioView(View):
+
+    template_name = 'posgradmin/inicio.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request,
+                      self.template_name,
+                      {
+                       'title': 'Inicio'})
+
+
+
+
 asuntos_profesoriles = (
         ("registrar_curso",
          "Registrar Curso"),
