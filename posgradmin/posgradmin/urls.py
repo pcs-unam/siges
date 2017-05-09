@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from posgradmin.views import AsuntoList, AsuntoNuevoView, PerfilRegistroView, EstudianteRegistroView
+from posgradmin.views import AsuntoList, AsuntoNuevoView, \
+    PerfilRegistroView, EstudianteRegistroView, AcademicoRegistroView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -27,6 +28,9 @@ urlpatterns = [
     
     url(r'estudiante/registro',
         EstudianteRegistroView.as_view()),
+
+    url(r'academico/registro',
+        AcademicoRegistroView.as_view()),
 
     url(r'asuntos/nuevo',
         AsuntoNuevoView.as_view()),

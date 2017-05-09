@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from posgradmin.models import Asunto, Anexo, Perfil, Estudiante, Academico
-from posgradmin.forms import AsuntoForm, PerfilModelForm, EstudianteModelForm
+from posgradmin.forms import AsuntoForm, PerfilModelForm, EstudianteModelForm, AcademicoModelForm
 from pprint import pprint
 
 asuntos_profesoriles = (
@@ -149,30 +149,30 @@ class EstudianteRegistroView(View):
 
 
 
-# class AcademicoRegistroView(View):
+class AcademicoRegistroView(View):
 
-#     form_class = AcademicoModelForm
+    form_class = AcademicoModelForm
 
-#     template_name = 'posgradmin/try.html'
+    template_name = 'posgradmin/try.html'
 
-#     def get(self, request, *args, **kwargs):
-#         form = self.form_class()
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
 
-#         return render(request,
-#                       self.template_name,
-#                       {'form': form,
-#                        'title': 'Registrarse como Estudiante'})
+        return render(request,
+                      self.template_name,
+                      {'form': form,
+                       'title': 'Registrarse como Académico'})
 
-#     def post(self, request, *args, **kwargs):
-#         form = self.form_class(request.POST, request.FILES)
-#         if form.is_valid():
-#             e = Estudiante()
-#             e.user = request.user
-#             e.save()
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            a = Academico()
+            a.user = request.user
+            a.save()
 
-#             return HttpResponseRedirect('/estudiante/%s' % e.id)
-#         else:
-#             return render(request,
-#                           self.template_name,
-#                           {'form': form,
-#                            'title': 'Registrarse como Estudiante'})
+            return HttpResponseRedirect('/academico/%s' % a.id)
+        else:
+            return render(request,
+                          self.template_name,
+                          {'form': form,
+                           'title': 'Registrarse como Académico'})

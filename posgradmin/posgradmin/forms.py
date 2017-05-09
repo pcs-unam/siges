@@ -117,5 +117,5 @@ class AcademicoModelForm(forms.ModelForm):
 
     class Meta:
         model = Academico
-        exclude = ['user', ]
-        
+        exclude = ['user', 'tutor', 'profesor', 'fecha_acreditacion', 'acreditacion', 'entidad']
+
