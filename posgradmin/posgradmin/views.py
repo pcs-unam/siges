@@ -3,8 +3,8 @@
 from django.views.generic import ListView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
-from posgradmin.models import Asunto, Anexo
-from posgradmin.forms import AsuntoForm
+from posgradmin.models import Asunto, Anexo, Perfil
+from posgradmin.forms import AsuntoForm, EstudianteModelForm
 from pprint import pprint
 
 asuntos_profesoriles = (
@@ -87,3 +87,33 @@ class AsuntoNuevoView(View):
 
 class AsuntoList(ListView):
     model = Asunto
+
+
+class EstudianteRegistroView(View):
+
+    form_class = EstudianteModelForm
+
+    template_name = 'posgradmin/try.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+
+        return render(request,
+                      self.template_name,
+                      {'form': form,
+                       'title': 'Registrarse como Estudiante'})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            p = Perfil()
+            p.user = request.user
+            p.save()
+
+            return HttpResponseRedirect('/estudiante/perfil' % a.id)
+        else:
+            return render(request,
+                          self.template_name,
+                          {'form': form,
+                           'title': 'Registrar como Estudiante'})
+    
