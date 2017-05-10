@@ -1,7 +1,7 @@
 # coding: utf-8
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
+from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, Column
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico
@@ -56,28 +56,35 @@ class PerfilModelForm(forms.ModelForm):
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields
         self.helper = FormHelper(self)
-        self.helper.form_class = 'form-horizontal'
+#        self.helper.form_class = 'form-horizontal'
         # You can dynamically adjust your layout
-        self.helper.layout = Layout('nombre',
-                                    'apellidos',
+        # self.helper.form_class = 'form-inline'
+        # self.helper.field_template = 'bootstrap3/layout/inline_field.html'
 
-                                    'fecha_nacimiento',
-                                    'nacionalidad',
-                                    'genero',
+        self.helper.layout = Layout(
+            Div(Div(HTML("<h1 class='panel-title'>Datos Personales</h1>"),
+                    Class="panel-heading"),
+                Div(Column('nombre',
+                           'apellidos',
+                           'fecha_nacimiento',
+                           'genero',
+                           'nacionalidad',
+                           'CURP',
+                           'RFC'),
+                    Class="panel-body"),
 
-                                    'CURP',
-                                    'RFC',
-
-                                    'telefono',
-                                    'telefono_movil',
-                                    'email2',
-                                    'website',
-
-                                    'direccion1',
-                                    'direccion2',
-                                    'codigo_postal',
-
-                                    Submit('save', 'save'))
+                Div(HTML(u"<h1 class='panel-title'>Información de contacto</h1>"),
+                    Class="panel-heading"),
+                Div(Column('telefono',
+                           'telefono_movil',
+                           'email2',
+                           'website',
+                           'direccion1',
+                           'direccion2',
+                           'codigo_postal'),
+                    Class="panel-body"),
+                Class="panel panel-default"),
+            Submit('save', 'save'))
 
     class Meta:
         model = Perfil
