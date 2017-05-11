@@ -134,6 +134,18 @@ class PerfilRegistroView(View):
         if form.is_valid():
             p = Perfil()
             p.user = request.user
+            p.fecha_nacimiento = request.POST['fecha_nacimiento']
+            p.genero = request.POST['genero']
+            p.nacionalidad = request.POST['nacionalidad']
+            p.curp = request.POST['curp']
+            p.rfc = request.POST['rfc']
+            p.telefono = request.POST['telefono']
+            p.telefono_movil = request.POST['telefono_movil']
+            p.email2 = request.POST['email2']
+            p.website = request.POST['website']
+            p.direccion1 = request.POST['direccion1']
+            p.direccion2 = request.POST['direccion2']
+            p.codigo_postal = request.POST['codigo_postal']
             p.save()
 
             return HttpResponseRedirect('/perfil/')
@@ -149,6 +161,9 @@ class EstudianteRegistroView(View):
 
     form_class = EstudianteModelForm
 
+    breadcrumbs = (('/inicio/', 'Inicio'),
+                   ('/estudiante/registro/', 'Registro como estudiante'))
+    
     template_name = 'posgradmin/try.html'
 
     def get(self, request, *args, **kwargs):

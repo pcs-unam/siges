@@ -69,8 +69,8 @@ class PerfilModelForm(forms.ModelForm):
                            'fecha_nacimiento',
                            'genero',
                            'nacionalidad',
-                           'CURP',
-                           'RFC'),
+                           'curp',
+                           'rfc'),
                     Class="panel-body"),
 
                 Div(HTML(u"<h1 class='panel-title'>Información de contacto</h1>"),
@@ -124,5 +124,5 @@ class AcademicoModelForm(forms.ModelForm):
 
     class Meta:
         model = Academico
-        exclude = ['user', 'tutor', 'profesor', 'fecha_acreditacion', 'acreditacion', 'entidad']
-
+        exclude = ['user', 'tutor', 'profesor',
+                   'fecha_acreditacion', 'acreditacion', 'entidad']

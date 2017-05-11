@@ -2,5 +2,23 @@
 
 {% block content %}
 
-Holi.
+{% if user.perfil %}
+<ul>
+{% if not user.estudiante %}
+<li><a href="/estudiante/registro">Registrarse como estudiante</a></li>
+{% endif %}
+
+{% if not user.academico %}
+<li><a href="/academico/registro">Registrarse como académico</a></li>
+{% endif %}
+   
+{% else %}
+<li><a href="/perfil/registro">Complete el registro de su perfil</a></li>
+{% endif %}
+</ul>
 {% endblock %}
+
+
+{% if asuntos %}
+<h2>Asuntos</h2>
+{% endif %}

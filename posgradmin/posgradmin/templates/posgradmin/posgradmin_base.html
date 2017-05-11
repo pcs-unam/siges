@@ -36,9 +36,15 @@
 
 {% block usertools %}
 <div id="user-tools">
+  {% if user %}
   <a href="/accounts/password/change/">cambiar contraseña</a> /
-  <a href="/accounts/logout/">Terminar sesión</a>  
+  <a href="/accounts/logout/">Terminar sesión</a>    
+  {% endif %}
 </div>
+
+  
+
+
 {% endblock %}
 
 {% block welcome-msg %}{% endblock %}
