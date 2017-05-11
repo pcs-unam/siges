@@ -10,13 +10,15 @@ from pprint import pprint
 
 class InicioView(View):
 
+    breadcrumbs = (('/inicio/', 'Inicio'),)
+
     template_name = 'posgradmin/inicio.html'
 
     def get(self, request, *args, **kwargs):
         return render(request,
                       self.template_name,
-                      {
-                       'title': 'Inicio'})
+                      {'title': 'Inicio',
+                       'breadcrumbs': self.breadcrumbs})
 
 
 
@@ -65,6 +67,10 @@ class AsuntoNuevoView(View):
                                              asuntos_tutoriles + \
                                              asunto_otro
 
+    breadcrumbs = (('/inicio/', 'Inicio'),
+                   ('/inicio/asuntos/', 'Asuntos'),
+                   ('/inicio/asuntos/nuevo', 'Nuevo'))
+
     template_name = 'posgradmin/try.html'
 
     def get(self, request, *args, **kwargs):
@@ -73,7 +79,8 @@ class AsuntoNuevoView(View):
         return render(request,
                       self.template_name,
                       {'form': form,
-                       'title': 'Asunto nuevo'})
+                       'title': 'Asunto nuevo',
+                       'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -96,7 +103,8 @@ class AsuntoNuevoView(View):
             return render(request,
                           self.template_name,
                           {'form': form,
-                           'title': 'Asunto nuevo'})
+                           'title': 'Asunto nuevo',
+                           'breadcrumbs': self.breadcrumbs})
 
 
 class AsuntoList(ListView):
@@ -107,6 +115,9 @@ class PerfilRegistroView(View):
 
     form_class = PerfilModelForm
 
+    breadcrumbs = (('/inicio/', 'Inicio'),
+                   ('/inicio/perfil/', 'Perfil'))
+
     template_name = 'posgradmin/try.html'
 
     def get(self, request, *args, **kwargs):
@@ -115,7 +126,8 @@ class PerfilRegistroView(View):
         return render(request,
                       self.template_name,
                       {'form': form,
-                       'title': 'Completar Perfil'})
+                       'title': 'Completar Perfil',
+                       'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -129,7 +141,8 @@ class PerfilRegistroView(View):
             return render(request,
                           self.template_name,
                           {'form': form,
-                           'title': 'Registrar como Estudiante'})
+                           'title': 'Registrar como Estudiante',
+                           'breadcrumbs': self.breadcrumbs})
 
 
 class EstudianteRegistroView(View):
@@ -144,7 +157,8 @@ class EstudianteRegistroView(View):
         return render(request,
                       self.template_name,
                       {'form': form,
-                       'title': 'Registrarse como Estudiante'})
+                       'title': 'Registrarse como Estudiante',
+                       'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -158,14 +172,16 @@ class EstudianteRegistroView(View):
             return render(request,
                           self.template_name,
                           {'form': form,
-                           'title': 'Registrarse como Estudiante'})
-
-
+                           'title': 'Registrarse como Estudiante',
+                           'breadcrumbs': self.breadcrumbs})
 
 
 class AcademicoRegistroView(View):
 
     form_class = AcademicoModelForm
+
+    breadcrumbs = (('/inicio/', 'Inicio'),
+                   ('/inicio/academico/', 'Académico'))
 
     template_name = 'posgradmin/try.html'
 
@@ -175,7 +191,8 @@ class AcademicoRegistroView(View):
         return render(request,
                       self.template_name,
                       {'form': form,
-                       'title': 'Registrarse como Académico'})
+                       'title': 'Registrarse como Académico',
+                       'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -189,4 +206,5 @@ class AcademicoRegistroView(View):
             return render(request,
                           self.template_name,
                           {'form': form,
-                           'title': 'Registrarse como Académico'})
+                           'title': 'Registrarse como Académico',
+                           'breadcrumbs': self.breadcrumbs})

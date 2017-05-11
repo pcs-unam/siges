@@ -47,10 +47,11 @@
 
 {% block nav-global %}{% endblock %}
 {% block breadcrumbs %}
-    <div class="breadcrumbs">
-    <a href="/admin/">Inicio</a>
-     &rsaquo; Sesión terminada
-    </div>
+<div class="breadcrumbs">
+  {% for crumb in breadcrumbs %}  
+  &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
+  {% endfor %}
+</div>
 {% endblock %}
 {% block messages %}{% endblock %}
 
