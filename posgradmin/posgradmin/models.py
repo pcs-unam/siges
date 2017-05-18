@@ -104,7 +104,8 @@ class Academico(models.Model):
     nivel_pride = models.CharField(max_length=15, choices=(('A', 'A'),
                                                            ('B', 'B'),
                                                            ('C', 'C')))
-    nivel_SNI = models.CharField(max_length=15, choices=(('I', 'I'),
+    nivel_SNI = models.CharField(max_length=15, choices=(('sin SNI', 'sin SNI'),
+                                                         ('I', 'I'),
                                                          ('II', 'II'),
                                                          ('III', 'III'),
                                                          ('C', 'C'),
@@ -112,10 +113,10 @@ class Academico(models.Model):
     CVU = models.CharField(max_length=100)
     DGEE = models.CharField(max_length=6)
 
-    tutor = models.BooleanField()
-    profesor = models.BooleanField()
+    tutor = models.BooleanField(default=False)
+    profesor = models.BooleanField(default=False)
 
-    fecha_acreditacion = models.DateField()
+    fecha_acreditacion = models.DateField(blank=True, null=True)
     acreditacion = models.CharField(max_length=15,
                                     choices=(('doctorado', 'doctorado'),
                                              ('maestría', 'maestría')))
@@ -148,17 +149,20 @@ class Adscripcion(models.Model):
 
 class Estudiante(models.Model):
     user = models.ForeignKey(User)
-    ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado")
+    ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado",
+                                               blank=True, null=True)
     semestre = models.PositiveSmallIntegerField(
-        "semestre de ingreso al posgrado")
+        "semestre de ingreso al posgrado", blank=True)
     entidad = models.ForeignKey(Entidad)
     convenio = models.CharField(max_length=100, blank=True)
-    plan = models.CharField("clave del plan de estudios", max_length=100)
-    doctorado_directo = models.BooleanField()
+    plan = models.CharField("clave del plan de estudios",
+                            max_length=100, blank=True)
+    doctorado_directo = models.BooleanField(default=False)
     campo_conocimiento = models.ForeignKey(CampoConocimiento)
     nombre_proyecto = models.CharField(max_length=200)
     estado = models.CharField(max_length=15,
-                              choices=(('graduado', 'graduado'),
+                              choices=(('aspirante', 'aspirante'),
+                                       ('graduado', 'graduado'),
                                        ('egresado', 'egresado'),
                                        ('vigente', 'vigente'),
                                        ('baja', 'baja'),
@@ -168,12 +172,12 @@ class Estudiante(models.Model):
                                    blank=True)
 
     titulacion_licenciatura = models.BooleanField(
-        "primer año de maestría para obtener grado de licenciatura")
+        "primer año de maestría para obtener grado de licenciatura", default=False)
 
     fecha_titulacion = models.DateField(blank=True)
     folio_titulacion = models.CharField(max_length=200, blank=True)
-    mencion_honorifica = models.BooleanField(blank=True)
-    medalla_alfonso_caso = models.BooleanField(blank=True)
+    mencion_honorifica = models.BooleanField(default=False)
+    medalla_alfonso_caso = models.BooleanField(default=False)
     semestre_graduacion = models.PositiveSmallIntegerField(blank=True)
 
     def __unicode__(self):
