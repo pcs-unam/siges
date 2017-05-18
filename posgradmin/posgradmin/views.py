@@ -4,7 +4,8 @@ from django.views.generic import ListView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from posgradmin.models import Asunto, Anexo, Perfil, Estudiante, Academico
-from posgradmin.forms import AsuntoForm, PerfilModelForm, EstudianteModelForm, AcademicoModelForm
+from posgradmin.forms import AsuntoForm, PerfilModelForm, \
+    AcademicoModelForm, EstudianteAutoregistroForm
 from pprint import pprint
 
 
@@ -19,8 +20,6 @@ class InicioView(View):
                       self.template_name,
                       {'title': 'Inicio',
                        'breadcrumbs': self.breadcrumbs})
-
-
 
 
 asuntos_profesoriles = (
@@ -159,7 +158,7 @@ class PerfilRegistroView(View):
 
 class EstudianteRegistroView(View):
 
-    form_class = EstudianteModelForm
+    form_class = EstudianteAutoregistroForm
 
     breadcrumbs = (('/inicio/', 'Inicio'),
                    ('/estudiante/registro/', 'Registro como estudiante'))
@@ -180,6 +179,8 @@ class EstudianteRegistroView(View):
         if form.is_valid():
             e = Estudiante()
             e.user = request.user
+            e.estado = 'aspirante'
+            e.nombre_proyecto = form['proyecto']
             e.save()
 
             return HttpResponseRedirect('/estudiante/%s' % e.id)
