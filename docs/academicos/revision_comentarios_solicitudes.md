@@ -54,5 +54,6 @@ Las siguietnes solicitudes pueden estar o no predictaminadas, durante la sesión
 
 ## Solicitudes miselanea 
 
+## Ratificación de Actividades complementarias
 
 
