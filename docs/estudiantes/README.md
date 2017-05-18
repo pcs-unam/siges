@@ -23,6 +23,10 @@ Persona inscrita al programa de posgrado.
   - cambios a jurados de candidatura
   - [cambio de campo de conocimiento](solicitud_cambio_campo.md)
   - [suspensiones](solicitud_suspension.md)
+
+- Solicitudes doctorado:
+  - [Registro de actividades académicas](registro-actividades-academicas.md)
+  
   
 El sistema permite al estudiante dar seguimiento al estado de sus solicitudes. 
 
