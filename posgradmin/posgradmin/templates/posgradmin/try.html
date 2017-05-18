@@ -5,5 +5,11 @@
 
 {% block content %}
    {% crispy form %}
+
+<script>
+$(document).ready(function() {
+    $('.dateinput').datepicker({ format: "yyyy-mm-dd" });
+}); 
+</script>
 {% endblock %}
 
