@@ -50,10 +50,11 @@ Las siguietnes solicitudes pueden estar o no predictaminadas, durante la sesión
 
 ### Cambios a jurados de candidatura
 
+### Ratificación de Actividades complementarias
+
 ## Solicitudes de aspirantes
 
 ## Solicitudes miselanea 
 
-### Ratificación de Actividades complementarias
 
 
