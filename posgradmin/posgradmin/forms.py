@@ -91,6 +91,28 @@ class PerfilModelForm(forms.ModelForm):
         exclude = ['user', ]
 
 
+class EstudianteAutoregistroForm(forms.Form):
+
+    proyecto = forms.CharField()
+
+    # descripcion = forms.CharField(
+    #     widget=forms.Textarea(),
+    #     required=False
+    # )
+
+    # Uni-form
+    helper = FormHelper()
+    helper.form_class = 'form-horizontal'
+    helper.layout = Layout(
+        Field('proyecto', size=70),
+        #Field('descripcion', rows="3", cols="70", css_class='input-xlarge'),
+        FormActions(
+            Submit('registrarme', 'Registrarme', css_class="btn-primary"),
+            Submit('cancel', 'Cancelar'),
+        )
+    )
+    
+
 class EstudianteModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
