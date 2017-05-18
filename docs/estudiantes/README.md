@@ -25,7 +25,7 @@ Persona inscrita al programa de posgrado.
   - [suspensiones](solicitud_suspension.md)
 
 - Solicitudes doctorado:
-  - [Registro de actividades académicas](registro-actividades-academicas.md)
+  - [Registro de actividades académicas](registro-actividades-academicas.md)
   
   
 El sistema permite al estudiante dar seguimiento al estado de sus solicitudes. 
