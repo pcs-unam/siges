@@ -4,7 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, Column
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
-from posgradmin.models import Perfil, Estudiante, Academico
+from posgradmin.models import Perfil, Estudiante, Academico, CampoConocimiento
 
 
 class AsuntoForm(forms.Form):
@@ -94,18 +94,15 @@ class PerfilModelForm(forms.ModelForm):
 class EstudianteAutoregistroForm(forms.Form):
 
     proyecto = forms.CharField()
-
-    # descripcion = forms.CharField(
-    #     widget=forms.Textarea(),
-    #     required=False
-    # )
+    campo_conocimiento = forms.ModelChoiceField(
+        queryset=CampoConocimiento.objects.all())
 
     # Uni-form
     helper = FormHelper()
     helper.form_class = 'form-horizontal'
     helper.layout = Layout(
         Field('proyecto', size=70),
-        #Field('descripcion', rows="3", cols="70", css_class='input-xlarge'),
+        'campo_conocimiento',
         FormActions(
             Submit('registrarme', 'Registrarme', css_class="btn-primary"),
             Submit('cancel', 'Cancelar'),

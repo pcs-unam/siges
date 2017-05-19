@@ -3,7 +3,7 @@
 from django.views.generic import ListView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
-from posgradmin.models import Asunto, Anexo, Perfil, Estudiante, Academico
+from posgradmin.models import Asunto, Anexo, Perfil, Estudiante, Academico, CampoConocimiento
 from posgradmin.forms import AsuntoForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm
 from pprint import pprint
@@ -180,6 +180,10 @@ class EstudianteRegistroView(View):
             e = Estudiante()
             e.user = request.user
             e.estado = 'aspirante'
+            campo = CampoConocimiento.objects.get(
+                id=int(request.POST['campo_conocimiento']))
+            print campo
+            e.campo_conocimiento = campo
             e.nombre_proyecto = form['proyecto']
             e.save()
 
