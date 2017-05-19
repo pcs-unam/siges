@@ -99,17 +99,18 @@ class GradoAcademico(models.Model):
 
 
 class Academico(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     nivel_pride = models.CharField(max_length=15, choices=(('A', 'A'),
                                                            ('B', 'B'),
                                                            ('C', 'C')))
-    nivel_SNI = models.CharField(max_length=15, choices=(('sin SNI', 'sin SNI'),
-                                                         ('I', 'I'),
-                                                         ('II', 'II'),
-                                                         ('III', 'III'),
-                                                         ('C', 'C'),
-                                                         ('E', 'E')))
+    nivel_SNI = models.CharField(max_length=15,
+                                 choices=(('sin SNI', 'sin SNI'),
+                                          ('I', 'I'),
+                                          ('II', 'II'),
+                                          ('III', 'III'),
+                                          ('C', 'C'),
+                                          ('E', 'E')))
     CVU = models.CharField(max_length=100)
     DGEE = models.CharField(max_length=6)
 
@@ -120,7 +121,7 @@ class Academico(models.Model):
     acreditacion = models.CharField(max_length=15,
                                     choices=(('doctorado', 'doctorado'),
                                              ('maestría', 'maestría')))
-    entidad = models.ForeignKey(Entidad)
+    entidad = models.ForeignKey(Entidad, null=True, blank=True)
 
     def __unicode__(self):
         return u"%s" % self.user
@@ -148,12 +149,12 @@ class Adscripcion(models.Model):
 
 
 class Estudiante(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado",
                                                blank=True, null=True)
     semestre = models.PositiveSmallIntegerField(
-        "semestre de ingreso al posgrado", blank=True)
-    entidad = models.ForeignKey(Entidad)
+        "semestre de ingreso al posgrado", blank=True, null=True)
+    entidad = models.ForeignKey(Entidad, null=True, blank=True)
     convenio = models.CharField(max_length=100, blank=True)
     plan = models.CharField("clave del plan de estudios",
                             max_length=100, blank=True)
@@ -167,18 +168,18 @@ class Estudiante(models.Model):
                                        ('vigente', 'vigente'),
                                        ('baja', 'baja'),
                                        ('suspenso', 'suspenso')))
-    fecha_baja = models.DateField(blank=True)
+    fecha_baja = models.DateField(blank=True, null=True)
     motivo_baja = models.CharField(max_length=200,
                                    blank=True)
 
     titulacion_licenciatura = models.BooleanField(
         "primer año de maestría para obtener grado de licenciatura", default=False)
 
-    fecha_titulacion = models.DateField(blank=True)
+    fecha_titulacion = models.DateField(blank=True, null=True)
     folio_titulacion = models.CharField(max_length=200, blank=True)
     mencion_honorifica = models.BooleanField(default=False)
     medalla_alfonso_caso = models.BooleanField(default=False)
-    semestre_graduacion = models.PositiveSmallIntegerField(blank=True)
+    semestre_graduacion = models.PositiveSmallIntegerField(blank=True, null=True)
 
     def __unicode__(self):
         return u"%s en %s" % (self.user, self.plan)
