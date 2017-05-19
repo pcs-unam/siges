@@ -1,0 +1,32 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  {% for crumb in breadcrumbs %}  
+  &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
+  {% endfor %}
+
+  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="/inicio/asuntos/">Asuntos</a>
+  &rsaquo; <a href="/inicio/asuntos/nuevo">Nuevo asunto</a>   
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Asuntos</h2>
+
+<a href="nuevo/">nuevo asunto</a>
+<ul>
+  {% for asunto in object_list %}
+  <li>{{ asunto }}</li>
+  {% endfor %}
+</ul>
+
+<script>
+$(document).ready(function() {
+    $('.dateinput').datepicker({ dateFormat: 'yy-mm-dd'});
+}); 
+</script>
+{% endblock %}

@@ -2,6 +2,8 @@
 
 {% block content %}
 
+
+
 {% if user.perfil %}
 <ul>
   {% if not user.estudiante %}
@@ -13,20 +15,33 @@
   {% endif %}
 
 {% else %}
-Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
-<li><a href="/perfil/registro">Completar registro de perfil</a></li>
+
+  Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
+  <li><a href="/perfil/registro">Completar registro de perfil</a></li>
 {% endif %}
 </ul>
+
+
+{% if user.estudiante or user.academico %}
+
+<h2>Asuntos</h2>
+<a href="/inicio/asuntos/nuevo">nuevo asunto</a>
+
+{% if asuntos %}
+<ul>
+  {% for asunto in asuntos %}
+  <li>
+    <a href="{{ asunto.id }}">{{ asunto }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% endif %}
+
+
+
 {% endblock %}
 
 
-{% if user.academico or user.estudiante %}
 
-<h2>Asuntos</h2>
-<a href="/asuntos/nuevo">nuevo asunto</a>
-
-{% if asuntos %}
-
-{% endif %}
-
-{% endif %}

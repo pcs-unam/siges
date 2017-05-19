@@ -19,6 +19,7 @@ class InicioView(View):
         return render(request,
                       self.template_name,
                       {'title': 'Inicio',
+                       'asuntos': Asunto.objects.all(),
                        'breadcrumbs': self.breadcrumbs})
 
 
@@ -78,7 +79,7 @@ class AsuntoNuevoView(View):
         return render(request,
                       self.template_name,
                       {'form': form,
-                       'title': 'Asunto nuevo',
+                       'title': 'Nuevo asunto',
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):

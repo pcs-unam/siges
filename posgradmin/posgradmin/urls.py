@@ -24,8 +24,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 
-    url(r'inicio/',
-        InicioView.as_view()),
 
     url(r'perfil/registro',
         PerfilRegistroView.as_view()),
@@ -36,11 +34,15 @@ urlpatterns = [
     url(r'academico/registro',
         AcademicoRegistroView.as_view()),
 
-    url(r'asuntos/nuevo',
+    url(r'inicio/asuntos/nuevo',
         AsuntoNuevoView.as_view()),
 
-    url(r'asuntos/',
+    url(r'inicio/asuntos/',
         AsuntoList.as_view()),
+
+    url(r'inicio/',
+        InicioView.as_view()),
+    
 
 # ./coordinacion/ratificacion_predictamenes.md
 # ./coordinacion/alimentar_saep.md
