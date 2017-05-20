@@ -181,6 +181,12 @@ class Estudiante(models.Model):
     medalla_alfonso_caso = models.BooleanField(default=False)
     semestre_graduacion = models.PositiveSmallIntegerField(blank=True, null=True)
 
+    def faltan_documentos(self):
+        if self.user.gradoacademico_set.count() == 0:
+            return True
+        else:
+            return False
+    
     def __unicode__(self):
         return u"%s en %s" % (self.user, self.plan)
 

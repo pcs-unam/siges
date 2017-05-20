@@ -1,47 +1,96 @@
 {% extends "posgradmin/posgradmin_base.html" %}
 
+{% block content_title %}
+{% endblock %}
+
 {% block content %}
 
+<div class="row">
+  <div class="col-sm-4">
 
 
-{% if user.perfil %}
-<ul>
-  {% if not user.estudiante %}
-  <li><a href="/estudiante/registro">Registrarse como estudiante</a></li>
-  {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
 
-  {% if not user.academico %}
-  <li><a href="/academico/registro">Registrarse como académico</a></li>
-  {% endif %}
+	  {% if not user.perfil %}
+	  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>	  
+	  Perfil
+	  {% elif user.estudiante %}
+	  <span class="glyphicon glyphicon-education" aria-hidden="true"></span>	  
+	  Estudiante [{{ user.estudiante.estado }}]
+	  {% elif user.academico %}
+	  <span class="glyphicon glyphicon-education" aria-hidden="true"></span>	  	  
+	  Académico
+	  {% endif %}
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% if user.perfil %}
 
-{% else %}
+	{% if user.estudiante %}
 
-  Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
-  <li><a href="/perfil/registro">Completar registro de perfil</a></li>
-{% endif %}
-</ul>
+	<h4>{{ user.get_full_name }}</h4>
+	{% if user.estudiante.estado == "aspirante" %}
+	{% endif %}
 
+	{% if user.estudiante.faltan_documentos %}
+	<div class="alert alert-danger" role="alert">
+          <strong>Faltan documentos</strong> Edite su perfil para subir los documentos que faltan.
+	</div>
+	{% endif %}
+	
+	{% else %}
+	  <a href="/estudiante/registro">Registrarse como estudiante</a></li>
+	{% endif %}
+
+	  {% if not user.academico %}
+	  <a href="/academico/registro">Registrarse como académico</a></li>
+	  {% endif %}
+
+	{% else %}
+	  Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
+	  <a href="/perfil/registro">Completar registro de perfil</a>
+	{% endif %}
+      </div>
+    </div>
+
+
+  </div><!-- /.col-sm-4 -->
 
 {% if user.estudiante or user.academico %}
+  <div class="col-sm-4">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+	  Solicitudes</h3>
+      </div>
+      <div class="panel-body">
+	<p>
+	<a href="/inicio/asuntos/nuevo">
+	  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	  nueva solicitud
+	</a>
+	</p>
+	<ul class="list-group">
+	  <li class="list-group-item">nuevas: <a href="">4</a></li>
+	  <li class="list-group-item">predictaminadas: <a href="">2</a></li>
+	  <li class="list-group-item">con dictamen: <a href="">1</a></li>
+	  <li class="list-group-item"><a href="#">Inbox <span class="badge">42</span></a></li>
+	</ul>
 
-<h2>Asuntos</h2>
-<a href="/inicio/asuntos/nuevo">nuevo asunto</a>
-
-{% if asuntos %}
-<ul>
-  {% for asunto in asuntos %}
-  <li>
-    <a href="{{ asunto.id }}">{{ asunto }}</a>
-  </li>
-  {% endfor %}
-</ul>
+      </div>
+    </div>
 {% endif %}
 
-{% endif %}
+  </div>
+</div>
+
+
+
+
 
 
 
 {% endblock %}
-
-
-
