@@ -7,20 +7,25 @@
   {% endfor %}
 
   &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/asuntos/">Asuntos</a>
-  &rsaquo; <a href="/inicio/asuntos/nuevo">Nuevo asunto</a>   
+  &rsaquo; <a href="/inicio/solicitudes/">Solicitudes</a>
 </div>
 {% endblock %}
 
 
 {% block content %}
 
-<h2>Asuntos</h2>
+<h2>Solicitudes</h2>
 
-<a href="nuevo/">nuevo asunto</a>
+<p>
+  <a href="/inicio/solicitudes/nueva">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    nueva solicitud
+  </a>
+</p>
+
 <ul>
-  {% for asunto in object_list %}
-  <li>{{ asunto }}</li>
+  {% for solicitud in object_list %}
+  <li>{{ solicitud }}</li>
   {% endfor %}
 </ul>
 

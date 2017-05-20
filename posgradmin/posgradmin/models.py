@@ -202,7 +202,7 @@ class Beca(models.Model):
         return u"%s %s" % (self.estudiante, self.tipo)
 
 
-class Asunto(models.Model):
+class Solicitud(models.Model):
     resumen = models.CharField(max_length=100)
     tipo = models.CharField(max_length=100,
                             choices=[('solicitud', 'solicitud'),
@@ -220,20 +220,20 @@ class Asunto(models.Model):
 
 
 class Anexo(models.Model):
-    asunto = models.ForeignKey(Asunto)
+    solicitud = models.ForeignKey(Solicitud)
     archivo = models.FileField()
     fecha = models.DateTimeField(auto_now_add=True)
 
 
 class Acuerdo(models.Model):
-    asunto = models.ForeignKey(Asunto)
+    solicitud = models.ForeignKey(Solicitud)
     archivo = models.FileField()
     fecha = models.DateTimeField(auto_now_add=True)
     # id asamblea
 
 
 class Comentario(models.Model):
-    asunto = models.ForeignKey(Asunto)
+    solicitud = models.ForeignKey(Solicitud)
     fecha = models.DateTimeField()
     comentario = models.CharField(max_length=300)
     # anexo?

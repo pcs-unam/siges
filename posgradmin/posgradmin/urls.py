@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from posgradmin.views import AsuntoList, AsuntoNuevoView, \
+from posgradmin.views import SolicitudList, SolicitudNuevaView, \
     PerfilRegistroView, EstudianteRegistroView, AcademicoRegistroView, \
     InicioView
 
@@ -34,11 +34,11 @@ urlpatterns = [
     url(r'academico/registro',
         AcademicoRegistroView.as_view()),
 
-    url(r'inicio/asuntos/nuevo',
-        AsuntoNuevoView.as_view()),
+    url(r'inicio/solicitudes/nueva',
+        SolicitudNuevaView.as_view()),
 
-    url(r'inicio/asuntos/',
-        AsuntoList.as_view()),
+    url(r'inicio/solicitudes/',
+        SolicitudList.as_view()),
 
     url(r'inicio/',
         InicioView.as_view()),

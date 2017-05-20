@@ -3,8 +3,9 @@
 from django.views.generic import ListView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
-from posgradmin.models import Asunto, Anexo, Perfil, Estudiante, Academico, CampoConocimiento
-from posgradmin.forms import AsuntoForm, PerfilModelForm, \
+from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
+    Academico, CampoConocimiento
+from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm
 from pprint import pprint
 
@@ -14,16 +15,19 @@ class InicioView(View):
     breadcrumbs = (('/inicio/', 'Inicio'),)
 
     template_name = 'posgradmin/inicio.html'
+    solicitudes = {'todas': Solicitud.objects.all().count(),
+                   'nuevas': Solicitud.objects.filter(estado='nueva').count()
+    }
 
     def get(self, request, *args, **kwargs):
         return render(request,
                       self.template_name,
                       {'title': 'Inicio',
-                       'asuntos': Asunto.objects.all(),
+                       'solicitudes': self.solicitudes,
                        'breadcrumbs': self.breadcrumbs})
 
 
-asuntos_profesoriles = (
+solicitudes_profesoriles = (
         ("registrar_curso",
          "Registrar Curso"),
         ("solicitar_registro_como_tutor",
@@ -33,13 +37,13 @@ asuntos_profesoriles = (
         ("generar_reporte_actividades",
          "Generar Reporte de Actividades"))
 
-asuntos_tutoriles = (
+solicitudes_tutoriles = (
         ("solicitar_baja_tutor",
          "Solicitar Baja de Tutoría en el Programa"),
         ("avisar_ausencia",
          "Aviso de Ausencia por Sabático u Otra Razón"))
 
-asuntos_estudiantiles = (
+solicitudes_estudiantiles = (
         ('seleccionar_jurado',
          "Selección de jurado de grado o de candidatura"),
         ('registrar_actividad_complementaria',
@@ -55,21 +59,21 @@ asuntos_estudiantiles = (
         ("reportar_suspension",
          "Reportar suspensión"))
 
-asunto_otro = (
+solicitud_otro = (
     ('otro',
      'Otro'),)
 
 
-class AsuntoNuevoView(View):
+class SolicitudNuevaView(View):
 
-    form_class = AsuntoForm
-    form_class.base_fields['tipo'].choices = asuntos_profesoriles + \
-                                             asuntos_tutoriles + \
-                                             asunto_otro
+    form_class = SolicitudForm
+    form_class.base_fields['tipo'].choices = solicitudes_profesoriles + \
+                                             solicitudes_tutoriles + \
+                                             solicitud_otro
 
     breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/inicio/asuntos/', 'Asuntos'),
-                   ('/inicio/asuntos/nuevo', 'Nuevo'))
+                   ('/inicio/solicitudes/', 'Solicitudes'),
+                   ('/inicio/solicitudes/nueva', 'Nueva'))
 
     template_name = 'posgradmin/try.html'
 
@@ -79,36 +83,36 @@ class AsuntoNuevoView(View):
         return render(request,
                       self.template_name,
                       {'form': form,
-                       'title': 'Nuevo asunto',
+                       'title': 'Nueva solicitud',
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            a = Asunto()
+            a = Solicitud()
             a.resumen = request.POST['resumen']
             a.tipo = request.POST['tipo']
             a.solicitante = request.user
             a.descripcion = request.POST['descripcion']
-            a.estado = 'nuevo'
+            a.estado = 'nueva'
             a.save()
 
             if 'anexo' in request.FILES:
-                nx = Anexo(asunto=a,
+                nx = Anexo(solicitud=a,
                            archivo=request.FILES['anexo'])
                 nx.save()
 
-            return HttpResponseRedirect('/asuntos/%s' % a.id)
+            return HttpResponseRedirect('/solicitudes/%s' % a.id)
         else:
             return render(request,
                           self.template_name,
                           {'form': form,
-                           'title': 'Asunto nuevo',
+                           'title': 'Solicitud nueva',
                            'breadcrumbs': self.breadcrumbs})
 
 
-class AsuntoList(ListView):
-    model = Asunto
+class SolicitudList(ListView):
+    model = Solicitud
 
 
 class PerfilRegistroView(View):
@@ -163,7 +167,7 @@ class EstudianteRegistroView(View):
 
     breadcrumbs = (('/inicio/', 'Inicio'),
                    ('/estudiante/registro/', 'Registro como estudiante'))
-    
+
     template_name = 'posgradmin/try.html'
 
     def get(self, request, *args, **kwargs):

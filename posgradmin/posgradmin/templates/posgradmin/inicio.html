@@ -68,16 +68,17 @@
       </div>
       <div class="panel-body">
 	<p>
-	<a href="/inicio/asuntos/nuevo">
+	<a href="/inicio/solicitudes/nueva">
 	  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 	  nueva solicitud
 	</a>
 	</p>
 	<ul class="list-group">
-	  <li class="list-group-item">nuevas: <a href="">4</a></li>
-	  <li class="list-group-item">predictaminadas: <a href="">2</a></li>
-	  <li class="list-group-item">con dictamen: <a href="">1</a></li>
-	  <li class="list-group-item"><a href="#">Inbox <span class="badge">42</span></a></li>
+	  
+	  <li class="list-group-item">
+	    <a href="/inicio/solicitudes/">todas <span class="badge">{{ solicitudes.todas }}</span></a></li>
+	  <li class="list-group-item">
+	    <a href="/inicio/solicitudes/nuevas">nuevas <span class="badge">{{ solicitudes.nuevas }}</span></a></li>
 	</ul>
 
       </div>

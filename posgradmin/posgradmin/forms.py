@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, CampoConocimiento
 
 
-class AsuntoForm(forms.Form):
+class SolicitudForm(forms.Form):
 
     tipo = forms.ChoiceField(
         choices=(),
