@@ -26,11 +26,19 @@
 </p>
 
 <div class="btn-toolbar" role="toolbar">
+  {% if user.academico %}
   {% for s in user.academico.cuantas_solicitudes %}  
   <div class="btn-group" role="group">
      <span class="badge">{{ s.1 }}</span> <a href="/inicio/solicitudes/{{ s.0 }}">{{ s.0 }}
   </div>
   {% endfor %}
+  {% else %}
+  {% for s in user.estudiante.cuantas_solicitudes %}  
+  <div class="btn-group" role="group">
+     <span class="badge">{{ s.1 }}</span> <a href="/inicio/solicitudes/{{ s.0 }}">{{ s.0 }}
+  </div>
+  {% endfor %}
+  {% endif %}
 </div>
 <hr />
 <ul>

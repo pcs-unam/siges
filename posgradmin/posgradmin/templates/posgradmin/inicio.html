@@ -80,11 +80,23 @@
 	</p>
 	<!-- lista conteo -->
 	<ul class="list-group">
+	  {% if user.academico %}
 	  {% for s in user.academico.cuantas_solicitudes %}
 	  <li class="list-group-item">	  
 	    <a href="/inicio/solicitudes/estado/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
 	  </li>
 	  {% endfor %}
+
+	  {% else %}
+
+	  {% for s in user.estudiante.cuantas_solicitudes %}
+	  <li class="list-group-item">	  
+	    <a href="/inicio/solicitudes/estado/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
+	  </li>
+	  {% endfor %}
+	  
+	  {% endif %}
+
 	</ul>
 
       </div>

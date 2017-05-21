@@ -217,6 +217,14 @@ class Estudiante(models.Model):
                 solicitante=self.user).filter(
                     estado=estado)
 
+    def cuantas_solicitudes(self):
+        solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
+                       for estado in solicitudes_estados]
+        solicitudes.append(('todas mis solicitudes',
+                            self.solicitudes().count()))
+
+        return solicitudes
+
     def __unicode__(self):
         return u"%s en %s" % (self.user, self.plan)
 
