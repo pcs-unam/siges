@@ -220,7 +220,7 @@ class Estudiante(models.Model):
     def cuantas_solicitudes(self):
         solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
                        for estado in solicitudes_estados]
-        solicitudes.append(('todas mis solicitudes',
+        solicitudes.append(('todas',
                             self.solicitudes().count()))
 
         return solicitudes

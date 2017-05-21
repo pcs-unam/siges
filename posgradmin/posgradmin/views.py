@@ -102,6 +102,14 @@ class SolicitudNuevaView(View):
 
 
 class SolicitudList(ListView):
+
+    def get_queryset(self):
+        if self.args:
+            estado = self.args[0]
+            return self.request.user.estudiante.solicitudes(estado)
+        else:
+            return self.request.user.estudiante.solicitudes()
+
     model = Solicitud
 
 

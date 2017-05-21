@@ -34,15 +34,18 @@ urlpatterns = [
     url(r'academico/registro',
         AcademicoRegistroView.as_view()),
 
+    url(r'^inicio/solicitudes/$',
+        SolicitudList.as_view()),
+
+    url(r'^inicio/solicitudes/e/([\w-]+)/$',
+        SolicitudList.as_view()),
+
     url(r'inicio/solicitudes/nueva',
         SolicitudNuevaView.as_view()),
 
-    url(r'inicio/solicitudes/',
-        SolicitudList.as_view()),
-
-    url(r'inicio/',
+    url(r'inicio/$',
         InicioView.as_view()),
-    
+
 
 # ./coordinacion/ratificacion_predictamenes.md
 # ./coordinacion/alimentar_saep.md

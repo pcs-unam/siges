@@ -63,6 +63,8 @@
 
   </div><!-- /.col-sm-4 -->
 
+
+<!-- Solicitudes -->
 {% if user.estudiante or user.academico %}
   <div class="col-sm-4">
     <div class="panel panel-info">
@@ -83,7 +85,7 @@
 	  {% if user.academico %}
 	  {% for s in user.academico.cuantas_solicitudes %}
 	  <li class="list-group-item">	  
-	    <a href="/inicio/solicitudes/estado/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
+	    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
 	  </li>
 	  {% endfor %}
 
@@ -91,7 +93,7 @@
 
 	  {% for s in user.estudiante.cuantas_solicitudes %}
 	  <li class="list-group-item">	  
-	    <a href="/inicio/solicitudes/estado/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
+	    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
 	  </li>
 	  {% endfor %}
 	  
