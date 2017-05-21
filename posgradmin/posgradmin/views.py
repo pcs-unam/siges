@@ -1,5 +1,5 @@
 # coding: utf-8
-
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
@@ -7,6 +7,10 @@ from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm
+from settings import solicitudes_profesoriles,\
+    solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
+from posgradmin import workflows
+
 from pprint import pprint
 
 
@@ -15,61 +19,43 @@ class InicioView(View):
     breadcrumbs = (('/inicio/', 'Inicio'),)
 
     template_name = 'posgradmin/inicio.html'
-    solicitudes = {'todas': Solicitud.objects.all().count(),
-                   'nuevas': Solicitud.objects.filter(estado='nueva').count()
-    }
 
     def get(self, request, *args, **kwargs):
+
+        solicitudes = {}
+        # TODO: alguien podria ser estudiante y académico simultaneamente
+        try:
+            request.user.academico
+            solicitudes = {'todas':
+                           request.user.academico.solicitudes().count(),
+                           'nuevas':
+                           request.user.academico.solicitudes(
+                               estado='nueva').count()
+                           }
+        except ObjectDoesNotExist:
+            pass
+
+        try:
+            request.user.estudiante
+            solicitudes = {'todas':
+                           request.user.estudiante.solicitudes().count(),
+                           'nuevas':
+                           request.user.estudiante.solicitudes(
+                               estado='nueva').count()
+                           }
+        except ObjectDoesNotExist:
+            pass
+
         return render(request,
                       self.template_name,
                       {'title': 'Inicio',
-                       'solicitudes': self.solicitudes,
+                       'solicitudes': solicitudes,
                        'breadcrumbs': self.breadcrumbs})
-
-
-solicitudes_profesoriles = (
-        ("registrar_curso",
-         "Registrar Curso"),
-        ("solicitar_registro_como_tutor",
-         "Solicitar Registro como Tutor"),
-        ("solicitar_apoyo_económico",
-         "Solicitar Apoyo Económico"),
-        ("generar_reporte_actividades",
-         "Generar Reporte de Actividades"))
-
-solicitudes_tutoriles = (
-        ("solicitar_baja_tutor",
-         "Solicitar Baja de Tutoría en el Programa"),
-        ("avisar_ausencia",
-         "Aviso de Ausencia por Sabático u Otra Razón"))
-
-solicitudes_estudiantiles = (
-        ('seleccionar_jurado',
-         "Selección de jurado de grado o de candidatura"),
-        ('registrar_actividad_complementaria',
-         "Registro de actividad complementaria"),
-        ('solicitar_candidatura',
-         "Solicitud de examen de candidtaura"),
-        ("cambiar_comite_tutoral",
-         "Cambiar comité tutoral"),
-        ("cambiar_titulo_proyecto",
-         "Solicitud de cambio de título de proyecto"),
-        ("cambiar_campo_conocimiento",
-         "Cambio de campo de conocimiento"),
-        ("reportar_suspension",
-         "Reportar suspensión"))
-
-solicitud_otro = (
-    ('otro',
-     'Otro'),)
 
 
 class SolicitudNuevaView(View):
 
     form_class = SolicitudForm
-    form_class.base_fields['tipo'].choices = solicitudes_profesoriles + \
-                                             solicitudes_tutoriles + \
-                                             solicitud_otro
 
     breadcrumbs = (('/inicio/', 'Inicio'),
                    ('/inicio/solicitudes/', 'Solicitudes'),
@@ -78,8 +64,36 @@ class SolicitudNuevaView(View):
     template_name = 'posgradmin/try.html'
 
     def get(self, request, *args, **kwargs):
+
+        choices = []
+        # opciones de academico
+        try:
+            a = request.user.academico
+            if a.tutor:
+                choices += solicitudes_tutoriles
+            else:
+                choices += (("solicitar_registro_como_tutor",
+                             "Solicitar Registro como Tutor"),)
+
+            if a.profesor:
+                choices += solicitudes_profesoriles
+
+        except ObjectDoesNotExist:
+            pass
+        # opciones de estudiante
+        try:
+            request.user.estudiante
+            choices += solicitudes_estudiantiles
+        except ObjectDoesNotExist:
+            pass
+
+        choices += solicitud_otro
+
+        self.form_class.base_fields['tipo'].choices = choices
+
         form = self.form_class()
 
+        # envia todo a la plantilla etc
         return render(request,
                       self.template_name,
                       {'form': form,
@@ -89,20 +103,21 @@ class SolicitudNuevaView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            a = Solicitud()
-            a.resumen = request.POST['resumen']
-            a.tipo = request.POST['tipo']
-            a.solicitante = request.user
-            a.descripcion = request.POST['descripcion']
-            a.estado = 'nueva'
-            a.save()
+            s = Solicitud()
+            s.resumen = request.POST['resumen']
+            s.tipo = request.POST['tipo']
+            s.solicitante = request.user
+            s.descripcion = request.POST['descripcion']
+            s.save()
 
             if 'anexo' in request.FILES:
-                nx = Anexo(solicitud=a,
+                nx = Anexo(solicitud=s,
                            archivo=request.FILES['anexo'])
                 nx.save()
 
-            return HttpResponseRedirect('/solicitudes/%s' % a.id)
+            next = workflows.solicitud.get(s.estado,
+                                           '/solicitudes/%s')
+            return HttpResponseRedirect(next % s.id)
         else:
             return render(request,
                           self.template_name,
