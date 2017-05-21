@@ -35,17 +35,37 @@
   {% else %}
   {% for s in user.estudiante.cuantas_solicitudes %}  
   <div class="btn-group" role="group">
-     <span class="badge">{{ s.1 }}</span> <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }}
+    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
   </div>
   {% endfor %}
   {% endif %}
 </div>
 <hr />
-<ul>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>estado</th>
+      <th>fecha de creacion</th>
+      <th>tipo</th>
+      <th>resumen</th>
+      <th>solicitante</th>            
+    </tr>
+  </thead>
+
+  <tbody>
   {% for solicitud in object_list %}
-  <li>{{ solicitud }}</li>
+    <tr>
+      <td>{{ solicitud.id }}</td>
+      <td>{{ solicitud.estado }}</td>
+      <td>{{ solicitud.fecha_creacion }}</td>      
+      <td>{{ solicitud.tipo }}</td>      
+      <td>{{ solicitud.resumen }}</td>
+      <td>{{ solicitud.solicitante.get_full_name }}</td>      
+    </tr>
   {% endfor %}
-</ul>
+  </tbody>
+</table>
 
 <script>
 $(document).ready(function() {
