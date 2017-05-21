@@ -4,6 +4,10 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
+from settings import solicitudes_profesoriles,\
+    solicitudes_tutoriles, solicitud_otro
+
+
 
 class Institucion(models.Model):
     nombre = models.CharField(max_length=100)
@@ -123,6 +127,14 @@ class Academico(models.Model):
                                              ('maestría', 'maestría')))
     entidad = models.ForeignKey(Entidad, null=True, blank=True)
 
+    def solicitudes(self, estado=None):
+        if estado is None:
+            return Solicitud.objects.filter(solicitante=self.user)
+        else:
+            return Solicitud.objects.filter(
+                solicitante=self.user).filter(
+                    estado=estado)
+
     def __unicode__(self):
         return u"%s" % self.user
 
@@ -173,20 +185,30 @@ class Estudiante(models.Model):
                                    blank=True)
 
     titulacion_licenciatura = models.BooleanField(
-        "primer año de maestría para obtener grado de licenciatura", default=False)
+        "primer año de maestría para obtener grado de licenciatura",
+        default=False)
 
     fecha_titulacion = models.DateField(blank=True, null=True)
     folio_titulacion = models.CharField(max_length=200, blank=True)
     mencion_honorifica = models.BooleanField(default=False)
     medalla_alfonso_caso = models.BooleanField(default=False)
-    semestre_graduacion = models.PositiveSmallIntegerField(blank=True, null=True)
+    semestre_graduacion = models.PositiveSmallIntegerField(blank=True,
+                                                           null=True)
 
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
             return True
         else:
             return False
-    
+
+    def solicitudes(self, estado=None):
+        if estado is None:
+            return Solicitud.objects.filter(solicitante=self.user)
+        else:
+            return Solicitud.objects.filter(
+                solicitante=self.user).filter(
+                    estado=estado)
+
     def __unicode__(self):
         return u"%s en %s" % (self.user, self.plan)
 
@@ -205,15 +227,14 @@ class Beca(models.Model):
 class Solicitud(models.Model):
     resumen = models.CharField(max_length=100)
     tipo = models.CharField(max_length=100,
-                            choices=[('solicitud', 'solicitud'),
-                                     ('cambio', 'cambio'),
-                                     ('etc', 'etc')])
+                            choices=solicitudes_profesoriles +
+                            solicitudes_tutoriles + solicitud_otro)
     solicitante = models.ForeignKey(User)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     # sesion del CA
     descripcion = models.TextField(blank=True)
 
-    estado = models.CharField(max_length=30)
+    estado = models.CharField(max_length=30, default="nueva")
 
     def __unicode__(self):
         return u"%s [%s]" % (self.resumen, self.tipo)
