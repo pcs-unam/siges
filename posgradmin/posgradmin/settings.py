@@ -43,9 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'crispy_forms',
+    'sortable_listview',
 ]
 
-SITE_ID=1
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

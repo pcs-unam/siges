@@ -1,8 +1,9 @@
 # coding: utf-8
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
+from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
@@ -10,6 +11,7 @@ from posgradmin.forms import SolicitudForm, PerfilModelForm, \
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
+
 
 from pprint import pprint
 
@@ -105,17 +107,26 @@ class SolicitudDetail(DetailView):
     model = Solicitud
 
 
-class SolicitudList(ListView):
+class SolicitudSortableView(SortableListView):
 
     def get_queryset(self):
+        sorted = super(SolicitudSortableView, self).get_queryset()
         if self.args:
             estado = self.args[0]
             if estado == 'todas':
-                return self.request.user.estudiante.solicitudes()
+                return sorted & self.request.user.estudiante.solicitudes()
             else:
-                return self.request.user.estudiante.solicitudes(estado)
+                return sorted & \
+                    self.request.user.estudiante.solicitudes(estado)
         else:
-            return self.request.user.estudiante.solicitudes()
+            return sorted & self.request.user.estudiante.solicitudes()
+
+    allowed_sort_fields = {'resumen': {'default_direction': '',
+                                       'verbose_name': 'resumen'},
+                           'fecha_creacion': {'default_direction': '-',
+                                              'verbose_name': 'Published On'}}
+    default_sort_field = 'fecha_creacion'
+    paginate_by = 5
 
     model = Solicitud
 

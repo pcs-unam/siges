@@ -42,6 +42,7 @@
 </div>
 
 <p>
+  {% include 'sortable_listview/sort_links.html' %}
 <table class="table table-striped">
   <thead>
     <tr>
@@ -69,6 +70,7 @@
   {% endfor %}
   </tbody>
 </table>
+  {% include 'sortable_listview/pagination.html' %}
 </p>
 
 <script>

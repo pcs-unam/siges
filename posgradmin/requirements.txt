@@ -1,2 +1,4 @@
 django
 django-registration
+django-crispy-forms
+django-sortable-listview

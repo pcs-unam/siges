@@ -129,11 +129,11 @@ class Academico(models.Model):
 
     def solicitudes(self, estado=None):
         if estado is None:
-            return Solicitud.objects.filter(solicitante=self.user).order_by('-id')
+            return Solicitud.objects.filter(solicitante=self.user)
         else:
             return Solicitud.objects.filter(
                 solicitante=self.user).filter(
-                    estado=estado).order_by('-id')
+                    estado=estado)
 
     def cuantas_solicitudes(self):
         solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
@@ -213,11 +213,11 @@ class Estudiante(models.Model):
         if estado is None:
             return Solicitud.objects.filter(
                 solicitante=self.user
-            ).order_by('-id')
+            )
         else:
             return Solicitud.objects.filter(
                 solicitante=self.user).filter(
-                    estado=estado).order_by('-id')
+                    estado=estado)
 
     def cuantas_solicitudes(self):
         solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
