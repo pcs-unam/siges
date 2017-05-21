@@ -22,28 +22,9 @@ class InicioView(View):
 
     def get(self, request, *args, **kwargs):
 
-        solicitudes = {}
-        # TODO: alguien podria ser estudiante y académico simultaneamente
-        try:
-            solicitudes = request.user.academico.cuantas_solicitudes()
-        except ObjectDoesNotExist:
-            pass
-
-        try:
-            request.user.estudiante
-            solicitudes = {'todas':
-                           request.user.estudiante.solicitudes().count(),
-                           'nuevas':
-                           request.user.estudiante.solicitudes(
-                               estado='nueva').count()
-                           }
-        except ObjectDoesNotExist:
-            pass
-
         return render(request,
                       self.template_name,
                       {'title': 'Inicio',
-                       'solicitudes': solicitudes,
                        'breadcrumbs': self.breadcrumbs})
 
 
