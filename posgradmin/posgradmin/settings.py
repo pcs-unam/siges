@@ -140,6 +140,21 @@ EMAIL_PORT = 25
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 LOGIN_REDIRECT_URL = '/inicio/'
 
+
+solicitudes_estados = (
+        ("nueva",
+         "nueva"),
+        ("predictamen",
+         "predictamen"),
+        ("agendada",
+         "agendada"),
+        ("atendida",
+         "atendida"),
+        ("cancelada",
+         "cancelada"),
+)
+
+
 solicitudes_profesoriles = (
         ("registrar_curso",
          "Registrar Curso"),

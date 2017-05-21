@@ -5,8 +5,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from settings import solicitudes_profesoriles,\
-    solicitudes_tutoriles, solicitud_otro
-
+    solicitudes_tutoriles, solicitud_otro,\
+    solicitudes_estados
 
 
 class Institucion(models.Model):
@@ -135,6 +135,13 @@ class Academico(models.Model):
                 solicitante=self.user).filter(
                     estado=estado)
 
+    def cuantas_solicitudes(self):
+        solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
+                       for estado in solicitudes_estados]
+        solicitudes.append(('todas', self.solicitudes().count()))
+
+        return solicitudes
+
     def __unicode__(self):
         return u"%s" % self.user
 
@@ -151,6 +158,7 @@ class Adscripcion(models.Model):
     numero_trabajador = models.CharField("en caso de trabajar en la UNAM",
                                          max_length=100,
                                          blank=True)
+
     def __unicode__(self):
         return u"%s %s en %s" % (self.academico,
                                  self.nombramiento,

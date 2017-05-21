@@ -25,13 +25,7 @@ class InicioView(View):
         solicitudes = {}
         # TODO: alguien podria ser estudiante y académico simultaneamente
         try:
-            request.user.academico
-            solicitudes = {'todas':
-                           request.user.academico.solicitudes().count(),
-                           'nuevas':
-                           request.user.academico.solicitudes(
-                               estado='nueva').count()
-                           }
+            solicitudes = request.user.academico.cuantas_solicitudes()
         except ObjectDoesNotExist:
             pass
 

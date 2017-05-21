@@ -78,12 +78,13 @@
 	  nueva solicitud
 	</a>
 	</p>
+	<!-- lista conteo -->
 	<ul class="list-group">
-	  
-	  <li class="list-group-item">
-	    <a href="/inicio/solicitudes/">todas <span class="badge">{{ solicitudes.todas }}</span></a></li>
-	  <li class="list-group-item">
-	    <a href="/inicio/solicitudes/nuevas">nuevas <span class="badge">{{ solicitudes.nuevas }}</span></a></li>
+	  {% for s in user.academico.cuantas_solicitudes %}
+	  <li class="list-group-item">	  
+	    <a href="/inicio/solicitudes/estado/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
+	  </li>
+	  {% endfor %}
 	</ul>
 
       </div>
