@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """
 Django settings for posgradmin project.
 
@@ -137,3 +139,36 @@ EMAIL_PORT = 25
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 LOGIN_REDIRECT_URL = '/inicio/'
+
+solicitudes_profesoriles = (
+        ("registrar_curso",
+         "Registrar Curso"),
+        ("solicitar_apoyo_económico",
+         "Solicitar Apoyo Económico"),
+    )
+
+solicitudes_tutoriles = (
+        ("solicitar_baja_tutor",
+         "Solicitar Baja de Tutoría en el Programa"),
+        ("avisar_ausencia",
+         "Aviso de Ausencia por Sabático u Otra Razón"))
+
+solicitudes_estudiantiles = (
+        ('seleccionar_jurado',
+         "Selección de jurado de grado o de candidatura"),
+        ('registrar_actividad_complementaria',
+         "Registro de actividad complementaria"),
+        ('solicitar_candidatura',
+         "Solicitud de examen de candidtaura"),
+        ("cambiar_comite_tutoral",
+         "Cambiar comité tutoral"),
+        ("cambiar_titulo_proyecto",
+         "Solicitud de cambio de título de proyecto"),
+        ("cambiar_campo_conocimiento",
+         "Cambio de campo de conocimiento"),
+        ("reportar_suspension",
+         "Reportar suspensión"))
+
+solicitud_otro = (
+    ('otro',
+     'Otro'),)
