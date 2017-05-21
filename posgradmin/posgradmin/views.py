@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
@@ -99,6 +99,10 @@ class SolicitudNuevaView(View):
                           {'form': form,
                            'title': 'Solicitud nueva',
                            'breadcrumbs': self.breadcrumbs})
+
+
+class SolicitudDetail(DetailView):
+    model = Solicitud
 
 
 class SolicitudList(ListView):

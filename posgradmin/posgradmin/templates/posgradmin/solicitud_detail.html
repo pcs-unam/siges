@@ -1,0 +1,29 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  {% for crumb in breadcrumbs %}  
+  &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
+  {% endfor %}
+
+  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="/inicio/solicitudes/">Solicitudes</a>
+  &rsaquo; <a href="/inicio/solicitudes/{{ object.id }}/">#{{ object.id }}</a>
+</div>
+{% endblock %}
+
+
+
+
+{% block title %}Solicitud #{{ object.id }}{% endblock %}
+
+{% block content %}
+
+<h2>Solicitud #{{ object.id }}</h2>
+
+<h1>{{ object.resumen }}</h1>
+<p>{{ object.descripcion }}</p>
+<p>Reporter: {{ object.solicitante }}</p>
+<p>Published: {{ object.fecha_creacion }}</p>
+
+{% endblock %}

@@ -2,7 +2,7 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  {% for crumb in breadcrumbs %}  
+  {% for crumb in breadcrumbs %}
   &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
   {% endfor %}
 
@@ -27,13 +27,13 @@
 
 <div class="btn-toolbar" role="toolbar">
   {% if user.academico %}
-  {% for s in user.academico.cuantas_solicitudes %}  
+  {% for s in user.academico.cuantas_solicitudes %}
   <div class="btn-group" role="group">
      <span class="badge">{{ s.1 }}</span> <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }}
   </div>
   {% endfor %}
   {% else %}
-  {% for s in user.estudiante.cuantas_solicitudes %}  
+  {% for s in user.estudiante.cuantas_solicitudes %}
   <div class="btn-group" role="group">
     <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
   </div>
@@ -47,10 +47,10 @@
     <tr>
       <th>#</th>
       <th>estado</th>
-      <th>fecha de creacion</th>
       <th>tipo</th>
       <th>resumen</th>
-      <th>solicitante</th>            
+      <th>solicitante</th>
+      <th>fecha de creacion</th>
     </tr>
   </thead>
 
@@ -59,10 +59,12 @@
     <tr>
       <td>{{ solicitud.id }}</td>
       <td>{{ solicitud.estado }}</td>
-      <td>{{ solicitud.fecha_creacion }}</td>      
-      <td>{{ solicitud.tipo }}</td>      
-      <td>{{ solicitud.resumen }}</td>
-      <td>{{ solicitud.solicitante.get_full_name }}</td>      
+      <td>{{ solicitud.tipo }}</td>
+      <td><a href="/inicio/solicitudes/{{ solicitud.id }}/">{{ solicitud.resumen }}</a></td>
+      <td>{{ solicitud.solicitante.get_full_name }}</td>
+      <td>{{ solicitud.fecha_creacion }}</td>
+
+
     </tr>
   {% endfor %}
   </tbody>
@@ -72,6 +74,6 @@
 <script>
 $(document).ready(function() {
     $('.dateinput').datepicker({ dateFormat: 'yy-mm-dd'});
-}); 
+});
 </script>
 {% endblock %}

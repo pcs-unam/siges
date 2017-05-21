@@ -17,6 +17,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from posgradmin.views import SolicitudList, SolicitudNuevaView, \
+    SolicitudDetail, \
     PerfilRegistroView, EstudianteRegistroView, AcademicoRegistroView, \
     InicioView
 
@@ -36,6 +37,9 @@ urlpatterns = [
 
     url(r'^inicio/solicitudes/$',
         SolicitudList.as_view()),
+
+    url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/$',
+        SolicitudDetail.as_view()),
 
     url(r'^inicio/solicitudes/e/([\w-]+)/$',
         SolicitudList.as_view()),
