@@ -42,14 +42,19 @@
 <h2>Anexos</h2>
 
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col-sm-8">
 
     <a href="anexar"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> subir anexo</a>
 
     <ul class="list-group">
       {% for anexo in object.anexo_set.all %}
       <li class="list-group-item">
-	{{ anexo.archivo }}
+	<a href="/inicio/solicitudes/{{ object.id }}/anexos/{{ anexo.archivo }}">
+	  <strong>
+	  <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>	  
+	  {{ anexo.archivo }}</a></strong>
+	anexado el {{ anexo.fecha }} por       
+	{{ anexo.autor.get_full_name }}
       </li>
       {% endfor %}
     </ul>

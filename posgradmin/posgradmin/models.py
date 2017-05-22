@@ -263,8 +263,12 @@ class Anexo(models.Model):
     autor = models.ForeignKey(User)
     fecha = models.DateTimeField(auto_now_add=True)
     archivo = models.FileField()
+
     def __unicode__(self):
-        return u"%s anexo a #%s por %s el %s]" % (self.archivo, self.solicitud.id, self.autor, self.fecha)
+        return u"%s anexo a #%s por %s el %s]" % (self.archivo,
+                                                  self.solicitud.id,
+                                                  self.autor,
+                                                  self.fecha)
 
 
 class Acuerdo(models.Model):
