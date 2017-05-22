@@ -49,7 +49,7 @@
     <ul class="list-group">
       {% for anexo in object.anexo_set.all %}
       <li class="list-group-item">
-	{{anexo}}
+	{{ anexo.archivo }}
       </li>
       {% endfor %}
     </ul>
