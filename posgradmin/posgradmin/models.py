@@ -255,13 +255,16 @@ class Solicitud(models.Model):
     estado = models.CharField(max_length=30, default="nueva")
 
     def __unicode__(self):
-        return u"%s [%s]" % (self.resumen, self.tipo)
+        return u"#%s %s [%s]" % (self.id, self.resumen, self.solicitante)
 
 
 class Anexo(models.Model):
     solicitud = models.ForeignKey(Solicitud)
-    archivo = models.FileField()
+    autor = models.ForeignKey(User)
     fecha = models.DateTimeField(auto_now_add=True)
+    archivo = models.FileField()
+    def __unicode__(self):
+        return u"anexo en %s del %s]" % (self.solicitud, self.fecha)
 
 
 class Acuerdo(models.Model):
@@ -273,6 +276,9 @@ class Acuerdo(models.Model):
 
 class Comentario(models.Model):
     solicitud = models.ForeignKey(Solicitud)
+    autor = models.ForeignKey(User)
     fecha = models.DateTimeField()
     comentario = models.CharField(max_length=300)
     # anexo?
+    def __unicode__(self):
+        return u'%s por %s: "%s"' % (self.fecha, self.autor, self.comentario)

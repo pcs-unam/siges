@@ -19,11 +19,67 @@
 
 {% block content %}
 
-<h2>Solicitud #{{ object.id }}</h2>
+<h1>solicitud #{{ object.id }}</h1>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>{{ object.fecha_creacion }} por {{ object.solicitante.get_full_name }}</h3>  
+  </div>  
+  <div class="panel-body">
+    <h3>{{ object.resumen }}</h3>
+    <p>{{ object.descripcion }}</p>
+    
+  </div>
 
-<h1>{{ object.resumen }}</h1>
-<p>{{ object.descripcion }}</p>
-<p>Reporter: {{ object.solicitante }}</p>
-<p>Published: {{ object.fecha_creacion }}</p>
+  
+  <div class="panel-footer">
+      <strong>tipo:</strong> {{ object.tipo }}
+      <strong>estado:</strong> {{ object.estado }}
+  </div>
+</div>
+
+{% if object.anexo_set.count %}
+<h2>Anexos</h2>
+
+<div class="row">
+  <div class="col-sm-6">
+
+    <a href="anexar"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> subir anexo</a>
+
+    <ul class="list-group">
+      {% for anexo in object.anexo_set.all %}
+      <li class="list-group-item">
+	{{anexo}}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% else %}
+<hr /><p><a href="anexar"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> subir anexo</a></p>
+{% endif %}
+
+
+{% if object.comentario_set.count %}
+<h2>Comentarios</h2>
+
+  {% for comentario in object.comentario_set.all %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+      {{ comentario.fecha }} por       
+      {{ comentario.autor.get_full_name }}</h3>
+
+  </div>
+
+  <div class="panel-body">
+    {{ comentario.comentario }}
+  </div>
+</div>
+
+  {% endfor %}
+</ul>
+{% endif %}
 
 {% endblock %}

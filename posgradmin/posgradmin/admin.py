@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Perfil, Academico, Estudiante, Adscripcion,\
     GradoAcademico, Institucion, Entidad, CampoConocimiento, \
-    Beca, Solicitud
+    Beca, Solicitud, Comentario, Anexo
 
 admin.site.register(Perfil)
 admin.site.register(Academico)
@@ -13,3 +13,5 @@ admin.site.register(Entidad)
 admin.site.register(CampoConocimiento)
 admin.site.register(Beca)
 admin.site.register(Solicitud)
+admin.site.register(Comentario)
+admin.site.register(Anexo)
