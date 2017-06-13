@@ -95,6 +95,8 @@ class GradoAcademico(models.Model):
     fecha_titulacion = models.DateField()
     promedio = models.DecimalField(max_digits=4, decimal_places=2)
 
+    archivo = models.FileField()
+    
     def __unicode__(self):
         return u"%s @ %s" % (self.grado_obtenido, self.institucion)
 
@@ -256,6 +258,9 @@ class Solicitud(models.Model):
 
     def __unicode__(self):
         return u"#%s %s [%s]" % (self.id, self.resumen, self.solicitante)
+
+    class Meta:
+        verbose_name_plural = "Solicitudes"
 
 
 class Anexo(models.Model):
