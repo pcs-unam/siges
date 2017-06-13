@@ -53,6 +53,14 @@
         {% else %}
 	{% endif %}
 
+
+	{% if not user.estudiante and not user.academico %}
+		  <ul>
+		    <li><a href="/inicio/estudiante/registro">registrarse como estudiante</a></li>
+		    <li><a href="/inicio/academico/registro">registrarse como académico</a></li>
+		    </ul>
+        {% endif %}
+		  
 	{% else %}
 	  Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
 	  <a href="/inicio/perfil/">Completar registro de perfil</a>

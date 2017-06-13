@@ -293,7 +293,7 @@ class EstudianteRegistroView(View):
     form_class = EstudianteAutoregistroForm
 
     breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/estudiante/registro/', 'Registro como estudiante'))
+                   ('/inicio/estudiante/registro', 'Registro como estudiante'))
 
     template_name = 'posgradmin/try.html'
 
@@ -319,7 +319,7 @@ class EstudianteRegistroView(View):
             e.nombre_proyecto = form['proyecto']
             e.save()
 
-            return HttpResponseRedirect('/estudiante/%s' % e.id)
+            return HttpResponseRedirect('/inicio/')
         else:
             return render(request,
                           self.template_name,
@@ -333,7 +333,7 @@ class AcademicoRegistroView(View):
     form_class = AcademicoModelForm
 
     breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/inicio/academico/', 'Académico'))
+                   ('/inicio/academico/registro', 'Registrarse como Académico'))
 
     template_name = 'posgradmin/try.html'
 
@@ -353,7 +353,7 @@ class AcademicoRegistroView(View):
             a.user = request.user
             a.save()
 
-            return HttpResponseRedirect('/academico/%s' % a.id)
+            return HttpResponseRedirect('/inicio/')
         else:
             return render(request,
                           self.template_name,
