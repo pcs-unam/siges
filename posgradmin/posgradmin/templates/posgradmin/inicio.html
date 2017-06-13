@@ -27,7 +27,7 @@
       <div class="panel-body">
 	{% if user.perfil %}
 	       <h4>{{ user.get_full_name }}</h4>
-	       <p><a href="perfil">Editar mi perfil</a></p>		  	
+	       <p><a href="perfil/">ver mi perfil</a></p>		  	
 		  <hr />
 	{% if user.estudiante %}
 
@@ -36,7 +36,7 @@
 	  
 	  	{% if user.estudiante.faltan_documentos %}
 	  	<div class="alert alert-danger" role="alert">
-	            <strong>Faltan documentos</strong> Edite su perfil para subir los documentos que faltan.
+	            <strong>No ha registrado grados académicos</strong> Registre uno o más grados académicos..
 	  	</div>
 		{% endif %}
 	

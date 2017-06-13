@@ -18,7 +18,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from posgradmin.views import SolicitudNuevaView, \
     SolicitudDetail, SolicitudSortableView, \
-    PerfilRegistroView, EstudianteRegistroView, AcademicoRegistroView, \
+    PerfilRegistroView, PerfilDetail, EstudianteRegistroView, AcademicoRegistroView, \
     InicioView, SolicitudComment, SolicitudAnexo
 
 urlpatterns = [
@@ -31,9 +31,12 @@ urlpatterns = [
     url(r'^inicio/academico/registro',
         AcademicoRegistroView.as_view()),
 
-    url(r'^inicio/perfil/$',
+    url(r'^inicio/perfil/editar$',
         PerfilRegistroView.as_view()),        
 
+    url(r'^inicio/perfil/$',
+        PerfilDetail.as_view()),        
+    
     url(r'^inicio/solicitudes/$',
         SolicitudSortableView.as_view()),
 

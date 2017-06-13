@@ -224,12 +224,17 @@ class SolicitudSortableView(SortableListView):
     model = Solicitud
 
 
+class PerfilDetail(DetailView):
+    def get_object(self):
+        return self.request.user.perfil
+
 class PerfilRegistroView(View):
 
     form_class = PerfilModelForm
 
     breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/inicio/perfil/', 'Editar perfil'))
+                   ('/inicio/perfil', 'Mi perfil'),
+                   ('/inicio/perfil/editar', 'Editar'))
 
     template = 'posgradmin/try.html'
 

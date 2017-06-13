@@ -1,0 +1,52 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="/inicio/perfil">Mi perfil</a>  
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>	  
+      {{ object.user.first_name }} {{ object.user.last_name }}
+    </h3>
+  </div>
+  <div class="panel-body">
+    
+    <a href="editar">editar</a>
+
+    <h2>Datos Personales</h2>
+    <ul class="list-group">
+      <li class="list-group-item"><strong>fecha de nacimiento</strong> {{ object.fecha_nacimiento }}</li>
+      <li class="list-group-item"><strong>genero</strong> {{ object.genero }}</li>
+      <li class="list-group-item"><strong>nacionalidad</strong> {{ object.nacionalidad }}</li>
+      <li class="list-group-item"><strong>curp</strong> {{ object.curp }}</li>
+      <li class="list-group-item"><strong>rfc</strong> {{ object.rf }}</li>
+    </ul>
+    
+    
+
+
+    <h2>Información de contacto</h2>
+    <ul class="list-group">
+      <li class="list-group-item"><strong>telefono</strong> {{ object.telefono }}</li>
+      <li class="list-group-item"><strong>telefono_movil</strong> {{ object.telefono_movil }}</li>
+      <li class="list-group-item"><strong>email2</strong> {{ object.email2 }}</li>
+      <li class="list-group-item"><strong>website</strong> {{ object.website }}</li>
+      <li class="list-group-item"><strong>direccion1</strong> {{ object.direccion1 }}</li>
+      <li class="list-group-item"><strong>direccion2</strong> {{ object.direccion2 }}</li>
+      <li class="list-group-item"><strong>codigo_postal'</strong> {{ object.codigo_postal }}</li>
+    </ul>
+    
+  </div>
+</div>
+
+
+{% endblock %}
