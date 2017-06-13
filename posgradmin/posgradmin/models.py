@@ -281,7 +281,7 @@ class Acuerdo(models.Model):
 class Comentario(models.Model):
     solicitud = models.ForeignKey(Solicitud)
     autor = models.ForeignKey(User)
-    fecha = models.DateTimeField()
+    fecha = models.DateTimeField(auto_now_add=True)
     comentario = models.CharField(max_length=300)
     # anexo?
     def __unicode__(self):
