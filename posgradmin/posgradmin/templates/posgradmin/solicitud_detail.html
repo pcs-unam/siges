@@ -5,10 +5,6 @@
   {% for crumb in breadcrumbs %}  
   &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
   {% endfor %}
-
-  &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/solicitudes/">Solicitudes</a>
-  &rsaquo; <a href="/inicio/solicitudes/{{ object.id }}/">#{{ object.id }}</a>
 </div>
 {% endblock %}
 
