@@ -89,6 +89,7 @@ class SolicitudNuevaView(View):
 
             if 'anexo' in request.FILES:
                 nx = Anexo(solicitud=s,
+                           autor=request.user,
                            archivo=request.FILES['anexo'])
                 nx.save()
 
@@ -124,7 +125,7 @@ class SolicitudSortableView(SortableListView):
     allowed_sort_fields = {'resumen': {'default_direction': '',
                                        'verbose_name': 'resumen'},
                            'fecha_creacion': {'default_direction': '-',
-                                              'verbose_name': 'Published On'}}
+                                              'verbose_name': 'Fecha de publicación'}}
     default_sort_field = 'fecha_creacion'
     paginate_by = 5
 
