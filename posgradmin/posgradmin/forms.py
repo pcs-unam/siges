@@ -48,6 +48,7 @@ class PerfilModelForm(forms.ModelForm):
 
     nombre = forms.CharField()
     apellidos = forms.CharField()
+    fecha_nacimiento = forms.DateField()
 
     def __init__(self, *args, **kwargs):
 
@@ -177,3 +178,4 @@ class SolicitudAnexoForm(forms.Form):
             Submit('anexar', 'anexar', css_class="btn-primary"),
         )
     )
+

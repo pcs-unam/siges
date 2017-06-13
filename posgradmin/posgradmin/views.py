@@ -3,6 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
+from django.forms.models import model_to_dict
+from django.utils.formats import localize
 from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento, Comentario
@@ -227,23 +229,41 @@ class PerfilRegistroView(View):
     form_class = PerfilModelForm
 
     breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/inicio/perfil/', 'Perfil'))
+                   ('/inicio/perfil/', 'Editar perfil'))
 
-    template_name = 'posgradmin/try.html'
+    template = 'posgradmin/try.html'
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class()
+        try:
+            perfil = request.user.perfil
+            data = model_to_dict(perfil)
+            data['fecha_nacimiento'] = data['fecha_nacimiento'].isoformat()
+            data['nombre'] = request.user.first_name
+            data['apellidos'] = request.user.last_name
+            form = self.form_class(data=data)
+        except:
+            data = {'nombre': request.user.first_name,
+                    'apellidos': request.user.last_name}
+            form = self.form_class(data=data)
 
         return render(request,
-                      self.template_name,
+                      self.template,
                       {'form': form,
-                       'title': 'Completar Perfil',
+                       'title': 'Editar mi perfil',
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            p = Perfil()
+            u = request.user
+            u.first_name = request.POST['nombre']
+            u.last_name = request.POST['apellidos']
+            u.save()
+            try:
+                p = request.user.perfil
+            except:
+                p = Perfil()
+
             p.user = request.user
             p.fecha_nacimiento = request.POST['fecha_nacimiento']
             p.genero = request.POST['genero']
@@ -259,12 +279,12 @@ class PerfilRegistroView(View):
             p.codigo_postal = request.POST['codigo_postal']
             p.save()
 
-            return HttpResponseRedirect('/perfil/')
+            return HttpResponseRedirect('/inicio/')
         else:
             return render(request,
-                          self.template_name,
+                          self.template,
                           {'form': form,
-                           'title': 'Registrar como Estudiante',
+                           'title': 'Editar mi perfil',
                            'breadcrumbs': self.breadcrumbs})
 
 

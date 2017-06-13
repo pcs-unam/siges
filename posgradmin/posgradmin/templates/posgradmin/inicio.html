@@ -27,7 +27,7 @@
       <div class="panel-body">
 	{% if user.perfil %}
 	       <h4>{{ user.get_full_name }}</h4>
-	       <p><a href="">Editar mi perfil</a></p>		  	
+	       <p><a href="perfil">Editar mi perfil</a></p>		  	
 		  <hr />
 	{% if user.estudiante %}
 
@@ -55,7 +55,7 @@
 
 	{% else %}
 	  Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
-	  <a href="/perfil/registro">Completar registro de perfil</a>
+	  <a href="/inicio/perfil/">Completar registro de perfil</a>
 	{% endif %}
       </div>
     </div>

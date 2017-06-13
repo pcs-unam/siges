@@ -25,15 +25,14 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 
-
-    url(r'perfil/registro',
-        PerfilRegistroView.as_view()),
-
     url(r'estudiante/registro',
         EstudianteRegistroView.as_view()),
 
     url(r'academico/registro',
         AcademicoRegistroView.as_view()),
+
+    url(r'^inicio/perfil/$',
+        PerfilRegistroView.as_view()),        
 
     url(r'^inicio/solicitudes/$',
         SolicitudSortableView.as_view()),
