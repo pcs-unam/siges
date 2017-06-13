@@ -19,7 +19,7 @@ from django.contrib import admin
 from posgradmin.views import SolicitudNuevaView, \
     SolicitudDetail, SolicitudSortableView, \
     PerfilRegistroView, EstudianteRegistroView, AcademicoRegistroView, \
-    InicioView
+    InicioView, SolicitudComment
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -37,6 +37,9 @@ urlpatterns = [
 
     url(r'^inicio/solicitudes/$',
         SolicitudSortableView.as_view()),
+
+    url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/comentar$',
+        SolicitudComment.as_view()),
 
     url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/$',
         SolicitudDetail.as_view()),

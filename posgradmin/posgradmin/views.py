@@ -5,9 +5,9 @@ from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
-    Academico, CampoConocimiento
+    Academico, CampoConocimiento, Comentario
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
-    AcademicoModelForm, EstudianteAutoregistroForm
+    AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -108,6 +108,48 @@ class SolicitudDetail(DetailView):
     model = Solicitud
 
 
+class SolicitudComment(View):
+
+    form_class = SolicitudCommentForm
+
+    breadcrumbs = [('/inicio/', 'Inicio'),
+                   ('/inicio/solicitudes/', 'Solicitudes')]
+
+    template_name = 'posgradmin/solicitud_comment.html'
+
+    def get(self, request, *args, **kwargs):
+
+        form = self.form_class()
+        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
+        # envia todo a la plantilla etc
+        return render(request,
+                      self.template_name,
+                      {'object': solicitud,
+                       'form': form,
+                       'breadcrumbs': self.breadcrumbs.append(
+                           ('/inicio/solicitudes/%s/' % solicitud.id,
+                            '#%s' % solicitud.id))})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
+            c = Comentario()
+            c.solicitud = solicitud
+            c.autor = request.user
+            c.comentario = request.POST['comentario']
+            c.save()
+
+            return HttpResponseRedirect("/inicio/solicitudes/%s/"
+                                        % solicitud.id)
+        else:
+            return render(request,
+                          self.template_name,
+                          {'object': solicitud,
+                           'form': form,
+                           'breadcrumbs': self.breadcrumbs})
+
+    
 class SolicitudSortableView(SortableListView):
 
     def get_queryset(self):

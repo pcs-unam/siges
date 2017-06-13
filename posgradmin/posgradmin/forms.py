@@ -108,7 +108,7 @@ class EstudianteAutoregistroForm(forms.Form):
             Submit('cancel', 'Cancelar'),
         )
     )
-    
+
 
 class EstudianteModelForm(forms.ModelForm):
 
@@ -145,3 +145,20 @@ class AcademicoModelForm(forms.ModelForm):
         model = Academico
         exclude = ['user', 'tutor', 'profesor',
                    'fecha_acreditacion', 'acreditacion', 'entidad']
+
+
+class SolicitudCommentForm(forms.Form):
+
+    comentario = forms.CharField(
+        widget=forms.Textarea(),
+        required=True
+    )
+    # Uni-form
+    helper = FormHelper()
+#    helper.form_class = 'form-horizontal'
+    helper.layout = Layout(
+        Field('comentario', rows="3", cols="40", css_class='input-xlarge'),
+        FormActions(
+            Submit('comentar', 'comentar', css_class="btn-primary"),
+        )
+    )
