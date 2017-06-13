@@ -7,7 +7,8 @@ from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento, Comentario
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
-    AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm
+    AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
+    SolicitudAnexoForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -149,7 +150,54 @@ class SolicitudComment(View):
                            'form': form,
                            'breadcrumbs': self.breadcrumbs})
 
-    
+
+class SolicitudAnexo(View):
+
+    form_class = SolicitudAnexoForm
+
+    breadcrumbs = [('/inicio/', 'Inicio'),
+                   ('/inicio/solicitudes/', 'Solicitudes')]
+
+    template_name = 'posgradmin/solicitud_anexo.html'
+
+    def get(self, request, *args, **kwargs):
+
+        form = self.form_class()
+        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
+        # envia todo a la plantilla etc
+        return render(request,
+                      self.template_name,
+                      {'object': solicitud,
+                       'form': form,
+                       'breadcrumbs': self.breadcrumbs.append(
+                           ('/inicio/solicitudes/%s/' % solicitud.id,
+                            '#%s' % solicitud.id))})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
+            nx = Anexo(solicitud=solicitud,
+                       autor=request.user,
+                       archivo=request.FILES['anexo'])
+            nx.save()
+
+            c = Comentario()
+            c.solicitud = solicitud
+            c.autor = request.user
+            c.comentario = 'archivo anexado'
+            c.save()
+
+            return HttpResponseRedirect("/inicio/solicitudes/%s/"
+                                        % solicitud.id)
+        else:
+            return render(request,
+                          self.template_name,
+                          {'object': solicitud,
+                           'form': form,
+                           'breadcrumbs': self.breadcrumbs})
+
+
 class SolicitudSortableView(SortableListView):
 
     def get_queryset(self):

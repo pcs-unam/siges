@@ -162,3 +162,18 @@ class SolicitudCommentForm(forms.Form):
             Submit('comentar', 'comentar', css_class="btn-primary"),
         )
     )
+
+
+class SolicitudAnexoForm(forms.Form):
+
+    anexo = forms.FileField(required=True)
+    
+    # Uni-form
+    helper = FormHelper()
+#    helper.form_class = 'form-horizontal'
+    helper.layout = Layout(
+        'anexo',
+        FormActions(
+            Submit('anexar', 'anexar', css_class="btn-primary"),
+        )
+    )
