@@ -13,13 +13,13 @@
 	<h3 class="panel-title">
 
 	  {% if not user.perfil %}
-	  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>	  
+	  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 	  Perfil
 	  {% elif user.estudiante %}
-	  <span class="glyphicon glyphicon-education" aria-hidden="true"></span>	  
+	  <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
 	  Estudiante [{{ user.estudiante.estado }}]
 	  {% elif user.academico %}
-	  <span class="glyphicon glyphicon-education" aria-hidden="true"></span>	  	  
+	  <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
 	  Académico
 	  {% endif %}
 	</h3>
@@ -27,30 +27,39 @@
       <div class="panel-body">
 	{% if user.perfil %}
 	       <h4>{{ user.get_full_name }}</h4>
-	       <p><a href="perfil/">ver mi perfil</a></p>		  	
-		  <hr />
+	       <p><a href="perfil/">ver mi perfil</a></p>
 	{% if user.estudiante %}
 
-	  	{% if user.estudiante.estado == "aspirante" %}
-	  	{% endif %}
-	  
-	  	{% if user.estudiante.faltan_documentos %}
-	  	<div class="alert alert-danger" role="alert">
-	            <strong>No ha registrado grados académicos</strong> Registre uno o más grados académicos..
-	  	</div>
+		{% if user.estudiante.estado == "aspirante" %}
 		{% endif %}
-	
+
+		{% if user.estudiante.faltan_documentos %}
+		<div class="alert alert-danger" role="alert">
+		  <strong>No ha registrado grados académicos</strong>
+		  <a href="/inicio/perfil/agregar-grado">Agregar grados académicos</a>.
+		</div>
+		{% else %}
+		<ul class="list-group">
+		  {% for grado in user.gradoacademico_set.all %}
+		  <li class="list-group-item">
+		    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
+		    <p class="list-group-item-text">nivel {{ grado.nivel }}
+		  </li>
+		  {% endfor %}
+		</ul>
+		{% endif %}
+
 	{% else %}
 	{% endif %}
 
 	{% if user.academico %}
 		{% if user.academico.tutor %}
-                  <p><a href="">Mis comités tutorales</a></p>
-                  <p><a href="">Mis estudiantes</a></p>	
-	        {% endif %}
+		  <p><a href="">Mis comités tutorales</a></p>
+		  <p><a href="">Mis estudiantes</a></p>
+		{% endif %}
 		  <p><a href="">Mis cursos</a></p>
 		  <p><a href="">Generar reporte de actividades</a></p>
-        {% else %}
+	{% else %}
 	{% endif %}
 
 
@@ -58,9 +67,9 @@
 		  <ul>
 		    <li><a href="/inicio/estudiante/registro">registrarse como estudiante</a></li>
 		    <li><a href="/inicio/academico/registro">registrarse como académico</a></li>
-		    </ul>
-        {% endif %}
-		  
+		  </ul>
+	{% endif %}
+
 	{% else %}
 	  Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
 	  <a href="/inicio/perfil/editar">Completar registro de perfil</a>
@@ -92,7 +101,7 @@
 	<ul class="list-group">
 	  {% if user.academico %}
 	  {% for s in user.academico.cuantas_solicitudes %}
-	  <li class="list-group-item">	  
+	  <li class="list-group-item">
 	    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
 	  </li>
 	  {% endfor %}
@@ -100,11 +109,11 @@
 	  {% else %}
 
 	  {% for s in user.estudiante.cuantas_solicitudes %}
-	  <li class="list-group-item">	  
+	  <li class="list-group-item">
 	    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
 	  </li>
 	  {% endfor %}
-	  
+
 	  {% endif %}
 
 	</ul>
@@ -123,16 +132,16 @@
     <div class="panel panel-warning">
       <div class="panel-heading">
 	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon-king" aria-hidden="true"></span>	  
+	  <span class="glyphicon glyphicon-king" aria-hidden="true"></span>
 	  Coordinación
 	</h3>
       </div>
       <div class="panel-body">
-        <p><a href="">Agendar Sesión del Comité Académico</a></p>
-        <p><a href="">Académicos</a></p>
-        <p><a href="">Tutores</a></p>
-        <p><a href="">Profesores</a></p>
-        <p><a href="">Estudiantes</a></p>		
+	<p><a href="">Agendar Sesión del Comité Académico</a></p>
+	<p><a href="">Académicos</a></p>
+	<p><a href="">Tutores</a></p>
+	<p><a href="">Profesores</a></p>
+	<p><a href="">Estudiantes</a></p>
       </div>
     </div>
   </div>
