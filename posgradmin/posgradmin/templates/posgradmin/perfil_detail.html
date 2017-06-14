@@ -49,4 +49,49 @@
 </div>
 
 
+
+{% if object.user.estudiante %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+      Estudiante [{{ perfil.user.estudiante.estado }}]      
+    </h3>
+  </div>
+
+  <div class="panel-body">
+
+    <h2>Proyecto: {{ perfil.user.estudiante.nombre_proyecto }}</h2>
+    Campo de Conocimiento: {{ perfil.user.estudiante.campo_conocimiento }}
+
+    <hr />
+   
+    <li>estado: {{ perfil.user.estudiante.estado }}</li>    
+    <li>año de ingreso al posgrado: {{ perfil.user.estudiante.ingreso | default:""}}</li>
+    <li>semestre de ingreso al posgrado: {{ perfil.user.estudiante.semestre |default:""}}</li>
+    <li>Entidad: {{ perfil.user.estudiante.entidad | default:"" }}</li>
+    {% if perfil.user.estudiante.convenio %}<li>Convenio: {{ perfil.user.estudiante.convenio }}</li>{% endif %}
+    <li>clave del plan de estudios: {{ perfil.user.estudiante.plan | default:""}}</li>
+    {% if perfil.user.estudiante.doctorado_directo %}<li>Doctorado directo<li>{% endif %}
+    {% if perfil.user.estudiante.titulacion_licenciatura %}<li>primer año de maestría para obtener grado de licenciatura</li>{% endif %}
+    
+    {% if perfil.user.estudiante.fecha_baja %}
+    <h2>Baja</h2>
+    fecha: {{ perfil.user.estudiante.fecha_baja }}
+    motivo: {{ perfil.user.estudiante.motivo_baja }}
+    {% endif %}
+    
+    {% if perfil.user.estudiante.folio_titulacion %}
+    <h2>Titulación</h2>
+    Fecha de titulación: {{ perfil.user.estudiante.fecha_titulacion }}
+    Folio: {{ perfil.user.estudiante.folio_titulacion }}
+    Semestre: {{ perfil.user.estudiante.semestre_graduacion }}    
+    {% if perfil.user.estudiante.mencion_honorifica %}Mención Honorífica{% endif %}
+    {% if perfil.user.estudiante.medalla_alfonso_caso %}Medalla Alfonso Caso{% endif %}
+    {% endif %}
+    
+  </div>
+</div>
+{% endif %}
+
 {% endblock %}
