@@ -7,7 +7,7 @@ from django.forms.models import model_to_dict
 from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento, Comentario, GradoAcademico, \
-    Institucion
+    Institucion, Comite
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
@@ -414,7 +414,7 @@ class GradoAcademicoEliminar(View):
     def get(self, request, *args, **kwargs):
         g = GradoAcademico.objects.get(id=int(kwargs['pk']))
         g.delete()
-        return HttpResponseRedirect("/inicio/perfil/")        
+        return HttpResponseRedirect("/inicio/perfil/")
 
 
 class InstitucionAgregarView(View):
@@ -433,7 +433,7 @@ class InstitucionAgregarView(View):
                       {'title': 'Agregar Institución',
                        'form': form,
                        'breadcrumbs': self.breadcrumbs})
-    
+
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -451,41 +451,89 @@ class InstitucionAgregarView(View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class ComiteTutoralElegirView(View):
+class ComiteElegirView(View):
 
     form_class = ComiteTutoralModelForm
-    
 
     template_name = 'posgradmin/institucion_agregar.html'
 
+    tipo = 'tutoral'
+
+    def get_breadcrumbs():
+        pass
+
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-        breadcrumbs = [('/inicio/', 'Inicio'),
-                       ('/inicio/solicitudes/', 'Solicitudes'),
-                       ('/inicio/solicitudes/%s/' % solicitud.id,
-                        '#%s' % solicitud.id),
-                       ('/inicio/solicitudes/%s/elegir-comite-tutoral'
-                        % solicitud.id,
-                        'Elegir Comité Tutoral')]
         return render(request,
                       self.template_name,
-                      {'title': 'Elegir Comité Tutoral',
+                      {'title': self.title,
                        'form': form,
-                       'breadcrumbs': breadcrumbs})
-    
+                       'breadcrumbs': self.get_breadcrumbs(int(kwargs['pk']))})
+
     def post(self, request, *args, **kwargs):
+        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
         form = self.form_class(request.POST)
         if form.is_valid():
-            # i = Institucion(nombre=request.POST['nombre'],
-            #                 pais=request.POST['pais'],
-            #                 estado=request.POST['estado'])
-            # i.save()
+            presidente = Academico.objects.get(
+                id=int(request.POST['presidente']))
+            secretario = Academico.objects.get(
+                id=int(request.POST['secretario']))
+            vocal = Academico.objects.get(
+                id=int(request.POST['vocal']))
+            comite = Comite(estudiante=request.user.estudiante,
+                            solicitud=Solicitud.objects.get(
+                                id=int(kwargs['pk'])),
+                            tipo=self.tipo,
+                            presidente=presidente,
+                            secretario=secretario,
+                            vocal=vocal)
+            comite.save()
 
-            return HttpResponseRedirect("/inicio/perfil/agregar-grado")
+            return HttpResponseRedirect('/inicio/solicitudes/%s/'
+                                        % solicitud.id)
         else:
             return render(request,
                           self.template_name,
                           {'title': 'Elegir Comité Tutoral',
                            'form': form,
-                           'breadcrumbs': self.breadcrumbs})
+                           'breadcrumbs': self.get_breadcrumbs(int(kwargs['pk']))})
+
+
+class ComiteTutoralElegirView(ComiteElegirView):
+    tipo = 'tutoral'
+    title = 'Elegir Comité Tutoral'
+    def get_breadcrumbs(self, pk):
+        solicitud = Solicitud.objects.get(id=pk)
+        return [('/inicio/', 'Inicio'),
+                ('/inicio/solicitudes/', 'Solicitudes'),
+                ('/inicio/solicitudes/%s/' % solicitud.id,
+                 '#%s' % solicitud.id),
+                ('/inicio/solicitudes/%s/elegir-comite-tutoral'
+                 % solicitud.id, 'Elegir Comité Tutoral')]
+
+
+class JuradoCandidaturaElegirView(ComiteElegirView):
+    tipo = 'candidatura'
+    title = 'Elegir Jurado para Candidatura'
+    def get_breadcrumbs(self, pk):
+        solicitud = Solicitud.objects.get(id=pk)
+        return [('/inicio/', 'Inicio'),
+                ('/inicio/solicitudes/', 'Solicitudes'),
+                ('/inicio/solicitudes/%s/' % solicitud.id,
+                 '#%s' % solicitud.id),
+                ('/inicio/solicitudes/%s/elegir-jurado-candidatura'
+                 % solicitud.id, 'Elegir Jurado para Candidatura')]
+
+
+class JuradoGradoElegirView(ComiteElegirView):
+    tipo = 'grado'
+    title = 'Elegir Jurado para Examen de Grado'
+
+    def get_breadcrumbs(self, pk):
+        solicitud = Solicitud.objects.get(id=pk)
+        return [('/inicio/', 'Inicio'),
+                ('/inicio/solicitudes/', 'Solicitudes'),
+                ('/inicio/solicitudes/%s/' % solicitud.id,
+                 '#%s' % solicitud.id),
+                ('/inicio/solicitudes/%s/elegir-jurado-grado'
+                 % solicitud.id, 'Elegir Jurado para Examen de Grado')]

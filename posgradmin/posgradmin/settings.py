@@ -171,20 +171,26 @@ solicitudes_tutoriles = (
          "Aviso de Ausencia por Sabático u Otra Razón"))
 
 solicitudes_estudiantiles = (
-        ('seleccionar_jurado',
-         "Selección de jurado de grado o de candidatura"),
-        ('registrar_actividad_complementaria',
-         "Registro de actividad complementaria"),
-        ('solicitar_candidatura',
-         "Solicitud de examen de candidtaura"),
-        ("cambiar_comite_tutoral",
-         "Cambiar comité tutoral"),
-        ("cambiar_titulo_proyecto",
-         "Solicitud de cambio de título de proyecto"),
-        ("cambiar_campo_conocimiento",
-         "Cambio de campo de conocimiento"),
-        ("reportar_suspension",
-         "Reportar suspensión"))
+    ("cambiar_titulo_proyecto",
+     "Cambio de título de proyecto"),
+    ("cambiar_campo_conocimiento",
+     "Cambio de campo de conocimiento"),
+
+    ("cambiar_comite_tutoral",
+     "Elegir comité tutoral"),
+
+    ('registrar_actividad_complementaria',
+     "Registro de actividad complementaria"),
+    ('solicitar_candidatura',
+     "Solicitud de examen de candidtaura"),
+
+    ('seleccionar_jurado_candidatura',
+     "Selección de jurado de candidatura"),
+    ('seleccionar_jurado_grado',
+     "Selección de jurado de grado"),
+
+    ("reportar_suspension",
+     "Reportar suspensión"))
 
 solicitud_otro = (
     ('otro',

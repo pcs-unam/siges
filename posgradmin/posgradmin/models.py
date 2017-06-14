@@ -138,7 +138,15 @@ class Academico(models.Model):
         return solicitudes
 
     def __unicode__(self):
-        return u"%s" % self.user
+        estado = []
+        if self.tutor:
+            estado.append("tutor acreditado")
+        if self.profesor:
+            estado.append("profesor")
+
+        return u"%s %s, %s" % (self.user.first_name,
+                               self.user.last_name,
+                               ", ".join(estado))
 
     class Meta:
         verbose_name_plural = "Académicos"
@@ -287,6 +295,7 @@ class Comentario(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     comentario = models.CharField(max_length=300)
     # anexo?
+
     def __unicode__(self):
         return u'%s por %s: "%s"' % (self.fecha, self.autor, self.comentario)
 
@@ -304,4 +313,19 @@ class Comite(models.Model):
                             choices=(('tutoral', 'tutoral'),
                                      ('candidatura', 'candidatura'),
                                      ('grado', 'grado')))
-    
+
+    def __unicode__(self):
+        return u'presidente: %s, secretario: %s, vocal: %s' \
+            % (self.presidente,
+               self.secretario,
+               self.vocal)
+
+    def as_ul(self):
+        ul = """<ul>
+                 <li><strong>presidente:</strong> %s</li>
+                 <li><strong>secretario:</strong> %s</li>
+                 <li><strong>vocal:</strong> %s</li>
+                </ul>"""
+        return ul % (self.presidente,
+                     self.secretario,
+                     self.vocal)
