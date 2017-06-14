@@ -20,7 +20,7 @@ from posgradmin.views import SolicitudNuevaView, \
     SolicitudDetail, SolicitudSortableView, \
     PerfilRegistroView, PerfilDetail, EstudianteRegistroView, \
     AcademicoRegistroView, InicioView, SolicitudComment, SolicitudAnexo, \
-    GradoAcademicoAgregar
+    GradoAcademicoAgregar, GradoAcademicoEliminar
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -35,6 +35,9 @@ urlpatterns = [
     url(r'^inicio/perfil/editar$',
         PerfilRegistroView.as_view()),
 
+    url(r'^inicio/perfil/eliminar-grado/(?P<pk>[0-9]+)$',
+        GradoAcademicoEliminar.as_view()),
+    
     url(r'^inicio/perfil/agregar-grado$',
         GradoAcademicoAgregar.as_view()),
 

@@ -406,3 +406,11 @@ class GradoAcademicoAgregar(View):
                           {'title': 'Agregar Grado Académico',
                            'form': form,
                            'breadcrumbs': self.breadcrumbs})
+
+
+class GradoAcademicoEliminar(View):
+
+    def get(self, request, *args, **kwargs):
+        g = GradoAcademico.objects.get(id=int(kwargs['pk']))
+        g.delete()
+        return HttpResponseRedirect("/inicio/perfil/")        
