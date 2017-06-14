@@ -312,16 +312,15 @@ class EstudianteRegistroView(View):
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
+        form = self.form_class(request.POST)
         if form.is_valid():
             e = Estudiante()
             e.user = request.user
             e.estado = 'aspirante'
             campo = CampoConocimiento.objects.get(
                 id=int(request.POST['campo_conocimiento']))
-            print campo
             e.campo_conocimiento = campo
-            e.nombre_proyecto = form['proyecto']
+            e.nombre_proyecto = request.POST['proyecto']
             e.save()
 
             return HttpResponseRedirect('/inicio/')
