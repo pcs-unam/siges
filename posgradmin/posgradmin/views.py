@@ -10,7 +10,8 @@ from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Institucion
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
-    SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm
+    SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
+    ComiteTutoralModelForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -96,8 +97,8 @@ class SolicitudNuevaView(View):
                            archivo=request.FILES['anexo'])
                 nx.save()
 
-            next = workflows.solicitud.get(s.estado,
-                                           '/solicitudes/%s')
+            next = workflows.solicitud.get(s.tipo,
+                                           '/inicio/solicitudes/%s')
             return HttpResponseRedirect(next % s.id)
         else:
             return render(request,
@@ -446,5 +447,45 @@ class InstitucionAgregarView(View):
             return render(request,
                           self.template_name,
                           {'title': 'Agregar Institución',
+                           'form': form,
+                           'breadcrumbs': self.breadcrumbs})
+
+
+class ComiteTutoralElegirView(View):
+
+    form_class = ComiteTutoralModelForm
+    
+
+    template_name = 'posgradmin/institucion_agregar.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
+        breadcrumbs = [('/inicio/', 'Inicio'),
+                       ('/inicio/solicitudes/', 'Solicitudes'),
+                       ('/inicio/solicitudes/%s/' % solicitud.id,
+                        '#%s' % solicitud.id),
+                       ('/inicio/solicitudes/%s/elegir-comite-tutoral'
+                        % solicitud.id,
+                        'Elegir Comité Tutoral')]
+        return render(request,
+                      self.template_name,
+                      {'title': 'Elegir Comité Tutoral',
+                       'form': form,
+                       'breadcrumbs': breadcrumbs})
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            # i = Institucion(nombre=request.POST['nombre'],
+            #                 pais=request.POST['pais'],
+            #                 estado=request.POST['estado'])
+            # i.save()
+
+            return HttpResponseRedirect("/inicio/perfil/agregar-grado")
+        else:
+            return render(request,
+                          self.template_name,
+                          {'title': 'Elegir Comité Tutoral',
                            'form': form,
                            'breadcrumbs': self.breadcrumbs})

@@ -168,7 +168,10 @@ class Estudiante(models.Model):
     ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado",
                                                blank=True, null=True)
     semestre = models.PositiveSmallIntegerField(
-        "semestre de ingreso al posgrado", blank=True, null=True)
+        "semestre de ingreso al posgrado",
+        choices=((1, 1),
+                 (2, 2)),
+        blank=True, null=True)
     entidad = models.ForeignKey(Entidad, null=True, blank=True)
     convenio = models.CharField(max_length=100, blank=True)
     plan = models.CharField("clave del plan de estudios",
@@ -225,6 +228,8 @@ class Estudiante(models.Model):
     def __unicode__(self):
         return u"%s en %s" % (self.user, self.plan)
 
+    def comite_tutoral(self):
+        pass
 
 class Beca(models.Model):
     estudiante = models.ForeignKey(Estudiante)
@@ -284,3 +289,19 @@ class Comentario(models.Model):
     # anexo?
     def __unicode__(self):
         return u'%s por %s: "%s"' % (self.fecha, self.autor, self.comentario)
+
+
+class Comite(models.Model):
+    presidente = models.ForeignKey(Academico,
+                                   related_name="preside_comites")
+    secretario = models.ForeignKey(Academico,
+                                   related_name="secretario_comites")
+    vocal = models.ForeignKey(Academico,
+                              related_name="vocal_comites")
+    solicitud = models.ForeignKey(Solicitud)
+    estudiante = models.ForeignKey(Estudiante)
+    tipo = models.CharField(max_length=15,
+                            choices=(('tutoral', 'tutoral'),
+                                     ('candidatura', 'candidatura'),
+                                     ('grado', 'grado')))
+    

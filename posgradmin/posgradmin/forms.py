@@ -5,7 +5,7 @@ from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, C
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, \
-    CampoConocimiento, GradoAcademico, Institucion
+    CampoConocimiento, GradoAcademico, Institucion, Comite
 
 
 class SolicitudForm(forms.Form):
@@ -220,3 +220,19 @@ class InstitucionModelForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
         self.helper.layout.append(Submit('agregar', 'agregar'))
+
+
+class ComiteTutoralModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Comite
+        exclude = ['solicitud', 'tipo', 'estudiante']
+
+    def __init__(self, *args, **kwargs):
+
+        super(ComiteTutoralModelForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout.append(Submit('elegir', 'elegir'))
+        
