@@ -44,7 +44,28 @@
       <li class="list-group-item"><strong>direccion2</strong> {{ object.direccion2 }}</li>
       <li class="list-group-item"><strong>codigo_postal'</strong> {{ object.codigo_postal }}</li>
     </ul>
-    
+
+    {% if object.user.gradoacademico_set %}
+    <h2>Grados Académicos</h2>
+
+    <a href="agregar-grado"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> agregar grado académico</a><br /><br />
+    <ul class="list-group">    
+    {% for grado in object.user.gradoacademico_set.all %}
+    <li class="list-group-item">
+      <div style="float: right">
+	<button type="button" class="btn btn-danger btn-xs"
+		onClick="if (confirm('¿eliminar {{ grado.grado_obtenido}}?')) window.location='/inicio/perfil/eliminar_grado/{{grado.id}}'">
+	  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>      
+      <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
+      <p class="list-group-item-text">nivel {{ grado.nivel }}
+	obtenido el {{ grado.fecha_obtencion }},
+	promedio: {{ grado.promedio }}<br />
+	<a href="{{ grado.documento }}">documento</a></p>
+    </li>
+    {% endfor %}
+    {% else %}
+    <a href="agregar-grado">agregar grado académico</a>
+    {% endif %}    
   </div>
 </div>
 

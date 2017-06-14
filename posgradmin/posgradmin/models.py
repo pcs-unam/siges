@@ -13,13 +13,6 @@ class Institucion(models.Model):
     nombre = models.CharField(max_length=100)
     pais = models.CharField(max_length=100)
     estado = models.CharField(max_length=100)
-    tipo = models.CharField(max_length=15,
-                            choices=(('UNAM', 'UNAM'),
-                                     ('Sector Salud', 'Sector Salud'),
-                                     ('Hospitales', 'Hospitales'),
-                                     ('Gobierno', 'Gobierno'),
-                                     ('Universidad', 'Universidad'),
-                                     ('Otro', 'otro')))
 
     def __unicode__(self):
         return u"%s" % self.nombre
@@ -82,7 +75,7 @@ class Perfil(models.Model):
 class GradoAcademico(models.Model):
     user = models.ForeignKey(User)
 
-    grado = models.CharField(max_length=15,
+    nivel = models.CharField(max_length=15,
                              choices=(('licenciatura', 'licenciatura'),
                                       ('maestria', 'maestria'),
                                       ('doctorado', 'doctorado')))
@@ -92,11 +85,11 @@ class GradoAcademico(models.Model):
     institucion = models.ForeignKey(Institucion)
     facultad = models.CharField(max_length=100)
 
-    fecha_titulacion = models.DateField()
+    fecha_obtencion = models.DateField("Fecha de obtención de grado")
     promedio = models.DecimalField(max_digits=4, decimal_places=2)
 
-    archivo = models.FileField()
-    
+    documento = models.FileField("Copia de documento probatorio")
+
     def __unicode__(self):
         return u"%s @ %s" % (self.grado_obtenido, self.institucion)
 

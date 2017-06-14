@@ -18,8 +18,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from posgradmin.views import SolicitudNuevaView, \
     SolicitudDetail, SolicitudSortableView, \
-    PerfilRegistroView, PerfilDetail, EstudianteRegistroView, AcademicoRegistroView, \
-    InicioView, SolicitudComment, SolicitudAnexo
+    PerfilRegistroView, PerfilDetail, EstudianteRegistroView, \
+    AcademicoRegistroView, InicioView, SolicitudComment, SolicitudAnexo, \
+    GradoAcademicoAgregar
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -32,11 +33,14 @@ urlpatterns = [
         AcademicoRegistroView.as_view()),
 
     url(r'^inicio/perfil/editar$',
-        PerfilRegistroView.as_view()),        
+        PerfilRegistroView.as_view()),
+
+    url(r'^inicio/perfil/agregar-grado$',
+        GradoAcademicoAgregar.as_view()),
 
     url(r'^inicio/perfil/$',
-        PerfilDetail.as_view()),        
-    
+        PerfilDetail.as_view()),
+
     url(r'^inicio/solicitudes/$',
         SolicitudSortableView.as_view()),
 
@@ -45,7 +49,7 @@ urlpatterns = [
 
     url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/anexar$',
         SolicitudAnexo.as_view()),
-    
+
     url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/$',
         SolicitudDetail.as_view()),
 

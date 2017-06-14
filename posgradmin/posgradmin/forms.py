@@ -4,7 +4,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, Column
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
-from posgradmin.models import Perfil, Estudiante, Academico, CampoConocimiento
+from posgradmin.models import Perfil, Estudiante, Academico, CampoConocimiento, \
+    GradoAcademico
 
 
 class SolicitudForm(forms.Form):
@@ -168,7 +169,7 @@ class SolicitudCommentForm(forms.Form):
 class SolicitudAnexoForm(forms.Form):
 
     anexo = forms.FileField(required=True)
-    
+
     # Uni-form
     helper = FormHelper()
 #    helper.form_class = 'form-horizontal'
@@ -179,3 +180,28 @@ class SolicitudAnexoForm(forms.Form):
         )
     )
 
+
+class GradoAcademicoModelForm(forms.ModelForm):
+
+    fecha_obtencion = forms.DateField()
+
+    class Meta:
+        model = GradoAcademico
+        exclude = ['user', ]
+
+    def __init__(self, *args, **kwargs):
+
+        super(GradoAcademicoModelForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+
+        self.helper.layout = Layout(
+            'nivel',
+            'grado_obtenido',
+            'institucion',
+            HTML('<a href="">agregar institucion</a><br /><br />'),
+            'facultad',
+            'fecha_obtencion',
+            'promedio',
+            'documento',
+            Submit('agregar', 'agregar'))

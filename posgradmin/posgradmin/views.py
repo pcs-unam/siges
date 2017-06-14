@@ -4,13 +4,13 @@ from django.views.generic import DetailView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from django.forms.models import model_to_dict
-from django.utils.formats import localize
 from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
-    Academico, CampoConocimiento, Comentario
+    Academico, CampoConocimiento, Comentario, GradoAcademico, \
+    Institucion
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
-    SolicitudAnexoForm
+    SolicitudAnexoForm, GradoAcademicoModelForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -228,6 +228,7 @@ class PerfilDetail(DetailView):
     def get_object(self):
         return self.request.user.perfil
 
+
 class PerfilRegistroView(View):
 
     form_class = PerfilModelForm
@@ -363,4 +364,45 @@ class AcademicoRegistroView(View):
                           self.template_name,
                           {'form': form,
                            'title': 'Registrarse como Académico',
+                           'breadcrumbs': self.breadcrumbs})
+
+
+class GradoAcademicoAgregar(View):
+
+    form_class = GradoAcademicoModelForm
+
+    breadcrumbs = [('/inicio/', 'Inicio'),
+                   ('/inicio/perfil/', 'Mi perfil'),
+                   ('/inicio/perfil/agregar-grado', 'Agregar Grado Académico')]
+
+    template_name = 'posgradmin/grado_academico_agregar.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request,
+                      self.template_name,
+                      {'title': 'Agregar Grado Académico',
+                       'form': form,
+                       'breadcrumbs': self.breadcrumbs})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            ins = Institucion.objects.get(id=int(request.POST['institucion']))
+            g = GradoAcademico(user=request.user,
+                               nivel=request.POST['nivel'],
+                               grado_obtenido=request.POST['grado_obtenido'],
+                               institucion=ins,
+                               facultad=request.POST['facultad'],
+                               fecha_obtencion=request.POST['fecha_obtencion'],
+                               promedio=request.POST['promedio'],
+                               documento=request.FILES['documento'])
+            g.save()
+
+            return HttpResponseRedirect("/inicio/perfil/")
+        else:
+            return render(request,
+                          self.template_name,
+                          {'title': 'Agregar Grado Académico',
+                           'form': form,
                            'breadcrumbs': self.breadcrumbs})
