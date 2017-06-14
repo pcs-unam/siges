@@ -10,7 +10,7 @@ from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Institucion
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
-    SolicitudAnexoForm, GradoAcademicoModelForm
+    SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -414,3 +414,37 @@ class GradoAcademicoEliminar(View):
         g = GradoAcademico.objects.get(id=int(kwargs['pk']))
         g.delete()
         return HttpResponseRedirect("/inicio/perfil/")        
+
+
+class InstitucionAgregarView(View):
+
+    form_class = InstitucionModelForm
+
+    breadcrumbs = [('/inicio/', 'Inicio'),
+                   ('/institucion/agregar', 'Agregar Institución')]
+
+    template_name = 'posgradmin/institucion_agregar.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request,
+                      self.template_name,
+                      {'title': 'Agregar Institución',
+                       'form': form,
+                       'breadcrumbs': self.breadcrumbs})
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            i = Institucion(nombre=request.POST['nombre'],
+                            pais=request.POST['pais'],
+                            estado=request.POST['estado'])
+            i.save()
+
+            return HttpResponseRedirect("/inicio/perfil/agregar-grado")
+        else:
+            return render(request,
+                          self.template_name,
+                          {'title': 'Agregar Institución',
+                           'form': form,
+                           'breadcrumbs': self.breadcrumbs})

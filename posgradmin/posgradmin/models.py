@@ -15,7 +15,7 @@ class Institucion(models.Model):
     estado = models.CharField(max_length=100)
 
     def __unicode__(self):
-        return u"%s" % self.nombre
+        return u"%s, %s, %s" % (self.nombre, self.estado, self.pais)
 
     class Meta:
         verbose_name_plural = "instituciones"

@@ -20,12 +20,15 @@ from posgradmin.views import SolicitudNuevaView, \
     SolicitudDetail, SolicitudSortableView, \
     PerfilRegistroView, PerfilDetail, EstudianteRegistroView, \
     AcademicoRegistroView, InicioView, SolicitudComment, SolicitudAnexo, \
-    GradoAcademicoAgregar, GradoAcademicoEliminar
+    GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 
+    url(r'^institucion/agregar',
+        InstitucionAgregarView.as_view()),
+    
     url(r'^inicio/estudiante/registro',
         EstudianteRegistroView.as_view()),
 

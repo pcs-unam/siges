@@ -4,8 +4,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, Column
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
-from posgradmin.models import Perfil, Estudiante, Academico, CampoConocimiento, \
-    GradoAcademico
+from posgradmin.models import Perfil, Estudiante, Academico, \
+    CampoConocimiento, GradoAcademico, Institucion
 
 
 class SolicitudForm(forms.Form):
@@ -199,9 +199,24 @@ class GradoAcademicoModelForm(forms.ModelForm):
             'nivel',
             'grado_obtenido',
             'institucion',
-            HTML('<a href="">agregar institucion</a><br /><br />'),
+            HTML('<a href="/institucion/agregar">agregar institucion</a><br /><br />'),
             'facultad',
             'fecha_obtencion',
             'promedio',
             'documento',
             Submit('agregar', 'agregar'))
+
+
+class InstitucionModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Institucion
+        exclude = []
+
+    def __init__(self, *args, **kwargs):
+
+        super(InstitucionModelForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout.append(Submit('agregar', 'agregar'))
