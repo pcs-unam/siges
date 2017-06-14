@@ -5,6 +5,10 @@
   {% for crumb in breadcrumbs %}  
   &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
   {% endfor %}
+
+  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="/inicio/solicitudes/">Solicitudes</a>
+  &rsaquo; <a href="/inicio/solicitudes/{{ object.id }}/">#{{ object.id }}</a>
 </div>
 {% endblock %}
 
@@ -24,6 +28,17 @@
   <div class="panel-body">
     <h3>{{ object.resumen }}</h3>
     <p>{{ object.descripcion }}</p>
+
+    {% if object.tipo == "cambiar_comite_tutoral" %}
+    {% if object.comite_set.all %}
+    {{ object.comite }}
+    {% else %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No ha hecho una elección</strong>.
+      <a href="elegir-comite-tutoral">Elegir comité tutoral</a>.
+    </div>
+    {% endif %}
+    {% endif %}
     
   </div>
 
