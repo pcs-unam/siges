@@ -237,6 +237,15 @@ class Estudiante(models.Model):
     def comite_tutoral(self):
         pass
 
+    def get_proyecto(self):
+        aprobados = []
+        for p in self.proyecto_set.order_by('id'):
+            if p.aprobado():
+                aprobados.append(p)
+        if aprobados:
+            return aprobados[-1]
+        else:
+            return self.proyecto_set.last()
 
 class Beca(models.Model):
     estudiante = models.ForeignKey(Estudiante)
@@ -261,6 +270,13 @@ class Solicitud(models.Model):
 
     estado = models.CharField(max_length=30, default="nueva")
 
+    def dictamen_final(self):
+        try:
+            return self.dictament_set.exclude(
+                asistente=None).first().resolucion
+        except:
+            return None
+    
     def __unicode__(self):
         return u"#%s %s [%s]" % (self.id, self.resumen, self.solicitante)
 
@@ -275,13 +291,20 @@ class Proyecto(models.Model):
     solicitud = models.ForeignKey(Solicitud)
 
     def aprobado(self):
-        if self.solicitud.estado == 'atendida':
+        if self.solicitud.dictamen_final() == 'concedida':
             return True
         else:
             return False
 
+
     def __unicode__(self):
-        return u"%s en %s" % (self.nombre, self.campo_conocimiento)
+        if self.aprobado():
+            estado = 'aprobado'
+        else:
+            estado = 'no aprobado'
+        return u"%s en %s (%s)" % (self.nombre,
+                                   self.campo_conocimiento,
+                                   estado)
 
 
 class Anexo(models.Model):

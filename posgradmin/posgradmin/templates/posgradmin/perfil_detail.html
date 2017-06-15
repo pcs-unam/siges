@@ -82,8 +82,16 @@
 
   <div class="panel-body">
 
-    <h2>Proyecto: {{ perfil.user.estudiante.proyecto.nombre }}</h2>
-    Campo de Conocimiento: {{ perfil.user.estudiante.proyecto.campo_conocimiento }}
+    <h2>Proyecto: {{ perfil.user.estudiante.get_proyecto.nombre }}</h2>
+    Campo de Conocimiento: {{ perfil.user.estudiante.proyecto_set.last.campo_conocimiento }}
+    {% if not perfil.user.estudiante.get_proyecto.aprobado %}
+    <div class="alert alert-warning" role="alert">
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> 
+      Proyecto no aprobado.
+      Ver solicitud <a href="/inicio/solicitudes/{{ perfil.user.estudiante.get_proyecto.solicitud.id }}">
+	#{{ perfil.user.estudiante.get_proyecto.solicitud.id }}</a>.
+    </div>
+    {% endif %}
 
     <hr />
    
