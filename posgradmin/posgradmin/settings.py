@@ -171,10 +171,8 @@ solicitudes_tutoriles = (
          "Aviso de Ausencia por Sabático u Otra Razón"))
 
 solicitudes_estudiantiles = (
-    ("cambiar_titulo_proyecto",
-     "Cambio de título de proyecto"),
-    ("cambiar_campo_conocimiento",
-     "Cambio de campo de conocimiento"),
+    ("cambio_proyecto",
+     "Cambio de título y/o campo de conocimiento de proyecto"),
 
     ("cambiar_comite_tutoral",
      "Elegir comité tutoral"),

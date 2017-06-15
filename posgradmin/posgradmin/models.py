@@ -185,8 +185,6 @@ class Estudiante(models.Model):
     plan = models.CharField("clave del plan de estudios",
                             max_length=100, blank=True)
     doctorado_directo = models.BooleanField(default=False)
-    campo_conocimiento = models.ForeignKey(CampoConocimiento)
-    nombre_proyecto = models.CharField(max_length=200)
     estado = models.CharField(max_length=15,
                               choices=(('aspirante', 'aspirante'),
                                        ('graduado', 'graduado'),
@@ -234,10 +232,11 @@ class Estudiante(models.Model):
         return solicitudes
 
     def __unicode__(self):
-        return u"%s en %s" % (self.user, self.plan)
+        return u"%s [%s]" % (self.user, self.estado)
 
     def comite_tutoral(self):
         pass
+
 
 class Beca(models.Model):
     estudiante = models.ForeignKey(Estudiante)
@@ -267,6 +266,22 @@ class Solicitud(models.Model):
 
     class Meta:
         verbose_name_plural = "Solicitudes"
+
+
+class Proyecto(models.Model):
+    campo_conocimiento = models.ForeignKey(CampoConocimiento)
+    nombre = models.CharField(max_length=200)
+    estudiante = models.ForeignKey(Estudiante)
+    solicitud = models.ForeignKey(Solicitud)
+
+    def aprobado(self):
+        if self.solicitud.estado == 'atendida':
+            return True
+        else:
+            return False
+
+    def __unicode__(self):
+        return u"%s en %s" % (self.nombre, self.campo_conocimiento)
 
 
 class Anexo(models.Model):
@@ -329,3 +344,17 @@ class Comite(models.Model):
         return ul % (self.presidente,
                      self.secretario,
                      self.vocal)
+
+
+class Asistente(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+
+class Dictamen(models.Model):
+    resolucion = models.CharField(max_length=15,
+                                  choices=(('concedida', 'concedida'),
+                                           ('denegada', 'denegada')))
+    solicitud = models.ForeignKey(Solicitud)
+    academico = models.ForeignKey(Academico, null=True, blank=True)
+    asistente = models.ForeignKey(Asistente, null=True, blank=True)
+    fecha = models.DateTimeField(auto_now_add=True)

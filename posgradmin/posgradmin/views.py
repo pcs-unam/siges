@@ -7,7 +7,7 @@ from django.forms.models import model_to_dict
 from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento, Comentario, GradoAcademico, \
-    Institucion, Comite
+    Institucion, Comite, Proyecto
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
@@ -218,7 +218,8 @@ class SolicitudSortableView(SortableListView):
     allowed_sort_fields = {'resumen': {'default_direction': '',
                                        'verbose_name': 'resumen'},
                            'fecha_creacion': {'default_direction': '-',
-                                              'verbose_name': 'Fecha de publicación'}}
+                                              'verbose_name':
+                                              'Fecha de publicación'}}
     default_sort_field = 'fecha_creacion'
     paginate_by = 5
 
@@ -319,11 +320,21 @@ class EstudianteRegistroView(View):
             e = Estudiante()
             e.user = request.user
             e.estado = 'aspirante'
-            campo = CampoConocimiento.objects.get(
-                id=int(request.POST['campo_conocimiento']))
-            e.campo_conocimiento = campo
-            e.nombre_proyecto = request.POST['proyecto']
             e.save()
+
+            s = Solicitud(
+                resumen='Cambio de título y/o campo de conocimiento de proyecto',
+                tipo='cambio_proyecto',
+                solicitante=request.user)
+            s.save()
+
+            p = Proyecto(
+                estudiante=e,
+                solicitud=s,
+                campo_conocimiento=CampoConocimiento.objects.get(
+                    id=int(request.POST['campo_conocimiento'])),
+                nombre=request.POST['proyecto'])
+            p.save()
 
             return HttpResponseRedirect('/inicio/')
         else:
