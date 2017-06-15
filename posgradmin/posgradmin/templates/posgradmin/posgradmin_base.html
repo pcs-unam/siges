@@ -46,12 +46,12 @@
 {% block usertools %}
 
 <div id="user-tools">
-  {% if user %}
-  {% block welcome-msg %}
+  {% if user.is_authenticated %}
   <strong>{% firstof user.get_short_name user.get_username %}</strong> /
-  {% endblock %}
   <a href="/accounts/password/change/">cambiar contraseña</a> /
-  <a href="/accounts/logout/">Terminar sesión</a>    
+  <a href="/accounts/logout/">Terminar sesión</a>
+  {% else %}
+  <a href="/accounts/login/">Iniciar sesión</a>  
   {% endif %}
 </div>
 {% endblock %}

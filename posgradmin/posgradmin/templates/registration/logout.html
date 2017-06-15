@@ -1,6 +1,9 @@
-{% extends "registration/registration_base.html" %}
-{% load i18n %}
-{% block title %}{% trans "Logged out" %}{% endblock %}
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block title %}
+Sesión terminada
+{% endblock %}
+
 {% block content %}
-{% trans "Successfully logged out!" %}
+<a href="/accounts/login">Volver a entrar</a>
 {% endblock %}
