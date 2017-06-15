@@ -5,7 +5,8 @@ from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, C
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, \
-    CampoConocimiento, GradoAcademico, Institucion, Comite
+    CampoConocimiento, GradoAcademico, Institucion, Comite, \
+    Proyecto
 
 
 class SolicitudForm(forms.Form):
@@ -25,7 +26,6 @@ class SolicitudForm(forms.Form):
 
     anexo = forms.FileField(required=False)
 
-    # Uni-form
     helper = FormHelper()
     helper.form_class = 'form-horizontal'
     helper.layout = Layout(
@@ -34,7 +34,6 @@ class SolicitudForm(forms.Form):
 
         Field('resumen', size=70),
 
-        # Field('resumen', css_class='input-xlarge'),
         Field('descripcion', rows="3", cols="70", css_class='input-xlarge'),
         Field('anexo'),
 
@@ -54,14 +53,7 @@ class PerfilModelForm(forms.ModelForm):
 
         super(PerfilModelForm, self).__init__(*args, **kwargs)
 
-        # If you pass FormHelper constructor a form instance
-        # It builds a default layout with all its fields
         self.helper = FormHelper(self)
-#        self.helper.form_class = 'form-horizontal'
-        # You can dynamically adjust your layout
-        # self.helper.form_class = 'form-inline'
-        # self.helper.field_template = 'bootstrap3/layout/inline_field.html'
-
         self.helper.layout = Layout(
             Div(Div(HTML("<h1 class='panel-title'>Datos Personales</h1>"),
                     Class="panel-heading"),
@@ -98,7 +90,6 @@ class EstudianteAutoregistroForm(forms.Form):
     campo_conocimiento = forms.ModelChoiceField(
         queryset=CampoConocimiento.objects.all())
 
-    # Uni-form
     helper = FormHelper()
     helper.form_class = 'form-horizontal'
     helper.layout = Layout(
@@ -115,11 +106,8 @@ class EstudianteModelForm(forms.ModelForm):
 
         super(EstudianteModelForm, self).__init__(*args, **kwargs)
 
-        # If you pass FormHelper constructor a form instance
-        # It builds a default layout with all its fields
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
-        # You can dynamically adjust your layout
         self.helper.layout.append(Submit('guardar', 'guardar'))
 
     class Meta:
@@ -133,11 +121,9 @@ class AcademicoModelForm(forms.ModelForm):
 
         super(AcademicoModelForm, self).__init__(*args, **kwargs)
 
-        # If you pass FormHelper constructor a form instance
-        # It builds a default layout with all its fields
+
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
-        # You can dynamically adjust your layout
         self.helper.layout.append(Submit('guardar', 'guardar'))
 
     class Meta:
@@ -152,9 +138,8 @@ class SolicitudCommentForm(forms.Form):
         widget=forms.Textarea(),
         required=True
     )
-    # Uni-form
+
     helper = FormHelper()
-#    helper.form_class = 'form-horizontal'
     helper.layout = Layout(
         Field('comentario', rows="3", cols="40", css_class='input-xlarge'),
         FormActions(
@@ -232,4 +217,18 @@ class ComiteTutoralModelForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
         self.helper.layout.append(Submit('elegir', 'elegir'))
-        
+
+
+class ProyectoModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Proyecto
+        exclude = ['estudiante', 'solicitud']
+
+    def __init__(self, *args, **kwargs):
+
+        super(ProyectoModelForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout.append(Submit('guardar', 'guardar'))

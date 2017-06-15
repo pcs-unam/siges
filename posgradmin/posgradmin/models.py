@@ -247,6 +247,7 @@ class Estudiante(models.Model):
         else:
             return self.proyecto_set.last()
 
+
 class Beca(models.Model):
     estudiante = models.ForeignKey(Estudiante)
 
@@ -276,7 +277,7 @@ class Solicitud(models.Model):
                 asistente=None).first().resolucion
         except:
             return None
-    
+
     def __unicode__(self):
         return u"#%s %s [%s]" % (self.id, self.resumen, self.solicitante)
 
@@ -295,7 +296,6 @@ class Proyecto(models.Model):
             return True
         else:
             return False
-
 
     def __unicode__(self):
         if self.aprobado():

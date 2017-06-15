@@ -11,7 +11,7 @@ from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
-    ComiteTutoralModelForm
+    ComiteTutoralModelForm, ProyectoModelForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -515,6 +515,7 @@ class ComiteElegirView(View):
 class ComiteTutoralElegirView(ComiteElegirView):
     tipo = 'tutoral'
     title = 'Elegir Comité Tutoral'
+
     def get_breadcrumbs(self, pk):
         solicitud = Solicitud.objects.get(id=pk)
         return [('/inicio/', 'Inicio'),
@@ -550,3 +551,44 @@ class JuradoGradoElegirView(ComiteElegirView):
                  '#%s' % solicitud.id),
                 ('/inicio/solicitudes/%s/elegir-jurado-grado'
                  % solicitud.id, 'Elegir Jurado para Examen de Grado')]
+
+
+class CambiarProyectoView(View):
+    form_class = ProyectoModelForm
+    template_name = 'posgradmin/try.html'
+    
+    def get_breadcrumbs(self, pk):
+        return [('/inicio/', 'Inicio'),
+                ('/inicio/solicitudes/', 'Solicitudes'),
+                ('/inicio/solicitudes/%s/' % pk,
+                 '#%s' % pk),
+                ('/inicio/solicitudes/%s/cambiar-proyecto'
+                 % pk, 'Cambios al Proyecto')]
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request,
+                      self.template_name,
+                      {'title': 'Cambios al Proyecto',
+                       'form': form,
+                       'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
+        if form.is_valid():
+            p = Proyecto(nombre=request.POST['nombre'],
+                         campo_conocimiento=CampoConocimiento.objects.get(
+                             id=int(request.POST['campo_conocimiento'])),
+                         estudiante=request.user.estudiante,
+                         solicitud=solicitud)
+            p.save()
+
+            return HttpResponseRedirect("/inicio/solicitudes/%s"
+                                        % solicitud.id)
+        else:
+            return render(request,
+                          self.template_name,
+                          {'title': 'Cambios al Proyecto',
+                           'form': form,
+                           'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})

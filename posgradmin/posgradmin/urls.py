@@ -21,7 +21,8 @@ from posgradmin.views import SolicitudNuevaView, \
     PerfilRegistroView, PerfilDetail, EstudianteRegistroView, \
     AcademicoRegistroView, InicioView, SolicitudComment, SolicitudAnexo, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
-    ComiteTutoralElegirView, JuradoCandidaturaElegirView, JuradoGradoElegirView
+    ComiteTutoralElegirView, JuradoCandidaturaElegirView, \
+    JuradoGradoElegirView, CambiarProyectoView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -29,7 +30,7 @@ urlpatterns = [
 
     url(r'^institucion/agregar',
         InstitucionAgregarView.as_view()),
-    
+
     url(r'^inicio/estudiante/registro',
         EstudianteRegistroView.as_view()),
 
@@ -41,7 +42,7 @@ urlpatterns = [
 
     url(r'^inicio/perfil/eliminar-grado/(?P<pk>[0-9]+)$',
         GradoAcademicoEliminar.as_view()),
-    
+
     url(r'^inicio/perfil/agregar-grado$',
         GradoAcademicoAgregar.as_view()),
 
@@ -65,7 +66,10 @@ urlpatterns = [
 
     url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/elegir-jurado-grado$',
         JuradoGradoElegirView.as_view()),
-    
+
+    url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/cambio-proyecto$',
+        CambiarProyectoView.as_view()),
+
     url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/$',
         SolicitudDetail.as_view()),
 
