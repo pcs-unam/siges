@@ -239,7 +239,7 @@ class PerfilRegistroView(View):
                    ('/inicio/perfil', 'Mi perfil'),
                    ('/inicio/perfil/editar', 'Editar'))
 
-    template = 'posgradmin/try.html'
+    template = 'posgradmin/perfil_editar.html'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -256,7 +256,8 @@ class PerfilRegistroView(View):
 
         return render(request,
                       self.template,
-                      {'form': form,
+                      {'object': perfil,
+                       'form': form,
                        'title': 'Editar mi perfil',
                        'breadcrumbs': self.breadcrumbs})
 
@@ -291,7 +292,8 @@ class PerfilRegistroView(View):
         else:
             return render(request,
                           self.template,
-                          {'form': form,
+                          {'object': u.perfil,
+                           'form': form,
                            'title': 'Editar mi perfil',
                            'breadcrumbs': self.breadcrumbs})
 

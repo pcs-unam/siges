@@ -39,8 +39,7 @@ class SolicitudForm(forms.Form):
         Field('anexo'),
 
         FormActions(
-            Submit('someter', 'Someter Solicitud', css_class="btn-primary"),
-            Submit('cancel', 'Cancelar'),
+            Submit('someter', 'Someter Solicitud', css_class="btn-primary")
         )
     )
 
@@ -86,7 +85,7 @@ class PerfilModelForm(forms.ModelForm):
                            'codigo_postal'),
                     Class="panel-body"),
                 Class="panel panel-default"),
-            Submit('save', 'save'))
+            Submit('guardar', 'guardar'))
 
     class Meta:
         model = Perfil
@@ -106,9 +105,7 @@ class EstudianteAutoregistroForm(forms.Form):
         Field('proyecto', size=70),
         'campo_conocimiento',
         FormActions(
-            Submit('registrarme', 'Registrarme', css_class="btn-primary"),
-            Submit('cancel', 'Cancelar'),
-        )
+            Submit('registrarme', 'Registrarme', css_class="btn-primary"))
     )
 
 
@@ -123,7 +120,7 @@ class EstudianteModelForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
         # You can dynamically adjust your layout
-        self.helper.layout.append(Submit('save', 'save'))
+        self.helper.layout.append(Submit('guardar', 'guardar'))
 
     class Meta:
         model = Estudiante
@@ -141,7 +138,7 @@ class AcademicoModelForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
         # You can dynamically adjust your layout
-        self.helper.layout.append(Submit('save', 'save'))
+        self.helper.layout.append(Submit('guardar', 'guardar'))
 
     class Meta:
         model = Academico

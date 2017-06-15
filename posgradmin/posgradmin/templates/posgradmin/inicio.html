@@ -11,7 +11,6 @@
     <div class="panel panel-default">
       <div class="panel-heading">
 	<h3 class="panel-title">
-
 	  {% if not user.perfil %}
 	  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 	  Perfil
@@ -27,7 +26,6 @@
       <div class="panel-body">
 	{% if user.perfil %}
 	       <h4>{{ user.get_full_name }}</h4>
-	       <p><a href="perfil/">ver mi perfil</a></p>
 	{% if user.estudiante %}
 
 		{% if user.estudiante.estado == "aspirante" %}
@@ -49,6 +47,24 @@
 		</ul>
 		{% endif %}
 
+		<ul class="list-group">
+		  <li class="list-group-item">
+		    {% if not perfil.user.estudiante.get_proyecto.aprobado %}
+		    <div class="alert alert-warning" role="alert">
+		      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+		      Proyecto no aprobado.
+		      Ver solicitud <a href="/inicio/solicitudes/{{ user.estudiante.get_proyecto.solicitud.id }}">
+			#{{ user.estudiante.get_proyecto.solicitud.id }}</a>.
+		    </div>
+		    {% endif %}
+    
+		    <h4>Proyecto: {{ user.estudiante.get_proyecto.nombre }}</h4>
+		    Campo de Conocimiento: {{ user.estudiante.proyecto_set.last.campo_conocimiento }}
+		  </li>
+
+		</ul>
+
+		
 	{% else %}
 	{% endif %}
 
@@ -73,7 +89,8 @@
 	{% else %}
 	  Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
 	  <a href="/inicio/perfil/editar">Completar registro de perfil</a>
-	{% endif %}
+	  {% endif %}
+      	  <a href="perfil/">ver mi perfil</a>	  
       </div>
     </div>
 

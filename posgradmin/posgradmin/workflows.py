@@ -1,14 +1,18 @@
 # coding: utf-8
 
 solicitud = {
-    "registrar_curso": "",
-    "solicitar_apoyo_económico": "",
-    "solicitar_baja_tutor": "",
-    "avisar_ausencia": "",
+    "registrar_curso":
+    "/inicio/solicitudes/%s",
+    "solicitar_apoyo_económico":
+    "/inicio/solicitudes/%s",
+    "solicitar_baja_tutor":
+    "/inicio/solicitudes/%s",
+    "avisar_ausencia":
+    "/inicio/solicitudes/%s",
 
-    "registrar_actividad_complementaria": "",
+    "registrar_actividad_complementaria": "/inicio/solicitudes/%s",
 
-    "solicitar_candidatura": "",
+    "solicitar_candidatura": "/inicio/solicitudes/%s",
 
     "cambiar_comite_tutoral":
     "/inicio/solicitudes/%s/elegir-comite-tutoral",
@@ -19,7 +23,9 @@ solicitud = {
     "seleccionar_jurado_grado":
     "/inicio/solicitudes/%s/elegir-jurado-grado",
 
-    "cambiar_titulo_proyecto": "",
-    "cambiar_campo_conocimiento": "",
-    "reportar_suspension": "",
+    "cambio_proyecto":
+    "/inicio/solicitudes/%s/cambio-proyecto",
+
+    "reportar_suspension":
+        "/inicio/solicitudes/%s",
 }
