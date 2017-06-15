@@ -1,4 +1,4 @@
-{% extends "registration/registration_base.html" %}
+{% extends "posgradmin/posgradmin_base.html" %}
 {% load i18n %}
 {% block title %}{% trans "Login" %}{% endblock %}
 {% block content %}
@@ -20,10 +20,14 @@
     <td>{{ form.password }}</td>
 </tr>
 </table>
-<p>{% blocktrans %}<a href="{{ auth_pwd_reset_url }}">Forgot</a> your password?
-    <a href="{{ register_url }}">Need an account</a>?{% endblocktrans %}</p>
+  <p>
+    <ul>
+    <li><a href="{{ auth_pwd_reset_url }}">Recuperar contraseña</a></li>
+    <li>Si es nuevo a este sistema puede <a href="{{ register_url }}">registrarse</a>.</li>
+    </ul>
+  </p>
 
-<input type="submit" value="{% trans "login" %}" />
+<input type="submit" value="iniciar" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 

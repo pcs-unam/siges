@@ -1,11 +1,13 @@
-{% extends "registration/registration_base.html" %}
-{% load i18n %}
-{% block title %}{% trans "Activation complete" %}{% endblock %}
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block title %}Cuenta activada{% endblock %}
+
 {% block content %}
 {% url 'auth_login' as auth_login_url %}
-{% blocktrans %}
-Thanks, activation complete!  You may now <a href='{{ auth_login_url }}'>login</a> using the username and password you set at registration.
-{% endblocktrans %}
+
+Gracias, su cuenta está activa.
+
+Ahora puede <a href="{{ auth_login_url }}">iniciar una sesión</a>.
 {% endblock %}
 
 
