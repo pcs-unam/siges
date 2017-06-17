@@ -238,10 +238,14 @@ class Estudiante(models.Model):
         pass
 
     def get_proyecto(self):
+        if self.proyecto_set.count() == 0:
+            return None
+
         aprobados = []
         for p in self.proyecto_set.order_by('id'):
             if p.aprobado():
                 aprobados.append(p)
+
         if aprobados:
             return aprobados[-1]
         else:

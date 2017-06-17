@@ -253,7 +253,13 @@ class PerfilRegistroView(View):
             data = {'nombre': request.user.first_name,
                     'apellidos': request.user.last_name}
             form = self.form_class(data=data)
+            return render(request,
+                          self.template,
+                          {'form': form,
+                           'title': 'Editar mi perfil',
+                           'breadcrumbs': self.breadcrumbs})
 
+            
         return render(request,
                       self.template,
                       {'object': perfil,

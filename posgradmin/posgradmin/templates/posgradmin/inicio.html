@@ -25,59 +25,61 @@
       </div>
       <div class="panel-body">
 	{% if user.perfil %}
-	       <h4>{{ user.get_full_name }}</h4>
+	<h4>{{ user.get_full_name }}</h4>
+	
 	{% if user.estudiante %}
-
-		{% if user.estudiante.estado == "aspirante" %}
-		{% endif %}
-
-		{% if user.estudiante.faltan_documentos %}
-		<div class="alert alert-danger" role="alert">
-		  <strong>No ha registrado grados académicos</strong>
-		  <a href="/inicio/perfil/agregar-grado">Agregar grados académicos</a>.
-		</div>
-		{% else %}
-		<ul class="list-group">
-		  {% for grado in user.gradoacademico_set.all %}
-		  <li class="list-group-item">
-		    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
-		    <p class="list-group-item-text">nivel {{ grado.nivel }}
-		  </li>
-		  {% endfor %}
-		</ul>
-		{% endif %}
-
-		<ul class="list-group">
-		  <li class="list-group-item">
-		    {% if not perfil.user.estudiante.get_proyecto.aprobado %}
-		    <div class="alert alert-warning" role="alert">
-		      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-		      Proyecto no aprobado.
-		      Ver solicitud <a href="/inicio/solicitudes/{{ user.estudiante.get_proyecto.solicitud.id }}">
-			#{{ user.estudiante.get_proyecto.solicitud.id }}</a>.
-		    </div>
-		    {% endif %}
-    
-		    <h4>Proyecto: {{ user.estudiante.get_proyecto.nombre }}</h4>
-		    Campo de Conocimiento: {{ user.estudiante.proyecto_set.last.campo_conocimiento }}
-		  </li>
-
-		</ul>
-
-		
+	
+	{% if user.estudiante.faltan_documentos %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No ha registrado grados académicos</strong>
+	  <a href="/inicio/perfil/agregar-grado">Agregar grados académicos</a>.
+	</div>
 	{% else %}
+	<ul class="list-group">
+	  {% for grado in user.gradoacademico_set.all %}
+	  <li class="list-group-item">
+	    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
+	    <p class="list-group-item-text">nivel {{ grado.nivel }}
+	  </li>
+	  {% endfor %}
+	</ul>
+	{% endif %}
+
+
+	{% if user.estudiante.get_proyecto is None %}
+	<div class="alert alert-danger" role="alert">	
+	  <strong>No ha registrado proyecto</strong> <a href="/inicio/estudiante/registro">registre proyecto</a>
+	</div>
+	{% else %}
+	<ul class="list-group">
+	  <li class="list-group-item">
+	    {% if not perfil.user.estudiante.get_proyecto.aprobado %}
+	    <div class="alert alert-warning" role="alert">
+	      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+	      Proyecto no aprobado.
+	      Ver solicitud <a href="/inicio/solicitudes/{{ user.estudiante.get_proyecto.solicitud.id }}">
+		#{{ user.estudiante.get_proyecto.solicitud.id }}</a>.
+	    </div>
+	    {% endif %}
+    
+	    <h4>Proyecto: {{ user.estudiante.get_proyecto.nombre }}</h4>
+	    Campo de Conocimiento: {{ user.estudiante.proyecto_set.last.campo_conocimiento }}
+	  </li>
+	</ul>	
+	{% endif %} 
 	{% endif %}
 
 	{% if user.academico %}
-		{% if user.academico.tutor %}
-		  <p><a href="">Mis comités tutorales</a></p>
-		  <p><a href="">Mis estudiantes</a></p>
-		{% endif %}
-		  <p><a href="">Mis cursos</a></p>
-		  <p><a href="">Generar reporte de actividades</a></p>
+	{% if user.academico.tutor %}
+	<p><a href="">Mis comités tutorales</a></p>
+	<p><a href="">Mis estudiantes</a></p>
+	{% endif %}
+	<p><a href="">Mis cursos</a></p>
+	<p><a href="">Generar reporte de actividades</a></p>
 	{% else %}
 	{% endif %}
 
+      	  <a href="perfil/">ver mi perfil</a>	  
 
 	{% if not user.estudiante and not user.academico %}
 		  <ul>
@@ -90,7 +92,6 @@
 	  Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
 	  <a href="/inicio/perfil/editar">Completar registro de perfil</a>
 	  {% endif %}
-      	  <a href="perfil/">ver mi perfil</a>	  
       </div>
     </div>
 
