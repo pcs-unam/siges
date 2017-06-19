@@ -251,6 +251,12 @@ class Estudiante(models.Model):
         else:
             return self.proyecto_set.last()
 
+    def get_proyecto_no_aprobado(self):
+        for p in self.proyecto_set.order_by('id'):
+            if p.id > self.get_proyecto().id \
+               and p.solicitud.dictamen_final() is None:
+                return p
+
 
 class Beca(models.Model):
     estudiante = models.ForeignKey(Estudiante)
@@ -277,7 +283,7 @@ class Solicitud(models.Model):
 
     def dictamen_final(self):
         try:
-            return self.dictament_set.exclude(
+            return self.dictamen_set.exclude(
                 asistente=None).first().resolucion
         except:
             return None
@@ -376,6 +382,9 @@ class Comite(models.Model):
 class Asistente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    def __unicode__(self):
+        return "%s (asistente de proceso)" % self.user
+
 
 class Dictamen(models.Model):
     resolucion = models.CharField(max_length=15,
@@ -385,3 +394,16 @@ class Dictamen(models.Model):
     academico = models.ForeignKey(Academico, null=True, blank=True)
     asistente = models.ForeignKey(Asistente, null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Dictámenes"
+
+    def __unicode__(self):
+        if self.academico:
+            autor = self.academico
+        else:
+            autor = self.asistente
+        return u'#%s %s por %s' \
+            % (self.solicitud.id,
+               self.resolucion,
+               autor)

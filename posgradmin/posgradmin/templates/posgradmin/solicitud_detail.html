@@ -27,7 +27,9 @@
   </div>  
   <div class="panel-body">
     <h3>{{ object.resumen }}</h3>
-    <p>{{ object.descripcion }}</p>
+    <p>{{ object.descripcion }}
+      {{ object.dictamen_final }}
+    </p>
 
     {% if object.tipo == "cambiar_comite_tutoral" %}
     {% if object.comite_set.all %}
