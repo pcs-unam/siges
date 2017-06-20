@@ -252,10 +252,11 @@ class Estudiante(models.Model):
             return self.proyecto_set.last()
 
     def get_proyecto_no_aprobado(self):
-        for p in self.proyecto_set.order_by('id'):
+        for p in self.proyecto_set.order_by('-id'):
             if p.id > self.get_proyecto().id \
                and p.solicitud.dictamen_final() is None:
                 return p
+        return None
 
 
 class Beca(models.Model):

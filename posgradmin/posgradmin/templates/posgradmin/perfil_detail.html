@@ -95,6 +95,9 @@
   </div>
 
   <div class="panel-body">
+    
+    <h2>Proyecto: {{ perfil.user.estudiante.get_proyecto.nombre }}</h2>
+    Campo de Conocimiento: {{ perfil.user.estudiante.proyecto_set.last.campo_conocimiento }}
 
     {% if not perfil.user.estudiante.get_proyecto.aprobado %}
     <div class="alert alert-warning" role="alert">
@@ -105,9 +108,16 @@
     </div>
     {% endif %}
     
-    <h2>Proyecto: {{ perfil.user.estudiante.get_proyecto.nombre }}</h2>
-    Campo de Conocimiento: {{ perfil.user.estudiante.proyecto_set.last.campo_conocimiento }}
+    {% if user.estudiante.get_proyecto_no_aprobado %}
+    <div class="alert alert-warning" role="alert">
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+      Solicitud de cambio: {{ user.estudiante.get_proyecto_no_aprobado }}
+      Ver <a href="/inicio/solicitudes/{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}">
+	#{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}</a>.
+    </div>
+    {% endif %}	
 
+    
     <hr />
     <ul class="list-group">
       <li class="list-group-item">estado: {{ perfil.user.estudiante.estado }}</li>

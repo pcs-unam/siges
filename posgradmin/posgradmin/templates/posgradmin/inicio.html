@@ -55,8 +55,7 @@
 	  <li class="list-group-item">   
 	    <h4>Proyecto: {{ user.estudiante.get_proyecto.nombre }}</h4>
 	    Campo de Conocimiento: {{ user.estudiante.proyecto_set.last.campo_conocimiento }}
-	  </li>	  
-	</ul>
+
 	    {% if not user.estudiante.get_proyecto.aprobado %}
 	    <div class="alert alert-warning" role="alert">
 	      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
@@ -65,6 +64,19 @@
 		#{{ user.estudiante.get_proyecto.solicitud.id }}</a>.
 	    </div>
 	    {% endif %}	
+
+	    {% if user.estudiante.get_proyecto_no_aprobado %}
+	    <div class="alert alert-warning" role="alert">
+	      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+	      Solicitud de cambio: {{ user.estudiante.get_proyecto_no_aprobado }}
+	      Ver <a href="/inicio/solicitudes/{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}">
+		#{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}</a>.
+	    </div>
+	    {% endif %}	
+
+	    
+	  </li>	  
+	</ul>
 	{% endif %} 
 	{% endif %}
 
