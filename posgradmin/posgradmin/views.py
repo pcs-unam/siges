@@ -53,6 +53,7 @@ class SolicitudNuevaView(View):
             if a.tutor:
                 choices += solicitudes_tutoriles
             else:
+                choices += solicitudes_profesoriles
                 choices += (("solicitar_registro_como_tutor",
                              "Solicitar Registro como Tutor"),)
 
@@ -205,15 +206,30 @@ class SolicitudSortableView(SortableListView):
 
     def get_queryset(self):
         sorted = super(SolicitudSortableView, self).get_queryset()
-        if self.args:
-            estado = self.args[0]
-            if estado == 'todas':
-                return sorted & self.request.user.estudiante.solicitudes()
+        try:
+            if self.args:
+                estado = self.args[0]
+                if estado == 'todas':
+                    return sorted & self.request.user.estudiante.solicitudes()
+                else:
+                    return sorted & \
+                        self.request.user.estudiante.solicitudes(estado)
             else:
-                return sorted & \
-                    self.request.user.estudiante.solicitudes(estado)
-        else:
-            return sorted & self.request.user.estudiante.solicitudes()
+                return sorted & self.request.user.estudiante.solicitudes()
+        except Estudiante.DoesNotExist:
+            try:
+                if self.args:
+                    estado = self.args[0]
+                    if estado == 'todas':
+                        return sorted & self.request.user.academico.solicitudes()
+                    else:
+                        return sorted & \
+                            self.request.user.academico.solicitudes(estado)
+                else:
+                    return sorted & self.request.user.academico.solicitudes()
+            except Academico.DoesNotExist:
+                return sorted
+
 
     allowed_sort_fields = {'resumen': {'default_direction': '',
                                        'verbose_name': 'resumen'},
