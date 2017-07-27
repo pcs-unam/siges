@@ -1,0 +1,41 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  {% for crumb in breadcrumbs %}
+  &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
+  {% endfor %}
+
+  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="/inicio/solicitudes/">Solicitudes</a>
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Mis cursos</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Denominación</th>
+      <th>Clave</th>
+      <th>Semestre</th>
+      <th>Campo de Conocimiento</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for curso in object_list %}
+    <tr>
+      <th>{{ curso.denominacion }} </th>
+      <th>{{ curso.clave }}</th>
+      <th>{{ curso.semestre }}</th>
+      <th>{{ curso.campo_conocimiento }}</th>      
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
