@@ -2,7 +2,8 @@
 
 solicitud = {
     "registrar_curso":
-    "/inicio/solicitudes/%s",
+    "/inicio/solicitudes/%s/registrar-curso",
+
     "solicitar_apoyo_económico":
     "/inicio/solicitudes/%s",
     "solicitar_baja_tutor":
@@ -24,7 +25,7 @@ solicitud = {
     "/inicio/solicitudes/%s/elegir-jurado-grado",
 
     "cambio_proyecto":
-    "/inicio/solicitudes/%s/cambio-proyecto",
+    "/inicio/solicitudes/%s/cambiar-proyecto",
 
     "reportar_suspension":
         "/inicio/solicitudes/%s",

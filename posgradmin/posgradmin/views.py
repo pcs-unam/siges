@@ -1,17 +1,17 @@
 # coding: utf-8
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from django.forms.models import model_to_dict
 from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento, Comentario, GradoAcademico, \
-    Institucion, Comite, Proyecto
+    Institucion, Comite, Proyecto, Curso
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
-    ComiteTutoralModelForm, ProyectoModelForm
+    ComiteTutoralModelForm, ProyectoModelForm, CursoModelForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -275,7 +275,7 @@ class PerfilRegistroView(View):
                            'title': 'Editar mi perfil',
                            'breadcrumbs': self.breadcrumbs})
 
-            
+
         return render(request,
                       self.template,
                       {'object': perfil,
@@ -578,7 +578,7 @@ class JuradoGradoElegirView(ComiteElegirView):
 class CambiarProyectoView(View):
     form_class = ProyectoModelForm
     template_name = 'posgradmin/try.html'
-    
+
     def get_breadcrumbs(self, pk):
         return [('/inicio/', 'Inicio'),
                 ('/inicio/solicitudes/', 'Solicitudes'),
@@ -612,5 +612,59 @@ class CambiarProyectoView(View):
             return render(request,
                           self.template_name,
                           {'title': 'Cambios al Proyecto',
+                           'form': form,
+                           'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
+
+
+class MisCursosView(ListView):
+    model = Curso
+
+    def get_queryset(self):
+        new_context = Curso.objects.filter(
+            profesor=self.request.user.academico
+        )
+        return new_context
+
+
+class CursoRegistrar(View):
+
+    form_class = CursoModelForm
+
+    def get_breadcrumbs(self, pk):
+        return [('/inicio/', 'Inicio'),
+                ('/inicio/solicitudes/', 'Solicitudes'),
+                ('/inicio/solicitudes/%s/' % pk,
+                 '#%s' % pk),
+                ('/inicio/solicitudes/%s/registrar-curso'
+                 % pk, 'Registrar Curso')]
+
+    template_name = 'posgradmin/try.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request,
+                      self.template_name,
+                      {'title': 'Registrar Curso',
+                       'form': form,
+                       'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            campo = CampoConocimiento.objects.get(
+                id=int(int(request.POST['campo_conocimiento'])))
+            c = Curso(denominacion=request.POST['denominacion'],
+                      clave=request.POST['clave'],
+                      semestre=request.POST['semestre'],
+                      campo_conocimiento=campo,
+                      dosier=request.FILES['dosier'],
+                      profesor=request.user.academico)
+            c.save()
+
+            return HttpResponseRedirect("/inicio/cursos/mis_cursos")
+        else:
+            return render(request,
+                          self.template_name,
+                          {'title': 'Registrar Curso',
                            'form': form,
                            'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})

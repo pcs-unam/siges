@@ -6,7 +6,7 @@ from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, \
     CampoConocimiento, GradoAcademico, Institucion, Comite, \
-    Proyecto
+    Proyecto, Curso
 
 
 class SolicitudForm(forms.Form):
@@ -232,3 +232,18 @@ class ProyectoModelForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
         self.helper.layout.append(Submit('guardar', 'guardar'))
+
+
+class CursoModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Curso
+        exclude = ['profesor', ]
+
+    def __init__(self, *args, **kwargs):
+
+        super(CursoModelForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout.append(Submit('registrar', 'registrar'))
