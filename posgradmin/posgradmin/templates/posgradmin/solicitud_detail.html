@@ -78,6 +78,18 @@
     </div>
     {% endif %}
     {% endif %}
+
+
+    {% if object.tipo == "registrar_curso" %}
+    {% if object.curso_set.all %}
+    {{ object.curso_set.all.last }}
+    {% else %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No se ha registrado curso.</strong>.
+      <a href="cambio-proyecto">registrar curso</a>.
+    </div>
+    {% endif %}
+    {% endif %}
     
     
   </div>
