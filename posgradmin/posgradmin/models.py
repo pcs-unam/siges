@@ -144,9 +144,10 @@ class Academico(models.Model):
         if self.profesor:
             estado.append("profesor")
 
-        return u"%s %s, %s" % (self.user.first_name,
-                               self.user.last_name,
-                               ", ".join(estado))
+        return u"%s %s (%s), %s" % (self.user.first_name,
+                                    self.user.last_name,
+                                    self.user.username,
+                                    ", ".join(estado))
 
     class Meta:
         verbose_name_plural = "Académicos"
@@ -408,3 +409,18 @@ class Dictamen(models.Model):
             % (self.solicitud.id,
                self.resolucion,
                autor)
+
+
+class Curso(models.Model):
+    denominacion = models.CharField(max_length=100)
+    clave = models.CharField(max_length=100, blank=True, null=True)
+    semestre = models.PositiveSmallIntegerField(
+        choices=((1, 1),
+                 (2, 2)),
+        blank=True, null=True)
+    campo_conocimiento = models.ForeignKey(CampoConocimiento)
+    dosier = models.FileField()
+    profesor = models.ForeignKey(Academico)
+
+    def __unicode__(self):
+        return u'curso: "%s" por %s' % (self.denominacion, self.profesor)
