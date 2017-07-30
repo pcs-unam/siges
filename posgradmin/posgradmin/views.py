@@ -222,7 +222,8 @@ class SolicitudSortableView(SortableListView):
                 if self.args:
                     estado = self.args[0]
                     if estado == 'todas':
-                        return sorted & self.request.user.academico.solicitudes()
+                        return sorted \
+                            & self.request.user.academico.solicitudes()
                     else:
                         return sorted & \
                             self.request.user.academico.solicitudes(estado)
@@ -230,7 +231,6 @@ class SolicitudSortableView(SortableListView):
                     return sorted & self.request.user.academico.solicitudes()
             except Academico.DoesNotExist:
                 return sorted
-
 
     allowed_sort_fields = {'resumen': {'default_direction': '',
                                        'verbose_name': 'resumen'},
@@ -275,7 +275,6 @@ class PerfilRegistroView(View):
                           {'form': form,
                            'title': 'Editar mi perfil',
                            'breadcrumbs': self.breadcrumbs})
-
 
         return render(request,
                       self.template,
@@ -490,7 +489,8 @@ class AdscripcionAgregar(View):
                             institucion=ins,
                             nombramiento=request.POST['nombramiento'],
                             telefono=request.POST['telefono'],
-                            numero_trabajador=request.POST['numero_trabajador'])
+                            numero_trabajador=request.POST[
+                                'numero_trabajador'])
             a.save()
 
             return HttpResponseRedirect("/inicio/perfil/")
@@ -589,7 +589,8 @@ class ComiteElegirView(View):
                           self.template_name,
                           {'title': 'Elegir Comité Tutoral',
                            'form': form,
-                           'breadcrumbs': self.get_breadcrumbs(int(kwargs['pk']))})
+                           'breadcrumbs':
+                           self.get_breadcrumbs(int(kwargs['pk']))})
 
 
 class ComiteTutoralElegirView(ComiteElegirView):
@@ -609,6 +610,7 @@ class ComiteTutoralElegirView(ComiteElegirView):
 class JuradoCandidaturaElegirView(ComiteElegirView):
     tipo = 'candidatura'
     title = 'Elegir Jurado para Candidatura'
+
     def get_breadcrumbs(self, pk):
         solicitud = Solicitud.objects.get(id=pk)
         return [('/inicio/', 'Inicio'),
