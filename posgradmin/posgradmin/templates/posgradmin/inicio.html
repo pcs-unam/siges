@@ -160,14 +160,23 @@
 	</p>
 	<!-- lista conteo -->
 	<ul class="list-group">
-	  {% if user.academico %}
+	  {% if user.is_staff or user.asistente  %}
+
+	  {% for s in user.asistente.cuantas_solicitudes %}
+	  <li class="list-group-item">
+	    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
+	  </li>
+	  {% endfor %}
+
+	  {% elif user.academico %}
+
 	  {% for s in user.academico.cuantas_solicitudes %}
 	  <li class="list-group-item">
 	    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
 	  </li>
 	  {% endfor %}
 
-	  {% else %}
+	  {% elif user.estudiante %}
 
 	  {% for s in user.estudiante.cuantas_solicitudes %}
 	  <li class="list-group-item">

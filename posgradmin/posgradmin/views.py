@@ -207,38 +207,30 @@ class SolicitudSortableView(SortableListView):
 
     def get_queryset(self):
         sorted = super(SolicitudSortableView, self).get_queryset()
-        try:
-            if self.args:
-                estado = self.args[0]
-                if estado == 'todas':
-                    return sorted & self.request.user.estudiante.solicitudes()
-                else:
-                    return sorted & \
-                        self.request.user.estudiante.solicitudes(estado)
-            else:
-                return sorted & self.request.user.estudiante.solicitudes()
-        except Estudiante.DoesNotExist:
-            try:
-                if self.args:
-                    estado = self.args[0]
-                    if estado == 'todas':
-                        return sorted \
-                            & self.request.user.academico.solicitudes()
-                    else:
-                        return sorted & \
-                            self.request.user.academico.solicitudes(estado)
-                else:
-                    return sorted & self.request.user.academico.solicitudes()
-            except Academico.DoesNotExist:
-                return sorted
+
+        if self.args:
+            estado = self.args[0]
+        else:
+            estado = 'todas'
+
+        if self.request.user.is_staff \
+           or hasattr(self.request.user, 'asistente'):
+            return sorted
+        elif hasattr(self.request.user, 'estudiante'):
+            return sorted & \
+                self.request.user.estudiante.solicitudes(estado)
+        elif hasattr(self.request.user, 'academico'):
+            return sorted & \
+                self.request.user.academico.solicitudes(estado)
 
     allowed_sort_fields = {'resumen': {'default_direction': '',
                                        'verbose_name': 'resumen'},
                            'fecha_creacion': {'default_direction': '-',
                                               'verbose_name':
-                                              'Fecha de publicación'}}
+                                              'Fecha de creación'}}
     default_sort_field = 'fecha_creacion'
-    paginate_by = 5
+
+    paginate_by = 15
 
     model = Solicitud
 

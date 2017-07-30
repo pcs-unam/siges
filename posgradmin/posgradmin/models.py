@@ -140,7 +140,7 @@ class Estudiante(models.Model):
             return False
 
     def solicitudes(self, estado=None):
-        if estado is None:
+        if estado is None or estado is 'todas':
             return Solicitud.objects.filter(
                 solicitante=self.user
             )
@@ -311,7 +311,7 @@ class Academico(models.Model):
             return True
 
     def solicitudes(self, estado=None):
-        if estado is None:
+        if estado is None or estado is 'todas':
             return Solicitud.objects.filter(solicitante=self.user)
         else:
             return Solicitud.objects.filter(
@@ -393,6 +393,20 @@ class Comite(models.Model):
 
 class Asistente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def cuantas_solicitudes(self):
+        print "por aqui"
+        solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
+                       for estado in solicitudes_estados]
+        solicitudes.append(('todas', self.solicitudes().count()))
+
+        return solicitudes
+
+    def solicitudes(self, estado=None):
+        if estado is None or estado is 'todas':
+            return Solicitud.objects.all()
+        else:
+            return Solicitud.objects.filter(estado=estado)
 
     def __unicode__(self):
         return "%s (asistente de proceso)" % self.user
