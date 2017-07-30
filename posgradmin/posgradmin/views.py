@@ -35,6 +35,16 @@ class InicioView(View):
                        'breadcrumbs': self.breadcrumbs})
 
 
+class SolicitudCambiarEstado(View):
+
+    def get(self, request, *args, **kwargs):
+        sid = int(kwargs['pk'])
+        s = Solicitud.objects.get(id=sid)
+        s.estado = kwargs['estado']
+        s.save()
+        return HttpResponseRedirect("/inicio/solicitudes/%s" % sid)
+
+
 class SolicitudNuevaView(View):
 
     form_class = SolicitudForm
@@ -215,7 +225,7 @@ class SolicitudSortableView(SortableListView):
 
         if self.request.user.is_staff \
            or hasattr(self.request.user, 'asistente'):
-            return sorted
+            return Solicitud.objects.filter(estado=estado)
         elif hasattr(self.request.user, 'estudiante'):
             return sorted & \
                 self.request.user.estudiante.solicitudes(estado)

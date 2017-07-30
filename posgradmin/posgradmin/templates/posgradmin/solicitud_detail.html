@@ -100,6 +100,19 @@
     
   </div>
 
+  {% if user.asistente or user.is_staff %}
+  <div class="panel-footer">
+    Cambiar <strong>estado</strong>:
+    <ul>
+    {% if object.estado == 'nueva' %}
+    <li><a href="estado/agendada">Agendar solicitud para próxima Asamblea del Consejo</a></li>
+    <li><a href="estado/cancelada">Cancelar</a></li>    
+    {% elif object.estado == 'agendada' %}
+    <li><a href="dictaminar">Emitir dictamen</a></li>
+    {% endif %}
+    </ul>
+  </div>
+  {% endif %}
   
   <div class="panel-footer">
       <strong>tipo:</strong> {{ object.tipo }}
