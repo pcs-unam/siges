@@ -22,7 +22,8 @@ from posgradmin.views import SolicitudNuevaView, \
     AcademicoRegistroView, InicioView, SolicitudComment, SolicitudAnexo, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
     ComiteTutoralElegirView, JuradoCandidaturaElegirView, \
-    JuradoGradoElegirView, CambiarProyectoView, MisCursosView, CursoRegistrar
+    JuradoGradoElegirView, CambiarProyectoView, MisCursosView, \
+    CursoRegistrar, AdscripcionEliminar, AdscripcionAgregar
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -43,8 +44,14 @@ urlpatterns = [
     url(r'^inicio/perfil/eliminar-grado/(?P<pk>[0-9]+)$',
         GradoAcademicoEliminar.as_view()),
 
+    url(r'^inicio/perfil/eliminar-adscripcion/(?P<pk>[0-9]+)$',
+        AdscripcionEliminar.as_view()),
+
     url(r'^inicio/perfil/agregar-grado$',
         GradoAcademicoAgregar.as_view()),
+
+    url(r'^inicio/perfil/agregar-adscripcion$',
+        AdscripcionAgregar.as_view()),
 
     url(r'^inicio/perfil/$',
         PerfilDetail.as_view()),

@@ -26,9 +26,12 @@
       <div class="panel-body">
 	{% if user.perfil %}
 	<h4>{{ user.get_full_name }}</h4>
-	
+
+	<p><a href="perfil/">Ver mi perfil</a></p>
+
+
 	{% if user.estudiante %}
-	
+
 	{% if user.estudiante.faltan_documentos %}
 	<div class="alert alert-danger" role="alert">
 	  <strong>No ha registrado grados académicos</strong>
@@ -47,12 +50,12 @@
 
 
 	{% if user.estudiante.get_proyecto is None %}
-	<div class="alert alert-danger" role="alert">	
+	<div class="alert alert-danger" role="alert">
 	  <strong>No ha registrado proyecto</strong> <a href="/inicio/estudiante/registro">registre proyecto</a>
 	</div>
 	{% else %}
 	<ul class="list-group">
-	  <li class="list-group-item">   
+	  <li class="list-group-item">
 	    <h4>Proyecto: {{ user.estudiante.get_proyecto.nombre }}</h4>
 	    Campo de Conocimiento: {{ user.estudiante.proyecto_set.last.campo_conocimiento }}
 
@@ -63,7 +66,7 @@
 	      Ver solicitud <a href="/inicio/solicitudes/{{ user.estudiante.get_proyecto.solicitud.id }}">
 		#{{ user.estudiante.get_proyecto.solicitud.id }}</a>.
 	    </div>
-	    {% endif %}	
+	    {% endif %}
 
 	    {% if user.estudiante.get_proyecto_no_aprobado %}
 	    <div class="alert alert-warning" role="alert">
@@ -72,26 +75,55 @@
 	      Ver <a href="/inicio/solicitudes/{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}">
 		#{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}</a>.
 	    </div>
-	    {% endif %}	
+	    {% endif %}
 
-	    
-	  </li>	  
+
+	  </li>
 	</ul>
-	{% endif %} 
+	{% endif %}
 	{% endif %}
 
+
+	
 	{% if user.academico %}
-	{% if user.academico.tutor %}
-	<p><a href="">Mis comités tutorales</a></p>
-	<p><a href="">Mis estudiantes</a></p>
-	{% endif %}
-	<p><a href="/inicio/cursos/mis_cursos">Mis cursos</a></p>
-	<p><a href="">Generar reporte de actividades</a></p>
-	{% else %}
+	   {% if user.academico.acreditado %}
+	       {% if user.academico.tutor %}
+	       <p><a href="">Mis comités tutorales</a></p>
+	       <p><a href="">Mis estudiantes</a></p>
+	       {% endif %}
+	       <p><a href="/inicio/cursos/mis_cursos">Mis cursos</a></p>
+	       <p><a href="">Generar reporte de actividades</a></p>
+           {% else %}
+	       Registro como académico en proceso a través de la solicitud
+	       <a href="/inicio/solicitudes/{{ user.academico.solicitud.id }}">#{{ user.academico.solicitud.id }}</a>
+           {% endif %}
+
+	<ul class="list-group">
+	  {% for grado in user.gradoacademico_set.all %}
+	  <li class="list-group-item">
+	    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
+	    <p class="list-group-item-text">nivel {{ grado.nivel }}
+	  </li>
+	  {% endfor %}
+	</ul>
+
+        <ul class="list-group">
+          {% for ad in user.academico.adscripcion_set.all %}
+	  <li class="list-group-item">
+	    {{ ad.nombramiento }} en {{ ad.institucion }}
+	  </li>
+	  {% empty %}
+	  <div class="alert alert-danger" role="alert">
+	    <strong>No ha registrado adscripciones</strong>
+	    <a href="/inicio/perfil/agregar-adscripcion">Agregar adscripción</a>.
+	  </div>
+	  {% endfor %}
+	</ul>
+	
 	{% endif %}
 
-      	  <a href="perfil/">ver mi perfil</a>	  
 
+	       
 	{% if not user.estudiante and not user.academico %}
 		  <ul>
 		    <li><a href="/inicio/estudiante/registro">registrarse como estudiante</a></li>

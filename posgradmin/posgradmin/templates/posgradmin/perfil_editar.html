@@ -42,6 +42,34 @@ $(document).ready(function() {
 </div>
 
 
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-leaf" aria-hidden="true"></span>
+      Adscripciones
+    </h3>
+  </div>
+  <div class="panel-body">
+    <a href="agregar-adscripcion"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+      agregar adscripción</a><br /><br />    
+    <ul class="list-group">
+      {% for ad in object.user.academico.adscripcion_set.all %}
+      <li class="list-group-item">
+	<div style="float: right">
+	  <button type="button" class="btn btn-danger btn-xs"
+		  onClick="if (confirm('¿eliminar {{ ad.nombramiento}} @ {{ ad.institucion }}?')) window.location='/inicio/perfil/eliminar-adscripcion/{{ad.id}}'">
+	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>
+	
+	{{ ad.nombramiento }} en {{ ad.institucion }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+
+
 {% endblock %}
 
 

@@ -7,11 +7,12 @@ from django.forms.models import model_to_dict
 from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento, Comentario, GradoAcademico, \
-    Institucion, Comite, Proyecto, Curso
+    Institucion, Comite, Proyecto, Curso, Adscripcion
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
-    ComiteTutoralModelForm, ProyectoModelForm, CursoModelForm
+    ComiteTutoralModelForm, ProyectoModelForm, CursoModelForm, \
+    AdscripcionModelForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -374,7 +375,8 @@ class AcademicoRegistroView(View):
     form_class = AcademicoModelForm
 
     breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/inicio/academico/registro', 'Registrarse como Académico'))
+                   ('/inicio/academico/registro',
+                    'Solicitar registro como Académico'))
 
     template_name = 'posgradmin/try.html'
 
@@ -384,22 +386,31 @@ class AcademicoRegistroView(View):
         return render(request,
                       self.template_name,
                       {'form': form,
-                       'title': 'Registrarse como Académico',
+                       'title': 'Solicitar registro como Académico',
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
+            s = Solicitud()
+            s.resumen = 'registrar como académico'
+            s.tipo = 'registrar_academico'
+            s.solicitante = request.user
+            s.save()
+
             a = Academico()
             a.user = request.user
+            a.solicitud = s
             a.save()
 
-            return HttpResponseRedirect('/inicio/')
+            return HttpResponseRedirect('/inicio/solicitudes/%s/'
+                                        % s.id)
+
         else:
             return render(request,
                           self.template_name,
                           {'form': form,
-                           'title': 'Registrarse como Académico',
+                           'title': 'Solicitar registro como Académico',
                            'breadcrumbs': self.breadcrumbs})
 
 
@@ -452,6 +463,53 @@ class GradoAcademicoEliminar(View):
         return HttpResponseRedirect("/inicio/perfil/")
 
 
+class AdscripcionAgregar(View):
+
+    form_class = AdscripcionModelForm
+
+    breadcrumbs = [('/inicio/', 'Inicio'),
+                   ('/inicio/perfil/', 'Mi perfil'),
+                   ('/inicio/perfil/agregar-adscrpcion',
+                    'Agregar Adscripción')]
+
+    template_name = 'posgradmin/try.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request,
+                      self.template_name,
+                      {'title': 'Agregar Adscripcion',
+                       'form': form,
+                       'breadcrumbs': self.breadcrumbs})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            ins = Institucion.objects.get(id=int(request.POST['institucion']))
+            a = Adscripcion(academico=request.user.academico,
+                            institucion=ins,
+                            nombramiento=request.POST['nombramiento'],
+                            telefono=request.POST['telefono'],
+                            numero_trabajador=request.POST['numero_trabajador'])
+            a.save()
+
+            return HttpResponseRedirect("/inicio/perfil/")
+        else:
+            return render(request,
+                          self.template_name,
+                          {'title': 'Agregar Adscripción',
+                           'form': form,
+                           'breadcrumbs': self.breadcrumbs})
+
+
+class AdscripcionEliminar(View):
+
+    def get(self, request, *args, **kwargs):
+        a = Adscripcion.objects.get(id=int(kwargs['pk']))
+        a.delete()
+        return HttpResponseRedirect("/inicio/perfil/")
+
+
 class InstitucionAgregarView(View):
 
     form_class = InstitucionModelForm
@@ -477,7 +535,7 @@ class InstitucionAgregarView(View):
                             estado=request.POST['estado'])
             i.save()
 
-            return HttpResponseRedirect("/inicio/perfil/agregar-grado")
+            return HttpResponseRedirect("/inicio/perfil/editar")
         else:
             return render(request,
                           self.template_name,

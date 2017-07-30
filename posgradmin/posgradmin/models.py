@@ -97,81 +97,6 @@ class GradoAcademico(models.Model):
         verbose_name_plural = "Grados académicos"
 
 
-class Academico(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    nivel_pride = models.CharField(max_length=15, choices=(('A', 'A'),
-                                                           ('B', 'B'),
-                                                           ('C', 'C')))
-    nivel_SNI = models.CharField(max_length=15,
-                                 choices=(('sin SNI', 'sin SNI'),
-                                          ('I', 'I'),
-                                          ('II', 'II'),
-                                          ('III', 'III'),
-                                          ('C', 'C'),
-                                          ('E', 'E')))
-    CVU = models.CharField(max_length=100)
-    DGEE = models.CharField(max_length=6)
-
-    tutor = models.BooleanField(default=False)
-    profesor = models.BooleanField(default=False)
-
-    fecha_acreditacion = models.DateField(blank=True, null=True)
-    acreditacion = models.CharField(max_length=15,
-                                    choices=(('doctorado', 'doctorado'),
-                                             ('maestría', 'maestría')))
-    entidad = models.ForeignKey(Entidad, null=True, blank=True)
-
-    def solicitudes(self, estado=None):
-        if estado is None:
-            return Solicitud.objects.filter(solicitante=self.user)
-        else:
-            return Solicitud.objects.filter(
-                solicitante=self.user).filter(
-                    estado=estado)
-
-    def cuantas_solicitudes(self):
-        solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
-                       for estado in solicitudes_estados]
-        solicitudes.append(('todas', self.solicitudes().count()))
-
-        return solicitudes
-
-    def __unicode__(self):
-        estado = []
-        if self.tutor:
-            estado.append("tutor acreditado")
-        if self.profesor:
-            estado.append("profesor")
-
-        return u"%s %s (%s), %s" % (self.user.first_name,
-                                    self.user.last_name,
-                                    self.user.username,
-                                    ", ".join(estado))
-
-    class Meta:
-        verbose_name_plural = "Académicos"
-
-
-class Adscripcion(models.Model):
-    academico = models.ForeignKey(Academico, on_delete=models.CASCADE)
-    institucion = models.ForeignKey(Institucion)
-    nombramiento = models.CharField(max_length=100)
-    telefono = models.CharField(max_length=100, blank=True)
-
-    numero_trabajador = models.CharField("en caso de trabajar en la UNAM",
-                                         max_length=100,
-                                         blank=True)
-
-    def __unicode__(self):
-        return u"%s %s en %s" % (self.academico,
-                                 self.nombramiento,
-                                 self.institucion)
-
-    class Meta:
-        verbose_name_plural = "Adscripciones"
-
-
 class Estudiante(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado",
@@ -286,7 +211,7 @@ class Solicitud(models.Model):
     def dictamen_final(self):
         try:
             return self.dictamen_set.exclude(
-                asistente=None).first().resolucion
+                asistente=None).first()
         except:
             return None
 
@@ -304,7 +229,7 @@ class Proyecto(models.Model):
     solicitud = models.ForeignKey(Solicitud)
 
     def aprobado(self):
-        if self.solicitud.dictamen_final() == 'concedida':
+        if self.solicitud.dictamen_final().resolucion == 'concedida':
             return True
         else:
             return False
@@ -348,6 +273,91 @@ class Comentario(models.Model):
 
     def __unicode__(self):
         return u'%s por %s: "%s"' % (self.fecha, self.autor, self.comentario)
+
+
+class Academico(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    nivel_pride = models.CharField(max_length=15, choices=(('A', 'A'),
+                                                           ('B', 'B'),
+                                                           ('C', 'C')))
+    nivel_SNI = models.CharField(max_length=15,
+                                 choices=(('sin SNI', 'sin SNI'),
+                                          ('I', 'I'),
+                                          ('II', 'II'),
+                                          ('III', 'III'),
+                                          ('C', 'C'),
+                                          ('E', 'E')))
+    CVU = models.CharField(max_length=100)
+    DGEE = models.CharField(max_length=6, blank=True, null=True)
+
+    tutor = models.BooleanField(default=False)
+    profesor = models.BooleanField(default=False)
+
+    fecha_acreditacion = models.DateField(blank=True, null=True)
+    acreditacion = models.CharField(max_length=15,
+                                    choices=(('doctorado', 'doctorado'),
+                                             ('maestría', 'maestría')))
+    entidad = models.ForeignKey(Entidad, null=True, blank=True)
+
+    solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE)
+
+    def acreditado(self):
+        if self.solicitud.dictamen_final() is None:
+            return False
+        elif self.solicitud.dictamen_final().resolucion == 'concedida':
+            self.fecha_acreditacion = self.solicitud.dictamen_final().fecha
+            self.save()
+            return True
+
+    def solicitudes(self, estado=None):
+        if estado is None:
+            return Solicitud.objects.filter(solicitante=self.user)
+        else:
+            return Solicitud.objects.filter(
+                solicitante=self.user).filter(
+                    estado=estado)
+
+    def cuantas_solicitudes(self):
+        solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
+                       for estado in solicitudes_estados]
+        solicitudes.append(('todas', self.solicitudes().count()))
+
+        return solicitudes
+
+    def __unicode__(self):
+        estado = []
+        if self.tutor:
+            estado.append("tutor acreditado")
+        if self.profesor:
+            estado.append("profesor")
+
+        return u"%s %s (%s), %s" % (self.user.first_name,
+                                    self.user.last_name,
+                                    self.user.username,
+                                    ", ".join(estado))
+
+    class Meta:
+        verbose_name_plural = "Académicos"
+
+
+class Adscripcion(models.Model):
+    academico = models.ForeignKey(Academico, on_delete=models.CASCADE)
+    institucion = models.ForeignKey(Institucion)
+    nombramiento = models.CharField(max_length=100)
+    telefono = models.CharField(max_length=100, blank=True)
+
+    numero_trabajador = models.CharField("Número de trabajador (UNAM)",
+                                         max_length=100,
+                                         blank=True)
+
+    def __unicode__(self):
+        return u"%s %s en %s" % (self.academico,
+                                 self.nombramiento,
+                                 self.institucion)
+
+    class Meta:
+        verbose_name_plural = "Adscripciones"
 
 
 class Comite(models.Model):

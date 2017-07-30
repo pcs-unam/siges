@@ -85,6 +85,32 @@
 
 
 
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-leaf" aria-hidden="true"></span>
+      Adscripciones
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      {% for ad in object.user.academico.adscripcion_set.all %}
+      <li class="list-group-item">
+	{{ ad.nombramiento }} en {{ ad.institucion }} <strong>Tel:</strong> {{ ad.telefono }}
+      </li>
+      {% empty %}
+      <div class="alert alert-danger" role="alert">
+	<strong>No ha registrado adscripciones</strong>
+	<a href="/inicio/perfil/agregar-adscripcion">Agregar adscripción</a>.
+      </div>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+
+
+
 {% if object.user.estudiante %}
 <div class="panel panel-default">
   <div class="panel-heading">

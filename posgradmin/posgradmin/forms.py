@@ -6,7 +6,7 @@ from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, \
     CampoConocimiento, GradoAcademico, Institucion, Comite, \
-    Proyecto, Curso
+    Proyecto, Curso, Adscripcion
 
 
 class SolicitudForm(forms.Form):
@@ -121,7 +121,6 @@ class AcademicoModelForm(forms.ModelForm):
 
         super(AcademicoModelForm, self).__init__(*args, **kwargs)
 
-
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
         self.helper.layout.append(Submit('guardar', 'guardar'))
@@ -129,7 +128,8 @@ class AcademicoModelForm(forms.ModelForm):
     class Meta:
         model = Academico
         exclude = ['user', 'tutor', 'profesor',
-                   'fecha_acreditacion', 'acreditacion', 'entidad']
+                   'fecha_acreditacion', 'acreditacion',
+                   'entidad', 'DGEE', 'solicitud']
 
 
 class SolicitudCommentForm(forms.Form):
@@ -186,6 +186,27 @@ class GradoAcademicoModelForm(forms.ModelForm):
             'fecha_obtencion',
             'promedio',
             'documento',
+            Submit('agregar', 'agregar'))
+
+
+class AdscripcionModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Adscripcion
+        exclude = ['academico', ]
+
+    def __init__(self, *args, **kwargs):
+
+        super(AdscripcionModelForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+
+        self.helper.layout = Layout(
+            'institucion',
+            HTML('<a href="/institucion/agregar">agregar institucion</a><br /><br />'),
+            'nombramiento',
+            'telefono',
+            'numero_trabajador',
             Submit('agregar', 'agregar'))
 
 
