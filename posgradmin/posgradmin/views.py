@@ -165,7 +165,8 @@ class SolicitudDictaminar(View):
             c.comentario += request.POST['comentario']
             c.save()
 
-            solicitud.estado = 'atendida'
+            if request.user.is_staff or hasattr(request.user, 'asistente'):
+                solicitud.estado = 'atendida'
             solicitud.save()
 
             return HttpResponseRedirect("/inicio/solicitudes/%s/"

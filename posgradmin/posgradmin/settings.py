@@ -146,8 +146,6 @@ LOGIN_REDIRECT_URL = '/inicio/'
 solicitudes_estados = (
         ("nueva",
          "nueva"),
-        ("predictamen",
-         "predictamen"),
         ("agendada",
          "agendada"),
         ("atendida",

@@ -105,20 +105,26 @@
       {% if user.asistente or user.is_staff %}
       {% if object.estado == 'nueva' %}
       <li><a href="estado/agendada">Agendar solicitud para próxima Asamblea del Consejo</a></li>
+      {% if not object.predictamen %}
       <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
+      {% endif %}
       {% elif object.estado == 'agendada' %}
       <li><a href="dictaminar">Emitir dictamen</a></li>
       {% endif %}
 
       
       {% elif user.academico %}
+      {% if object.estado == 'nueva' or object.estado == 'agendada' %}
+      <li><a href="dictaminar">Emitir dictamen</a></li>
+      {% endif %}
+      
       {% if object.solicitante == user and object.estado == 'nueva' %}
       <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
       {% endif %}
 
       
       {% elif user.estudiante %}
-      {% if object.solicitante == user and object.estado == 'nueva' %}
+      {% if object.solicitante == user and object.estado == 'nueva' and not object.predictamen %}
       <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
       {% endif %}
       {% endif %}
@@ -130,6 +136,8 @@
       <strong>estado:</strong> {{ object.estado }}
       {% if object.dictamen_final %}
       | <strong>dictamen</strong>: {{ object.dictamen_final.resolucion }}
+      {% elif object.predictamen %}
+      | <strong>predictaminada</strong>
       {% endif %}
 
   </div>
@@ -138,6 +146,15 @@
 
 {% block dictamen_form %}
 {% endblock %}
+
+{% if object.dictamen_set.all %}
+<h3>Dictámenes</h3>
+<ul class="list-group">
+{% for d in object.dictamen_set.all %}
+<li class="list-group-item"><strong>{{ d.resolucion }}</strong> por {{ d.autor }} el dia {{ d.fecha }}</li>
+{% endfor %}
+</ul>
+{% endif %}
 
 
 <h3>Anexos</h3>

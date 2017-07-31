@@ -215,6 +215,14 @@ class Solicitud(models.Model):
                 return d
         return None
 
+    def predictamen(self):
+        if self.dictamen_final():
+            return True
+        elif self.dictamen_set.count() > 0:
+            return True
+        else:
+            return False
+
     def __unicode__(self):
         return u"#%s %s [%s]" % (self.id, self.resumen, self.solicitante)
 
