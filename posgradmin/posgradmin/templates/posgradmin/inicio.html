@@ -143,7 +143,7 @@
 
 
 <!-- Solicitudes -->
-{% if user.estudiante or user.academico %}
+{% if user.estudiante or user.academico or user.asistente or user.is_staff %}
   <div class="col-sm-4">
     <div class="panel panel-info">
       <div class="panel-heading">

@@ -2,7 +2,7 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  {% for crumb in breadcrumbs %}  
+  {% for crumb in breadcrumbs %}
   &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
   {% endfor %}
 
@@ -23,14 +23,14 @@
 <div class="panel panel-info">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>{{ object.fecha_creacion }} por {{ object.solicitante.get_full_name }}</h3>  
-  </div>  
+      <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>{{ object.fecha_creacion }} por {{ object.solicitante.get_full_name }}</h3>
+  </div>
   <div class="panel-body">
     <h3>{{ object.resumen }}</h3>
     <p>{{ object.descripcion }}
     </p>
 
-    
+
     {% if object.tipo == "cambiar_comite_tutoral" %}
     {% if object.comite_set.all %}
     <h4>Comité elegido:</h4>
@@ -74,7 +74,7 @@
     {% else %}
     <div class="alert alert-danger" role="alert">
       <strong>No se han especificado cambios al proyecto.</strong>.
-      <a href="cambio-proyecto">Cambiar proyecto</a>.
+      <a href="cambiar-proyecto">Cambiar proyecto</a>.
     </div>
     {% endif %}
     {% endif %}
@@ -90,39 +90,48 @@
     </div>
     {% endif %}
     {% endif %}
-    
 
-    {% if object.tipo == "registrar_academico" %}
+
+    {% if object.tipo == "registrar_academico" and user == object.solicitante %}
       Para ser registrado como académico es necesario que agregue sus adscripciones a su perfil.
       <a href="/inicio/perfil/editar">Editar mi perfil</a>.
     {% endif %}
 
-    
+
   </div>
 
-  {% if user.asistente or user.is_staff %}
   <div class="panel-footer">
-    Cambiar <strong>estado</strong>:
     <ul>
-    {% if object.estado == 'nueva' %}
-    <li><a href="estado/agendada">Agendar solicitud para próxima Asamblea del Consejo</a></li>
-    <li><a href="estado/cancelada">Cancelar</a></li>    
-    {% elif object.estado == 'agendada' %}
-    <li><a href="dictaminar">Emitir dictamen</a></li>
-    {% endif %}
+      {% if user.asistente or user.is_staff %}
+      {% if object.estado == 'nueva' %}
+      <li><a href="estado/agendada">Agendar solicitud para próxima Asamblea del Consejo</a></li>
+      <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
+      {% elif object.estado == 'agendada' %}
+      <li><a href="dictaminar">Emitir dictamen</a></li>
+      {% endif %}
+
+      
+      {% elif user.academico %}
+      {% if object.solicitante == user and object.estado == 'nueva' %}
+      <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
+      {% endif %}
+
+      
+      {% elif user.estudiante %}
+      {% if object.solicitante == user and object.estado == 'nueva' %}
+      <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
+      {% endif %}
+      {% endif %}
     </ul>
   </div>
-  {% endif %}
-  
+
   <div class="panel-footer">
-      <strong>tipo:</strong> {{ object.tipo }}
+      <strong>tipo:</strong> {{ object.tipo }} |
       <strong>estado:</strong> {{ object.estado }}
-      <strong>dictamen</strong>: {% if object.dictamen_final %}
-                                 {{ object.dictamen_final.resolucion }}
-                                 {% else %}
-                                 pendiente
-                                 {% endif %}
-      
+      {% if object.dictamen_final %}
+      | <strong>dictamen</strong>: {{ object.dictamen_final.resolucion }}
+      {% endif %}
+
   </div>
 </div>
 
@@ -131,10 +140,12 @@
 {% endblock %}
 
 
-<h2>Anexos</h2>
+<h3>Anexos</h3>
 
 {% block anexo_form %}
+{% if object.estado != 'cancelada' and object.estado != 'atendida' %}
 <a href="anexar"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> subir anexo</a>
+{% endif %}
 {% endblock %}
 
 {% if object.anexo_set.count %}
@@ -145,9 +156,9 @@
       <li class="list-group-item">
 	<a href="/inicio/solicitudes/{{ object.id }}/anexos/{{ anexo.archivo }}">
 	  <strong>
-	  <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>	  
+	  <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
 	  {{ anexo.archivo }}</a></strong>
-	anexado el {{ anexo.fecha }} por       
+	anexado el {{ anexo.fecha }} por
 	{{ anexo.autor.get_full_name }}
       </li>
       {% endfor %}
@@ -157,19 +168,21 @@
 {% endif %}
 
 
-<h2>Comentarios</h2>
+<h3>Comentarios</h3>
 
 {% block comment_form %}
+{% if object.estado != 'cancelada' and object.estado != 'atendida' %}
 <a href="comentar"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> agregar comentario</a>
+{% endif %}
 {% endblock %}
-  
+
 {% if object.comentario_set.count %}
   {% for comentario in object.comentario_set.all %}
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
       <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-      {{ comentario.fecha }} por       
+      {{ comentario.fecha }} por
       {{ comentario.autor.get_full_name }}</h3>
 
   </div>
@@ -184,5 +197,3 @@
 {% endif %}
 
 {% endblock %}
-
-

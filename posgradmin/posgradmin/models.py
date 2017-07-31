@@ -1,13 +1,14 @@
 # coding: utf-8
 
 from django.db import models
+from django.db.models import Q
 
 from django.contrib.auth.models import User
 
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
     solicitudes_estados
-
+from pprint import pprint
 
 class Institucion(models.Model):
     nombre = models.CharField(max_length=100)
@@ -228,8 +229,9 @@ class Proyecto(models.Model):
     solicitud = models.ForeignKey(Solicitud)
 
     def aprobado(self):
-        if self.solicitud.dictamen_final().resolucion == 'concedida':
-            return True
+        if self.solicitud.dictamen_final():
+            if self.solicitud.dictamen_final().resolucion == 'concedida':
+                return True
         else:
             return False
 
@@ -310,12 +312,20 @@ class Academico(models.Model):
             return True
 
     def solicitudes(self, estado=None):
-        if estado is None or estado is 'todas':
-            return Solicitud.objects.filter(solicitante=self.user)
+        solicitudes_de_estudiantes = set()
+        for e in self.estudiantes():
+            for s in e.solicitudes():
+                solicitudes_de_estudiantes.add(s.id)
+
+        if estado is None or estado == 'todas':
+            return Solicitud.objects.filter(
+                Q(pk__in=solicitudes_de_estudiantes)
+                | Q(solicitante=self.user))
         else:
             return Solicitud.objects.filter(
-                solicitante=self.user).filter(
-                    estado=estado)
+                (Q(pk__in=solicitudes_de_estudiantes)
+                 | Q(solicitante=self.user))
+                & Q(estado=estado))
 
     def cuantas_solicitudes(self):
         solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
@@ -323,6 +333,22 @@ class Academico(models.Model):
         solicitudes.append(('todas', self.solicitudes().count()))
 
         return solicitudes
+
+    def estudiantes(self):
+        estudiantes = list()
+        if self.tutor:
+            for c in Comite.objects.filter(Q(tipo='tutoral')
+                                           & (Q(presidente=self)
+                                              | Q(secretario=self)
+                                              | Q(vocal=self))):
+                if c.solicitud.dictamen_final():
+                    if c.solicitud.dictamen_final().resolucion == 'concedida':
+                        estudiantes.append(c.estudiante)
+                elif c.solicitud.estado != 'cancelada':
+                    estudiantes.append(c.estudiante)
+            return estudiantes
+        else:
+            return []
 
     def __unicode__(self):
         estado = []

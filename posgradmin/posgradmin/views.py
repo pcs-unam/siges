@@ -63,13 +63,10 @@ class SolicitudNuevaView(View):
             a = request.user.academico
             if a.tutor:
                 choices += solicitudes_tutoriles
-            else:
+            elif a.acreditado():
                 choices += solicitudes_profesoriles
                 choices += (("solicitar_registro_como_tutor",
                              "Solicitar Registro como Tutor"),)
-
-            if a.profesor:
-                choices += solicitudes_profesoriles
 
         except ObjectDoesNotExist:
             pass
@@ -157,12 +154,12 @@ class SolicitudDictaminar(View):
                 d = Dictamen(resolucion='denegada',
                              solicitud=solicitud,
                              autor=request.user)
-                c.comentario = 'Dictamen: denegada\n'
+                c.comentario = '[Dictamen: solicitud denegada] '
             elif 'conceder' in request.POST:
                 d = Dictamen(resolucion='concedida',
                              solicitud=solicitud,
                              autor=request.user)
-                c.comentario = 'Dictamen: concedida\n'
+                c.comentario = '[Dictamen: solicitud concedida]'
             d.save()
 
             c.comentario += request.POST['comentario']
@@ -286,12 +283,12 @@ class SolicitudSortableView(SortableListView):
                 return sorted & Solicitud.objects.all()
             else:
                 return sorted & Solicitud.objects.filter(estado=estado)
-        elif hasattr(self.request.user, 'estudiante'):
-            return sorted & \
-                self.request.user.estudiante.solicitudes(estado)
         elif hasattr(self.request.user, 'academico'):
             return sorted & \
                 self.request.user.academico.solicitudes(estado)
+        elif hasattr(self.request.user, 'estudiante'):
+            return sorted & \
+                self.request.user.estudiante.solicitudes(estado)
 
     allowed_sort_fields = {'resumen': {'default_direction': '',
                                        'verbose_name': 'resumen'},
