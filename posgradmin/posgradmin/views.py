@@ -7,12 +7,12 @@ from django.forms.models import model_to_dict
 from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento, Comentario, GradoAcademico, \
-    Institucion, Comite, Proyecto, Curso, Adscripcion
+    Institucion, Comite, Proyecto, Curso, Adscripcion, Dictamen
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
     ComiteTutoralModelForm, ProyectoModelForm, CursoModelForm, \
-    AdscripcionModelForm
+    AdscripcionModelForm, SolicitudDictamenForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -124,6 +124,63 @@ class SolicitudDetail(DetailView):
     model = Solicitud
 
 
+class SolicitudDictaminar(View):
+
+    form_class = SolicitudDictamenForm
+
+    breadcrumbs = [('/inicio/', 'Inicio'),
+                   ('/inicio/solicitudes/', 'Solicitudes')]
+
+    template_name = 'posgradmin/solicitud_comment.html'
+
+    def get(self, request, *args, **kwargs):
+
+        form = self.form_class()
+        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
+        # envia todo a la plantilla
+        return render(request,
+                      self.template_name,
+                      {'object': solicitud,
+                       'form': form,
+                       'breadcrumbs': self.breadcrumbs.append(
+                           ('/inicio/solicitudes/%s/' % solicitud.id,
+                            '#%s' % solicitud.id))})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
+            c = Comentario()
+            c.solicitud = solicitud
+            c.autor = request.user
+            if 'denegar' in request.POST:
+                d = Dictamen(resolucion='denegada',
+                             solicitud=solicitud,
+                             autor=request.user)
+                c.comentario = 'Dictamen: denegada\n'
+            elif 'conceder' in request.POST:
+                d = Dictamen(resolucion='concedida',
+                             solicitud=solicitud,
+                             autor=request.user)
+                c.comentario = 'Dictamen: concedida\n'
+            d.save()
+
+            c.comentario += request.POST['comentario']
+            c.save()
+
+            solicitud.estado = 'atendida'
+            solicitud.save()
+
+            return HttpResponseRedirect("/inicio/solicitudes/%s/"
+                                        % solicitud.id)
+        else:
+            return render(request,
+                          self.template_name,
+                          {'object': solicitud,
+                           'form': form,
+                           'breadcrumbs': self.breadcrumbs})
+
+
 class SolicitudComment(View):
 
     form_class = SolicitudCommentForm
@@ -225,7 +282,10 @@ class SolicitudSortableView(SortableListView):
 
         if self.request.user.is_staff \
            or hasattr(self.request.user, 'asistente'):
-            return Solicitud.objects.filter(estado=estado)
+            if estado == 'todas':
+                return sorted & Solicitud.objects.all()
+            else:
+                return sorted & Solicitud.objects.filter(estado=estado)
         elif hasattr(self.request.user, 'estudiante'):
             return sorted & \
                 self.request.user.estudiante.solicitudes(estado)

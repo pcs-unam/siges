@@ -148,6 +148,23 @@ class SolicitudCommentForm(forms.Form):
     )
 
 
+class SolicitudDictamenForm(forms.Form):
+
+    comentario = forms.CharField(
+        widget=forms.Textarea(),
+        required=True
+    )
+
+    helper = FormHelper()
+    helper.layout = Layout(
+        Field('comentario', rows="3", cols="40", css_class='input-xlarge'),
+        FormActions(
+            Submit('conceder', 'conceder', css_class="btn-primary"),
+            Submit('denegar', 'denegar', css_class="btn-primary"),
+        )
+    )
+
+
 class SolicitudAnexoForm(forms.Form):
 
     anexo = forms.FileField(required=True)

@@ -209,11 +209,10 @@ class Solicitud(models.Model):
     estado = models.CharField(max_length=30, default="nueva")
 
     def dictamen_final(self):
-        try:
-            return self.dictamen_set.exclude(
-                asistente=None).first()
-        except:
-            return None
+        for d in self.dictamen_set.all():
+            if d.autor.is_staff or hasattr(d.autor, 'asistente'):
+                return d
+        return None
 
     def __unicode__(self):
         return u"#%s %s [%s]" % (self.id, self.resumen, self.solicitante)
@@ -395,7 +394,6 @@ class Asistente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def cuantas_solicitudes(self):
-        print "por aqui"
         solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
                        for estado in solicitudes_estados]
         solicitudes.append(('todas', self.solicitudes().count()))
@@ -417,22 +415,17 @@ class Dictamen(models.Model):
                                   choices=(('concedida', 'concedida'),
                                            ('denegada', 'denegada')))
     solicitud = models.ForeignKey(Solicitud)
-    academico = models.ForeignKey(Academico, null=True, blank=True)
-    asistente = models.ForeignKey(Asistente, null=True, blank=True)
+    autor = models.ForeignKey(User, null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "Dictámenes"
 
     def __unicode__(self):
-        if self.academico:
-            autor = self.academico
-        else:
-            autor = self.asistente
         return u'#%s %s por %s' \
             % (self.solicitud.id,
                self.resolucion,
-               autor)
+               self.autor)
 
 
 class Curso(models.Model):
