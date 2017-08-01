@@ -10,6 +10,7 @@ from settings import solicitudes_profesoriles,\
     solicitudes_estados
 from pprint import pprint
 
+
 class Institucion(models.Model):
     nombre = models.CharField(max_length=100)
     pais = models.CharField(max_length=100)
@@ -465,13 +466,16 @@ class Dictamen(models.Model):
 class Curso(models.Model):
     denominacion = models.CharField(max_length=100)
     clave = models.CharField(max_length=100, blank=True, null=True)
-    semestre = models.PositiveSmallIntegerField(
-        choices=((1, 1),
-                 (2, 2)),
-        blank=True, null=True)
     campo_conocimiento = models.ForeignKey(CampoConocimiento)
     dosier = models.FileField()
-    profesor = models.ForeignKey(Academico)
 
     def __unicode__(self):
         return u'curso: "%s" por %s' % (self.denominacion, self.profesor)
+
+
+class Catedra(models.Model):
+    curso = models.OneToOneField(Curso)
+    solicitud = models.OneToOneField(Solicitud)
+    semestre = models.PositiveSmallIntegerField(
+        choices=((1, 1), (2, 2)))
+    year = models.PositiveSmallIntegerField()
