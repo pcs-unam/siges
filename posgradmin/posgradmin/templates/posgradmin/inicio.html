@@ -123,8 +123,9 @@
 	{% endif %}
 
 
-	       
-	{% if not user.estudiante and not user.academico %}
+	{% if user.is_staff or user.asistente %}
+	
+	{% elif not user.estudiante and not user.academico %}
 		  <ul>
 		    <li><a href="/inicio/estudiante/registro">registrarse como estudiante</a></li>
 		    <li><a href="/inicio/academico/registro">registrarse como académico</a></li>
@@ -149,7 +150,7 @@
       <div class="panel-heading">
 	<h3 class="panel-title">
 	  <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
-	  Solicitudes</h3>
+	  <a href="/inicio/solicitudes/">Solicitudes</a></h3>
       </div>
       <div class="panel-body">
 	<p>
@@ -195,7 +196,7 @@
   </div>
 </div>
 
-{% if user.is_staff %}
+{% if user.is_staff or user.asistente %}
 <div class="row">
   <div class="col-sm-4">
 
@@ -207,11 +208,10 @@
 	</h3>
       </div>
       <div class="panel-body">
-	<p><a href="">Agendar Sesión del Comité Académico</a></p>
 	<p><a href="">Académicos</a></p>
 	<p><a href="">Tutores</a></p>
-	<p><a href="">Profesores</a></p>
 	<p><a href="">Estudiantes</a></p>
+	<p><a href="/admin/">Administración General</a></p>	
       </div>
     </div>
   </div>
