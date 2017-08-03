@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'crispy_forms',
     'sortable_listview',
+    'django_markdown2'
 ]
 
 SITE_ID = 1
@@ -156,8 +157,8 @@ solicitudes_estados = (
 
 
 solicitudes_profesoriles = (
-        ("registrar_curso",
-         "Registrar Curso"),
+        ("registrar_catedra",
+         "Registrar Cátedra"),
         ("solicitar_apoyo_económico",
          "Solicitar Apoyo Económico"),
     )
