@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import Perfil, Academico, Estudiante, Adscripcion,\
     GradoAcademico, Institucion, Entidad, CampoConocimiento, \
     Beca, Solicitud, Comentario, Anexo, Proyecto, Dictamen, \
-    Comite, Asistente, Curso
+    Comite, Asistente, Curso, Catedra
 
 admin.site.site_header = "Administración de Posgrado en Ciencias de la Sostenibilidad"
 admin.site.site_title = "Posgrado en Ciencias de la Sostenibilidad"
@@ -27,3 +27,4 @@ admin.site.register(Dictamen)
 admin.site.register(Comite)
 admin.site.register(Asistente)
 admin.site.register(Curso)
+admin.site.register(Catedra)

@@ -7,7 +7,7 @@
   {% endfor %}
 
   &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/cursos/mis_cursos">Mis cursos</a>
+  &rsaquo; <a href="/inicio/catedras/mis">Mis cátedras</a>
 
 </div>
 {% endblock %}
@@ -15,25 +15,27 @@
 
 {% block content %}
 
-<h2>Mis cursos</h2>
+<h2>Mis cátedras</h2>
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Denominación</th>
-      <th>Clave</th>
+      <th>Curso</th>
+      <th>Año</th>
       <th>Semestre</th>
-      <th>Campo de Conocimiento</th>
+      <th>Profesor</th>
+      <th>Solicitud</th>
     </tr>
   </thead>
 
   <tbody>
-    {% for curso in object_list %}
+    {% for catedra in object_list %}
     <tr>
-      <th>{{ curso.denominacion }} </th>
-      <th>{{ curso.clave }}</th>
-      <th>{{ curso.semestre }}</th>
-      <th>{{ curso.campo_conocimiento }}</th>      
+      <th>{{ catedra.curso }} </th>
+      <th>{{ catedra.year }}</th>
+      <th>{{ catedra.semestre }}</th>
+      <th>{{ catedra.profesor }}</th>
+      <th>{{ catedra.solicitud.as_a|safe }}</th>
     </tr>
   {% endfor %}
   </tbody>

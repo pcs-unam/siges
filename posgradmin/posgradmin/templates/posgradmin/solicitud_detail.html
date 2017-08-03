@@ -20,7 +20,7 @@
 
 {% block content %}
 
-<h1>solicitud #{{ object.id }}</h1>
+<h1>solicitud {{ object.as_a|safe }}</h1>
 <div class="panel panel-info">
   <div class="panel-heading">
     <h3 class="panel-title">
@@ -81,13 +81,17 @@
     {% endif %}
 
 
-    {% if object.tipo == "registrar_curso" %}
-    {% if object.curso_set.all %}
-    {{ object.curso_set.all.last }}
+    {% if object.tipo == "registrar_catedra" %}
+    {% if object.catedra %}
+    <ul>
+      <li><strong>curso:</strong> {{ object.catedra.curso }}</li>
+      <li><strong>semestre: </strong> {{ object.catedra.semestre }}</li>
+      <li><strong>año:</strong> {{ object.catedra.year }}</li>
+    </ul>
     {% else %}
     <div class="alert alert-danger" role="alert">
-      <strong>No se ha registrado curso.</strong>.
-      <a href="cambio-proyecto">registrar curso</a>.
+      <strong>No se ha registrado cátedra.</strong>.
+      <a href="registrar-catedra">registrar cátedra</a>.
     </div>
     {% endif %}
     {% endif %}

@@ -7,11 +7,11 @@ from django.forms.models import model_to_dict
 from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento, Comentario, GradoAcademico, \
-    Institucion, Comite, Proyecto, Curso, Adscripcion, Dictamen
+    Institucion, Comite, Proyecto, Catedra, Adscripcion, Dictamen, Curso
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
-    ComiteTutoralModelForm, ProyectoModelForm, CursoModelForm, \
+    ComiteTutoralModelForm, ProyectoModelForm, CatedraModelForm, \
     AdscripcionModelForm, SolicitudDictamenForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
@@ -151,15 +151,22 @@ class SolicitudDictaminar(View):
             c.solicitud = solicitud
             c.autor = request.user
             if 'denegar' in request.POST:
+                if solicitud.tipo == 'registrar_catedra':
+                    ct = solicitud.catedra
+                    ct.delete()                
                 d = Dictamen(resolucion='denegada',
                              solicitud=solicitud,
                              autor=request.user)
-                c.comentario = '[Dictamen: solicitud denegada] '
+                c.comentario = '## Dictamen: solicitud denegada\n\n'
             elif 'conceder' in request.POST:
+                if solicitud.tipo == 'registrar_catedra':
+                    ct = solicitud.catedra
+                    ct.profesor = solicitud.solicitante.academico
+                    ct.save()
                 d = Dictamen(resolucion='concedida',
                              solicitud=solicitud,
                              autor=request.user)
-                c.comentario = '[Dictamen: solicitud concedida]'
+                c.comentario = '## Dictamen: solicitud concedida\n\n'
             d.save()
 
             c.comentario += request.POST['comentario']
@@ -736,27 +743,27 @@ class CambiarProyectoView(View):
                            'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
 
 
-class MisCursosView(ListView):
-    model = Curso
+class MisCatedrasView(ListView):
+    model = Catedra
 
     def get_queryset(self):
-        new_context = Curso.objects.filter(
+        new_context = Catedra.objects.filter(
             profesor=self.request.user.academico
         )
         return new_context
 
 
-class CursoRegistrar(View):
+class CatedraRegistrar(View):
 
-    form_class = CursoModelForm
+    form_class = CatedraModelForm
 
     def get_breadcrumbs(self, pk):
         return [('/inicio/', 'Inicio'),
                 ('/inicio/solicitudes/', 'Solicitudes'),
                 ('/inicio/solicitudes/%s/' % pk,
                  '#%s' % pk),
-                ('/inicio/solicitudes/%s/registrar-curso'
-                 % pk, 'Registrar Curso')]
+                ('/inicio/solicitudes/%s/registrar-catedra'
+                 % pk, 'Registrar Cátedra')]
 
     template_name = 'posgradmin/try.html'
 
@@ -764,24 +771,25 @@ class CursoRegistrar(View):
         form = self.form_class()
         return render(request,
                       self.template_name,
-                      {'title': 'Registrar Curso',
+                      {'title': 'Registrar Cátedra',
                        'form': form,
                        'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
 
     def post(self, request, *args, **kwargs):
+        sid = int(kwargs['pk'])
+        s = Solicitud.objects.get(id=sid)
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            campo = CampoConocimiento.objects.get(
-                id=int(int(request.POST['campo_conocimiento'])))
-            c = Curso(denominacion=request.POST['denominacion'],
-                      clave=request.POST['clave'],
-                      semestre=request.POST['semestre'],
-                      campo_conocimiento=campo,
-                      dosier=request.FILES['dosier'],
-                      profesor=request.user.academico)
+            curso = Curso.objects.get(
+                id=int(request.POST['curso']))
+            c = Catedra(curso=curso,
+                        year=request.POST['year'],
+                        semestre=request.POST['semestre'],
+                        solicitud=s)
             c.save()
+            pprint(request.POST)
 
-            return HttpResponseRedirect("/inicio/cursos/mis_cursos")
+            return HttpResponseRedirect("/inicio/solicitudes/%s" % s.id)
         else:
             return render(request,
                           self.template_name,

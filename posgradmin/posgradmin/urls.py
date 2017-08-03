@@ -22,8 +22,8 @@ from posgradmin.views import SolicitudNuevaView, \
     AcademicoRegistroView, InicioView, SolicitudComment, SolicitudAnexo, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
     ComiteTutoralElegirView, JuradoCandidaturaElegirView, \
-    JuradoGradoElegirView, CambiarProyectoView, MisCursosView, \
-    CursoRegistrar, AdscripcionEliminar, AdscripcionAgregar, \
+    JuradoGradoElegirView, CambiarProyectoView, MisCatedrasView, \
+    CatedraRegistrar, AdscripcionEliminar, AdscripcionAgregar, \
     SolicitudCambiarEstado, SolicitudDictaminar
 
 urlpatterns = [
@@ -96,10 +96,11 @@ urlpatterns = [
     url(r'^inicio/$',
         InicioView.as_view()),
 
-    url(r'^inicio/cursos/mis_cursos$',
-        MisCursosView.as_view()),
-    url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/registrar-curso$',
-        CursoRegistrar.as_view()),
+    url(r'^inicio/catedras/mis$',
+        MisCatedrasView.as_view()),
+
+    url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/registrar-catedra$',
+        CatedraRegistrar.as_view()),
 
 
 # ./coordinacion/ratificacion_predictamenes.md

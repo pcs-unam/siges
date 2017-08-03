@@ -227,6 +227,28 @@ class Solicitud(models.Model):
     def __unicode__(self):
         return u"#%s %s [%s]" % (self.id, self.resumen, self.solicitante)
 
+    def as_a(self):
+        icon = """<span class='glyphicon glyphicon-{icon}'
+                        aria-hidden=true></span>"""
+        if self.dictamen_final():
+            if self.dictamen_final().resolucion == 'concedida':
+                status = '%s' % icon.format(icon='thumbs-up')
+            else:
+                status = '%s' % icon.format(icon='thumbs-down')
+        elif self.predictamen():
+            status = '%s' % icon.format(icon='eye-open')
+        elif self.estado == 'cancelada':
+            return u"""<a href='/inicio/solicitudes/%s'>
+                       <strike>#%s</strike></a>""" % (
+                self.id, self.id)
+        elif self.estado == 'agendada':
+            status = '%s' % icon.format(icon='calendar')
+        else:
+            status = self.estado
+
+        return u"""<a href='/inicio/solicitudes/%s'>#%s %s</a>""" % (
+            self.id, self.id, status)
+
     class Meta:
         verbose_name_plural = "Solicitudes"
 
@@ -476,12 +498,12 @@ class Curso(models.Model):
 
 
 class Catedra(models.Model):
-    curso = models.OneToOneField(Curso)
-    solicitud = models.OneToOneField(Solicitud)
+    curso = models.ForeignKey(Curso)
+    solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE)
     semestre = models.PositiveSmallIntegerField(
         choices=((1, 1), (2, 2)))
     year = models.PositiveSmallIntegerField()
-    profesor = models.OneToOneField(Academico, blank=True, null=True)
+    profesor = models.ForeignKey(Academico, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s, %s %s, por %s' % (self.curso,

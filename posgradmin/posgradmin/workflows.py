@@ -1,8 +1,8 @@
 # coding: utf-8
 
 solicitud = {
-    "registrar_curso":
-    "/inicio/solicitudes/%s/registrar-curso",
+    "registrar_catedra":
+    "/inicio/solicitudes/%s/registrar-catedra",
 
     "solicitar_apoyo_económico":
     "/inicio/solicitudes/%s",
