@@ -470,7 +470,9 @@ class Curso(models.Model):
     dosier = models.FileField()
 
     def __unicode__(self):
-        return u'curso: "%s" por %s' % (self.denominacion, self.profesor)
+        return u'%s: %s (%s)' % (self.clave,
+                                 self.denominacion,
+                                 self.campo_conocimiento)
 
 
 class Catedra(models.Model):
@@ -479,3 +481,10 @@ class Catedra(models.Model):
     semestre = models.PositiveSmallIntegerField(
         choices=((1, 1), (2, 2)))
     year = models.PositiveSmallIntegerField()
+    profesor = models.OneToOneField(Academico, blank=True, null=True)
+
+    def __unicode__(self):
+        return u'%s, %s %s, por %s' % (self.curso,
+                                       self.semestre,
+                                       self.year,
+                                       self.profesor)
