@@ -13,9 +13,23 @@ tipo de usuario. Hay tres categorías generales:
 
 
 ## Usuarios registrados
-- Registra solicitud miscelanea
-- solicitar registro al posgrado como profesor
-- solicitar registro al posgrado como estudiante
+
+Tras registrarse se solicita al usuario que complete su perfil.
+
+<img src="solicitud_perfil.png">
+
+<img src="editar_perfil.png" height="150px">
+
+El formulario de edición de perfil también permite [agregar grados académicos](grado_academico.png).
+
+De manera temporal un usuario registrado puede elegir ser académico o
+estudiante. El proceso de registro como estudiante aún no está
+especificado.
+
+<img src="con_perfil.png">
+
+- solicitar registro al posgrado como académico.
+- [solicitar registro al posgrado como estudiante](registrar_estudiante.md)
 
 ## Usuarios anónimos
 
