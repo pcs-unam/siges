@@ -46,8 +46,8 @@ class CampoConocimiento(models.Model):
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    curp = models.CharField(max_length=100)
-    rfc = models.CharField(max_length=100)
+    curp = models.CharField(max_length=100, blank=True)
+    rfc = models.CharField(max_length=100, blank=True)
 
     telefono = models.CharField(max_length=100)
     telefono_movil = models.CharField(max_length=100, blank=True)
