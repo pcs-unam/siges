@@ -19,15 +19,5 @@ tipo de usuario. Hay tres categorías generales:
 
 ## Usuarios anónimos
 
-Antes de registrarse un usuario es anónimo, sus casos de uso son:
-
-- Registrarse en el sistema. Para registrarse el usuario brinda:
-  - nombre de usuario
-  - contraseña
-  - correo electrónico
-  
-  El sistema crea el usuario y envía un correo electrónico con un código de activación. De esta manera se verifica el correo   electrónico. El registro podría cubrirse con [este módulo](http://django-registration.readthedocs.io/en/2.2/).
-
-- Leer materiales accesibles en zonas públicas del sistema, como
-  reglamentos y anuncios.
-
+ - [Registro](anonimos/registro.md)
+ - [Leer páginas web](anonimos/registro.md)
