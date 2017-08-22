@@ -98,8 +98,11 @@
 
 
     {% if object.tipo == "registrar_academico" and user == object.solicitante %}
+
+    {% if not user.academico.adscripcion_set.all %}    
       Para ser registrado como académico es necesario que agregue sus adscripciones a su perfil.
-      <a href="/inicio/perfil/editar">Editar mi perfil</a>.
+    <a href="/inicio/perfil/editar">Editar mi perfil</a>.
+    {% endif %}
     {% endif %}
 
 
