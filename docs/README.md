@@ -28,7 +28,7 @@ especificado.
 
 <img src="con_perfil.png">
 
-- solicitar registro al posgrado como académico.
+- [solicitar registro al posgrado como académico](registrar_academico.md).
 - [solicitar registro al posgrado como estudiante](registrar_estudiante.md)
 
 ## Usuarios anónimos
