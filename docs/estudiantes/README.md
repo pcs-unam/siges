@@ -3,17 +3,20 @@
 ## Aspirante
 
 Persona registrada en el sistema que está en el trámite de admisión al
-posgrado.
+posgrado. El proceso de registro de estudiantes no está especificado.
 
-### Aspirante de Doctorado
-- [seleccíon de comité tutoral](seleccion_comite_tutoral.md)
+
+
+
 
 
 ## Estudiante
 
 Persona inscrita al programa de posgrado.
-- selección de jurado de grado
+- [seleccíon de comité tutoral, de jurado de candidatura o de grado](seleccion_comite.md)
+
 - [registro de actividad complementaria](registro_actividad_complementaria.md)
+
 - [solicitud de candidatura](solicitud_candidatura.md)
 
 - Solicitudes varias:
