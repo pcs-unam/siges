@@ -4,14 +4,9 @@ Los usuarios de categoría académica son profesores que además pueden
 ser tutores. Un tutor puede ser miembro de un comité tutoral o del
 comité académico.
 
-
-## Profesores
-
-Un profesor imparte una cátedra en el programa.
-
-- [registra curso](registrar_curso.md)
-- [solicita registro como tutor](registrar_profesor_como_tutor.md)
-- [solicita apoyo económico](solicitud_de_apoyo_economico.md)
+- [solicitar catedra](solicitar_catedra.md)
+- [solicitar registro como tutor](registrar_profesor_como_tutor.md)
+- [solicitar apoyo económico](solicitud_de_apoyo_economico.md)
 
 Tras registrar una solicitud puede dar seguimiento al estado que
 guarda en su página de bienvenida.
