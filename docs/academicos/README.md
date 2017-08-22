@@ -5,7 +5,7 @@ ser tutores. Un tutor puede ser miembro de un comité tutoral o del
 comité académico.
 
 - [solicitar catedra](solicitar_catedra.md)
-- [solicitar registro como tutor](registrar_profesor_como_tutor.md)
+- [solicitar registro como tutor](solicitar_tutoria.md)
 - [solicitar apoyo económico](solicitud_de_apoyo_economico.md)
 
 Tras registrar una solicitud puede dar seguimiento al estado que
