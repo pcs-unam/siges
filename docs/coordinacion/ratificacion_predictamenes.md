@@ -1,10 +1,7 @@
-# Ratificación de predictámenes
+# Emisión de Dictamen Final
 
-##Solicitudes de cursos
-Una vez que el comité académico en conjunto con la coordinación durante la sesión de comité, la coordinación dará el dictámen
-final incluyendo los comentarios. 
+Tutores pueden emitir dictámenes acerca de las solicitudes de sus estudiantes.
 
-##Solicitud cambio de título de proyecto
-Una vez que el comité académico en conjunto con la coordianción hayan evaluado la solicitud generada por el estudiante darán el dictámen
-final, incluyendo comentarios.
+Estos tienen el propósito de hacer saber su punto de vista al comité académico.
 
+Sin embargo sólo el dictamen emitido por un miembro del comité académico tiene caracter final y concede o rehusa una solicitud.
