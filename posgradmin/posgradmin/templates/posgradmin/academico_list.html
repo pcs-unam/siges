@@ -41,11 +41,20 @@
       <td><a href="/inicio/academicos/{{ academico.id }}/">
 	  {{ academico.id }}</a></td>
       <td><a href="/inicio/academicos/{{ academico.id }}/">{{ academico.user.get_full_name }}</a></td>
-      <td>{{ academico.acreditado }}</td>
-      <td>{{ academico.tutor }}</td>
-      <td>{{ academico.comite_academico }}</a></td>
+      <td>{% if academico.acreditado %}
+	<span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+	{% endif %}
+      </td>
+      <td>{% if academico.tutor %}
+	<span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+	{% endif %}
+      </td>
+      <td>{% if academico.comite_academico %}
+	<span class="glyphicon glyphicon-check" aria-hidden="true"></span>	
+	{% endif %}
+      </td>
       <td>{{ academico.entidad }}</td>
-      <td>{{ academico.fecha_acreditacion }}</td>
+      <td>{{ academico.fecha_acreditacion|default:'' }}</td>
 
     </tr>
 
