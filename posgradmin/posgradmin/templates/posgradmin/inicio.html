@@ -84,7 +84,7 @@
 	{% endif %}
 
 
-	
+
 	{% if user.academico %}
 	   {% if user.academico.acreditado %}
 	       {% if user.academico.tutor %}
@@ -93,10 +93,10 @@
 	       {% endif %}
 	       <p><a href="/inicio/catedras/mis">Mis cátedras</a></p>
 	       <p><a href="">Generar reporte de actividades</a></p>
-           {% else %}
+	   {% else %}
 	       Registro como académico en proceso a través de la solicitud
 	       <a href="/inicio/solicitudes/{{ user.academico.solicitud.id }}">#{{ user.academico.solicitud.id }}</a>
-           {% endif %}
+	   {% endif %}
 
 	<ul class="list-group">
 	  {% for grado in user.gradoacademico_set.all %}
@@ -107,8 +107,8 @@
 	  {% endfor %}
 	</ul>
 
-        <ul class="list-group">
-          {% for ad in user.academico.adscripcion_set.all %}
+	<ul class="list-group">
+	  {% for ad in user.academico.adscripcion_set.all %}
 	  <li class="list-group-item">
 	    {{ ad.nombramiento }} en {{ ad.institucion }}
 	  </li>
@@ -119,12 +119,12 @@
 	  </div>
 	  {% endfor %}
 	</ul>
-	
+
 	{% endif %}
 
 
 	{% if user.is_staff or user.asistente %}
-	
+
 	{% elif not user.estudiante and not user.academico %}
 		  <ul>
 		    <li><a href="/inicio/estudiante/registro">registrarse como estudiante</a></li>
@@ -210,8 +210,9 @@
       <div class="panel-body">
 	<p><a href="/inicio/estudiantes/">Estudiantes</a></p>
 	<p><a href="/inicio/academicos/">Académicos</a></p>
-	<p><a href="/inicio/catedras/">Cátedras</a></p>	
-	<p><a href="/admin/">Administración General</a></p>	
+	<p><a href="/inicio/catedras/">Cátedras</a></p>
+	<p><a href="/inicio/sesiones/">Sesiones del Comité Académico</a></p>
+	<p><a href="/admin/">Administración General</a></p>
       </div>
     </div>
   </div>
