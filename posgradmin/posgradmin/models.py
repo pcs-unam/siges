@@ -508,3 +508,9 @@ class Catedra(models.Model):
                                        self.semestre,
                                        self.year,
                                        self.profesor)
+
+
+class Sesion(models.Model):
+    fecha = models.DateField()
+    descripcion = models.CharField(max_length=100,
+                                   default="sesión ordinaria")
