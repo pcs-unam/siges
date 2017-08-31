@@ -833,3 +833,23 @@ class AcademicoSortableView(SortableListView):
     paginate_by = 15
 
     model = Academico
+
+
+class CatedraSortableView(SortableListView):
+
+    # def get_queryset(self):
+    #     sorted = super(EstudianteSortableView, self).get_queryset()
+
+    allowed_sort_fields = {'profesor': {'default_direction': '',
+                                        'verbose_name': 'profesor'},
+                           'curso': {'default_direction': '-',
+                                     'verbose_name': 'curso'},
+                           'semestre': {'default_direction': '-',
+                                        'verbose_name': 'semestre'},
+                           'year': {'default_direction': '-',
+                                    'verbose_name': 'año'}}
+    default_sort_field = 'curso'
+
+    paginate_by = 15
+
+    model = Catedra

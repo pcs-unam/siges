@@ -7,38 +7,47 @@
   {% endfor %}
 
   &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/catedras/mis">Mis cátedras</a>
-
+  &rsaquo; <a href="/inicio/estudiantes/">Cátedras registradas</a>
 </div>
 {% endblock %}
 
 
+
+
+
 {% block content %}
 
-<h2>Mis cátedras</h2>
+<h2>Cátedras registradas</h2>
+
+  {% include 'sortable_listview/sort_links.html' %}
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Curso</th>
-      <th>Año</th>
-      <th>Semestre</th>
-      <th>Profesor</th>
-      <th>Solicitud</th>
+      <th>#</th>
+      <th>curso</th>
+      <th>profesor</th>
+      <th>año</th>
+      <th>semestre</th>
     </tr>
   </thead>
 
   <tbody>
     {% for catedra in object_list %}
+    
     <tr>
-      <th>{{ catedra.curso }} </th>
-      <th>{{ catedra.year }}</th>
-      <th>{{ catedra.semestre }}</th>
-      <th>{{ catedra.profesor }}</th>
-      <th>{{ catedra.solicitud.as_a|safe }}</th>
+      <td><a href="/inicio/catedras/{{ catedra.id }}/">
+	  {{ catedra.id }}</a></td>
+      <td><a href="/inicio/catedras/{{ catedra.id }}/">{{ catedra.curso }}</a></td>      
+      <td>{{ catedra.profesor }}</td>
+      <td>{{ catedra.year }}</td>      
+      <td>{{ catedra.semestre }}</td>      
+
     </tr>
+
   {% endfor %}
   </tbody>
 </table>
+  {% include 'sortable_listview/pagination.html' %}
 
 {% endblock %}
