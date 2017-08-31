@@ -153,7 +153,7 @@ class SolicitudDictaminar(View):
             if 'denegar' in request.POST:
                 if solicitud.tipo == 'registrar_catedra':
                     ct = solicitud.catedra
-                    ct.delete()                
+                    ct.delete()
                 d = Dictamen(resolucion='denegada',
                              solicitud=solicitud,
                              autor=request.user)
@@ -351,7 +351,7 @@ class PerfilRegistroView(View):
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
+        Form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             u = request.user
             u.first_name = request.POST['nombre']
@@ -796,3 +796,40 @@ class CatedraRegistrar(View):
                           {'title': 'Registrar Curso',
                            'form': form,
                            'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
+
+
+class EstudianteSortableView(SortableListView):
+
+    # def get_queryset(self):
+    #     sorted = super(EstudianteSortableView, self).get_queryset()
+
+    allowed_sort_fields = {'user': {'default_direction': '',
+                                    'verbose_name': 'nombre'},
+                           'estado': {'default_direction': '-',
+                                      'verbose_name': 'estado'},
+                           'ingreso': {'default_direction': '-',
+                                       'verbose_name': 'año de ingreso'}}
+    default_sort_field = 'user'
+
+    paginate_by = 15
+
+    model = Estudiante
+
+
+class AcademicoSortableView(SortableListView):
+
+    # def get_queryset(self):
+    #     sorted = super(EstudianteSortableView, self).get_queryset()
+
+    allowed_sort_fields = {'user': {'default_direction': '',
+                                    'verbose_name': 'nombre'},
+                           'estado': {'default_direction': '-',
+                                      'verbose_name': 'estado'},
+                           'ingreso': {'default_direction': '-',
+                                       'verbose_name': 'año de ingreso'}}
+    default_sort_field = 'user'
+
+    paginate_by = 15
+
+    model = Academico
+

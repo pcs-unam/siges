@@ -24,7 +24,8 @@ from posgradmin.views import SolicitudNuevaView, \
     ComiteTutoralElegirView, JuradoCandidaturaElegirView, \
     JuradoGradoElegirView, CambiarProyectoView, MisCatedrasView, \
     CatedraRegistrar, AdscripcionEliminar, AdscripcionAgregar, \
-    SolicitudCambiarEstado, SolicitudDictaminar
+    SolicitudCambiarEstado, SolicitudDictaminar, \
+    EstudianteSortableView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -56,6 +57,9 @@ urlpatterns = [
 
     url(r'^inicio/perfil/$',
         PerfilDetail.as_view()),
+
+    url(r'^inicio/estudiantes/$',
+        EstudianteSortableView.as_view()),
 
     url(r'^inicio/solicitudes/$',
         SolicitudSortableView.as_view()),
