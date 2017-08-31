@@ -324,7 +324,7 @@ class Academico(models.Model):
     DGEE = models.CharField(max_length=6, blank=True, null=True)
 
     tutor = models.BooleanField(default=False)
-    profesor = models.BooleanField(default=False)
+    comite_academico = models.BooleanField(default=False)
 
     fecha_acreditacion = models.DateField(blank=True, null=True)
     acreditacion = models.CharField(max_length=15,
@@ -385,8 +385,6 @@ class Academico(models.Model):
         estado = []
         if self.tutor:
             estado.append("tutor acreditado")
-        if self.profesor:
-            estado.append("profesor")
 
         return u"%s %s (%s), %s" % (self.user.first_name,
                                     self.user.last_name,
