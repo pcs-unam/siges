@@ -1,0 +1,57 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  {% for crumb in breadcrumbs %}
+  &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
+  {% endfor %}
+
+  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="/inicio/academicos/">Academicos</a>
+</div>
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+<h2>Académicos</h2>
+
+  {% include 'sortable_listview/sort_links.html' %}
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>nombre</th>
+      <th>acreditado</th>
+      <th>tutor</th>
+      <th>comité académico</th>
+      <th>entidad</th>
+      <th>fecha de acreditación</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for academico in object_list %}
+
+    <tr>
+      <td><a href="/inicio/academicos/{{ academico.id }}/">
+	  {{ academico.id }}</a></td>
+      <td><a href="/inicio/academicos/{{ academico.id }}/">{{ academico.user.get_full_name }}</a></td>
+      <td>{{ academico.acreditado }}</td>
+      <td>{{ academico.tutor }}</td>
+      <td>{{ academico.comite_academico }}</a></td>
+      <td>{{ academico.entidad }}</td>
+      <td>{{ academico.fecha_acreditacion }}</td>
+
+    </tr>
+
+  {% endfor %}
+  </tbody>
+</table>
+  {% include 'sortable_listview/pagination.html' %}
+
+{% endblock %}

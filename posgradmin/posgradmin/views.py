@@ -823,13 +823,13 @@ class AcademicoSortableView(SortableListView):
 
     allowed_sort_fields = {'user': {'default_direction': '',
                                     'verbose_name': 'nombre'},
-                           'estado': {'default_direction': '-',
-                                      'verbose_name': 'estado'},
-                           'ingreso': {'default_direction': '-',
-                                       'verbose_name': 'año de ingreso'}}
+                           'entidad': {'default_direction': '-',
+                                       'verbose_name': 'entidad'},
+                           'fecha_acreditacion': {'default_direction': '-',
+                                                  'verbose_name':
+                                                  'fecha de acreditación'}}
     default_sort_field = 'user'
 
     paginate_by = 15
 
     model = Academico
-
