@@ -135,6 +135,8 @@ class Estudiante(models.Model):
     semestre_graduacion = models.PositiveSmallIntegerField(blank=True,
                                                            null=True)
 
+    headshot = models.ImageField(upload_to='author_headshots')
+
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
             return True
@@ -210,6 +212,44 @@ class Solicitud(models.Model):
 
     estado = models.CharField(max_length=30, default="nueva")
 
+    def dictaminable(self, user):
+
+        if self.estado == 'agendada':
+            
+            if self.solicitante.id == user.id:
+                return False
+            
+            if hasattr(user, 'asistente') or user.is_staff or user.academico.acreditado():
+                return True
+        else:
+            return False
+        
+
+      #   <li><a href="estado/agendada">Agendar solicitud para próxima Asamblea del Consejo</a></li>
+      #   {% elif object.estado == 'agendada' %}
+      #       <li><a href="dictaminar">Emitir dictamen</a></li>
+      #   {% endif %}
+
+
+
+    def cancelable(self, user):
+        pass
+      #       {% if not object.predictamen %}
+      #         <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
+      #       {% endif %}
+      
+      # {% if object.solicitante == user and object.estado == 'nueva' %}
+      # <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
+      # {% endif %}
+
+      # {% elif user.estudiante %}
+      # {% if object.solicitante == user and object.estado == 'nueva' and not object.predictamen %}
+      # <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
+      # {% endif %}
+      # {% endif %}
+
+    
+    
     def dictamen_final(self):
         for d in self.dictamen_set.all():
             if d.autor.is_staff or hasattr(d.autor, 'asistente'):
@@ -339,6 +379,7 @@ class Academico(models.Model):
             return False
         elif self.solicitud.dictamen_final().resolucion == 'concedida':
             self.fecha_acreditacion = self.solicitud.dictamen_final().fecha
+            self.tutor = True
             self.save()
             return True
 

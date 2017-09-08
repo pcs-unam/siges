@@ -120,6 +120,10 @@ class SolicitudNuevaView(View):
 class SolicitudDetail(DetailView):
     model = Solicitud
 
+    def get_context_data(self, **kwargs):
+        context = super(SolicitudDetail, self).get_context_data(**kwargs)
+        context['dictaminable'] = context['object'].dictaminable(self.request.user)
+        return context
 
 class SolicitudDictaminar(View):
 
@@ -351,7 +355,7 @@ class PerfilRegistroView(View):
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
-        Form = self.form_class(request.POST, request.FILES)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             u = request.user
             u.first_name = request.POST['nombre']

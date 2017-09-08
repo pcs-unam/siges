@@ -110,31 +110,11 @@
 
   <div class="panel-footer">
     <ul>
-      {% if user.asistente or user.is_staff %}
-      {% if object.estado == 'nueva' %}
-      <li><a href="estado/agendada">Agendar solicitud para próxima Asamblea del Consejo</a></li>
-      {% if not object.predictamen %}
-      <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
-      {% endif %}
-      {% elif object.estado == 'agendada' %}
+      {% if dictaminable %}
       <li><a href="dictaminar">Emitir dictamen</a></li>
       {% endif %}
-
-      
-      {% elif user.academico.acreditado %}
-      {% if object.solicitante != user and object.estado == 'nueva' or object.estado == 'agendada' %}
-      <li><a href="dictaminar">Emitir dictamen</a></li>
-      {% endif %}
-      
-      {% if object.solicitante == user and object.estado == 'nueva' %}
+      {% if cancelable %}
       <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
-      {% endif %}
-
-      
-      {% elif user.estudiante %}
-      {% if object.solicitante == user and object.estado == 'nueva' and not object.predictamen %}
-      <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
-      {% endif %}
       {% endif %}
     </ul>
   </div>
