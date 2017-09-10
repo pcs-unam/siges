@@ -63,7 +63,8 @@ class PerfilModelForm(forms.ModelForm):
                            'genero',
                            'nacionalidad',
                            'curp',
-                           'rfc'),
+                           'rfc',
+                           'headshot'),
                     Class="panel-body"),
 
                 Div(HTML(u"<h1 class='panel-title'>Información de contacto</h1>"),

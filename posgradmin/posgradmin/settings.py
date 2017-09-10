@@ -192,3 +192,7 @@ solicitudes_estudiantiles = (
 solicitud_otro = (
     ('otro',
      'Otro'),)
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

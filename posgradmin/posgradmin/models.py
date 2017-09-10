@@ -1,5 +1,5 @@
 # coding: utf-8
-
+import os
 from django.db import models
 from django.db.models import Q
 
@@ -43,6 +43,11 @@ class CampoConocimiento(models.Model):
         verbose_name_plural = "campos de conocimiento"
 
 
+def headshot_path(instance, filename):
+    extension = filename.split('.')[-1]
+    return 'media/headshots/%s.%s' % (instance.user.id, extension)
+
+
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -66,6 +71,9 @@ class Perfil(models.Model):
     nacionalidad = models.CharField(max_length=100)
 
     fecha_nacimiento = models.DateField('fecha de nacimiento')
+
+    headshot = models.ImageField(upload_to=headshot_path,
+                                 blank=True, null=True)
 
     def __unicode__(self):
         return u"%s" % self.user
@@ -134,8 +142,6 @@ class Estudiante(models.Model):
     medalla_alfonso_caso = models.BooleanField(default=False)
     semestre_graduacion = models.PositiveSmallIntegerField(blank=True,
                                                            null=True)
-
-    headshot = models.ImageField(upload_to='author_headshots')
 
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
@@ -215,15 +221,15 @@ class Solicitud(models.Model):
     def dictaminable(self, user):
 
         if self.estado == 'agendada':
-            
+
             if self.solicitante.id == user.id:
                 return False
-            
+
             if hasattr(user, 'asistente') or user.is_staff or user.academico.acreditado():
                 return True
         else:
             return False
-        
+
 
       #   <li><a href="estado/agendada">Agendar solicitud para próxima Asamblea del Consejo</a></li>
       #   {% elif object.estado == 'agendada' %}
@@ -237,7 +243,7 @@ class Solicitud(models.Model):
       #       {% if not object.predictamen %}
       #         <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
       #       {% endif %}
-      
+
       # {% if object.solicitante == user and object.estado == 'nueva' %}
       # <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
       # {% endif %}
@@ -248,8 +254,8 @@ class Solicitud(models.Model):
       # {% endif %}
       # {% endif %}
 
-    
-    
+
+
     def dictamen_final(self):
         for d in self.dictamen_set.all():
             if d.autor.is_staff or hasattr(d.autor, 'asistente'):

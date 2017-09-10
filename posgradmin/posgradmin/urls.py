@@ -27,6 +27,10 @@ from posgradmin.views import SolicitudNuevaView, \
     SolicitudCambiarEstado, SolicitudDictaminar, \
     EstudianteSortableView, AcademicoSortableView, CatedraSortableView
 
+from django.conf.urls.static import static
+
+from posgradmin.settings import MEDIA_ROOT, MEDIA_URL
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
@@ -66,7 +70,7 @@ urlpatterns = [
 
     url(r'^inicio/catedras/$',
         CatedraSortableView.as_view()),
-    
+
     url(r'^inicio/solicitudes/$',
         SolicitudSortableView.as_view()),
 
@@ -117,7 +121,7 @@ urlpatterns = [
 # ./coordinacion/alimentar_saep.md
 # ./coordinacion/administrar_sesiones_ca.md
 # ./coordinacion/oficios_para_firma_de_los_miembros_del_Jurado.md
-]
+] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 
 # ./README.md
 # ./registrar_curso.md
