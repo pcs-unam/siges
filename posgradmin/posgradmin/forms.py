@@ -244,6 +244,14 @@ class InstitucionModelForm(forms.ModelForm):
 
 
 class ComiteTutoralModelForm(forms.ModelForm):
+    presidente = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True))
+
+    secretario = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True))
+
+    vocal = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True))
 
     class Meta:
         model = Comite
