@@ -556,11 +556,22 @@ class Dictamen(models.Model):
                self.autor)
 
 
+def curso_path(instance, filename):
+    return os.path.join(MEDIA_ROOT,
+                        'cursos/%s/%s' % (instance.id,
+                                          filename))
+
+
 class Curso(models.Model):
     denominacion = models.CharField(max_length=100)
     clave = models.CharField(max_length=100, blank=True, null=True)
     campo_conocimiento = models.ForeignKey(CampoConocimiento)
     dosier = models.FileField()
+
+    def dosier_url(self):
+        return "%s/cursos/%s/%s" % (MEDIA_URL,
+                                    self.id,
+                                    os.path.basename(self.dosier.path))
 
     def __unicode__(self):
         return u'%s: %s (%s)' % (self.clave,
