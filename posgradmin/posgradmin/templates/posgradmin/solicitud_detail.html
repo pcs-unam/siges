@@ -9,7 +9,7 @@
 
   &rsaquo; <a href="/inicio">Inicio</a>
   &rsaquo; <a href="/inicio/solicitudes/">Solicitudes</a>
-  &rsaquo; <a href="/inicio/solicitudes/{{ object.id }}/">#{{ object.id }}</a>
+  &rsaquo; {{ object.as_a| safe }}
 </div>
 {% endblock %}
 

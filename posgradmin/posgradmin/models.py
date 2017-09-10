@@ -237,36 +237,21 @@ class Solicitud(models.Model):
             if self.solicitante.id == user.id:
                 return False
 
-            if hasattr(user, 'asistente') or user.is_staff or user.academico.acreditado():
+            if hasattr(user, 'asistente') or user.is_staff \
+               or user.academico.acreditado():
                 return True
         else:
             return False
 
-
-      #   <li><a href="estado/agendada">Agendar solicitud para próxima Asamblea del Consejo</a></li>
-      #   {% elif object.estado == 'agendada' %}
-      #       <li><a href="dictaminar">Emitir dictamen</a></li>
-      #   {% endif %}
-
-
-
     def cancelable(self, user):
-        pass
-      #       {% if not object.predictamen %}
-      #         <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
-      #       {% endif %}
+        if self.estado == 'nueva':  # sólo nuevas se cancelan
+            if self.predictamen():
+                return False
 
-      # {% if object.solicitante == user and object.estado == 'nueva' %}
-      # <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
-      # {% endif %}
-
-      # {% elif user.estudiante %}
-      # {% if object.solicitante == user and object.estado == 'nueva' and not object.predictamen %}
-      # <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
-      # {% endif %}
-      # {% endif %}
-
-
+            if self.solicitante.id == user.id:   # cancelar las propias
+                return True
+        else:
+            return False
 
     def dictamen_final(self):
         for d in self.dictamen_set.all():

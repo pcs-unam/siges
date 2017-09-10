@@ -65,8 +65,8 @@
 	    <div class="alert alert-warning" role="alert">
 	      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 	      Proyecto no aprobado.
-	      Ver solicitud <a href="/inicio/solicitudes/{{ user.estudiante.get_proyecto.solicitud.id }}">
-		#{{ user.estudiante.get_proyecto.solicitud.id }}</a>.
+	      Ver solicitud {{ user.estudiante.get_proyecto.solicitud.as_a|safe }}.
+
 	    </div>
 	    {% endif %}
 
