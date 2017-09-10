@@ -159,10 +159,10 @@
     <ul class="list-group">
       {% for anexo in object.anexo_set.all %}
       <li class="list-group-item">
-	<a href="/inicio/solicitudes/{{ object.id }}/anexos/{{ anexo.archivo }}">
+	<a href="{{ anexo.url }}">
 	  <strong>
 	  <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
-	  {{ anexo.archivo }}</a></strong>
+	  {{ anexo.basename }}</a></strong>
 	anexado el {{ anexo.fecha }} por
 	{{ anexo.autor.get_full_name }}
       </li>

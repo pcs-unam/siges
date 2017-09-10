@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
-    solicitudes_estados
+    solicitudes_estados, MEDIA_ROOT, MEDIA_URL
 from pprint import pprint
 
 
@@ -322,17 +322,31 @@ class Proyecto(models.Model):
                                    estado)
 
 
+def anexo_path(instance, filename):
+    return os.path.join(MEDIA_ROOT,
+                        'solicitudes/%s/%s' % (instance.solicitud.id,
+                                               filename))
+
+
 class Anexo(models.Model):
     solicitud = models.ForeignKey(Solicitud)
     autor = models.ForeignKey(User)
     fecha = models.DateTimeField(auto_now_add=True)
-    archivo = models.FileField()
+    archivo = models.FileField(upload_to=anexo_path)
+
+    def url(self):
+        return "%s/solicitudes/%s/%s" % (MEDIA_URL,
+                                         self.solicitud.id,
+                                         os.path.basename(self.archivo.path))
+
+    def basename(self):
+        return os.path.basename(self.archivo.file.name)
 
     def __unicode__(self):
-        return u"%s anexo a #%s por %s el %s]" % (self.archivo,
-                                                  self.solicitud.id,
-                                                  self.autor,
-                                                  self.fecha)
+        return u"[%s anexo a #%s por %s el %s]" % (self.basename(),
+                                                   self.solicitud.id,
+                                                   self.autor,
+                                                   self.fecha)
 
 
 class Acuerdo(models.Model):
