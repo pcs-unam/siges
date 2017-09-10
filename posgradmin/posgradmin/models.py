@@ -82,6 +82,12 @@ class Perfil(models.Model):
         verbose_name_plural = "Perfiles"
 
 
+def grado_path(instance, filename):
+    return os.path.join(MEDIA_ROOT,
+                        'grados/%s/%s' % (instance.user.id,
+                                          filename))
+
+
 class GradoAcademico(models.Model):
     user = models.ForeignKey(User)
 
@@ -98,7 +104,13 @@ class GradoAcademico(models.Model):
     fecha_obtencion = models.DateField("Fecha de obtención de grado")
     promedio = models.DecimalField(max_digits=4, decimal_places=2)
 
-    documento = models.FileField("Copia de documento probatorio")
+    documento = models.FileField("Copia de documento probatorio",
+                                 upload_to=grado_path)
+
+    def documento_url(self):
+        return "%s/grados/%s/%s" % (MEDIA_URL,
+                                    self.user.id,
+                                    os.path.basename(self.documento.path))
 
     def __unicode__(self):
         return u"%s @ %s" % (self.grado_obtenido, self.institucion)
