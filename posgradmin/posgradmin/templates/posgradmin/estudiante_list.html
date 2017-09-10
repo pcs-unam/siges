@@ -41,11 +41,11 @@
       <td><a href="/inicio/estudiantes/{{ estudiante.id }}/">
 	  {{ estudiante.id }}</a></td>
       <td><a href="/inicio/estudiantes/{{ estudiante.id }}/">{{ estudiante.user.get_full_name }}</a></td>      
-      <td>{{ estudiante.estado }}</td>
-      <td>{{ estudiante.plan }}</td>      
-      <td>{{ estudiante.entidad }}</td>      
-      <td>{{ estudiante.ingreso }}</td>
-      <td>{{ estudiante.semestre }}</a></td>
+      <td>{{ estudiante.estado|default:'' }}</td>
+      <td>{{ estudiante.plan|default:'' }}</td>      
+      <td>{{ estudiante.entidad|default:'' }}</td>      
+      <td>{{ estudiante.ingreso|default:'' }}</td>
+      <td>{{ estudiante.semestre|default:'' }}</a></td>
     </tr>
 
   {% endfor %}
