@@ -566,7 +566,7 @@ class Curso(models.Model):
     denominacion = models.CharField(max_length=100)
     clave = models.CharField(max_length=100, blank=True, null=True)
     campo_conocimiento = models.ForeignKey(CampoConocimiento)
-    dosier = models.FileField()
+    dosier = models.FileField(upload_to=curso_path)
 
     def dosier_url(self):
         return "%s/cursos/%s/%s" % (MEDIA_URL,
