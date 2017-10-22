@@ -1,8 +1,7 @@
 # Casos de uso de Estudiantes
 
-## Estudiante
-
-Persona inscrita al programa de posgrado. Estos son sus casos de uso:
+Un estudiante es un usuario inscrito al programa de posgrado. Estos
+son sus casos de uso:
 
 - [seleccíon de comité tutoral, de jurado de candidatura o de grado](seleccion_comite.md)
 
