@@ -1,12 +1,5 @@
 # Casos de uso de Estudiantes
 
-## Aspirante
-
-Persona registrada en el sistema que está en el trámite de admisión al
-posgrado. El proceso de registro de estudiantes no está especificado.
-
-
-
 ## Estudiante
 
 Persona inscrita al programa de posgrado. Estos son sus casos de uso:
@@ -21,7 +14,6 @@ Persona inscrita al programa de posgrado. Estos son sus casos de uso:
 
 - [suspensiones](solicitud_suspension.md)
 
-  
 El sistema permite al estudiante dar seguimiento al estado de sus
 solicitudes, agregar comentarios o documentos anexos para soportar su
 solicitud.
