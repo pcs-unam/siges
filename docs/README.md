@@ -14,7 +14,10 @@ tipo de usuario. Hay tres categorías generales:
 
 ## Usuarios registrados
 
-Los estudiantes son [pre-registrados](proceso_de_admision.md) por la
+La admisión es un [proceso administrativo](admision.png) que ocurre
+antes del registro de los estudiantes a este sistema.
+
+Una vez admitidos, los estudiantes son [pre-registrados](proceso_de_admision.md) por la
 coordinación y reciben un correo electrónico solicitando que
 establezcan una contraseña. Con su contraseña pueden acceder al
 sistema como usuarios registrados.
