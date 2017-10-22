@@ -14,24 +14,24 @@ tipo de usuario. Hay tres categorías generales:
 
 ## Usuarios registrados
 
-Tras registrarse se solicita al usuario que complete su perfil.
+Los estudiantes son [pre-registrados](proceso_de_admision.md) por la
+coordinación y reciben un correo electrónico solicitando que
+establezcan una contraseña. Con su contraseña pueden acceder al
+sistema como usuarios registrados.
 
-<img src="solicitud_perfil.png">
+Los académicos pueden ser pre-registrados por la coordinación o pueden
+autoregistrarse con el [formulario de registro](anonimos/registro.md). Tras crear una
+cuenta de usuario son redirigidos al
+[formulario de solicitud de registro al posgrado como académico](registrar_academico.md).
 
-<img src="editar_perfil.png" height="150px">
+Los usuarios registrados deben [completar su perfil](solicitud_perfil.png).
+El [formulario de perfil](editar_perfil.png) acopia datos personales y de contacto.
+Además permite [agregar grados académicos](grado_academico.png).
 
-El formulario de edición de perfil también permite [agregar grados académicos](grado_academico.png).
-
-De manera temporal un usuario registrado puede elegir ser académico o
-estudiante. El proceso de registro como estudiante aún no está
-especificado.
-
-<img src="con_perfil.png">
-
-- [solicitar registro al posgrado como académico](registrar_academico.md).
-- [solicitar registro al posgrado como estudiante](registrar_estudiante.md)
 
 ## Usuarios anónimos
 
- - [Registro](anonimos/registro.md)
- - [Leer páginas web](anonimos/registro.md)
+El sistema puede accederse por usuarios no registrados para dos casos de uso:
+
+ - [Registro de académico](anonimos/registro.md).
+ - Leer páginas web
