@@ -26,7 +26,9 @@
       <div class="panel-body">
 	{% if user.perfil %}
 
+	{% if user.headshot %}
 	<img src="/media/headshots/{{ user.id }}.png" width="100px" />
+	{% endif %}
 	<h4>{{ user.get_full_name }}</h4>
 
 	<p><a href="perfil/">Ver mi perfil</a></p>
