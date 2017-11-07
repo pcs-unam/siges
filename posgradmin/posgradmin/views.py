@@ -12,7 +12,7 @@ from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
     ComiteTutoralModelForm, ProyectoModelForm, CatedraModelForm, \
-    AdscripcionModelForm, SolicitudDictamenForm
+    AdscripcionModelForm, SolicitudDictamenForm, EstudianteCargarForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -862,3 +862,35 @@ class CatedraSortableView(SortableListView):
     paginate_by = 15
 
     model = Catedra
+
+
+class EstudianteCargar(View):
+
+    form_class = EstudianteCargarForm
+
+    breadcrumbs = [('/inicio/', 'Inicio'),
+                   ('/inicio/estudiantes/', 'Estudiantes')]
+
+    template_name = 'posgradmin/cargar_lote.html'
+
+    def get(self, request, *args, **kwargs):
+
+        form = self.form_class()
+
+        # envia todo a la plantilla etc
+        return render(request,
+                      self.template_name,
+                      {'form': form,
+                       'title': 'Cargar lote de estudiantes',
+                       'breadcrumbs': self.breadcrumbs})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            # request.FILES['lista']
+            return HttpResponseRedirect("/inicio/estudiantes")
+        else:
+            return render(request,
+                          self.template_name,
+                          {'form': form,
+                           'breadcrumbs': self.breadcrumbs})

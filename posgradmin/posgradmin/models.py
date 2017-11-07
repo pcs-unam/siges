@@ -121,6 +121,7 @@ class GradoAcademico(models.Model):
 
 class Estudiante(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    cuenta = models.CharField(max_length=100)
     ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado",
                                                blank=True, null=True)
     semestre = models.PositiveSmallIntegerField(
@@ -130,23 +131,27 @@ class Estudiante(models.Model):
         blank=True, null=True)
     entidad = models.ForeignKey(Entidad, null=True, blank=True)
     convenio = models.CharField(max_length=100, blank=True)
-    plan = models.CharField("clave del plan de estudios",
-                            max_length=100, blank=True)
-    doctorado_directo = models.BooleanField(default=False)
+    # plan = models.CharField("clave del plan de estudios",
+    #                         max_length=100, blank=True)
+
+    plan = models.CharField(
+        max_length=20,
+        choices=((u"1", u"maestría"),
+                 (u"2", u"doctorado"),
+                 (u"3", u"doctorado directo"),
+                 (u"4", u"opción a titulación")))
+
     estado = models.CharField(max_length=15,
-                              choices=(('aspirante', 'aspirante'),
-                                       ('graduado', 'graduado'),
-                                       ('egresado', 'egresado'),
-                                       ('vigente', 'vigente'),
-                                       ('baja', 'baja'),
-                                       ('suspenso', 'suspenso')))
+                              default=u"vigente",
+                              choices=((u"graduado", u"graduado"),
+                                       (u"egresado", u"egresado"),
+                                       (u"vigente", u"vigente"),
+                                       (u"baja", u"baja"),
+                                       (u"suspenso", u"suspenso")))
+
     fecha_baja = models.DateField(blank=True, null=True)
     motivo_baja = models.CharField(max_length=200,
                                    blank=True)
-
-    titulacion_licenciatura = models.BooleanField(
-        "primer año de maestría para obtener grado de licenciatura",
-        default=False)
 
     fecha_titulacion = models.DateField(blank=True, null=True)
     folio_titulacion = models.CharField(max_length=200, blank=True)

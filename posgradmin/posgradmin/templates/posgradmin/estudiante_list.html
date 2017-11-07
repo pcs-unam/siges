@@ -19,7 +19,10 @@
 
 <h2>Estudiantes</h2>
 
-  {% include 'sortable_listview/sort_links.html' %}
+<a href="/inicio/estudiantes/cargar">Cargar lote de estudiantes</a>
+<hr>
+
+{% include 'sortable_listview/sort_links.html' %}
 
 <table class="table table-striped">
   <thead>
@@ -30,7 +33,7 @@
       <th>plan</th>
       <th>entidad</th>
       <th>ingreso</th>
-      <th>semestre</th>      
+      <th>semestre</th>
     </tr>
   </thead>
 
@@ -40,10 +43,10 @@
     <tr>
       <td><a href="/inicio/estudiantes/{{ estudiante.id }}/">
 	  {{ estudiante.id }}</a></td>
-      <td><a href="/inicio/estudiantes/{{ estudiante.id }}/">{{ estudiante.user.get_full_name }}</a></td>      
+      <td><a href="/inicio/estudiantes/{{ estudiante.id }}/">{{ estudiante.user.get_full_name }}</a></td>
       <td>{{ estudiante.estado|default:'' }}</td>
-      <td>{{ estudiante.plan|default:'' }}</td>      
-      <td>{{ estudiante.entidad|default:'' }}</td>      
+      <td>{{ estudiante.plan|default:'' }}</td>
+      <td>{{ estudiante.entidad|default:'' }}</td>
       <td>{{ estudiante.ingreso|default:'' }}</td>
       <td>{{ estudiante.semestre|default:'' }}</a></td>
     </tr>

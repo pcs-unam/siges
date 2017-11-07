@@ -1,4 +1,5 @@
 # coding: utf-8
+from datetime import datetime
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, Column
@@ -294,3 +295,22 @@ class CatedraModelForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
         self.helper.layout.append(Submit('registrar', 'registrar'))
+
+
+class EstudianteCargarForm(forms.Form):
+
+    ingreso = forms.IntegerField(initial=datetime.now().year,
+                                 min_value=datetime.now().year)
+    semestre = forms.ChoiceField(choices=[(1, 1),
+                                          (2, 2)])
+    lista = forms.FileField(required=True)
+
+    helper = FormHelper()
+    helper.layout = Layout(
+        Field('ingreso'),
+        Field('semestre'),
+        Field('lista'),
+        FormActions(
+            Submit('cargar', 'cargar', css_class="btn-primary"),
+        )
+    )

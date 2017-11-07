@@ -25,7 +25,9 @@ from posgradmin.views import SolicitudNuevaView, \
     JuradoGradoElegirView, CambiarProyectoView, MisCatedrasView, \
     CatedraRegistrar, AdscripcionEliminar, AdscripcionAgregar, \
     SolicitudCambiarEstado, SolicitudDictaminar, \
-    EstudianteSortableView, AcademicoSortableView, CatedraSortableView
+    EstudianteSortableView, AcademicoSortableView, CatedraSortableView, \
+    EstudianteCargar
+
 
 from django.conf.urls.static import static
 
@@ -64,6 +66,9 @@ urlpatterns = [
 
     url(r'^inicio/estudiantes/$',
         EstudianteSortableView.as_view()),
+
+    url(r'^inicio/estudiantes/cargar$',
+        EstudianteCargar.as_view()),
 
     url(r'^inicio/academicos/$',
         AcademicoSortableView.as_view()),
