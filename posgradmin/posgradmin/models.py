@@ -136,10 +136,10 @@ class Estudiante(models.Model):
 
     plan = models.CharField(
         max_length=20,
-        choices=((u"1", u"maestría"),
-                 (u"2", u"doctorado"),
-                 (u"3", u"doctorado directo"),
-                 (u"4", u"opción a titulación")))
+        choices=((1, u"maestría"),
+                 (2, u"doctorado"),
+                 (3, u"doctorado directo"),
+                 (4, u"opción a titulación")))
 
     estado = models.CharField(max_length=15,
                               default=u"vigente",
@@ -306,13 +306,13 @@ class Proyecto(models.Model):
     nombre = models.CharField(max_length=200)
     estudiante = models.ForeignKey(Estudiante)
     solicitud = models.ForeignKey(Solicitud)
+    aprobado = models.BooleanField(default=False)
 
-    def aprobado(self):
+    def update_status(self):
         if self.solicitud.dictamen_final():
             if self.solicitud.dictamen_final().resolucion == 'concedida':
-                return True
-        else:
-            return False
+                self.aprobado = True
+                self.save()
 
     def __unicode__(self):
         if self.aprobado():

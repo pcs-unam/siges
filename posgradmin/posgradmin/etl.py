@@ -1,21 +1,43 @@
-from django.core.exceptions import ObjectDoesNotExist
-
 from django.contrib.auth.models import User
 
-from posgradmin.models import Perfil, Estudiante, Entidad, Proyecto
+from posgradmin.models import Estudiante, Entidad, Proyecto, \
+    CampoConocimiento
 
 import csv
 
 
-def load(f, ingreso_year, semestre):
+def load(f, ingreso, semestre):
     reader = csv.DictReader(f)
 
+    errores = []
     for row in reader:
-        u = User(name=row['nombre'])
+        # "cuenta"-,"nombre"-,"correo"-,"plan"-,"proyecto"-,"campo"-,"entidad"-
+        u = User(username=str(row['cuenta']),
+                 name=row['nombre'],
+                 email=row['correo'])
         u.save()
 
-        e = Estudiante()
-        e.user=u
+        entidad, creada = Entidad.objects.get_or_create(nombre=row["entidad"])
+        if creada:
+            row['error'] = 'Entidad creada, posible error de captura'
+            errores.append(row)
+
+        e = Estudiante(cuenta=row['cuenta'],
+                       plan=row['plan'],
+                       entidad=entidad,
+                       ingreso=ingreso,
+                       semestre=semestre,
+                       user=u)
         e.save()
 
-        # etc.
+        campo, creado = CampoConocimiento.objects.get_or_create(
+            nombre=row["campo"])
+        if creado:
+            row['error'] = 'Campo de Conocimiento creado, ¿error de captura?'
+            errores.append(row)
+
+        p = Proyecto(nombre=row['proyecto'],
+                     campo=campo,
+                     estudiante=e,
+                     aprobado=True)
+        p.save()
