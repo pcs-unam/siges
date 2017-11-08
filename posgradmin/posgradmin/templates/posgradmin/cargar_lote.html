@@ -9,7 +9,8 @@ La lista debe estar en formato CSV, con las siguientes columnas:
 
 <ul>
 <li>Número de cuenta</li>
-<li>Nombre completo</li>
+<li>Nombre</li>
+<li>Apellidos</li>
 <li>Correo electrónico</li>
 <li>Plan (1.Maestría, 2.Doctorado, 3.Doctorado Directo, 4.Opción a titulación)</li>
 <li>Título de proyecto</li>
@@ -19,6 +20,33 @@ La lista debe estar en formato CSV, con las siguientes columnas:
 
 Acá hay una plantilla: <a href="/media/lote_estudiantes.csv">lote_estudiantes.csv</a>.
 <hr />
+{% if errores %}
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+	  errores o advertencias
+	</h3>
+      </div>
+      <div class="panel-body">
+	<table class="table table-striped">
+	  {% for e in errores %}
+	  <tr>
+	    <td>{{ e.cuenta }}</td>
+	    <td>{{ e.nombre }}</td>
+	    <td>{{ e.apellidos }}</td>
+	    <td>{{ e.correo }}</td>
+	    <td>{{ e.plan }}</td>
+	    <td>{{ e.proyecto }}</td>
+	    <td>{{ e.campo }}</td>
+	    <td>{{ e.entidad }}</td>
+	    <td>{{ e.error }}</td>
+	  </tr>
+	  {% endfor %}
+	</table>
+      </div>
+    </div>
+{% endif %}
 
 {% crispy form %}
 

@@ -16,7 +16,7 @@ from posgradmin.forms import SolicitudForm, PerfilModelForm, \
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
-
+import etl
 
 from pprint import pprint
 
@@ -887,8 +887,17 @@ class EstudianteCargar(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            # request.FILES['lista']
-            return HttpResponseRedirect("/inicio/estudiantes")
+            errores = etl.load(request.FILES['lista'],
+                               request.POST['ingreso'],
+                               request.POST['semestre'])
+            if errores:
+                return render(request,
+                              self.template_name,
+                              {'errores': errores,
+                               'form': form,
+                               'breadcrumbs': self.breadcrumbs})
+            else:
+                return HttpResponseRedirect("/inicio/estudiantes")
         else:
             return render(request,
                           self.template_name,
