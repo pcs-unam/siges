@@ -305,7 +305,7 @@ class Proyecto(models.Model):
     campo_conocimiento = models.ForeignKey(CampoConocimiento)
     nombre = models.CharField(max_length=200)
     estudiante = models.ForeignKey(Estudiante)
-    solicitud = models.ForeignKey(Solicitud)
+    solicitud = models.ForeignKey(Solicitud, blank=True, null=True)
     aprobado = models.BooleanField(default=False)
 
     def update_status(self):

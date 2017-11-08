@@ -1,3 +1,5 @@
+# coding: utf8
+
 from django.contrib.auth.models import User
 
 from posgradmin.models import Estudiante, Entidad, Proyecto, \
@@ -13,8 +15,8 @@ def load(f, ingreso, semestre):
     for row in reader:
         # "cuenta"-,"nombre"-,"correo"-,"plan"-,"proyecto"-,"campo"-,"entidad"-
         u = User(username=str(row['cuenta']),
-                 name=row['nombre'],
                  email=row['correo'])
+        u.name = row['nombre']
         u.save()
 
         entidad, creada = Entidad.objects.get_or_create(nombre=row["entidad"])
@@ -37,7 +39,7 @@ def load(f, ingreso, semestre):
             errores.append(row)
 
         p = Proyecto(nombre=row['proyecto'],
-                     campo=campo,
+                     campo_conocimiento=campo,
                      estudiante=e,
                      aprobado=True)
         p.save()
