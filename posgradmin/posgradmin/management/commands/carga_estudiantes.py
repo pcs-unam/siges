@@ -9,7 +9,8 @@ class Command(BaseCommand):
     help = 'Cargar alumnos desde un archivo CSV.'
 
     def add_arguments(self, parser):
-        parser.add_argument('--csv', type=argparse.FileType('r'), required=True,
+        parser.add_argument('--csv', type=argparse.FileType('r'),
+                            required=True,
                             help='archivo CSV con alumnos.')
 
         parser.add_argument('--ingreso', type=int, required=True,
@@ -19,6 +20,13 @@ class Command(BaseCommand):
                             help='semestre de ingreso (1 o 2)')
 
     def handle(self, *args, **options):
-        etl.load(options['csv'],
-                 options['ingreso'],
-                 options['semestre'])
+        errores = etl.load(options['csv'],
+                           options['ingreso'],
+                           options['semestre'])
+        if errores:
+            orden = ["cuenta", "nombre", "apellidos",
+                     "correo", "plan", "proyecto", "campo",
+                     "entidad", "error"]
+            print ",".join(orden)
+            for e in errores:
+                print ",".join([e[k] for k in orden])

@@ -13,12 +13,17 @@ def load(f, ingreso, semestre):
 
     errores = []
     for row in reader:
-        # "cuenta"-,"nombre"-,"correo"-,"plan"-,"proyecto"-,"campo"-,"entidad"-
-        u = User(username=str(row['cuenta']),
-                 email=row['correo'])
-        u.first_name = row['nombre']
-        u.last_name = row['apellidos']
-        u.save()
+        try:
+            u = User(username=str(row['cuenta']),
+                     email=row['correo'])
+            u.first_name = row['nombre']
+            u.last_name = row['apellidos']
+            u.password = u'pbkdf2_sha256$36000$wAcW7cBkfTcw$AmKBje123fdSHcvz/3PpchHJ+BEcOBe9km1exOvL+123'
+            u.save()
+        except:
+            row['error'] = 'Imposible crear usuario'
+            errores.append(row)
+            break
 
         entidad, creada = Entidad.objects.get_or_create(nombre=row["entidad"])
         if creada:
@@ -44,3 +49,5 @@ def load(f, ingreso, semestre):
                      estudiante=e,
                      aprobado=True)
         p.save()
+
+    return errores
