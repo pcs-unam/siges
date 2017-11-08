@@ -16,7 +16,8 @@ def load(f, ingreso, semestre):
         # "cuenta"-,"nombre"-,"correo"-,"plan"-,"proyecto"-,"campo"-,"entidad"-
         u = User(username=str(row['cuenta']),
                  email=row['correo'])
-        u.name = row['nombre']
+        u.first_name = row['nombre']
+        u.last_name = row['apellidos']
         u.save()
 
         entidad, creada = Entidad.objects.get_or_create(nombre=row["entidad"])
