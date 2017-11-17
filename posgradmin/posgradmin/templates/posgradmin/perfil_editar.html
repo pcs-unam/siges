@@ -42,7 +42,7 @@ $(document).ready(function() {
 </div>
 
 
-
+{% if object.user.academico %}
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
@@ -67,7 +67,7 @@ $(document).ready(function() {
     </ul>
   </div>
 </div>
-
+{% endif %}
 
 
 {% endblock %}
