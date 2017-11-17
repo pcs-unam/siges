@@ -335,7 +335,7 @@ class Proyecto(models.Model):
                 self.save()
 
     def __unicode__(self):
-        if self.aprobado():
+        if self.aprobado:
             estado = 'aprobado'
         else:
             estado = 'no aprobado'
