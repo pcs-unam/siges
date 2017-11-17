@@ -13,7 +13,8 @@ from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
     ComiteTutoralModelForm, ProyectoModelForm, CatedraModelForm, \
-    AdscripcionModelForm, SolicitudDictamenForm, EstudianteCargarForm
+    AdscripcionModelForm, SolicitudDictamenForm, EstudianteCargarForm, \
+    SolicitudAgendarForm
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
 from posgradmin import workflows
@@ -238,6 +239,48 @@ class SolicitudComment(View):
                            'breadcrumbs': self.breadcrumbs})
 
 
+class SolicitudAgendar(View):
+
+    form_class = SolicitudAgendarForm
+
+    breadcrumbs = [('/inicio/', 'Inicio'),
+                   ('/inicio/solicitudes/', 'Solicitudes')]
+
+    template_name = 'posgradmin/solicitud_agendar.html'
+
+    def get(self, request, *args, **kwargs):
+
+        form = self.form_class()
+        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
+        # envia todo a la plantilla etc
+        return render(request,
+                      self.template_name,
+                      {'object': solicitud,
+                       'form': form,
+                       'breadcrumbs': self.breadcrumbs.append(
+                           ('/inicio/solicitudes/%s/' % solicitud.id,
+                            '#%s' % solicitud.id))})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
+            sesion = Sesion.objects.get(id=request.POST['sesion'])
+            solicitud.sesion = sesion
+            solicitud.estado = "agendada"
+            solicitud.save()
+
+            return HttpResponseRedirect("/inicio/solicitudes/%s/"
+                                        % solicitud.id)
+        else:
+            return render(request,
+                          self.template_name,
+                          {'object': solicitud,
+                           'form': form,
+                           'breadcrumbs': self.breadcrumbs})
+
+
+        
 class SolicitudAnexo(View):
 
     form_class = SolicitudAnexoForm
@@ -763,13 +806,16 @@ class MisCatedrasView(ListView):
         return new_context
 
 
-class SesionesView(SortableListView):
+class SesionesListView(SortableListView):
     allowed_sort_fields = {'fecha': {'default_direction': '-',
                                      'verbose_name': 'fecha'}}
     default_sort_field = 'fecha'    
     paginate_by = 15    
     model = Sesion
 
+
+class SesionDetail(DetailView):
+    model = Sesion
     
 class CatedraRegistrar(View):
 

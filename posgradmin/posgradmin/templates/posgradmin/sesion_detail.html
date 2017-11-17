@@ -1,0 +1,67 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="/inicio/sesiones/">Sesiones del Comité Académico</a>
+  &rsaquo; Sesión #{{ object.id }}
+</div>
+{% endblock %}
+
+
+
+{% block content %}
+
+<h2>{{ object.fecha }}, {{ object.descripcion }}</h2>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Solicitudes Agendadas</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+	<tr>
+	  <th>#</th>
+	  <th>estado</th>
+	  <th>tipo</th>
+	  <th>resumen</th>
+	  <th>solicitante</th>
+	  <th>fecha de creacion</th>
+	</tr>
+      </thead>      
+
+
+      <tbody>
+	{% for solicitud in object.solicitud_set.all %}
+
+	<tr>
+	  <td><a href="/inicio/solicitudes/{{ solicitud.id }}/">
+	      {{ solicitud.as_a|safe }}</a></td>
+	  <td>
+	    {% if solicitud.dictamen_final %}
+	    {% if solicitud.dictamen_final.resolucion == 'concedida' %}
+	    <span class="glyphicon glyphicon-thumbs-up" aria-hidden=true></span>
+	    {% else %}
+	    <span class="glyphicon glyphicon-thumbs-down" aria-hidden=true></span>
+	    {% endif %}
+	    {% elif solicitud.predictamen %}
+	    <span class="glyphicon glyphicon-eye-open" aria-hidden=true></span>	
+	    {% endif %}
+	
+	    {{ solicitud.estado }}	
+	  </td> 
+	  <td>{{ solicitud.tipo }}</td>
+	  <td><a href="/inicio/solicitudes/{{ solicitud.id }}/">
+	      {{ solicitud.resumen }}</a></td>
+	  <td>{{ solicitud.solicitante.get_full_name }}</td>
+	  <td>{{ solicitud.fecha_creacion }}</td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

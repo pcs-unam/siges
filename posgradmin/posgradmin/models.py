@@ -223,6 +223,19 @@ class Beca(models.Model):
         return u"%s %s" % (self.estudiante, self.tipo)
 
 
+class Sesion(models.Model):
+    fecha = models.DateField()
+    descripcion = models.CharField(max_length=100,
+                                   default="sesión ordinaria")
+    
+    def __unicode__(self):
+        return u'%s, %s' % (self.fecha,
+                            self.descripcion)
+
+    class Meta:
+        verbose_name_plural = "Sesiones"
+
+    
 class Solicitud(models.Model):
     resumen = models.CharField(max_length=100)
     tipo = models.CharField(max_length=100,
@@ -230,7 +243,7 @@ class Solicitud(models.Model):
                             solicitudes_tutoriles + solicitud_otro)
     solicitante = models.ForeignKey(User)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    # sesion del CA
+    sesion = models.ForeignKey(Sesion, blank=True, null=True)    
     descripcion = models.TextField(blank=True)
 
     estado = models.CharField(max_length=30, default="nueva")
@@ -592,19 +605,6 @@ class Catedra(models.Model):
                                        self.semestre,
                                        self.year,
                                        self.profesor)
-
-
-class Sesion(models.Model):
-    fecha = models.DateField()
-    descripcion = models.CharField(max_length=100,
-                                   default="sesión ordinaria")
-    
-    def __unicode__(self):
-        return u'%s, %s' % (self.fecha,
-                            self.descripcion)
-
-    class Meta:
-        verbose_name_plural = "Sesiones"
 
         
 class Acta(models.Model):

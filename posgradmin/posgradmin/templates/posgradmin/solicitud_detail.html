@@ -116,12 +116,18 @@
       {% if cancelable %}
       <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
       {% endif %}
+      {% if request.user.asistente and object.estado != 'agendada' %}
+      <li><a href="agendar">Agendar</a></li>
+      {% endif %}
     </ul>
   </div>
 
   <div class="panel-footer">
       <strong>tipo:</strong> {{ object.tipo }} |
       <strong>estado:</strong> {{ object.estado }}
+      {% if object.estado == 'agendada' %}
+      <a href="/inicio/sesiones/{{ object.sesion.id }}">{{ object.sesion.fecha }}</a>
+      {% endif %}
       {% if object.dictamen_final %}
       | <strong>dictamen</strong>: {{ object.dictamen_final.resolucion }}
       {% elif object.predictamen %}

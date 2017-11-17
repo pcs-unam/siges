@@ -7,7 +7,7 @@ from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, \
     CampoConocimiento, GradoAcademico, Institucion, Comite, \
-    Proyecto, Adscripcion, Catedra
+    Proyecto, Adscripcion, Catedra, Sesion
 
 
 class SolicitudForm(forms.Form):
@@ -149,6 +149,20 @@ class SolicitudCommentForm(forms.Form):
         )
     )
 
+
+class SolicitudAgendarForm(forms.Form):
+
+    sesion = forms.ModelChoiceField(queryset=Sesion.objects.all(),
+                                    label="Sesión")
+    
+    helper = FormHelper()
+    helper.layout = Layout(
+        Field('sesion'),
+        FormActions(
+            Submit('agendar', 'agendar', css_class="btn-primary"),
+        )
+    )
+    
 
 class SolicitudDictamenForm(forms.Form):
 
