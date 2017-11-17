@@ -152,7 +152,7 @@ class SolicitudCommentForm(forms.Form):
 
 class SolicitudAgendarForm(forms.Form):
 
-    sesion = forms.ModelChoiceField(queryset=Sesion.objects.all(),
+    sesion = forms.ModelChoiceField(queryset=Sesion.objects.filter(fecha__gt=datetime.now()),
                                     label="Sesión")
     
     helper = FormHelper()
