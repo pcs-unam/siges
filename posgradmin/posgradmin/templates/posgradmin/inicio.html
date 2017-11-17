@@ -129,11 +129,10 @@
 
 	{% if user.is_staff or user.asistente %}
 
-	{% elif not user.estudiante and not user.academico %}
-		  <ul>
-		    <li><a href="/inicio/estudiante/registro">registrarse como estudiante</a></li>
-		    <li><a href="/inicio/academico/registro">registrarse como académico</a></li>
-		  </ul>
+	{% elif not user.academico %}
+	<ul>
+	  <li><a href="/inicio/academico/registro">registrarse como académico</a></li>
+	</ul>
 	{% endif %}
 
 	{% else %}
