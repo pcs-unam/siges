@@ -131,7 +131,7 @@ class AcademicoModelForm(forms.ModelForm):
         model = Academico
         exclude = ['user', 'tutor',
                    'fecha_acreditacion', 'acreditacion',
-                   'entidad', 'DGEE', 'solicitud', 'comite_academico']
+                   'DGEE', 'solicitud', 'comite_academico']
 
 
 class SolicitudCommentForm(forms.Form):
