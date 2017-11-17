@@ -466,7 +466,7 @@ class Adscripcion(models.Model):
 
     numero_trabajador = models.CharField("Número de trabajador (UNAM)",
                                          max_length=100,
-                                         blank=True)
+                                         blank=True, null=True)
 
     def __unicode__(self):
         return u"%s %s en %s" % (self.academico,
@@ -490,6 +490,9 @@ class Comite(models.Model):
                             choices=(('tutoral', 'tutoral'),
                                      ('candidatura', 'candidatura'),
                                      ('grado', 'grado')))
+    class Meta:
+        verbose_name_plural = "Comités"
+    
 
     def __unicode__(self):
         return u'presidente: %s, secretario: %s, vocal: %s' \
@@ -524,6 +527,10 @@ class Asistente(models.Model):
         else:
             return Solicitud.objects.filter(estado=estado)
 
+    class Meta:
+        verbose_name_plural = "Asistentes de Proceso"
+
+        
     def __unicode__(self):
         return "%s (asistente de proceso)" % self.user
 
@@ -577,6 +584,9 @@ class Catedra(models.Model):
     year = models.PositiveSmallIntegerField()
     profesor = models.ForeignKey(Academico, blank=True, null=True)
 
+    class Meta:
+        verbose_name_plural = "Cátedras"
+
     def __unicode__(self):
         return u'%s, %s %s, por %s' % (self.curso,
                                        self.semestre,
@@ -588,3 +598,17 @@ class Sesion(models.Model):
     fecha = models.DateField()
     descripcion = models.CharField(max_length=100,
                                    default="sesión ordinaria")
+    
+    def __unicode__(self):
+        return u'%s, %s' % (self.fecha,
+                            self.descripcion)
+
+    class Meta:
+        verbose_name_plural = "Sesiones"
+
+        
+class Acta(models.Model):
+    acuerdos = models.TextField(blank=True)
+    sesion = models.ForeignKey(Sesion)
+
+    
