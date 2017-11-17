@@ -248,6 +248,11 @@ class Solicitud(models.Model):
 
     estado = models.CharField(max_length=30, default="nueva")
 
+    def agendable(self, user):
+        if hasattr(user, 'asistente') or user.is_staff:
+            if self.estado == 'nueva':
+                return True
+    
     def dictaminable(self, user):
 
         if self.estado == 'agendada':

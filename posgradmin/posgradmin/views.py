@@ -124,9 +124,9 @@ class SolicitudDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(SolicitudDetail, self).get_context_data(**kwargs)
+        context['agendable'] = context['object'].agendable(self.request.user)
         context['dictaminable'] = context[
             'object'].dictaminable(self.request.user)
-        print context['object'].dictaminable(self.request.user)
         context[
             'cancelable'] = context['object'].cancelable(self.request.user)
         return context

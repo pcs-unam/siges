@@ -116,7 +116,7 @@
       {% if cancelable %}
       <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
       {% endif %}
-      {% if request.user.asistente and object.estado != 'agendada' %}
+      {% if agendable %}
       <li><a href="agendar">Agendar</a></li>
       {% endif %}
     </ul>
