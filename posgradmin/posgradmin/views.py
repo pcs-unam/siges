@@ -517,8 +517,7 @@ class AcademicoRegistroView(View):
             s.solicitante = request.user
             s.save()
 
-            a = Academico()
-            a.user = request.user
+            a, created = Academico.objects.get_or_create(user=request.user)
             a.solicitud = s
             a.save()
 

@@ -98,8 +98,13 @@
 	       <p><a href="/inicio/catedras/mis">Mis cátedras</a></p>
 	       <p><a href="">Generar reporte de actividades</a></p>
 	   {% else %}
+	       {% if user.academico.solicitud.dictamen_final.resolucion == 'denegada' or user.academico.solicitud.estado == 'cancelada' %}
+	       <a href="/inicio/academico/registro">registrarse como académico</a>	       
+	       {% else %}
 	       Registro como académico en proceso a través de la solicitud
-	       <a href="/inicio/solicitudes/{{ user.academico.solicitud.id }}">#{{ user.academico.solicitud.id }}</a>
+	       <a href="/inicio/solicitudes/{{ user.academico.solicitud.id }}">
+		 {{ user.academico.solicitud.as_a|safe }}</a>.
+	       {% endif %}
 	   {% endif %}
 
 	<ul class="list-group">
