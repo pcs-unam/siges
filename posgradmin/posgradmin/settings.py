@@ -27,7 +27,7 @@ SECRET_KEY = 'p!v9yqb(jvx2*cq#ir%1gcj6yld07u+c=w53iupn^v!tn_3=#g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [u'sostenibilidad.posgrado.unam.mx',]
 
 
 # Application definition
@@ -159,7 +159,7 @@ solicitudes_estados = (
 solicitudes_profesoriles = (
         ("registrar_catedra",
          "Registrar Cátedra"),
-        ("solicitar_apoyo_económico",
+        ("solicitar_apoyo_economico",
          "Solicitar Apoyo Económico"),
     )
 
