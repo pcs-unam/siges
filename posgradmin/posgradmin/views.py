@@ -7,7 +7,8 @@ from django.forms.models import model_to_dict
 from sortable_listview import SortableListView
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento, Comentario, GradoAcademico, \
-    Institucion, Comite, Proyecto, Catedra, Adscripcion, Dictamen, Curso
+    Institucion, Comite, Proyecto, Catedra, Adscripcion, Dictamen, Curso, \
+    Sesion
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
@@ -124,7 +125,7 @@ class SolicitudDetail(DetailView):
         context = super(SolicitudDetail, self).get_context_data(**kwargs)
         context['dictaminable'] = context[
             'object'].dictaminable(self.request.user)
-        print context['object']
+        print context['object'].dictaminable(self.request.user)
         context[
             'cancelable'] = context['object'].cancelable(self.request.user)
         return context
@@ -762,6 +763,10 @@ class MisCatedrasView(ListView):
         return new_context
 
 
+class SesionesView(ListView):
+    model = Sesion
+
+    
 class CatedraRegistrar(View):
 
     form_class = CatedraModelForm

@@ -1,0 +1,43 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="/inicio/sesiones/">Sesiones del Comité Académico</a>
+</div>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+<h2>Sesiones del Comité Académico</h2>
+
+  {% include 'sortable_listview/sort_links.html' %}
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>fecha</th>
+      <th>descripción</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for sesion in object_list %}
+    
+    <tr>
+      <td><a href="/inicio/sesiones/{{ sesion.id }}/">
+	  #{{ sesion.id }}</a></td>
+      <td>{{ sesion.fecha }}</td>      
+      <td>{{ sesion.descripcion }}</td>      
+    </tr>
+
+  {% endfor %}
+  </tbody>
+</table>
+  {% include 'sortable_listview/pagination.html' %}
+
+{% endblock %}
