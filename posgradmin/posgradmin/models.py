@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
     solicitudes_estados, MEDIA_ROOT, MEDIA_URL
+    
 from pprint import pprint
 
 
@@ -246,7 +247,8 @@ class Solicitud(models.Model):
     sesion = models.ForeignKey(Sesion, blank=True, null=True)    
     descripcion = models.TextField(blank=True)
 
-    estado = models.CharField(max_length=30, default="nueva")
+    estado = models.CharField(max_length=30, default="nueva",
+                              choices=solicitudes_estados)
 
     def agendable(self, user):
         if hasattr(user, 'asistente') or user.is_staff:
