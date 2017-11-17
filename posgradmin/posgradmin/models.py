@@ -196,7 +196,7 @@ class Estudiante(models.Model):
 
         aprobados = []
         for p in self.proyecto_set.order_by('id'):
-            if p.aprobado():
+            if p.aprobado:
                 aprobados.append(p)
 
         if aprobados:
