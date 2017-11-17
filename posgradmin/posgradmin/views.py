@@ -763,7 +763,11 @@ class MisCatedrasView(ListView):
         return new_context
 
 
-class SesionesView(ListView):
+class SesionesView(SortableListView):
+    allowed_sort_fields = {'fecha': {'default_direction': '-',
+                                     'verbose_name': 'fecha'}}
+    default_sort_field = 'fecha'    
+    paginate_by = 15    
     model = Sesion
 
     

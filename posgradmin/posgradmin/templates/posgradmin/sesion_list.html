@@ -14,7 +14,9 @@
 
 <h2>Sesiones del Comité Académico</h2>
 
-  {% include 'sortable_listview/sort_links.html' %}
+<a href="/admin/posgradmin/sesion/add/">Agendar nueva sesión</a>
+<hr />
+{% include 'sortable_listview/sort_links.html' %}
 
 <table class="table table-striped">
   <thead>
@@ -38,6 +40,6 @@
   {% endfor %}
   </tbody>
 </table>
-  {% include 'sortable_listview/pagination.html' %}
+{% include 'sortable_listview/pagination.html' %}
 
 {% endblock %}
