@@ -164,6 +164,10 @@ solicitudes_profesoriles = (
     )
 
 solicitudes_tutoriles = (
+        ("registrar_catedra",
+         "Registrar Cátedra"),
+        ("solicitar_apoyo_economico",
+         "Solicitar Apoyo Económico"),    
         ("solicitar_baja_tutor",
          "Solicitar Baja de Tutoría en el Programa"),
         ("avisar_ausencia",
