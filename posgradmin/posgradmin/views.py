@@ -898,6 +898,10 @@ class AcademicoSortableView(SortableListView):
     model = Academico
 
 
+class AcademicoDetail(DetailView):
+    model = Academico
+
+    
 class CatedraSortableView(SortableListView):
 
     # def get_queryset(self):

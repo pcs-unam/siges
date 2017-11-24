@@ -186,7 +186,7 @@ class Estudiante(models.Model):
         return solicitudes
 
     def __unicode__(self):
-        return u"%s [%s]" % (self.user, self.estado)
+        return u"%s [%s] %s" % (self.user, self.estado, self.user.get_full_name())
 
     def comite_tutoral(self):
         pass
@@ -449,7 +449,7 @@ class Academico(models.Model):
         return solicitudes
 
     def estudiantes(self):
-        estudiantes = list()
+        estudiantes = set()
         if self.tutor:
             for c in Comite.objects.filter(Q(tipo='tutoral')
                                            & (Q(presidente=self)
@@ -457,13 +457,26 @@ class Academico(models.Model):
                                               | Q(vocal=self))):
                 if c.solicitud.dictamen_final():
                     if c.solicitud.dictamen_final().resolucion == 'concedida':
-                        estudiantes.append(c.estudiante)
+                        estudiantes.add(c.estudiante)
                 elif c.solicitud.estado != 'cancelada':
-                    estudiantes.append(c.estudiante)
+                    estudiantes.add(c.estudiante)
             return estudiantes
         else:
             return []
 
+    def comites(self):
+        comites = list()
+
+        for c in Comite.objects.filter(Q(tipo='candidatura')|Q(tipo='grado')
+                                       & (Q(presidente=self)
+                                          | Q(secretario=self)
+                                          | Q(vocal=self))):
+            if c.solicitud.dictamen_final():
+                if c.solicitud.dictamen_final().resolucion == 'concedida':
+                    comites.append(c)
+        return comites
+
+        
     def __unicode__(self):
         estado = []
         if self.tutor:
