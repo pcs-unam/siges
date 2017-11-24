@@ -285,7 +285,7 @@ class ProyectoModelForm(forms.ModelForm):
 
     class Meta:
         model = Proyecto
-        exclude = ['estudiante', 'solicitud']
+        exclude = ['estudiante', 'solicitud', 'aprobado']
 
     def __init__(self, *args, **kwargs):
 
