@@ -189,7 +189,12 @@ class Estudiante(models.Model):
         return u"%s [%s] %s" % (self.user, self.estado, self.user.get_full_name())
 
     def comite_tutoral(self):
-        pass
+        for c in Comite.objects.filter(Q(tipo='tutoral') & Q(estudiante=self)):
+            if c.solicitud.dictamen_final():
+                if c.solicitud.dictamen_final().resolucion == 'concedida':
+                    return c
+        return None
+            
 
     def get_proyecto(self):
         if self.proyecto_set.count() == 0:
@@ -593,20 +598,19 @@ def curso_path(instance, filename):
 
 
 class Curso(models.Model):
-    denominacion = models.CharField(max_length=100)
+    asignatura = models.CharField(max_length=100)
     clave = models.CharField(max_length=100, blank=True, null=True)
-    campo_conocimiento = models.ForeignKey(CampoConocimiento)
-    dosier = models.FileField(upload_to=curso_path)
+    programa = models.FileField("Documento con descripción extensa.",
+                                upload_to=curso_path)
 
-    def dosier_url(self):
+    def programa_url(self):
         return "%s/cursos/%s/%s" % (MEDIA_URL,
                                     self.id,
-                                    os.path.basename(self.dosier.path))
+                                    os.path.basename(self.programa.path))
 
     def __unicode__(self):
-        return u'%s: %s (%s)' % (self.clave,
-                                 self.denominacion,
-                                 self.campo_conocimiento)
+        return u'%s: %s' % (self.clave,
+                                 self.asignatura)
 
 
 class Catedra(models.Model):

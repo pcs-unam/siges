@@ -901,12 +901,14 @@ class AcademicoSortableView(SortableListView):
 class AcademicoDetail(DetailView):
     model = Academico
 
+class EstudianteDetail(DetailView):
+    model = Estudiante
     
 class CatedraSortableView(SortableListView):
 
-    # def get_queryset(self):
-    #     sorted = super(EstudianteSortableView, self).get_queryset()
-
+    def get_queryset(self):
+        sorted = super(EstudianteSortableView, self).get_queryset()
+    
     allowed_sort_fields = {'profesor': {'default_direction': '',
                                         'verbose_name': 'profesor'},
                            'curso': {'default_direction': '-',
