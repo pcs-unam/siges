@@ -280,7 +280,7 @@ class SolicitudAgendar(View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-        
+
 class SolicitudAnexo(View):
 
     form_class = SolicitudAnexoForm
@@ -805,17 +805,37 @@ class MisCatedrasView(ListView):
         return new_context
 
 
+class MisComitesView(ListView):
+    model = Comite
+    template_name = 'posgradmin/comite_list.html'
+
+    def get_queryset(self):
+        new_context = self.request.user.academico.comites()
+
+        return new_context
+
+
+class MisEstudiantesView(ListView):
+    model = Estudiante
+    template_name = 'posgradmin/mis_estudiantes_list.html'
+
+    def get_queryset(self):
+        new_context = self.request.user.academico.estudiantes()
+
+        return new_context
+
+
 class SesionesListView(SortableListView):
     allowed_sort_fields = {'fecha': {'default_direction': '-',
                                      'verbose_name': 'fecha'}}
-    default_sort_field = 'fecha'    
-    paginate_by = 15    
+    default_sort_field = 'fecha'
+    paginate_by = 15
     model = Sesion
 
 
 class SesionDetail(DetailView):
     model = Sesion
-    
+
 class CatedraRegistrar(View):
 
     form_class = CatedraModelForm
@@ -903,12 +923,12 @@ class AcademicoDetail(DetailView):
 
 class EstudianteDetail(DetailView):
     model = Estudiante
-    
+
 class CatedraSortableView(SortableListView):
 
     def get_queryset(self):
         sorted = super(EstudianteSortableView, self).get_queryset()
-    
+
     allowed_sort_fields = {'profesor': {'default_direction': '',
                                         'verbose_name': 'profesor'},
                            'curso': {'default_direction': '-',

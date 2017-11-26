@@ -27,7 +27,7 @@ from posgradmin.views import SolicitudNuevaView, \
     SolicitudCambiarEstado, SolicitudDictaminar, \
     EstudianteSortableView, AcademicoSortableView, CatedraSortableView, \
     EstudianteCargar, SesionesListView, SolicitudAgendar, SesionDetail, \
-    AcademicoDetail, EstudianteDetail
+    AcademicoDetail, EstudianteDetail, MisComitesView, MisEstudiantesView
 
 
 from django.conf.urls.static import static
@@ -67,19 +67,22 @@ urlpatterns = [
 
     url(r'^inicio/estudiantes/$',
         EstudianteSortableView.as_view()),
-    
+
+    url(r'^inicio/estudiantes/mis$',
+        MisEstudiantesView.as_view()),
+
     url(r'^inicio/estudiantes/cargar$',
         EstudianteCargar.as_view()),
 
     url(r'^inicio/estudiantes/(?P<pk>[0-9]+)/$',
-        EstudianteDetail.as_view()),    
-    
+        EstudianteDetail.as_view()),
+
     url(r'^inicio/academicos/$',
         AcademicoSortableView.as_view()),
 
     url(r'^inicio/academicos/(?P<pk>[0-9]+)/$',
         AcademicoDetail.as_view()),
-    
+
     url(r'^inicio/catedras/$',
         CatedraSortableView.as_view()),
 
@@ -94,7 +97,7 @@ urlpatterns = [
 
     url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/agendar$',
         SolicitudAgendar.as_view()),
-    
+
     url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/estado/(?P<estado>[\w-]+)$',
         SolicitudCambiarEstado.as_view()),
 
@@ -128,15 +131,18 @@ urlpatterns = [
     url(r'^inicio/catedras/mis$',
         MisCatedrasView.as_view()),
 
+    url(r'^inicio/comites/mis$',
+        MisComitesView.as_view()),
+
     url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/registrar-catedra$',
         CatedraRegistrar.as_view()),
 
     url(r'^inicio/sesiones/(?P<pk>[0-9]+)/$',
         SesionDetail.as_view()),
-    
+
     url(r'^inicio/sesiones/$',
         SesionesListView.as_view()),
-    
+
 # ./coordinacion/ratificacion_predictamenes.md
 # ./coordinacion/alimentar_saep.md
 # ./coordinacion/administrar_sesiones_ca.md

@@ -1,0 +1,50 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="/inicio/estudiantes/mis">Mis estudiantes</a>
+</div>
+{% endblock %}
+
+
+
+{% block content %}
+
+<h2>
+  <span class="glyphicon glyphicon-apple" aria-hidden="true"></span>
+  Mis estudiantes</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>nombre</th>
+      <th>estado</th>
+      <th>plan</th>
+      <th>entidad</th>
+      <th>ingreso</th>
+      <th>semestre</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for estudiante in object_list %}
+
+    <tr>
+      <td><a href="/inicio/estudiantes/{{ estudiante.id }}/">
+	  {{ estudiante.id }}</a></td>
+      <td><a href="/inicio/estudiantes/{{ estudiante.id }}/">{{ estudiante }}</a></td>
+      <td>{{ estudiante.estado|default:'' }}</td>
+      <td>{{ estudiante.plan|default:'' }}</td>
+      <td>{{ estudiante.entidad|default:'' }}</td>
+      <td>{{ estudiante.ingreso|default:'' }}</td>
+      <td>{{ estudiante.semestre|default:'' }}</a></td>
+    </tr>
+
+  {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

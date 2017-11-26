@@ -47,11 +47,11 @@
 
 <div id="user-tools">
   {% if user.is_authenticated %}
-  <strong>{% firstof user.get_short_name user.get_username %}</strong> /
+  <strong>{{ user.get_full_name}} ({{ user.get_username }})</strong> /
   <a href="/accounts/password/change/">cambiar contraseña</a> /
   <a href="/accounts/logout/">Terminar sesión</a>
   {% else %}
-  <a href="/accounts/login/">Iniciar sesión</a>  
+  <a href="/accounts/login/">Iniciar sesión</a>
   {% endif %}
 </div>
 {% endblock %}
@@ -64,7 +64,7 @@
 {% block nav-global %}{% endblock %}
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  {% for crumb in breadcrumbs %}  
+  {% for crumb in breadcrumbs %}
   &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
   {% endfor %}
 </div>

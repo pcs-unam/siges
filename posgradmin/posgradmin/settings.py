@@ -27,7 +27,7 @@ SECRET_KEY = 'p!v9yqb(jvx2*cq#ir%1gcj6yld07u+c=w53iupn^v!tn_3=#g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'sostenibilidad.posgrado.unam.mx',]
+ALLOWED_HOSTS = [u'sostenibilidad.posgrado.unam.mx', 'localhost']
 
 
 # Application definition
@@ -167,7 +167,7 @@ solicitudes_tutoriles = (
         ("registrar_catedra",
          "Registrar Cátedra"),
         ("solicitar_apoyo_economico",
-         "Solicitar Apoyo Económico"),    
+         "Solicitar Apoyo Económico"),
         ("solicitar_baja_tutor",
          "Solicitar Baja de Tutoría en el Programa"),
         ("avisar_ausencia",

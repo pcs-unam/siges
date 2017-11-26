@@ -1,0 +1,31 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="/inicio/comites/mis">Mis comités de jurado</a>
+</div>
+{% endblock %}
+
+
+
+{% block content %}
+
+<h2>
+  <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
+  Mis comités de jurado</h2>
+
+    <ul class="list-group">
+      {% for c in object_list %}
+      <li class="list-group-item">
+	<h4>{{ c.get_tipo }}</h4>
+	{{ c.solicitud.dictamen_final.fecha }}<br />
+	<h4>Estudiante:
+	<a href="/inicio/estudiantes/{{ c.estudiante.id }}/">{{ c.estudiante }}</a></h4>
+	{{ c.as_ul|safe }}
+	por solicitud {{ c.solicitud.as_a|safe }}
+      </li>
+      {% endfor %}
+    </ul>
+
+{% endblock %}

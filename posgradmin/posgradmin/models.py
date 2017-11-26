@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
     solicitudes_estados, MEDIA_ROOT, MEDIA_URL
-    
+
 from pprint import pprint
 
 
@@ -186,7 +186,9 @@ class Estudiante(models.Model):
         return solicitudes
 
     def __unicode__(self):
-        return u"%s [%s] %s" % (self.user, self.estado, self.user.get_full_name())
+        return u"%s (%s) [%s]" % (self.user.get_full_name(),
+                                  self.user.get_username(),
+                                  self.cuenta)
 
     def comite_tutoral(self):
         for c in Comite.objects.filter(Q(tipo='tutoral') & Q(estudiante=self)):
@@ -194,7 +196,7 @@ class Estudiante(models.Model):
                 if c.solicitud.dictamen_final().resolucion == 'concedida':
                     return c
         return None
-            
+
 
     def get_proyecto(self):
         if self.proyecto_set.count() == 0:
@@ -233,7 +235,7 @@ class Sesion(models.Model):
     fecha = models.DateField()
     descripcion = models.CharField(max_length=100,
                                    default="sesión ordinaria")
-    
+
     def __unicode__(self):
         return u'%s, %s' % (self.fecha,
                             self.descripcion)
@@ -241,7 +243,7 @@ class Sesion(models.Model):
     class Meta:
         verbose_name_plural = "Sesiones"
 
-    
+
 class Solicitud(models.Model):
     resumen = models.CharField(max_length=100)
     tipo = models.CharField(max_length=100,
@@ -249,7 +251,7 @@ class Solicitud(models.Model):
                             solicitudes_tutoriles + solicitud_otro)
     solicitante = models.ForeignKey(User)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    sesion = models.ForeignKey(Sesion, blank=True, null=True)    
+    sesion = models.ForeignKey(Sesion, blank=True, null=True)
     descripcion = models.TextField(blank=True)
 
     estado = models.CharField(max_length=30, default="nueva",
@@ -259,7 +261,7 @@ class Solicitud(models.Model):
         if hasattr(user, 'asistente') or user.is_staff:
             if self.estado == 'nueva':
                 return True
-    
+
     def dictaminable(self, user):
 
         if self.estado == 'agendada':
@@ -472,16 +474,16 @@ class Academico(models.Model):
     def comites(self):
         comites = list()
 
-        for c in Comite.objects.filter(Q(tipo='candidatura')|Q(tipo='grado')
+        for c in Comite.objects.filter((Q(tipo='candidatura') | Q(tipo='grado'))
                                        & (Q(presidente=self)
                                           | Q(secretario=self)
                                           | Q(vocal=self))):
             if c.solicitud.dictamen_final():
                 if c.solicitud.dictamen_final().resolucion == 'concedida':
                     comites.append(c)
+        print comites
         return comites
 
-        
     def __unicode__(self):
         estado = []
         if self.tutor:
@@ -528,13 +530,22 @@ class Comite(models.Model):
                             choices=(('tutoral', 'tutoral'),
                                      ('candidatura', 'candidatura'),
                                      ('grado', 'grado')))
+
+    def get_tipo(self):
+        if self.tipo == 'tutoral':
+            return u'Comité tutoral'
+        elif self.tipo == 'candidatura':
+            return u"Jurado de examen de candidatura"
+        elif self.tipo == 'grado':
+            return u"Jurado de examen de grado"
+
     class Meta:
         verbose_name_plural = "Comités"
-    
 
     def __unicode__(self):
-        return u'presidente: %s, secretario: %s, vocal: %s' \
-            % (self.presidente,
+        return u'[%s] presidente: %s, secretario: %s, vocal: %s' \
+            % (self.tipo,
+               self.presidente,
                self.secretario,
                self.vocal)
 
@@ -568,7 +579,7 @@ class Asistente(models.Model):
     class Meta:
         verbose_name_plural = "Asistentes de Proceso"
 
-        
+
     def __unicode__(self):
         return "%s (asistente de proceso)" % self.user
 
@@ -630,9 +641,7 @@ class Catedra(models.Model):
                                        self.year,
                                        self.profesor)
 
-        
+
 class Acta(models.Model):
     acuerdos = models.TextField(blank=True)
     sesion = models.ForeignKey(Sesion)
-
-    
