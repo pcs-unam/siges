@@ -42,8 +42,30 @@ class ComiteAdmin(admin.ModelAdmin):
 
 admin.site.register(Comite, ComiteAdmin)
 
+
+class CursoAdmin(admin.ModelAdmin):
+    list_display = ['clave', 'asignatura',
+                    'tipo', 'creditos', 'horas_semestre']
+
+
+admin.site.register(Curso, CursoAdmin)
+
+
+class CatedraAdmin(admin.ModelAdmin):
+    list_display = ['curso', 'profesor', 'semestre', 'year']
+
+
+admin.site.register(Catedra, CatedraAdmin)
+
+
+class GradoAcademicoAdmin(admin.ModelAdmin):
+    list_display = ['user', 'nivel', 'grado_obtenido',
+                    'institucion', 'facultad', 'fecha_obtencion']
+
+
+admin.site.register(GradoAcademico, GradoAcademicoAdmin)
+
 admin.site.register(Perfil)
-admin.site.register(GradoAcademico)
 admin.site.register(Institucion)
 admin.site.register(Entidad)
 admin.site.register(CampoConocimiento)
@@ -52,6 +74,6 @@ admin.site.register(Comentario)
 admin.site.register(Proyecto)
 admin.site.register(Dictamen)
 admin.site.register(Asistente)
-admin.site.register(Curso)
-admin.site.register(Catedra)
+
+
 admin.site.register(Sesion)

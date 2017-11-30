@@ -624,6 +624,17 @@ def curso_path(instance, filename):
 class Curso(models.Model):
     asignatura = models.CharField(max_length=100)
     clave = models.CharField(max_length=100, blank=True, null=True)
+
+    creditos = models.PositiveSmallIntegerField()
+    horas_semestre = models.PositiveSmallIntegerField("Horas por semestre")
+    tipo = models.CharField(max_length=20,
+                            choices=(("Obligatoria", "Obligatoria"),
+                                     ("Obligatorias de elección",
+                                      "Obligatorias de elección"),
+                                     ("Optativa", "Optativa"),
+                                     ("Optativa, intersemestral",
+                                      "Optativa, intersemestral")))
+
     programa = models.FileField("Documento con descripción extensa.",
                                 upload_to=curso_path)
 
@@ -634,7 +645,7 @@ class Curso(models.Model):
 
     def __unicode__(self):
         return u'%s: %s' % (self.clave,
-                                 self.asignatura)
+                            self.asignatura)
 
 
 class Catedra(models.Model):
