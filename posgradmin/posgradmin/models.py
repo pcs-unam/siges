@@ -16,6 +16,7 @@ class Institucion(models.Model):
     nombre = models.CharField(max_length=100)
     pais = models.CharField(max_length=100)
     estado = models.CharField(max_length=100)
+    dependencia_unam = models.BooleanField(default=False)
 
     def __unicode__(self):
         return u"%s, %s, %s" % (self.nombre, self.estado, self.pais)
@@ -26,6 +27,7 @@ class Institucion(models.Model):
 
 class Entidad(models.Model):
     nombre = models.CharField(max_length=100)
+    domicilio = models.CharField(max_length=100, blank=True, null=True)
 
     def __unicode__(self):
         return u"%s" % self.nombre
@@ -64,6 +66,8 @@ class Perfil(models.Model):
 
     email2 = models.EmailField(max_length=200, blank=True)
     website = models.CharField(max_length=200, blank=True)
+    pasaporte = models.CharField(max_length=200, blank=True)
+    estado_civil = models.CharField(max_length=200, blank=True)
 
     genero = models.CharField(max_length=1, choices=(('M', 'masculino'),
                                                      ('F', 'femenino'),
@@ -423,6 +427,9 @@ class Academico(models.Model):
 
     solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE)
 
+    def nombre_completo(self):
+        return self.user.get_full_name()
+
     def acreditado(self):
         if self.solicitud.dictamen_final() is None:
             return False
@@ -496,6 +503,12 @@ class Academico(models.Model):
 
     class Meta:
         verbose_name_plural = "Académicos"
+
+
+class Trabajo(models.Model):
+    # user
+    institucion = models.ForeignKey(Institucion)
+    cargo = models.CharField(max_length=100)
 
 
 class Adscripcion(models.Model):
