@@ -627,10 +627,10 @@ class Curso(models.Model):
 
     creditos = models.PositiveSmallIntegerField()
     horas_semestre = models.PositiveSmallIntegerField("Horas por semestre")
-    tipo = models.CharField(max_length=20,
+    tipo = models.CharField(max_length=40,
                             choices=(("Obligatoria", "Obligatoria"),
-                                     ("Obligatorias de elección",
-                                      "Obligatorias de elección"),
+                                     (u"Obligatorias de elección",
+                                      u"Obligatorias de elección"),
                                      ("Optativa", "Optativa"),
                                      ("Optativa, intersemestral",
                                       "Optativa, intersemestral")))
