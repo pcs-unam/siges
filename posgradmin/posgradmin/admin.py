@@ -65,8 +65,14 @@ class GradoAcademicoAdmin(admin.ModelAdmin):
 
 admin.site.register(GradoAcademico, GradoAcademicoAdmin)
 
+
+class InstitucionAdmin(admin.ModelAdmin):
+    list_display = ['nombre', 'suborganizacion', 'dependencia_unam']
+
+
+admin.site.register(Institucion, InstitucionAdmin)
+
 admin.site.register(Perfil)
-admin.site.register(Institucion)
 admin.site.register(Entidad)
 admin.site.register(CampoConocimiento)
 admin.site.register(Solicitud)
