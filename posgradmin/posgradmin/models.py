@@ -13,9 +13,10 @@ from pprint import pprint
 
 
 class Institucion(models.Model):
-    nombre = models.CharField(max_length=100)
-    pais = models.CharField(max_length=100)
-    estado = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=150)
+    suborganizacion = models.CharField(max_length=150)
+    pais = models.CharField(max_length=100, blank=True)
+    estado = models.CharField(max_length=100, blank=True)
     dependencia_unam = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -62,7 +63,7 @@ class Perfil(models.Model):
 
     direccion1 = models.CharField("direccion linea 1", max_length=150)
     direccion2 = models.CharField("direccion linea 2", max_length=150)
-    codigo_postal = models.PositiveSmallIntegerField()
+    codigo_postal = models.PositiveSmallIntegerField(blank=True, null=True)
 
     email2 = models.EmailField(max_length=200, blank=True)
     website = models.CharField(max_length=200, blank=True)
@@ -75,7 +76,8 @@ class Perfil(models.Model):
 
     nacionalidad = models.CharField(max_length=100)
 
-    fecha_nacimiento = models.DateField('fecha de nacimiento')
+    fecha_nacimiento = models.DateField('fecha de nacimiento',
+                                        blank=True, null=True)
 
     headshot = models.ImageField(upload_to=headshot_path,
                                  blank=True, null=True)
@@ -402,6 +404,7 @@ class Comentario(models.Model):
 
 class Academico(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    titulo = models.CharField("Dr., MCC, etc.", max_length=15, blank=True)
 
     nivel_pride = models.CharField(max_length=15, choices=(('A', 'A'),
                                                            ('B', 'B'),
@@ -421,11 +424,18 @@ class Academico(models.Model):
 
     fecha_acreditacion = models.DateField(blank=True, null=True)
     acreditacion = models.CharField(max_length=15,
-                                    choices=(('doctorado', 'doctorado'),
-                                             ('maestría', 'maestría')))
+                                    choices=(('D', 'D'),
+                                             ('M', 'M'),
+                                             ('NPD', 'NPD'),
+                                             ('NPM', 'NPM'),
+                                             ('PD', 'PD'),
+                                             ('PM', 'PM')))
+
     entidad = models.ForeignKey(Entidad, null=True, blank=True)
 
     solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE)
+
+    lineas = models.TextField(blank=True)
 
     def nombre_completo(self):
         return self.user.get_full_name()
@@ -528,6 +538,24 @@ class Adscripcion(models.Model):
 
     class Meta:
         verbose_name_plural = "Adscripciones"
+
+
+class Empleo(models.Model):
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+    institucion = models.ForeignKey(Institucion)
+    puesto = models.CharField(max_length=100)
+
+    trabajador_unam = models.CharField("Número de trabajador (UNAM)",
+                                       max_length=100,
+                                       blank=True, null=True)
+
+    def __unicode__(self):
+        return u"%s %s en %s" % (self.academico,
+                                 self.nombramiento,
+                                 self.institucion)
+
+    class Meta:
+        verbose_name_plural = "Empleos de Estudiantes"
 
 
 class Comite(models.Model):
