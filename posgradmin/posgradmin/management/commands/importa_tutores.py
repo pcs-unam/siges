@@ -27,7 +27,7 @@ class Command(BaseCommand):
 
         if notas:
             orden = ['Grado', 'Apellido Paterno', 'Apellido Materno',
-                     'Nombres', 'Suborganizacion', 'Institucion',
+                     'Nombres', 'suborganizacion', 'Institucion',
                      'Líneas de investigación', 'correo electrónico',
                      'RFC', 'CURP', 'SNI', 'PRIDE', 'CVU',
                      'NOMBRAMIENTO', 'Tipo']
@@ -43,6 +43,7 @@ def load(f, admin):
     reader = csv.DictReader(f, delimiter="|", quotechar='"')
     notas = []
     for row in reader:
+        print row
         # cargar o leer la Institución
         if "Universidad Nacional Autónoma de México" in row['Institucion'] \
            or "UNAM" in row['Institucion']:
@@ -50,9 +51,11 @@ def load(f, admin):
         else:
             dependencia_unam = False
 
+        if row["Institucion"] == "":
+            row["Institucion"] = row["suborganizacion"]
         institucion, creada = Institucion.objects.get_or_create(
             nombre=row["Institucion"],
-            suborganizacion=row["Suborganizacion"],
+            suborganizacion=row["suborganizacion"],
             dependencia_unam=dependencia_unam)
         if creada:
             row['notas'] = ["Institución nueva, cargada", ]
@@ -61,6 +64,11 @@ def load(f, admin):
             validate_email(row['correo electrónico'].decode('utf8'))
             cuenta = slugify.slugify(
                 row['correo electrónico'].split('@')[0].decode('utf8'))
+            if User.objects.filter(username=cuenta).count() > 0:
+                cuenta = slugify.slugify(u"%s %s %s" % (
+                    row['Nombres'].decode('utf8'),
+                    row['Apellido Paterno'].decode('utf8'),
+                    row['Apellido Materno'].decode('utf8')))
         except ValidationError:
             cuenta = slugify.slugify(u"%s %s %s" % (
                 row['Nombres'].decode('utf8'),
@@ -75,14 +83,6 @@ def load(f, admin):
                                   row['Apellido Materno'].decode('utf8'))
         u.password = u'pbkdf2_sha256$36000$wAcW7cBkfTcw$AmKBje123fdSHcvz/3PpchHJ+BEcOBe9km1exOvL+123'
         u.save()
-        # except:
-
-        #     if 'notas' in row:
-        #         row['notas'].append('Imposible crear usuario %s' % cuenta)
-        #     else:
-        #         row['notas'] = ['Imposible crear usuario %s' % cuenta, ]
-        #     notas.append(row)
-        #     continue
 
         p = Perfil(
             user=u,
