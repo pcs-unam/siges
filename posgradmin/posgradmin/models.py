@@ -525,7 +525,6 @@ class Adscripcion(models.Model):
     academico = models.ForeignKey(Academico, on_delete=models.CASCADE)
     institucion = models.ForeignKey(Institucion)
     nombramiento = models.CharField(max_length=100)
-    telefono = models.CharField(max_length=100, blank=True)
 
     numero_trabajador = models.CharField("Número de trabajador (UNAM)",
                                          max_length=100,
