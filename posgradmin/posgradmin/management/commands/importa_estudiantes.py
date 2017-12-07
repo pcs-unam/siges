@@ -2,9 +2,10 @@
 from django.core.management.base import BaseCommand
 import argparse
 from posgradmin.models import Estudiante, Entidad, Proyecto, \
-    CampoConocimiento, Perfil
+    CampoConocimiento, Perfil, Institucion, Trabajo
 from django.contrib.auth.models import User
 import csv
+from pprint import pprint
 
 
 class Command(BaseCommand):
@@ -19,23 +20,25 @@ class Command(BaseCommand):
         notas = load(options['csv'])
 
         if notas:
-            orden = ["cuenta", "nombre", "apellidos",
-                     "correo", "plan", "proyecto", "campo",
-                     "entidad", "error"]
-            print ",".join(orden)
-            for n in notas:
-                print ",".join([n[k] for k in orden])
+            pprint(notas)
+            # orden = ["cuenta", "nombre", "apellidos",
+            #          "correo", "plan", "proyecto", "campo",
+            #          "entidad", "error"]
+            # print ",".join(orden)
+            # for n in notas:
+            #     print ",".join([n[k] for k in orden])
 
 
 def load(f):
-    reader = csv.DictReader(f)
+    reader = csv.DictReader(f, delimiter='|')
 
 # 'Dependencia UNAM',
 # 'Lugar Trabajo',
 # 'Cargo',
 
-    notas = []
+    notas = {}
     for row in reader:
+        notas[row['cuenta']] = [row, ]
         try:
 
             u = User(username=str(row['cuenta']))
@@ -48,29 +51,26 @@ def load(f):
             u.password = u'pbkdf2_sha256$36000$wAcW7cBkfTcw$AmKBje123fdSHcvz/3PpchHJ+BEcOBe9km1exOvL+123'
             u.save()
         except:
-            row['notas_usuario'] = 'Imposible crear usuario'
-            notas.append(row)
-            break
+            notas[row['cuenta']].append('imposible crear usuario')
+            continue
 
         entidad, creada = Entidad.objects.get_or_create(nombre=row["entidad"])
         entidad.domicilio = row['Entidad Domicilio']
         if creada:
-            row['notas_entidad'] = 'Entidad creada, posible error de captura'
-            notas.append(row)
+            notas[row['cuenta']].append('Entidad creada')
 
         e = Estudiante(cuenta=row['cuenta'],
                        plan=row['plan'],
                        entidad=entidad,
-                       ingreso=row[u'Generación'],
-#                       semestre=semestre,
+                       ingreso=row['Generacion'],
+                       semestre=1,
                        user=u)
         e.save()
 
         campo, creado = CampoConocimiento.objects.get_or_create(
             nombre=row["campo"])
         if creado:
-            row['notas_campo'] = 'Campo de Conocimiento creado'
-            notas.append(row)
+            notas[row['cuenta']].append('Campo de Conocimiento creado')
 
         proyecto = Proyecto(nombre=row['proyecto'],
                             campo_conocimiento=campo,
@@ -90,5 +90,29 @@ def load(f):
             estado_civil=row['Estado Civíl'],
             pasaporte=row['Pasaporte'])
         p.save()
+
+        if row["Trabaja UNAM"] == "Si":
+            dependencia_unam = True
+            nombre = "UNAM"
+            suborganizacion = "%s, %s" % (row["Dependencia UNAM"],
+                                          row["Lugar Trabajo"])
+        else:
+            dependencia_unam = False
+            nombre = row["Lugar Trabajo"]
+            suborganizacion = ""
+
+        if row["Lugar Trabajo"] != "":
+            institucion, creada = Institucion.objects.get_or_create(
+                nombre=nombre,
+                suborganizacion=suborganizacion,
+                dependencia_unam=dependencia_unam)
+        if creada:
+            notas[row['cuenta']].append("Institución nueva")
+
+        trabajo = Trabajo(
+            institucion=institucion,
+            estudiante=e,
+            cargo=row["Cargo"])
+        trabajo.save()
 
     return notas

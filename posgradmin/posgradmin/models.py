@@ -516,9 +516,14 @@ class Academico(models.Model):
 
 
 class Trabajo(models.Model):
-    # user
+    estudiante = models.ForeignKey(Estudiante)
     institucion = models.ForeignKey(Institucion)
     cargo = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return u"%s, %s en %s" % (self.estudiante,
+                                  self.cargo,
+                                  self.institucion)
 
 
 class Adscripcion(models.Model):
@@ -682,6 +687,7 @@ class Catedra(models.Model):
         choices=((1, 1), (2, 2)))
     year = models.PositiveSmallIntegerField()
     profesor = models.ForeignKey(Academico, blank=True, null=True)
+    sede = models.CharField(max_length=80, blank=True)
 
     class Meta:
         verbose_name_plural = "Cátedras"
