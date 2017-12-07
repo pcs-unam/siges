@@ -20,7 +20,7 @@ class Institucion(models.Model):
     dependencia_unam = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return u"%s, %s, %s" % (self.nombre, self.estado, self.pais)
+        return u"%s, %s" % (self.nombre, self.suborganizacion)
 
     class Meta:
         verbose_name_plural = "instituciones"
