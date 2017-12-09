@@ -41,6 +41,20 @@ class InicioView(LoginRequiredMixin, View):
 
 class SolicitudCambiarEstado(View):
 
+    def test_func(self):
+        if hasattr(self.request.user, 'asistente') \
+           or self.request.user.is_staff:
+            return True
+        elif hasattr(self.request.user, 'academico'):
+            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
+            return solicitud in self.request.user.academico.solicitudes()
+        elif hasattr(self.request.user, 'estudiante'):
+            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
+            return solicitud in self.request.user.estudiante.solicitudes()
+        else:
+            return False
+
+    
     def get(self, request, *args, **kwargs):
         sid = int(kwargs['pk'])
         s = Solicitud.objects.get(id=sid)
@@ -291,6 +305,14 @@ class SolicitudComment(LoginRequiredMixin, UserPassesTestMixin, View):
 
 class SolicitudAgendar(View):
 
+    def test_func(self):
+        if hasattr(self.request.user, 'asistente') \
+           or self.request.user.is_staff:
+            return True
+        else:
+            return False
+
+    
     form_class = SolicitudAgendarForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
@@ -333,6 +355,20 @@ class SolicitudAgendar(View):
 
 class SolicitudAnexo(View):
 
+    def test_func(self):
+        if hasattr(self.request.user, 'asistente') \
+           or self.request.user.is_staff:
+            return True
+        elif hasattr(self.request.user, 'academico'):
+            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
+            return solicitud in self.request.user.academico.solicitudes()
+        elif hasattr(self.request.user, 'estudiante'):
+            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
+            return solicitud in self.request.user.estudiante.solicitudes()
+        else:
+            return False
+
+    
     form_class = SolicitudAnexoForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
@@ -846,6 +882,15 @@ class CambiarProyectoView(View):
 
 
 class MisCatedrasView(ListView):
+
+    
+    def test_func(self):
+        if hasattr(self.request.user, 'academico'):
+            return True
+        else:
+            return False
+
+    
     model = Catedra
 
     def get_queryset(self):
@@ -998,6 +1043,14 @@ class CatedraSortableView(SortableListView):
 
 class EstudianteCargar(View):
 
+    def test_func(self):
+        if hasattr(self.request.user, 'asistente') \
+           or self.request.user.is_staff:
+            return True
+        else:
+            return False
+
+    
     form_class = EstudianteCargarForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
