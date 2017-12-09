@@ -1,4 +1,6 @@
 # coding: utf-8
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, ListView
 from django.views import View
@@ -23,7 +25,7 @@ import etl
 from pprint import pprint
 
 
-class InicioView(View):
+class InicioView(LoginRequiredMixin, View):
 
     breadcrumbs = (('/inicio/', 'Inicio'),)
 
@@ -47,8 +49,18 @@ class SolicitudCambiarEstado(View):
         return HttpResponseRedirect("/inicio/solicitudes/%s" % sid)
 
 
-class SolicitudNuevaView(View):
+class SolicitudNuevaView(LoginRequiredMixin, UserPassesTestMixin, View):
 
+    def test_func(self):
+        if hasattr(self.request.user, 'asistente') \
+           or hasattr(self.request.user, 'estudiante') \
+           or hasattr(self.request.user, 'academico') \
+           or request.user.is_staff:
+            return True
+        else:
+            return False
+
+    
     form_class = SolicitudForm
 
     breadcrumbs = (('/inicio/', 'Inicio'),
@@ -119,7 +131,21 @@ class SolicitudNuevaView(View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class SolicitudDetail(DetailView):
+class SolicitudDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+
+    def test_func(self):
+        if hasattr(self.request.user, 'asistente') \
+           or self.request.user.is_staff:
+            return True
+        elif hasattr(self.request.user, 'academico'):
+            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
+            return solicitud in self.request.user.academico.solicitudes()
+        elif hasattr(self.request.user, 'estudiante'):
+            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
+            return solicitud in self.request.user.estudiante.solicitudes()
+        else:
+            return False
+
     model = Solicitud
 
     def get_context_data(self, **kwargs):
@@ -132,8 +158,18 @@ class SolicitudDetail(DetailView):
         return context
 
 
-class SolicitudDictaminar(View):
+class SolicitudDictaminar(LoginRequiredMixin, UserPassesTestMixin, View):
 
+    def test_func(self):
+        if hasattr(self.request.user, 'asistente') \
+           or request.user.is_staff:
+            return True
+        elif hasattr(self.request.user, 'academico'):
+            return True  # revisar que sea de estudiante suyo y no suya
+        else:
+            return False
+
+    
     form_class = SolicitudDictamenForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
@@ -197,8 +233,22 @@ class SolicitudDictaminar(View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class SolicitudComment(View):
+class SolicitudComment(LoginRequiredMixin, UserPassesTestMixin, View):
 
+    def test_func(self):
+        if hasattr(self.request.user, 'asistente') \
+           or self.request.user.is_staff:
+            return True
+        elif hasattr(self.request.user, 'academico'):
+            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
+            return solicitud in self.request.user.academico.solicitudes()
+        elif hasattr(self.request.user, 'estudiante'):
+            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
+            return solicitud in self.request.user.estudiante.solicitudes()
+        else:
+            return False
+
+    
     form_class = SolicitudCommentForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
@@ -870,7 +920,6 @@ class CatedraRegistrar(View):
                         semestre=request.POST['semestre'],
                         solicitud=s)
             c.save()
-            pprint(request.POST)
 
             return HttpResponseRedirect("/inicio/solicitudes/%s" % s.id)
         else:
