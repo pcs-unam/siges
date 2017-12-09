@@ -437,6 +437,15 @@ class Academico(models.Model):
 
     lineas = models.TextField(blank=True)
 
+    def as_a(self):
+        icon = """<span class='glyphicon glyphicon-{icon}'
+                        aria-hidden=true></span>"""
+        icon.format(icon='thumbs-up')
+
+        return u"""<a href='/inicio/academicos/%s'>%s %s</a>""" % (
+            self.id, icon, self.__unicode__())
+
+    
     def nombre_completo(self):
         return self.user.get_full_name()
 
