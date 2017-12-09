@@ -1,0 +1,397 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load md2 %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="/inicio">Inicio</a>
+  {% if object.academico %}
+  &rsaquo; <a href="/inicio/academicos/">Académicos</a>
+  {% endif %}
+  &rsaquo; <a href="/inicio/usuario/{{ object.id }}">{{ object.get_full_name }}</a>
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>{{ object.academico.titulo }} {{ object.get_full_name }}</h1>
+{% if object.estudiante %}
+<!--
+ ######   ####    #####  #    #  #####      #      ##    #    #   #####  ######
+ #       #          #    #    #  #    #     #     #  #   ##   #     #    #
+ #####    ####      #    #    #  #    #     #    #    #  # #  #     #    #####
+ #            #     #    #    #  #    #     #    ######  #  # #     #    #
+ #       #    #     #    #    #  #    #     #    #    #  #   ##     #    #
+ ######   ####      #     ####   #####      #    #    #  #    #     #    ######
+-->
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+      Estudiante
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li class="list-group-item">
+	Estado: {{ object.estudiante.estado|default:'' }}
+      </li>
+      <li class="list-group-item">
+	plan: {{ object.estudiante.plan|default:'' }}</li>
+      <li class="list-group-item">
+	entidad: {{ object.estudiante.entidad|default:'' }}</li>
+      <li class="list-group-item">
+	ingreso: {{ object.estudiante.ingreso|default:'' }}</li>
+      <li class="list-group-item">
+	semestre: {{ object.estudiante.semestre|default:'' }}</li>
+    </ul>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
+      Comité Tutoral
+    </h3>
+  </div>
+  <div class="panel-body">
+
+    {{ object.estudiante.comite_tutoral.solicitud.as_a|safe }}
+    {{ object.estudiante.comite_tutoral.solicitud.dictamen_final.fecha }}
+    <hr />
+    {{ object.estudiante.comite_tutoral.as_ul|safe }}
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+      Proyecto
+    </h3>
+  </div>
+  <div class="panel-body">
+    {% if object.estudiante.get_proyecto is None %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No ha registrado proyecto</strong>
+    </div>
+    {% else %}
+    <h4>{{ object.estudiante.get_proyecto.nombre }}</h4>
+    Campo de Conocimiento: {{ object.estudiante.proyecto_set.last.campo_conocimiento }}
+
+    {% if not object.estudiante.get_proyecto.aprobado %}
+    <div class="alert alert-warning" role="alert">
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+      Proyecto no aprobado.
+      Ver solicitud {{ object.estudiante.get_proyecto.solicitud.as_a|safe }}.
+    </div>
+    {% endif %}
+
+    {% if object.estudiante.get_proyecto_no_aprobado %}
+    <div class="alert alert-warning" role="alert">
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+      Solicitud de cambio: <strong>{{ object.estudiante.get_proyecto_no_aprobado }}</strong>
+      {{ object.estudiante.get_proyecto_no_aprobado.solicitud.as_a|safe }}.
+    </div>
+    {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+
+{% if object.estudiante.trabajo_set.all %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>
+      Trabajo
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      {% for trabajo in object.estudiante.trabajo_set.all %}
+      <li class="list-group-item">
+	<strong>{{ trabajo.cargo }} </strong> @ {{ trabajo.institucion }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+
+
+  </div>
+</div>
+
+
+
+
+
+<!-- estudiante -->
+{% endif %}
+
+
+{% if object.academico %}
+<!--
+   ##     ####     ##    #####   ######  #    #     #     ####    ####
+  #  #   #    #   #  #   #    #  #       ##  ##     #    #    #  #    #
+ #    #  #       #    #  #    #  #####   # ## #     #    #       #    #
+ ######  #       ######  #    #  #       #    #     #    #       #    #
+ #    #  #    #  #    #  #    #  #       #    #     #    #    #  #    #
+ #    #   ####   #    #  #####   ######  #    #     #     ####    ####
+  -->
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>
+      Académico
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li class="list-group-item">
+	Nivel PRIDE: {{ object.academico.nivel_pride|default:'' }}
+      </li>
+      <li class="list-group-item">
+	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
+      <li class="list-group-item">
+	entidad: {{ object.academico.entidad|default:'' }}</li>
+      <li class="list-group-item">
+	acreditación: {{ object.academico.acreditacion|default:'' }}</li>
+    </ul>
+
+
+    <!-- subtablas -->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-road" aria-hidden="true"></span>
+      Líneas de Investigación
+    </h3>
+  </div>
+  <div class="panel-body">
+    {{ object.academico.lineas|markdown }}
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-leaf" aria-hidden="true"></span>
+      Adscripciones
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      {% for ad in object.academico.adscripcion_set.all %}
+      <li class="list-group-item">
+	<strong>{{ ad.nombramiento }}</strong> {{ ad.institucion }}
+      </li>
+      {% empty %}
+      <div class="alert alert-danger" role="alert">
+	<strong>No ha registrado adscripciones</strong>
+	<a href="/inicio/perfil/agregar-adscripcion">Agregar adscripción</a>.
+      </div>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-apple" aria-hidden="true"></span>
+      Estudiantes
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      {% for e in object.academico.estudiantes %}
+      <li class="list-group-item">
+	<a href="/inicio/estudiantes/{{ e.id }}">{{ e }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
+      Participación en Comités
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      {% for c in object.academico.comites %}
+      <li class="list-group-item">
+	<h4>{{ c.tipo }} {{ c.solicitud.as_a|safe }}</h4>
+	{{ c.solicitud.dictamen_final.fecha }}<br />
+	Estudiante:
+	<a href="/inicio/estudiantes/{{ c.estudiante.id }}/">{{ c.estudiante }}</a><br />
+	{{ c.as_ul|safe }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+
+  </div>
+</div>
+
+
+
+<!-- academico -->
+{% endif %}
+
+
+<!--
+  ####   #####     ##    #####    ####    ####
+ #    #  #    #   #  #   #    #  #    #  #
+ #       #    #  #    #  #    #  #    #   ####
+ #  ###  #####   ######  #    #  #    #       #
+ #    #  #   #   #    #  #    #  #    #  #    #
+  ####   #    #  #    #  #####    ####    ####
+-->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+      Grados Académicos
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      {% for grado in object.gradoacademico_set.all %}
+      <li class="list-group-item">
+	<strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
+	<p class="list-group-item-text">nivel {{ grado.nivel }}
+	  obtenido el {{ grado.fecha_obtencion }},
+	  promedio: {{ grado.promedio }}<br />
+	  <a href="{{ grado.documento_url }}">documento</a></p>
+      </li>
+      {% empty %}
+      <li class="list-group-item">
+	sin grados!
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+
+
+
+<!--
+ #####   ######  #####   ######     #    #
+ #    #  #       #    #  #          #    #
+ #    #  #####   #    #  #####      #    #
+ #####   #       #####   #          #    #
+ #       #       #   #   #          #    #
+ #       ######  #    #  #          #    ######
+
+-->
+{% if object.perfil %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+      Datos Personales</h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      {% if object.headshot %}
+      <li class="list-group-item">
+	<img src="/media/headshots/{{ object.id }}.png" width="100px" />
+      </li>
+      {% endif %}
+      <li class="list-group-item"><strong>Fecha de Nacimiento</strong> {{ object.perfil.fecha_nacimiento|default:"" }}</li>
+      <li class="list-group-item"><strong>Genero</strong> {{ object.perfil.genero }}</li>
+      <li class="list-group-item"><strong>Nacionalidad</strong> {{ object.perfil.nacionalidad }}</li>
+      <li class="list-group-item"><strong>CURP</strong> {{ object.perfil.curp }}</li>
+      <li class="list-group-item"><strong>RFC</strong> {{ object.perfil.rfc }}</li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
+      Información de contacto
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li class="list-group-item"><strong>Teléfono</strong> {{ object.perfil.telefono }}</li>
+      <li class="list-group-item"><strong>Teléfono Móvil</strong> {{ object.perfil.telefono_movil }}</li>
+      <li class="list-group-item"><strong>email</strong> {{ object.email }}</li>
+      <li class="list-group-item"><strong>email</strong> {{ object.perfil.email2 }}</li>
+      <li class="list-group-item"><strong>Sitio Web</strong> {{ object.perfil.website }}</li>
+      <li class="list-group-item"><strong>Dirección</Strong> {{ object.perfil.direccion1 }}</li>
+      <li class="list-group-item"><strong>Dirección</strong> {{ object.perfil.direccion2 }}</li>
+      <li class="list-group-item"><strong>Código Postal</strong> {{ object.perfil.codigo_postal|default:"" }}</li>
+    </ul>
+  </div>
+</div>
+<!-- perfil -->
+{% endif %}
+
+
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+      <a href="/inicio/solicitudes/">Solicitudes</a></h3>
+  </div>
+  <div class="panel-body">
+
+    <table class="table table-striped">
+      <thead>
+	<tr>
+	  <th>#</th>
+	  <th>estado</th>
+	  <th>tipo</th>
+	  <th>resumen</th>
+	  <th>fecha de creacion</th>
+	</tr>
+      </thead>
+
+      <tbody>
+	{% for solicitud in object.solicitud_set.all %}
+
+	<tr>
+	  <td><a href="/inicio/solicitudes/{{ solicitud.id }}/">
+	      {{ solicitud.id }}</a></td>
+	  <td>
+	    {% if solicitud.dictamen_final %}
+	    {% if solicitud.dictamen_final.resolucion == 'concedida' %}
+	    <span class="glyphicon glyphicon-thumbs-up" aria-hidden=true></span>
+	    {% else %}
+	    <span class="glyphicon glyphicon-thumbs-down" aria-hidden=true></span>
+	    {% endif %}
+	    {% elif solicitud.predictamen %}
+	    <span class="glyphicon glyphicon-eye-open" aria-hidden=true></span>
+	    {% endif %}
+
+	    {{ solicitud.estado }}
+	  </td>
+	  <td>{{ solicitud.tipo }}</td>
+	  <td><a href="/inicio/solicitudes/{{ solicitud.id }}/">
+	      {{ solicitud.resumen }}</a></td>
+	  <td>{{ solicitud.fecha_creacion }}</td>
+	</tr>
+
+	{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+{% endblock %}

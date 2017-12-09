@@ -32,9 +32,9 @@
     {% for academico in object_list %}
 
     <tr>
-      <td><a href="/inicio/academicos/{{ academico.id }}/">
+      <td><a href="/inicio/usuario/{{ academico.user.id }}/">
 	  {{ academico.id }}</a></td>
-      <td><a href="/inicio/academicos/{{ academico.id }}/">{{ academico.user.get_full_name }}</a></td>
+      <td><a href="/inicio/usuario/{{ academico.user.id }}/">{{ academico.user.get_full_name }}</a></td>
       <td>{% if academico.acreditado %}
 	<span class="glyphicon glyphicon-check" aria-hidden="true"></span>
 	{% endif %}
@@ -44,7 +44,7 @@
 	{% endif %}
       </td>
       <td>{% if academico.comite_academico %}
-	<span class="glyphicon glyphicon-check" aria-hidden="true"></span>	
+	<span class="glyphicon glyphicon-check" aria-hidden="true"></span>
 	{% endif %}
       </td>
       <td>{{ academico.entidad }}</td>

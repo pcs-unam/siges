@@ -7,10 +7,11 @@ from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from django.forms.models import model_to_dict
 from sortable_listview import SortableListView
+# from django.contrib.auth.models import User
 from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
     Academico, CampoConocimiento, Comentario, GradoAcademico, \
     Institucion, Comite, Proyecto, Catedra, Adscripcion, Dictamen, Curso, \
-    Sesion
+    Sesion, User
 from posgradmin.forms import SolicitudForm, PerfilModelForm, \
     AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
     SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
@@ -39,6 +40,25 @@ class InicioView(LoginRequiredMixin, View):
                        'breadcrumbs': self.breadcrumbs})
 
 
+class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = User
+    template_name = "posgradmin/user_detail.html"
+
+    def test_func(self):
+        if hasattr(self.request.user, 'asistente') \
+           or hasattr(self.request.user, 'estudiante') \
+           or hasattr(self.request.user, 'academico') \
+           or self.request.user.is_staff:
+            return True
+        else:
+            return False
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDetail, self).get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+
+
 class SolicitudCambiarEstado(View):
 
     def test_func(self):
@@ -54,7 +74,6 @@ class SolicitudCambiarEstado(View):
         else:
             return False
 
-    
     def get(self, request, *args, **kwargs):
         sid = int(kwargs['pk'])
         s = Solicitud.objects.get(id=sid)
@@ -69,12 +88,12 @@ class SolicitudNuevaView(LoginRequiredMixin, UserPassesTestMixin, View):
         if hasattr(self.request.user, 'asistente') \
            or hasattr(self.request.user, 'estudiante') \
            or hasattr(self.request.user, 'academico') \
-           or request.user.is_staff:
+           or self.request.user.is_staff:
             return True
         else:
             return False
 
-    
+
     form_class = SolicitudForm
 
     breadcrumbs = (('/inicio/', 'Inicio'),
@@ -183,7 +202,7 @@ class SolicitudDictaminar(LoginRequiredMixin, UserPassesTestMixin, View):
         else:
             return False
 
-    
+
     form_class = SolicitudDictamenForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
@@ -262,7 +281,7 @@ class SolicitudComment(LoginRequiredMixin, UserPassesTestMixin, View):
         else:
             return False
 
-    
+
     form_class = SolicitudCommentForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
@@ -312,7 +331,7 @@ class SolicitudAgendar(View):
         else:
             return False
 
-    
+
     form_class = SolicitudAgendarForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
@@ -368,7 +387,7 @@ class SolicitudAnexo(View):
         else:
             return False
 
-    
+
     form_class = SolicitudAnexoForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
@@ -883,14 +902,14 @@ class CambiarProyectoView(View):
 
 class MisCatedrasView(ListView):
 
-    
+
     def test_func(self):
         if hasattr(self.request.user, 'academico'):
             return True
         else:
             return False
 
-    
+
     model = Catedra
 
     def get_queryset(self):
@@ -1050,7 +1069,7 @@ class EstudianteCargar(View):
         else:
             return False
 
-    
+
     form_class = EstudianteCargarForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),

@@ -203,7 +203,6 @@ class Estudiante(models.Model):
                     return c
         return None
 
-
     def get_proyecto(self):
         if self.proyecto_set.count() == 0:
             return None
@@ -224,6 +223,11 @@ class Estudiante(models.Model):
                and p.solicitud.dictamen_final() is None:
                 return p
         return None
+
+    def as_a(self):
+        return "<a href='/inicio/usuario/%s'>%s</a>" % (
+            self.user.id,
+            self.user.get_full_name())
 
 
 class Beca(models.Model):
@@ -406,9 +410,11 @@ class Academico(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     titulo = models.CharField("Dr., MCC, etc.", max_length=15, blank=True)
 
-    nivel_pride = models.CharField(max_length=15, choices=(('A', 'A'),
-                                                           ('B', 'B'),
-                                                           ('C', 'C')))
+    nivel_pride = models.CharField(max_length=15,
+                                   choices=(('sin PRIDE', 'sin PRIDE'),
+                                            ('A', 'A'),
+                                            ('B', 'B'),
+                                            ('C', 'C')))
     nivel_SNI = models.CharField(max_length=15,
                                  choices=(('sin SNI', 'sin SNI'),
                                           ('I', 'I'),
@@ -416,7 +422,7 @@ class Academico(models.Model):
                                           ('III', 'III'),
                                           ('C', 'C'),
                                           ('E', 'E')))
-    CVU = models.CharField(max_length=100)
+    CVU = models.CharField(max_length=100, blank=True, null=True)
     DGEE = models.CharField(max_length=6, blank=True, null=True)
 
     tutor = models.BooleanField(default=False)
@@ -442,10 +448,10 @@ class Academico(models.Model):
                         aria-hidden=true></span>"""
         icon.format(icon='thumbs-up')
 
-        return u"""<a href='/inicio/academicos/%s'>%s %s</a>""" % (
-            self.id, icon, self.__unicode__())
+        return u"""<a href='/inicio/usuario/%s'>%s %s</a>""" % (
+            self.user.id, icon, self.__unicode__())
 
-    
+
     def nombre_completo(self):
         return self.user.get_full_name()
 

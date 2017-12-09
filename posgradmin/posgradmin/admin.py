@@ -12,7 +12,8 @@ admin.site.site_url = "/"
 
 class EstudianteAdmin(admin.ModelAdmin):
     search_fields = ['cuenta', 'user__first_name', 'user__last_name']
-    list_display = ['user', 'cuenta', 'entidad', 'plan', 'ingreso', 'unificado']
+    list_display = ['user', 'cuenta', 'entidad',
+                    'plan', 'ingreso', 'unificado']
 
     def unificado(self, estudiante):
         return estudiante.as_a()
@@ -20,19 +21,23 @@ class EstudianteAdmin(admin.ModelAdmin):
     unificado.allow_tags = True
     unificado.short_description = 'Vista unificada'
 
+
 admin.site.register(Estudiante, EstudianteAdmin)
 
 
 class AcademicoAdmin(admin.ModelAdmin):
     search_fields = ['user__first_name', 'user__last_name']
     list_display = ['nombre_completo', 'titulo',
-                    'entidad', 'tutor', 'nivel_SNI', 'nivel_pride', 'unificado']
+                    'entidad', 'tutor', 'comite_academico',
+                    'nivel_SNI', 'nivel_pride',
+                    'unificado']
 
     def unificado(self, academico):
         return academico.as_a()
 
     unificado.allow_tags = True
     unificado.short_description = 'Vista unificada'
+
 
 admin.site.register(Academico, AcademicoAdmin)
 
