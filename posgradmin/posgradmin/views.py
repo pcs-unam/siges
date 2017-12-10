@@ -1,29 +1,15 @@
 # coding: utf-8
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import DetailView, ListView
 from django.views import View
-from django.shortcuts import render, HttpResponseRedirect
-from django.forms.models import model_to_dict
+from django.views.generic import DetailView
 from sortable_listview import SortableListView
-# from django.contrib.auth.models import User
-from posgradmin.models import Solicitud, Anexo, Perfil, Estudiante, \
-    Academico, CampoConocimiento, Comentario, GradoAcademico, \
-    Institucion, Comite, Proyecto, Catedra, Adscripcion, Dictamen, Curso, \
-    Sesion, User
-from posgradmin.forms import SolicitudForm, PerfilModelForm, \
-    AcademicoModelForm, EstudianteAutoregistroForm, SolicitudCommentForm, \
-    SolicitudAnexoForm, GradoAcademicoModelForm, InstitucionModelForm, \
-    ComiteTutoralModelForm, ProyectoModelForm, CatedraModelForm, \
-    AdscripcionModelForm, SolicitudDictamenForm, EstudianteCargarForm, \
-    SolicitudAgendarForm
-from settings import solicitudes_profesoriles,\
-    solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
-from posgradmin import workflows
-import etl
+from django.shortcuts import render, HttpResponseRedirect
 
-from pprint import pprint
+from django.forms.models import model_to_dict
+import posgradmin.forms as forms
+
+import posgradmin.models as models
 
 
 class InicioView(LoginRequiredMixin, View):
@@ -41,7 +27,7 @@ class InicioView(LoginRequiredMixin, View):
 
 
 class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = User
+    model = models.User
     template_name = "posgradmin/user_detail.html"
 
     def test_func(self):
@@ -59,423 +45,19 @@ class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return context
 
 
-class SolicitudCambiarEstado(View):
-
+class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def test_func(self):
-        if hasattr(self.request.user, 'asistente') \
-           or self.request.user.is_staff:
-            return True
-        elif hasattr(self.request.user, 'academico'):
-            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
-            return solicitud in self.request.user.academico.solicitudes()
-        elif hasattr(self.request.user, 'estudiante'):
-            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
-            return solicitud in self.request.user.estudiante.solicitudes()
-        else:
-            return False
+        return True
 
-    def get(self, request, *args, **kwargs):
-        sid = int(kwargs['pk'])
-        s = Solicitud.objects.get(id=sid)
-        s.estado = kwargs['estado']
-        s.save()
-        return HttpResponseRedirect("/inicio/solicitudes/%s" % sid)
-
-
-class SolicitudNuevaView(LoginRequiredMixin, UserPassesTestMixin, View):
-
-    def test_func(self):
-        if hasattr(self.request.user, 'asistente') \
-           or hasattr(self.request.user, 'estudiante') \
-           or hasattr(self.request.user, 'academico') \
-           or self.request.user.is_staff:
-            return True
-        else:
-            return False
-
-
-    form_class = SolicitudForm
-
-    breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/inicio/solicitudes/', 'Solicitudes'),
-                   ('/inicio/solicitudes/nueva', 'Nueva'))
-
-    template_name = 'posgradmin/try.html'
-
-    def get(self, request, *args, **kwargs):
-
-        choices = []
-        # opciones de academico
-        try:
-            a = request.user.academico
-            if a.tutor:
-                choices += solicitudes_tutoriles
-            elif a.acreditado():
-                choices += solicitudes_profesoriles
-                choices += (("solicitar_registro_como_tutor",
-                             "Solicitar Registro como Tutor"),)
-
-        except ObjectDoesNotExist:
-            pass
-        # opciones de estudiante
-        try:
-            request.user.estudiante
-            choices += solicitudes_estudiantiles
-        except ObjectDoesNotExist:
-            pass
-
-        choices += solicitud_otro
-
-        self.form_class.base_fields['tipo'].choices = choices
-
-        form = self.form_class()
-
-        # envia todo a la plantilla etc
-        return render(request,
-                      self.template_name,
-                      {'form': form,
-                       'title': 'Nueva solicitud',
-                       'breadcrumbs': self.breadcrumbs})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            s = Solicitud()
-            s.resumen = request.POST['resumen']
-            s.tipo = request.POST['tipo']
-            s.solicitante = request.user
-            s.descripcion = request.POST['descripcion']
-            s.save()
-
-            if 'anexo' in request.FILES:
-                nx = Anexo(solicitud=s,
-                           autor=request.user,
-                           archivo=request.FILES['anexo'])
-                nx.save()
-
-            next = workflows.solicitud.get(s.tipo,
-                                           '/inicio/solicitudes/%s')
-            return HttpResponseRedirect(next % s.id)
-        else:
-            return render(request,
-                          self.template_name,
-                          {'form': form,
-                           'title': 'Solicitud nueva',
-                           'breadcrumbs': self.breadcrumbs})
-
-
-class SolicitudDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-
-    def test_func(self):
-        if hasattr(self.request.user, 'asistente') \
-           or self.request.user.is_staff:
-            return True
-        elif hasattr(self.request.user, 'academico'):
-            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
-            return solicitud in self.request.user.academico.solicitudes()
-        elif hasattr(self.request.user, 'estudiante'):
-            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
-            return solicitud in self.request.user.estudiante.solicitudes()
-        else:
-            return False
-
-    model = Solicitud
-
-    def get_context_data(self, **kwargs):
-        context = super(SolicitudDetail, self).get_context_data(**kwargs)
-        context['agendable'] = context['object'].agendable(self.request.user)
-        context['dictaminable'] = context[
-            'object'].dictaminable(self.request.user)
-        context[
-            'cancelable'] = context['object'].cancelable(self.request.user)
-        return context
-
-
-class SolicitudDictaminar(LoginRequiredMixin, UserPassesTestMixin, View):
-
-    def test_func(self):
-        if hasattr(self.request.user, 'asistente') \
-           or request.user.is_staff:
-            return True
-        elif hasattr(self.request.user, 'academico'):
-            return True  # revisar que sea de estudiante suyo y no suya
-        else:
-            return False
-
-
-    form_class = SolicitudDictamenForm
-
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/solicitudes/', 'Solicitudes')]
-
-    template_name = 'posgradmin/solicitud_comment.html'
-
-    def get(self, request, *args, **kwargs):
-
-        form = self.form_class()
-        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-        # envia todo a la plantilla
-        return render(request,
-                      self.template_name,
-                      {'object': solicitud,
-                       'form': form,
-                       'breadcrumbs': self.breadcrumbs.append(
-                           ('/inicio/solicitudes/%s/' % solicitud.id,
-                            '#%s' % solicitud.id))})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-            c = Comentario()
-            c.solicitud = solicitud
-            c.autor = request.user
-            if 'denegar' in request.POST:
-                if solicitud.tipo == 'registrar_catedra':
-                    ct = solicitud.catedra
-                    ct.delete()
-                d = Dictamen(resolucion='denegada',
-                             solicitud=solicitud,
-                             autor=request.user)
-                c.comentario = '## Dictamen: solicitud denegada\n\n'
-            elif 'conceder' in request.POST:
-                if solicitud.tipo == 'registrar_catedra':
-                    ct = solicitud.catedra
-                    ct.profesor = solicitud.solicitante.academico
-                    ct.save()
-                d = Dictamen(resolucion='concedida',
-                             solicitud=solicitud,
-                             autor=request.user)
-                c.comentario = '## Dictamen: solicitud concedida\n\n'
-            d.save()
-
-            c.comentario += request.POST['comentario']
-            c.save()
-
-            if request.user.is_staff or hasattr(request.user, 'asistente'):
-                solicitud.estado = 'atendida'
-            solicitud.save()
-
-            return HttpResponseRedirect("/inicio/solicitudes/%s/"
-                                        % solicitud.id)
-        else:
-            return render(request,
-                          self.template_name,
-                          {'object': solicitud,
-                           'form': form,
-                           'breadcrumbs': self.breadcrumbs})
-
-
-class SolicitudComment(LoginRequiredMixin, UserPassesTestMixin, View):
-
-    def test_func(self):
-        if hasattr(self.request.user, 'asistente') \
-           or self.request.user.is_staff:
-            return True
-        elif hasattr(self.request.user, 'academico'):
-            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
-            return solicitud in self.request.user.academico.solicitudes()
-        elif hasattr(self.request.user, 'estudiante'):
-            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
-            return solicitud in self.request.user.estudiante.solicitudes()
-        else:
-            return False
-
-
-    form_class = SolicitudCommentForm
-
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/solicitudes/', 'Solicitudes')]
-
-    template_name = 'posgradmin/solicitud_comment.html'
-
-    def get(self, request, *args, **kwargs):
-
-        form = self.form_class()
-        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-        # envia todo a la plantilla etc
-        return render(request,
-                      self.template_name,
-                      {'object': solicitud,
-                       'form': form,
-                       'breadcrumbs': self.breadcrumbs.append(
-                           ('/inicio/solicitudes/%s/' % solicitud.id,
-                            '#%s' % solicitud.id))})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-            c = Comentario()
-            c.solicitud = solicitud
-            c.autor = request.user
-            c.comentario = request.POST['comentario']
-            c.save()
-
-            return HttpResponseRedirect("/inicio/solicitudes/%s/"
-                                        % solicitud.id)
-        else:
-            return render(request,
-                          self.template_name,
-                          {'object': solicitud,
-                           'form': form,
-                           'breadcrumbs': self.breadcrumbs})
-
-
-class SolicitudAgendar(View):
-
-    def test_func(self):
-        if hasattr(self.request.user, 'asistente') \
-           or self.request.user.is_staff:
-            return True
-        else:
-            return False
-
-
-    form_class = SolicitudAgendarForm
-
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/solicitudes/', 'Solicitudes')]
-
-    template_name = 'posgradmin/solicitud_agendar.html'
-
-    def get(self, request, *args, **kwargs):
-
-        form = self.form_class()
-        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-        # envia todo a la plantilla etc
-        return render(request,
-                      self.template_name,
-                      {'object': solicitud,
-                       'form': form,
-                       'breadcrumbs': self.breadcrumbs.append(
-                           ('/inicio/solicitudes/%s/' % solicitud.id,
-                            '#%s' % solicitud.id))})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-            sesion = Sesion.objects.get(id=request.POST['sesion'])
-            solicitud.sesion = sesion
-            solicitud.estado = "agendada"
-            solicitud.save()
-
-            return HttpResponseRedirect("/inicio/solicitudes/%s/"
-                                        % solicitud.id)
-        else:
-            return render(request,
-                          self.template_name,
-                          {'object': solicitud,
-                           'form': form,
-                           'breadcrumbs': self.breadcrumbs})
-
-
-
-class SolicitudAnexo(View):
-
-    def test_func(self):
-        if hasattr(self.request.user, 'asistente') \
-           or self.request.user.is_staff:
-            return True
-        elif hasattr(self.request.user, 'academico'):
-            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
-            return solicitud in self.request.user.academico.solicitudes()
-        elif hasattr(self.request.user, 'estudiante'):
-            solicitud = Solicitud.objects.get(id=int(self.kwargs['pk']))
-            return solicitud in self.request.user.estudiante.solicitudes()
-        else:
-            return False
-
-
-    form_class = SolicitudAnexoForm
-
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/solicitudes/', 'Solicitudes')]
-
-    template_name = 'posgradmin/solicitud_anexo.html'
-
-    def get(self, request, *args, **kwargs):
-
-        form = self.form_class()
-        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-        # envia todo a la plantilla etc
-        return render(request,
-                      self.template_name,
-                      {'object': solicitud,
-                       'form': form,
-                       'breadcrumbs': self.breadcrumbs.append(
-                           ('/inicio/solicitudes/%s/' % solicitud.id,
-                            '#%s' % solicitud.id))})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-            nx = Anexo(solicitud=solicitud,
-                       autor=request.user,
-                       archivo=request.FILES['anexo'])
-            nx.save()
-
-            c = Comentario()
-            c.solicitud = solicitud
-            c.autor = request.user
-            c.comentario = 'archivo anexado'
-            c.save()
-
-            return HttpResponseRedirect("/inicio/solicitudes/%s/"
-                                        % solicitud.id)
-        else:
-            return render(request,
-                          self.template_name,
-                          {'object': solicitud,
-                           'form': form,
-                           'breadcrumbs': self.breadcrumbs})
-
-
-class SolicitudSortableView(SortableListView):
-
-    def get_queryset(self):
-        sorted = super(SolicitudSortableView, self).get_queryset()
-
-        if self.args:
-            estado = self.args[0]
-        else:
-            estado = 'todas'
-
-        if self.request.user.is_staff \
-           or hasattr(self.request.user, 'asistente'):
-            if estado == 'todas':
-                return sorted & Solicitud.objects.all()
-            else:
-                return sorted & Solicitud.objects.filter(estado=estado)
-        elif hasattr(self.request.user, 'academico'):
-            return sorted & \
-                self.request.user.academico.solicitudes(estado)
-        elif hasattr(self.request.user, 'estudiante'):
-            return sorted & \
-                self.request.user.estudiante.solicitudes(estado)
-
-    allowed_sort_fields = {'resumen': {'default_direction': '',
-                                       'verbose_name': 'resumen'},
-                           'fecha_creacion': {'default_direction': '-',
-                                              'verbose_name':
-                                              'Fecha de creación'}}
-    default_sort_field = 'fecha_creacion'
-
-    paginate_by = 15
-
-    model = Solicitud
-
-
-class PerfilDetail(DetailView):
     def get_object(self):
         return self.request.user.perfil
 
 
-class PerfilRegistroView(View):
+class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        return True
 
-    form_class = PerfilModelForm
+    form_class = forms.PerfilModelForm
 
     breadcrumbs = (('/inicio/', 'Inicio'),
                    ('/inicio/perfil', 'Mi perfil'),
@@ -518,7 +100,7 @@ class PerfilRegistroView(View):
             try:
                 p = request.user.perfil
             except:
-                p = Perfil()
+                p = models.Perfil()
 
             p.user = request.user
             p.fecha_nacimiento = request.POST['fecha_nacimiento']
@@ -545,58 +127,11 @@ class PerfilRegistroView(View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class EstudianteRegistroView(View):
+class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        return True
 
-    form_class = EstudianteAutoregistroForm
-
-    breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/inicio/estudiante/registro', 'Registro como estudiante'))
-
-    template_name = 'posgradmin/try.html'
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-
-        return render(request,
-                      self.template_name,
-                      {'form': form,
-                       'title': 'Registrarse como Estudiante',
-                       'breadcrumbs': self.breadcrumbs})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            e = Estudiante()
-            e.user = request.user
-            e.estado = 'aspirante'
-            e.save()
-
-            s = Solicitud(
-                resumen='Cambio de título y/o campo de conocimiento de proyecto',
-                tipo='cambio_proyecto',
-                solicitante=request.user)
-            s.save()
-
-            p = Proyecto(
-                estudiante=e,
-                solicitud=s,
-                campo_conocimiento=CampoConocimiento.objects.get(
-                    id=int(request.POST['campo_conocimiento'])),
-                nombre=request.POST['proyecto'])
-            p.save()
-
-            return HttpResponseRedirect('/inicio/')
-        else:
-            return render(request,
-                          self.template_name,
-                          {'form': form,
-                           'title': 'Registrarse como Estudiante',
-                           'breadcrumbs': self.breadcrumbs})
-
-
-class AcademicoRegistroView(View):
-
-    form_class = AcademicoModelForm
+    form_class = forms.AcademicoModelForm
 
     breadcrumbs = (('/inicio/', 'Inicio'),
                    ('/inicio/academico/registro',
@@ -616,13 +151,14 @@ class AcademicoRegistroView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            s = Solicitud()
+            s = models.Solicitud()
             s.resumen = 'registrar como académico'
             s.tipo = 'registrar_academico'
             s.solicitante = request.user
             s.save()
 
-            a, created = Academico.objects.get_or_create(user=request.user)
+            a, created = models.Academico.objects.get_or_create(
+                user=request.user)
             a.solicitud = s
             a.save()
 
@@ -637,9 +173,9 @@ class AcademicoRegistroView(View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class GradoAcademicoAgregar(View):
+class GradoAcademicoAgregar(LoginRequiredMixin, View):
 
-    form_class = GradoAcademicoModelForm
+    form_class = forms.GradoAcademicoModelForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
                    ('/inicio/perfil/', 'Mi perfil'),
@@ -658,15 +194,17 @@ class GradoAcademicoAgregar(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            ins = Institucion.objects.get(id=int(request.POST['institucion']))
-            g = GradoAcademico(user=request.user,
-                               nivel=request.POST['nivel'],
-                               grado_obtenido=request.POST['grado_obtenido'],
-                               institucion=ins,
-                               facultad=request.POST['facultad'],
-                               fecha_obtencion=request.POST['fecha_obtencion'],
-                               promedio=request.POST['promedio'],
-                               documento=request.FILES['documento'])
+            ins = models.Institucion.objects.get(
+                id=int(request.POST['institucion']))
+            g = models.GradoAcademico(
+                user=request.user,
+                nivel=request.POST['nivel'],
+                grado_obtenido=request.POST['grado_obtenido'],
+                institucion=ins,
+                facultad=request.POST['facultad'],
+                fecha_obtencion=request.POST['fecha_obtencion'],
+                promedio=request.POST['promedio'],
+                documento=request.FILES['documento'])
             g.save()
 
             return HttpResponseRedirect("/inicio/perfil/")
@@ -678,17 +216,17 @@ class GradoAcademicoAgregar(View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class GradoAcademicoEliminar(View):
+class GradoAcademicoEliminar(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        g = GradoAcademico.objects.get(id=int(kwargs['pk']))
+        g = models.GradoAcademico.objects.get(id=int(kwargs['pk']))
         g.delete()
         return HttpResponseRedirect("/inicio/perfil/")
 
 
-class AdscripcionAgregar(View):
+class AdscripcionAgregar(LoginRequiredMixin, View):
 
-    form_class = AdscripcionModelForm
+    form_class = forms.AdscripcionModelForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
                    ('/inicio/perfil/', 'Mi perfil'),
@@ -708,13 +246,14 @@ class AdscripcionAgregar(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            ins = Institucion.objects.get(id=int(request.POST['institucion']))
-            a = Adscripcion(academico=request.user.academico,
-                            institucion=ins,
-                            nombramiento=request.POST['nombramiento'],
-                            telefono=request.POST['telefono'],
-                            numero_trabajador=request.POST[
-                                'numero_trabajador'])
+            ins = models.Institucion.objects.get(
+                id=int(request.POST['institucion']))
+            a = models.Adscripcion(academico=request.user.academico,
+                                   institucion=ins,
+                                   nombramiento=request.POST['nombramiento'],
+                                   telefono=request.POST['telefono'],
+                                   numero_trabajador=request.POST[
+                                       'numero_trabajador'])
             a.save()
 
             return HttpResponseRedirect("/inicio/perfil/")
@@ -726,17 +265,17 @@ class AdscripcionAgregar(View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class AdscripcionEliminar(View):
+class AdscripcionEliminar(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        a = Adscripcion.objects.get(id=int(kwargs['pk']))
+        a = models.Adscripcion.objects.get(id=int(kwargs['pk']))
         a.delete()
         return HttpResponseRedirect("/inicio/perfil/")
 
 
-class InstitucionAgregarView(View):
+class InstitucionAgregarView(LoginRequiredMixin, View):
 
-    form_class = InstitucionModelForm
+    form_class = forms.InstitucionModelForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
                    ('/institucion/agregar', 'Agregar Institución')]
@@ -754,9 +293,9 @@ class InstitucionAgregarView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            i = Institucion(nombre=request.POST['nombre'],
-                            pais=request.POST['pais'],
-                            estado=request.POST['estado'])
+            i = models.Institucion(nombre=request.POST['nombre'],
+                                   pais=request.POST['pais'],
+                                   estado=request.POST['estado'])
             i.save()
 
             return HttpResponseRedirect("/inicio/perfil/editar")
@@ -768,233 +307,12 @@ class InstitucionAgregarView(View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class ComiteElegirView(View):
-
-    form_class = ComiteTutoralModelForm
-
-    template_name = 'posgradmin/institucion_agregar.html'
-
-    tipo = 'tutoral'
-
-    def get_breadcrumbs():
-        pass
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        return render(request,
-                      self.template_name,
-                      {'title': self.title,
-                       'form': form,
-                       'breadcrumbs': self.get_breadcrumbs(int(kwargs['pk']))})
-
-    def post(self, request, *args, **kwargs):
-        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            presidente = Academico.objects.get(
-                id=int(request.POST['presidente']))
-            secretario = Academico.objects.get(
-                id=int(request.POST['secretario']))
-            vocal = Academico.objects.get(
-                id=int(request.POST['vocal']))
-            comite = Comite(estudiante=request.user.estudiante,
-                            solicitud=Solicitud.objects.get(
-                                id=int(kwargs['pk'])),
-                            tipo=self.tipo,
-                            presidente=presidente,
-                            secretario=secretario,
-                            vocal=vocal)
-            comite.save()
-
-            return HttpResponseRedirect('/inicio/solicitudes/%s/'
-                                        % solicitud.id)
-        else:
-            return render(request,
-                          self.template_name,
-                          {'title': 'Elegir Comité Tutoral',
-                           'form': form,
-                           'breadcrumbs':
-                           self.get_breadcrumbs(int(kwargs['pk']))})
-
-
-class ComiteTutoralElegirView(ComiteElegirView):
-    tipo = 'tutoral'
-    title = 'Elegir Comité Tutoral'
-
-    def get_breadcrumbs(self, pk):
-        solicitud = Solicitud.objects.get(id=pk)
-        return [('/inicio/', 'Inicio'),
-                ('/inicio/solicitudes/', 'Solicitudes'),
-                ('/inicio/solicitudes/%s/' % solicitud.id,
-                 '#%s' % solicitud.id),
-                ('/inicio/solicitudes/%s/elegir-comite-tutoral'
-                 % solicitud.id, 'Elegir Comité Tutoral')]
-
-
-class JuradoCandidaturaElegirView(ComiteElegirView):
-    tipo = 'candidatura'
-    title = 'Elegir Jurado para Candidatura'
-
-    def get_breadcrumbs(self, pk):
-        solicitud = Solicitud.objects.get(id=pk)
-        return [('/inicio/', 'Inicio'),
-                ('/inicio/solicitudes/', 'Solicitudes'),
-                ('/inicio/solicitudes/%s/' % solicitud.id,
-                 '#%s' % solicitud.id),
-                ('/inicio/solicitudes/%s/elegir-jurado-candidatura'
-                 % solicitud.id, 'Elegir Jurado para Candidatura')]
-
-
-class JuradoGradoElegirView(ComiteElegirView):
-    tipo = 'grado'
-    title = 'Elegir Jurado para Examen de Grado'
-
-    def get_breadcrumbs(self, pk):
-        solicitud = Solicitud.objects.get(id=pk)
-        return [('/inicio/', 'Inicio'),
-                ('/inicio/solicitudes/', 'Solicitudes'),
-                ('/inicio/solicitudes/%s/' % solicitud.id,
-                 '#%s' % solicitud.id),
-                ('/inicio/solicitudes/%s/elegir-jurado-grado'
-                 % solicitud.id, 'Elegir Jurado para Examen de Grado')]
-
-
-class CambiarProyectoView(View):
-    form_class = ProyectoModelForm
-    template_name = 'posgradmin/try.html'
-
-    def get_breadcrumbs(self, pk):
-        return [('/inicio/', 'Inicio'),
-                ('/inicio/solicitudes/', 'Solicitudes'),
-                ('/inicio/solicitudes/%s/' % pk,
-                 '#%s' % pk),
-                ('/inicio/solicitudes/%s/cambiar-proyecto'
-                 % pk, 'Cambios al Proyecto')]
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        return render(request,
-                      self.template_name,
-                      {'title': 'Cambios al Proyecto',
-                       'form': form,
-                       'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        solicitud = Solicitud.objects.get(id=int(kwargs['pk']))
-        if form.is_valid():
-            p = Proyecto(nombre=request.POST['nombre'],
-                         campo_conocimiento=CampoConocimiento.objects.get(
-                             id=int(request.POST['campo_conocimiento'])),
-                         estudiante=request.user.estudiante,
-                         solicitud=solicitud)
-            p.save()
-
-            return HttpResponseRedirect("/inicio/solicitudes/%s"
-                                        % solicitud.id)
-        else:
-            return render(request,
-                          self.template_name,
-                          {'title': 'Cambios al Proyecto',
-                           'form': form,
-                           'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
-
-
-class MisCatedrasView(ListView):
-
+class EstudianteSortableView(LoginRequiredMixin,
+                             UserPassesTestMixin,
+                             SortableListView):
 
     def test_func(self):
-        if hasattr(self.request.user, 'academico'):
-            return True
-        else:
-            return False
-
-
-    model = Catedra
-
-    def get_queryset(self):
-        new_context = Catedra.objects.filter(
-            profesor=self.request.user.academico
-        )
-        return new_context
-
-
-class MisComitesView(ListView):
-    model = Comite
-    template_name = 'posgradmin/comite_list.html'
-
-    def get_queryset(self):
-        new_context = self.request.user.academico.comites()
-
-        return new_context
-
-
-class MisEstudiantesView(ListView):
-    model = Estudiante
-    template_name = 'posgradmin/mis_estudiantes_list.html'
-
-    def get_queryset(self):
-        new_context = self.request.user.academico.estudiantes()
-
-        return new_context
-
-
-class SesionesListView(SortableListView):
-    allowed_sort_fields = {'fecha': {'default_direction': '-',
-                                     'verbose_name': 'fecha'}}
-    default_sort_field = 'fecha'
-    paginate_by = 15
-    model = Sesion
-
-
-class SesionDetail(DetailView):
-    model = Sesion
-
-class CatedraRegistrar(View):
-
-    form_class = CatedraModelForm
-
-    def get_breadcrumbs(self, pk):
-        return [('/inicio/', 'Inicio'),
-                ('/inicio/solicitudes/', 'Solicitudes'),
-                ('/inicio/solicitudes/%s/' % pk,
-                 '#%s' % pk),
-                ('/inicio/solicitudes/%s/registrar-catedra'
-                 % pk, 'Registrar Cátedra')]
-
-    template_name = 'posgradmin/try.html'
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        return render(request,
-                      self.template_name,
-                      {'title': 'Registrar Cátedra',
-                       'form': form,
-                       'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
-
-    def post(self, request, *args, **kwargs):
-        sid = int(kwargs['pk'])
-        s = Solicitud.objects.get(id=sid)
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            curso = Curso.objects.get(
-                id=int(request.POST['curso']))
-            c = Catedra(curso=curso,
-                        year=request.POST['year'],
-                        semestre=request.POST['semestre'],
-                        solicitud=s)
-            c.save()
-
-            return HttpResponseRedirect("/inicio/solicitudes/%s" % s.id)
-        else:
-            return render(request,
-                          self.template_name,
-                          {'title': 'Registrar Curso',
-                           'form': form,
-                           'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
-
-
-class EstudianteSortableView(SortableListView):
+        return True
 
     # def get_queryset(self):
     #     sorted = super(EstudianteSortableView, self).get_queryset()
@@ -1009,10 +327,15 @@ class EstudianteSortableView(SortableListView):
 
     paginate_by = 15
 
-    model = Estudiante
+    model = models.Estudiante
 
 
-class AcademicoSortableView(SortableListView):
+class AcademicoSortableView(LoginRequiredMixin,
+                            UserPassesTestMixin,
+                            SortableListView):
+
+    def test_func(self):
+        return True
 
     # def get_queryset(self):
     #     sorted = super(EstudianteSortableView, self).get_queryset()
@@ -1028,18 +351,31 @@ class AcademicoSortableView(SortableListView):
 
     paginate_by = 15
 
-    model = Academico
+    model = models.Academico
 
 
-class AcademicoDetail(DetailView):
-    model = Academico
+class AcademicoDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+
+    def test_func(self):
+        return True
+
+    model = models.Academico
 
 
-class EstudianteDetail(DetailView):
-    model = Estudiante
+class EstudianteDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+
+    def test_func(self):
+        return True
+
+    model = models.Estudiante
 
 
-class CatedraSortableView(SortableListView):
+class CatedraSortableView(LoginRequiredMixin,
+                          UserPassesTestMixin,
+                          SortableListView):
+
+    def test_func(self):
+        return True
 
     def get_queryset(self):
         sorted = super(CatedraSortableView, self).get_queryset()
@@ -1057,53 +393,4 @@ class CatedraSortableView(SortableListView):
 
     paginate_by = 15
 
-    model = Catedra
-
-
-class EstudianteCargar(View):
-
-    def test_func(self):
-        if hasattr(self.request.user, 'asistente') \
-           or self.request.user.is_staff:
-            return True
-        else:
-            return False
-
-
-    form_class = EstudianteCargarForm
-
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/estudiantes/', 'Estudiantes')]
-
-    template_name = 'posgradmin/cargar_lote.html'
-
-    def get(self, request, *args, **kwargs):
-
-        form = self.form_class()
-
-        # envia todo a la plantilla etc
-        return render(request,
-                      self.template_name,
-                      {'form': form,
-                       'title': 'Cargar lote de estudiantes',
-                       'breadcrumbs': self.breadcrumbs})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            errores = etl.load(request.FILES['lista'],
-                               request.POST['ingreso'],
-                               request.POST['semestre'])
-            if errores:
-                return render(request,
-                              self.template_name,
-                              {'errores': errores,
-                               'form': form,
-                               'breadcrumbs': self.breadcrumbs})
-            else:
-                return HttpResponseRedirect("/inicio/estudiantes")
-        else:
-            return render(request,
-                          self.template_name,
-                          {'form': form,
-                           'breadcrumbs': self.breadcrumbs})
+    model = models.Catedra
