@@ -32,9 +32,9 @@
     {% for estudiante in object_list %}
 
     <tr>
-      <td><a href="/inicio/estudiantes/{{ estudiante.id }}/">
-	  {{ estudiante.id }}</a></td>
-      <td><a href="/inicio/estudiantes/{{ estudiante.id }}/">{{ estudiante }}</a></td>
+      <td><a href="/inicio/usuario/{{ estudiante.user.id }}/">
+	  {{ estudiante.user.id }}</a></td>
+      <td><a href="/inicio/usuario/{{ estudiante.user.id }}/">{{ estudiante }}</a></td>
       <td>{{ estudiante.estado|default:'' }}</td>
       <td>{{ estudiante.plan|default:'' }}</td>
       <td>{{ estudiante.entidad|default:'' }}</td>
