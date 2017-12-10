@@ -46,11 +46,13 @@ class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 
 class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    template_name = "posgradmin/user_detail.html"
+
     def test_func(self):
         return True
 
     def get_object(self):
-        return self.request.user.perfil
+        return self.request.user
 
 
 class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
