@@ -9,8 +9,6 @@ from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
     solicitudes_estados, MEDIA_ROOT, MEDIA_URL
 
-from pprint import pprint
-
 
 class Institucion(models.Model):
     nombre = models.CharField(max_length=150)
@@ -513,7 +511,6 @@ class Academico(models.Model):
             if c.solicitud.dictamen_final():
                 if c.solicitud.dictamen_final().resolucion == 'concedida':
                     comites.append(c)
-        print comites
         return comites
 
     def __unicode__(self):
