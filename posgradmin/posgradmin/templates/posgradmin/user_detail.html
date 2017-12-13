@@ -56,87 +56,64 @@
     {% endif %}
 
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
-      Comité Tutoral
-    </h3>
-  </div>
-  <div class="panel-body">
-    {{ object.estudiante.comite_tutoral.as_ul|safe }}
-    <hr />
-    {{ object.estudiante.comite_tutoral.solicitud.as_a|safe }}
-    {{ object.estudiante.comite_tutoral.solicitud.dictamen_final.fecha }}
-  </div>
-</div>
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-      Proyecto
-    </h3>
-  </div>
-  <div class="panel-body">
-    {% if object.estudiante.get_proyecto is None %}
-    <div class="alert alert-danger" role="alert">
-      <strong>No ha registrado proyecto</strong>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
+	  Comité Tutoral
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.estudiante.comite_tutoral.as_ul|safe }}
+	<hr />
+	{{ object.estudiante.comite_tutoral.solicitud.as_a|safe }}
+	{{ object.estudiante.comite_tutoral.solicitud.dictamen_final.fecha }}
+      </div>
     </div>
-    {% else %}
-    <h4>{{ object.estudiante.get_proyecto.nombre }}</h4>
-    Campo de Conocimiento: {{ object.estudiante.proyecto_set.last.campo_conocimiento }}
 
-    {% if not object.estudiante.get_proyecto.aprobado %}
-    <div class="alert alert-warning" role="alert">
-      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-      Proyecto no aprobado.
-      Ver solicitud {{ object.estudiante.get_proyecto.solicitud.as_a|safe }}.
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+	  Proyecto
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% if object.estudiante.get_proyecto is None %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No ha registrado proyecto</strong>
+	</div>
+	{% else %}
+	<h4>{{ object.estudiante.get_proyecto.nombre }}</h4>
+	Campo de Conocimiento: {{ object.estudiante.proyecto_set.last.campo_conocimiento }}
+
+	{% if not object.estudiante.get_proyecto.aprobado %}
+	<div class="alert alert-warning" role="alert">
+	  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+	  Proyecto no aprobado.
+	  Ver solicitud {{ object.estudiante.get_proyecto.solicitud.as_a|safe }}.
+	</div>
+	{% endif %}
+
+	{% if object.estudiante.get_proyecto_no_aprobado %}
+	<div class="alert alert-warning" role="alert">
+	  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+	  Solicitud de cambio: <strong>{{ object.estudiante.get_proyecto_no_aprobado }}</strong>
+	  {{ object.estudiante.get_proyecto_no_aprobado.solicitud.as_a|safe }}.
+	</div>
+	{% endif %}
+	{% endif %}
+      </div>
     </div>
-    {% endif %}
-
-    {% if object.estudiante.get_proyecto_no_aprobado %}
-    <div class="alert alert-warning" role="alert">
-      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-      Solicitud de cambio: <strong>{{ object.estudiante.get_proyecto_no_aprobado }}</strong>
-      {{ object.estudiante.get_proyecto_no_aprobado.solicitud.as_a|safe }}.
-    </div>
-    {% endif %}
-    {% endif %}
   </div>
 </div>
-
-
-{% if object.estudiante.trabajo_set.all %}
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>
-      Trabajo
-    </h3>
-  </div>
-  <div class="panel-body">
-    <ul class="list-group">
-      {% for trabajo in object.estudiante.trabajo_set.all %}
-      <li class="list-group-item">
-	<strong>{{ trabajo.cargo }} </strong> @ {{ trabajo.institucion }}
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-</div>
-{% endif %}
-
-
-  </div>
-</div>
-
-
-
-
 
 <!-- estudiante -->
 {% endif %}
+
+
+
+
 
 
 {% if object.academico %}
@@ -191,29 +168,6 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <span class="glyphicon glyphicon glyphicon-leaf" aria-hidden="true"></span>
-      Adscripciones
-    </h3>
-  </div>
-  <div class="panel-body">
-    <ul class="list-group">
-      {% for ad in object.academico.adscripcion_set.all %}
-      <li class="list-group-item">
-	<strong>{{ ad.nombramiento }}</strong> {{ ad.institucion }}
-      </li>
-      {% empty %}
-      <div class="alert alert-danger" role="alert">
-	<strong>No ha registrado adscripciones</strong>
-	<a href="/inicio/perfil/agregar-adscripcion">Agregar adscripción</a>.
-      </div>
-      {% endfor %}
-    </ul>
-  </div>
-</div>
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
       <span class="glyphicon glyphicon-apple" aria-hidden="true"></span>
       Estudiantes
     </h3>
@@ -255,8 +209,6 @@
   </div>
 </div>
 
-
-
 <!-- academico -->
 {% endif %}
 
@@ -269,10 +221,10 @@
  #    #  #   #   #    #  #    #  #    #  #    #
   ####   #    #  #    #  #####    ####    ####
 -->
-<div class="panel panel-default">
+<div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
       Grados Académicos
     </h3>
   </div>
@@ -288,12 +240,38 @@
       </li>
       {% empty %}
       <li class="list-group-item">
-	sin grados!
+	sin grados
       </li>
       {% endfor %}
     </ul>
   </div>
 </div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>
+      Empleos o Adscripciones
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      {% for empleo in object.empleo_set.all %}
+      <li class="list-group-item">
+	<strong>{{ empleo.cargo }} </strong> @ {{ trabajo.institucion }}
+      </li>
+      {% empty %}
+      <li class="list-group-item">
+	sin cargos ni adscripciones
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+
+
 
 
 

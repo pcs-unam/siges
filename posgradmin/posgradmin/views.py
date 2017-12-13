@@ -229,9 +229,9 @@ class GradoAcademicoEliminar(LoginRequiredMixin, View):
         return HttpResponseRedirect("/inicio/perfil/")
 
 
-class AdscripcionAgregar(LoginRequiredMixin, View):
+class EmpleoAgregar(LoginRequiredMixin, View):
 
-    form_class = forms.AdscripcionModelForm
+    form_class = forms.EmpleoModelForm
 
     breadcrumbs = [('/inicio/', 'Inicio'),
                    ('/inicio/perfil/', 'Mi perfil'),
@@ -253,12 +253,12 @@ class AdscripcionAgregar(LoginRequiredMixin, View):
         if form.is_valid():
             ins = models.Institucion.objects.get(
                 id=int(request.POST['institucion']))
-            a = models.Adscripcion(academico=request.user.academico,
-                                   institucion=ins,
-                                   nombramiento=request.POST['nombramiento'],
-                                   telefono=request.POST['telefono'],
-                                   numero_trabajador=request.POST[
-                                       'numero_trabajador'])
+            a = models.Empleo(user=request.user,
+                              institucion=ins,
+                              cargo=request.POST['nombramiento'],
+                              telefono=request.POST['telefono'],
+                              numero_trabajador=request.POST[
+                                  'numero_trabajador'])
             a.save()
 
             return HttpResponseRedirect("/inicio/perfil/")
@@ -270,10 +270,10 @@ class AdscripcionAgregar(LoginRequiredMixin, View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class AdscripcionEliminar(LoginRequiredMixin, View):
+class EmpleoEliminar(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        a = models.Adscripcion.objects.get(id=int(kwargs['pk']))
+        a = models.Empleo.objects.get(id=int(kwargs['pk']))
         a.delete()
         return HttpResponseRedirect("/inicio/perfil/")
 

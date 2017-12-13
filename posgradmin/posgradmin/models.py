@@ -527,51 +527,19 @@ class Academico(models.Model):
         verbose_name_plural = "Académicos"
 
 
-class Trabajo(models.Model):
-    estudiante = models.ForeignKey(Estudiante)
+class Empleo(models.Model):
+    user = models.ForeignKey(User)
     institucion = models.ForeignKey(Institucion)
     cargo = models.CharField(max_length=100)
 
+    numero_trabajador_unam = models.CharField("Número de trabajador (UNAM)",
+                                              max_length=100,
+                                              blank=True, null=True)
+
     def __unicode__(self):
-        return u"%s, %s en %s" % (self.estudiante,
+        return u"%s, %s en %s" % (self.user,
                                   self.cargo,
                                   self.institucion)
-
-
-class Adscripcion(models.Model):
-    academico = models.ForeignKey(Academico, on_delete=models.CASCADE)
-    institucion = models.ForeignKey(Institucion)
-    nombramiento = models.CharField(max_length=100)
-
-    numero_trabajador = models.CharField("Número de trabajador (UNAM)",
-                                         max_length=100,
-                                         blank=True, null=True)
-
-    def __unicode__(self):
-        return u"%s %s en %s" % (self.academico,
-                                 self.nombramiento,
-                                 self.institucion)
-
-    class Meta:
-        verbose_name_plural = "Adscripciones"
-
-
-class Empleo(models.Model):
-    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
-    institucion = models.ForeignKey(Institucion)
-    puesto = models.CharField(max_length=100)
-
-    trabajador_unam = models.CharField("Número de trabajador (UNAM)",
-                                       max_length=100,
-                                       blank=True, null=True)
-
-    def __unicode__(self):
-        return u"%s %s en %s" % (self.academico,
-                                 self.nombramiento,
-                                 self.institucion)
-
-    class Meta:
-        verbose_name_plural = "Empleos de Estudiantes"
 
 
 class Comite(models.Model):

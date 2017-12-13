@@ -115,9 +115,9 @@
 	</ul>
 
 	<ul class="list-group">
-	  {% for ad in user.academico.adscripcion_set.all %}
+	  {% for ad in user.empleo_set.all %}
 	  <li class="list-group-item">
-	    {{ ad.nombramiento }} en {{ ad.institucion }}
+	    {{ ad.cargo }} en {{ ad.institucion }}
 	  </li>
 	  {% empty %}
 	  <div class="alert alert-danger" role="alert">

@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.core.management.base import BaseCommand
 import argparse
-from posgradmin.models import Academico, Institucion, Perfil, Adscripcion, \
+from posgradmin.models import Academico, Institucion, Perfil, Empleo, \
     Solicitud
 from django.contrib.auth.models import User
 import slugify
@@ -112,10 +112,10 @@ def load(f, admin):
             solicitud=s)
         a.save()
 
-        adscripcion = Adscripcion(
-            academico=a,
+        empleo = Empleo(
+            user=u,
             institucion=institucion,
-            nombramiento=row['NOMBRAMIENTO'])
-        adscripcion.save()
+            cargo=row['NOMBRAMIENTO'])
+        empleo.save()
 
     return notas

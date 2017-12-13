@@ -7,7 +7,7 @@ from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, \
     CampoConocimiento, GradoAcademico, Institucion, Comite, \
-    Proyecto, Adscripcion, Catedra, Sesion
+    Proyecto, Catedra, Sesion, Empleo
 
 
 class SolicitudForm(forms.Form):
@@ -154,7 +154,7 @@ class SolicitudAgendarForm(forms.Form):
 
     sesion = forms.ModelChoiceField(queryset=Sesion.objects.filter(fecha__gt=datetime.now()),
                                     label="Sesión")
-    
+
     helper = FormHelper()
     helper.layout = Layout(
         Field('sesion'),
@@ -162,7 +162,7 @@ class SolicitudAgendarForm(forms.Form):
             Submit('agendar', 'agendar', css_class="btn-primary"),
         )
     )
-    
+
 
 class SolicitudDictamenForm(forms.Form):
 
@@ -222,23 +222,22 @@ class GradoAcademicoModelForm(forms.ModelForm):
             Submit('agregar', 'agregar'))
 
 
-class AdscripcionModelForm(forms.ModelForm):
+class EmpleoModelForm(forms.ModelForm):
 
     class Meta:
-        model = Adscripcion
-        exclude = ['academico', ]
+        model = Empleo
+        exclude = ['user', ]
 
     def __init__(self, *args, **kwargs):
 
-        super(AdscripcionModelForm, self).__init__(*args, **kwargs)
+        super(EmpleoModelForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
 
         self.helper.layout = Layout(
             'institucion',
             HTML('<a href="/institucion/agregar">agregar institucion</a><br /><br />'),
-            'nombramiento',
-            'telefono',
+            'cargo',
             'numero_trabajador',
             Submit('agregar', 'agregar'))
 

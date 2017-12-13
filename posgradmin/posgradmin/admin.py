@@ -1,9 +1,9 @@
 # coding: utf-8
 from django.contrib import admin
-from .models import Perfil, Academico, Estudiante, Adscripcion,\
+from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, Entidad, CampoConocimiento, \
-    Solicitud, Comentario, Anexo, Proyecto, Dictamen, \
-    Comite, Asistente, Curso, Catedra, Sesion
+    Solicitud, Comentario, Proyecto, Dictamen, \
+    Comite, Asistente, Curso, Catedra, Sesion, Empleo
 
 admin.site.site_header = "Administración de Posgrado en Ciencias de la Sostenibilidad"
 admin.site.site_title = "Posgrado en Ciencias de la Sostenibilidad"
@@ -42,11 +42,11 @@ class AcademicoAdmin(admin.ModelAdmin):
 admin.site.register(Academico, AcademicoAdmin)
 
 
-class AdscripcionAdmin(admin.ModelAdmin):
-    list_display = ['academico', 'institucion', 'nombramiento']
+class EmpleoAdmin(admin.ModelAdmin):
+    list_display = ['user', 'institucion', 'cargo']
 
 
-admin.site.register(Adscripcion, AdscripcionAdmin)
+admin.site.register(Empleo, EmpleoAdmin)
 
 
 class ComiteAdmin(admin.ModelAdmin):
