@@ -20,11 +20,10 @@
     <tr>
       <th>#</th>
       <th>nombre</th>
-      <th>acreditado</th>
+      <th>acreditación</th>
       <th>tutor</th>
       <th>comité académico</th>
       <th>entidad</th>
-      <th>fecha de acreditación</th>
     </tr>
   </thead>
 
@@ -35,9 +34,8 @@
       <td><a href="/inicio/usuario/{{ academico.user.id }}/">
 	  {{ academico.id }}</a></td>
       <td><a href="/inicio/usuario/{{ academico.user.id }}/">{{ academico.user.get_full_name }}</a></td>
-      <td>{% if academico.acreditado %}
-	<span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-	{% endif %}
+      <td>
+	{{ academico.acreditacion }}
       </td>
       <td>{% if academico.tutor %}
 	<span class="glyphicon glyphicon-check" aria-hidden="true"></span>
@@ -48,8 +46,6 @@
 	{% endif %}
       </td>
       <td>{{ academico.entidad }}</td>
-      <td>{{ academico.fecha_acreditacion|default:'' }}</td>
-
     </tr>
 
   {% endfor %}

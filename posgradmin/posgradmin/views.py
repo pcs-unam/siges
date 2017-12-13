@@ -363,9 +363,9 @@ class AcademicoSortableView(LoginRequiredMixin,
                                     'verbose_name': 'nombre'},
                            'entidad': {'default_direction': '-',
                                        'verbose_name': 'entidad'},
-                           'fecha_acreditacion': {'default_direction': '-',
-                                                  'verbose_name':
-                                                  'fecha de acreditación'}}
+                           'acreditacion': {'default_direction': '-',
+                                            'verbose_name':
+                                            'acreditación'}}
     default_sort_field = 'user'
 
     paginate_by = 15
