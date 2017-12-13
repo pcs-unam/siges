@@ -16,6 +16,7 @@
 
 <h1>{{ object.academico.titulo }} {{ object.get_full_name }}</h1>
 {% if object.estudiante %}
+
 <!--
  ######   ####    #####  #    #  #####      #      ##    #    #   #####  ######
  #       #          #    #    #  #    #     #     #  #   ##   #     #    #
@@ -35,6 +36,9 @@
   <div class="panel-body">
     <ul class="list-group">
       <li class="list-group-item">
+	Cuenta: {{ object.estudiante.cuenta|default:'' }}
+      </li>
+      <li class="list-group-item">
 	Estado: {{ object.estudiante.estado|default:'' }}
       </li>
       <li class="list-group-item">
@@ -47,6 +51,11 @@
 	semestre: {{ object.estudiante.semestre|default:'' }}</li>
     </ul>
 
+    {% if user.is_staff %}
+    <a href="/admin/posgradmin/estudiante/{{ object.estudiante.id }}/">editar</a><br /><br />
+    {% endif %}
+
+
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
@@ -55,11 +64,10 @@
     </h3>
   </div>
   <div class="panel-body">
-
+    {{ object.estudiante.comite_tutoral.as_ul|safe }}
+    <hr />
     {{ object.estudiante.comite_tutoral.solicitud.as_a|safe }}
     {{ object.estudiante.comite_tutoral.solicitud.dictamen_final.fecha }}
-    <hr />
-    {{ object.estudiante.comite_tutoral.as_ul|safe }}
   </div>
 </div>
 
@@ -161,6 +169,10 @@
 	acreditación: {{ object.academico.acreditacion|default:'' }}</li>
     </ul>
 
+    {% if user.is_staff %}
+    <a href="/admin/posgradmin/perfil/{{ object.academico.id }}/">editar</a><br /><br />
+    {% endif %}
+
 
     <!-- subtablas -->
 <div class="panel panel-default">
@@ -210,7 +222,7 @@
     <ul class="list-group">
       {% for e in object.academico.estudiantes %}
       <li class="list-group-item">
-	<a href="/inicio/estudiantes/{{ e.id }}">{{ e }}</a>
+	<a href="/inicio/usuario/{{ e.user.id }}">{{ e }}</a>
       </li>
       {% endfor %}
     </ul>
@@ -296,46 +308,63 @@
 
 -->
 {% if object.perfil %}
-<div class="panel panel-default">
+<div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">
       <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-      Datos Personales</h3>
-  </div>
-  <div class="panel-body">
-    <ul class="list-group">
-      {% if object.headshot %}
-      <li class="list-group-item">
-	<img src="/media/headshots/{{ object.id }}.png" width="100px" />
-      </li>
-      {% endif %}
-      <li class="list-group-item"><strong>Fecha de Nacimiento</strong> {{ object.perfil.fecha_nacimiento|default:"" }}</li>
-      <li class="list-group-item"><strong>Genero</strong> {{ object.perfil.genero }}</li>
-      <li class="list-group-item"><strong>Nacionalidad</strong> {{ object.perfil.nacionalidad }}</li>
-      <li class="list-group-item"><strong>CURP</strong> {{ object.perfil.curp }}</li>
-      <li class="list-group-item"><strong>RFC</strong> {{ object.perfil.rfc }}</li>
-    </ul>
-  </div>
-</div>
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
-      Información de contacto
+      Perfil
     </h3>
   </div>
   <div class="panel-body">
-    <ul class="list-group">
-      <li class="list-group-item"><strong>Teléfono</strong> {{ object.perfil.telefono }}</li>
-      <li class="list-group-item"><strong>Teléfono Móvil</strong> {{ object.perfil.telefono_movil }}</li>
-      <li class="list-group-item"><strong>email</strong> {{ object.email }}</li>
-      <li class="list-group-item"><strong>email</strong> {{ object.perfil.email2 }}</li>
-      <li class="list-group-item"><strong>Sitio Web</strong> {{ object.perfil.website }}</li>
-      <li class="list-group-item"><strong>Dirección</Strong> {{ object.perfil.direccion1 }}</li>
-      <li class="list-group-item"><strong>Dirección</strong> {{ object.perfil.direccion2 }}</li>
-      <li class="list-group-item"><strong>Código Postal</strong> {{ object.perfil.codigo_postal|default:"" }}</li>
-    </ul>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+	  Datos Personales</h3>
+      </div>
+      <div class="panel-body">
+	<ul class="list-group">
+	  {% if object.headshot %}
+	  <li class="list-group-item">
+	    <img src="/media/headshots/{{ object.id }}.png" width="100px" />
+	  </li>
+	  {% endif %}
+	  <li class="list-group-item"><strong>Fecha de Nacimiento</strong>
+	    {{ object.perfil.fecha_nacimiento|default:"" }}</li>
+	  <li class="list-group-item"><strong>Genero</strong> {{ object.perfil.genero }}</li>
+	  <li class="list-group-item"><strong>Nacionalidad</strong> {{ object.perfil.nacionalidad }}</li>
+	  <li class="list-group-item"><strong>CURP</strong> {{ object.perfil.curp }}</li>
+	  <li class="list-group-item"><strong>RFC</strong> {{ object.perfil.rfc }}</li>
+	</ul>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
+	  Información de contacto
+	</h3>
+      </div>
+      <div class="panel-body">
+	<ul class="list-group">
+	  <li class="list-group-item"><strong>Teléfono</strong> {{ object.perfil.telefono }}</li>
+	  <li class="list-group-item"><strong>Teléfono Móvil</strong> {{ object.perfil.telefono_movil }}</li>
+	  <li class="list-group-item"><strong>email</strong> {{ object.email }}</li>
+	  <li class="list-group-item"><strong>email</strong> {{ object.perfil.email2 }}</li>
+	  <li class="list-group-item"><strong>Sitio Web</strong> {{ object.perfil.website }}</li>
+	  <li class="list-group-item"><strong>Dirección</Strong> {{ object.perfil.direccion1 }}</li>
+	  <li class="list-group-item"><strong>Dirección</strong> {{ object.perfil.direccion2 }}</li>
+	  <li class="list-group-item"><strong>Código Postal</strong> {{ object.perfil.codigo_postal|default:"" }}</li>
+	</ul>
+      </div>
+    </div>
+    {% if user == object %}
+    <a href="/inicio/perfil/editar">editar</a>
+    {% elif user.is_staff %}
+    <a href="/admin/posgradmin/perfil/{{ object.perfil.id }}/">editar</a>
+    {% endif %}
+
   </div>
 </div>
 <!-- perfil -->

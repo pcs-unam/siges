@@ -122,7 +122,7 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             p.codigo_postal = request.POST['codigo_postal']
             p.save()
 
-            return HttpResponseRedirect('/inicio/')
+            return HttpResponseRedirect('/inicio/usuario/%s' % request.user.id)
         else:
             return render(request,
                           self.template,
@@ -371,22 +371,6 @@ class AcademicoSortableView(LoginRequiredMixin,
     paginate_by = 15
 
     model = models.Academico
-
-
-class AcademicoDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-
-    def test_func(self):
-        return True
-
-    model = models.Academico
-
-
-class EstudianteDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-
-    def test_func(self):
-        return True
-
-    model = models.Estudiante
 
 
 class CatedraSortableView(LoginRequiredMixin,

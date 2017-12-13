@@ -22,7 +22,7 @@ from posgradmin.views import PerfilRegistroView, PerfilDetail, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
     AdscripcionEliminar, AdscripcionAgregar, \
     EstudianteSortableView, AcademicoSortableView, CatedraSortableView, \
-    AcademicoDetail, EstudianteDetail, UserDetail
+    UserDetail
 
 from posgradmin.views_academico import MisCatedrasView, \
     MisComitesView, MisEstudiantesView
@@ -74,23 +74,17 @@ urlpatterns = [
     url(r'^inicio/perfil/$',
         PerfilDetail.as_view()),
 
-    url(r'^inicio/estudiantes/$',
-        EstudianteSortableView.as_view()),
-
     url(r'^inicio/estudiantes/mis$',
         MisEstudiantesView.as_view()),
 
     url(r'^inicio/estudiantes/cargar$',
         EstudianteCargar.as_view()),
 
-    url(r'^inicio/estudiantes/(?P<pk>[0-9]+)/$',
-        EstudianteDetail.as_view()),
+    url(r'^inicio/estudiantes/$',
+        EstudianteSortableView.as_view()),
 
     url(r'^inicio/academicos/$',
         AcademicoSortableView.as_view()),
-
-    url(r'^inicio/academicos/(?P<pk>[0-9]+)/$',
-        AcademicoDetail.as_view()),
 
     url(r'^inicio/catedras/$',
         CatedraSortableView.as_view()),
