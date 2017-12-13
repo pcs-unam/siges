@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.db.models import Q
 from django.views import View
 from django.views.generic import DetailView
 from sortable_listview import SortableListView
@@ -10,6 +11,8 @@ from django.forms.models import model_to_dict
 import posgradmin.forms as forms
 
 import posgradmin.models as models
+
+from pprint import pprint
 
 
 class InicioView(LoginRequiredMixin, View):
@@ -316,8 +319,22 @@ class EstudianteSortableView(LoginRequiredMixin,
     def test_func(self):
         return True
 
-    # def get_queryset(self):
-    #     sorted = super(EstudianteSortableView, self).get_queryset()
+    def get_queryset(self):
+        #pprint(self.get_querystring())
+        #print search
+        print self.request.encoding
+        self.request.GET.encoding = 'utf-8'
+        search = self.request.GET.get('search', None)
+        qs = super(EstudianteSortableView, self).get_queryset()
+
+        if search:
+            search = search.encode('utf-8')
+            sorted = qs.filter(Q(cuenta__icontains=search) |
+                               Q(user__first_name__icontains=search) |
+                               Q(user__last_name__icontains=search))
+        else:
+            sorted = qs
+        return sorted
 
     allowed_sort_fields = {'user': {'default_direction': '',
                                     'verbose_name': 'nombre'},
