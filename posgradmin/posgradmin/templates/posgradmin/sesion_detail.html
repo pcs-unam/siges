@@ -1,5 +1,5 @@
 {% extends "posgradmin/posgradmin_base.html" %}
-
+{% load md2 %}
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
@@ -12,7 +12,7 @@
 
 
 {% block content %}
-
+<a href="/admin/posgradmin/sesion/{{ object.id }}/change/">editar</a>
 <h2>{{ object.fecha }}, {{ object.descripcion }}</h2>
 
 <div class="panel panel-default">
@@ -30,7 +30,7 @@
 	  <th>solicitante</th>
 	  <th>fecha de creacion</th>
 	</tr>
-      </thead>      
+      </thead>
 
 
       <tbody>
@@ -47,11 +47,11 @@
 	    <span class="glyphicon glyphicon-thumbs-down" aria-hidden=true></span>
 	    {% endif %}
 	    {% elif solicitud.predictamen %}
-	    <span class="glyphicon glyphicon-eye-open" aria-hidden=true></span>	
+	    <span class="glyphicon glyphicon-eye-open" aria-hidden=true></span>
 	    {% endif %}
-	
-	    {{ solicitud.estado }}	
-	  </td> 
+
+	    {{ solicitud.estado }}
+	  </td>
 	  <td>{{ solicitud.tipo }}</td>
 	  <td><a href="/inicio/solicitudes/{{ solicitud.id }}/">
 	      {{ solicitud.resumen }}</a></td>
@@ -63,5 +63,9 @@
     </table>
   </div>
 </div>
+
+<h3>Minuta</h3>
+
+{{ object.minuta|markdown }}
 
 {% endblock %}

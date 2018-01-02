@@ -243,6 +243,14 @@ class Sesion(models.Model):
     fecha = models.DateField()
     descripcion = models.CharField(max_length=100,
                                    default="sesión ordinaria")
+    # guardar markdown
+    minuta = models.TextField(blank=True)
+
+    def as_a(self):
+        return u"""<a href='/inicio/sesiones/%s/'>%s %s</a>""" % (
+            self.id, self.fecha, self.descripcion)
+
+
 
     def __unicode__(self):
         return u'%s, %s' % (self.fecha,

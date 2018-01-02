@@ -5,7 +5,8 @@ from .models import Perfil, Academico, Estudiante, \
     Solicitud, Comentario, Proyecto, Dictamen, \
     Comite, Asistente, Curso, Catedra, Sesion, Empleo
 
-admin.site.site_header = "Administración de Posgrado en Ciencias de la Sostenibilidad"
+admin.site.site_header = \
+                "Administración de Posgrado en Ciencias de la Sostenibilidad"
 admin.site.site_title = "Posgrado en Ciencias de la Sostenibilidad"
 admin.site.site_url = "/"
 
@@ -87,6 +88,23 @@ class InstitucionAdmin(admin.ModelAdmin):
 
 admin.site.register(Institucion, InstitucionAdmin)
 
+
+class SesionAdmin(admin.ModelAdmin):
+    search_fields = ['descripcion', 'fecha']
+    list_display = ['fecha', 'descripcion',
+                    'unificado']
+
+    def unificado(self, sesion):
+        return sesion.as_a()
+
+    unificado.allow_tags = True
+    unificado.short_description = 'Ver'
+
+
+admin.site.register(Sesion, SesionAdmin)
+
+
+
 admin.site.register(Perfil)
 admin.site.register(Entidad)
 admin.site.register(CampoConocimiento)
@@ -95,6 +113,3 @@ admin.site.register(Comentario)
 admin.site.register(Proyecto)
 admin.site.register(Dictamen)
 admin.site.register(Asistente)
-
-
-admin.site.register(Sesion)
