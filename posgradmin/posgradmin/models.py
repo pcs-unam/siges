@@ -583,14 +583,19 @@ class Comite(models.Model):
                self.vocal)
 
     def as_ul(self):
-        ul = """<ul>
-                 <li><strong>presidente:</strong> %s</li>
-                 <li><strong>secretario:</strong> %s</li>
-                 <li><strong>vocal:</strong> %s</li>
-                </ul>"""
-        return ul % (self.presidente,
-                     self.secretario,
-                     self.vocal)
+        ul = """
+        <ul>
+        <li><strong>presidente:</strong>
+            <a href="/inicio/usuario/%s/">%s</a></li>
+        <li><strong>secretario:</strong>
+            <a href="/inicio/usuario/%s/">%s</a></li>
+        <li><strong>vocal:</strong>
+            <a href="/inicio/usuario/%s/">%s</a></li>
+        </ul>
+"""
+        return ul % (self.presidente.id, self.presidente,
+                     self.secretario.id, self.secretario,
+                     self.vocal.id, self.vocal)
 
 
 class Asistente(models.Model):
