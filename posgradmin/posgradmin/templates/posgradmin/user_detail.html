@@ -159,6 +159,10 @@
       </div>
     </div>
 
+    {% if user == object %}
+    <a href="/inicio/academico/registro/">editar registro de académico</a><br /><br />
+    {% endif %}
+
     {% if user.is_staff %}
     <a href="/admin/posgradmin/academico/{{ object.academico.id }}/">editar registro de académico</a><br /><br />
     {% endif %}

@@ -675,12 +675,13 @@ class Curso(models.Model):
 
 class Catedra(models.Model):
     curso = models.ForeignKey(Curso)
-    solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE)
     semestre = models.PositiveSmallIntegerField(
         choices=((1, 1), (2, 2)))
     year = models.PositiveSmallIntegerField("Año")
     profesor = models.ForeignKey(Academico, blank=True, null=True)
     sede = models.CharField(max_length=80, blank=True)
+
+    solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = "Cátedras"

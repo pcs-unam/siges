@@ -146,29 +146,58 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
+        if hasattr(request.user, 'academico'):
+            a = request.user.academico
+            data = model_to_dict(a)
+            form = self.form_class(data=data)
+        else:
+            form = self.form_class()
 
         return render(request,
                       self.template_name,
                       {'form': form,
-                       'title': 'Solicitar registro como Académico',
+                       'title': 'Editar registro Académico',
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
+
         if form.is_valid():
-            s = models.Solicitud()
-            s.resumen = 'registrar como académico'
-            s.tipo = 'registrar_academico'
-            s.solicitante = request.user
-            s.save()
+            entidad = models.Entidad.objects.get(
+                id=int(request.POST['entidad']))
 
-            a, created = models.Academico.objects.get_or_create(
-                user=request.user)
-            a.solicitud = s
-            a.save()
+            if hasattr(request.user, 'academico'):
+                a = request.user.academico
+                a.entidad = entidad
+                a.lineas = request.POST[u'lineas']
+                a.CVU = request.POST[u'CVU']
+                a.nivel_SNI = request.POST[u'nivel_SNI']
+                a.nivel_pride = request.POST[u'nivel_pride']
+                a.titulo = request.POST[u'titulo']
+                a.save()
 
-            return HttpResponseRedirect('/inicio/solicitudes/%s/'
-                                        % s.id)
+                return HttpResponseRedirect('/inicio/perfil/')
+
+            else:
+                s = models.Solicitud()
+                s.resumen = 'registrar como académico'
+                s.tipo = 'registrar_academico'
+                s.solicitante = request.user
+                s.save()
+
+                a = models.Academico()
+                a.user = request.user
+                a.solicitud = s
+                a.entidad = entidad
+                a.lineas = request.POST[u'lineas']
+                a.CVU = request.POST[u'CVU']
+                a.nivel_SNI = request.POST[u'nivel_SNI']
+                a.nivel_pride = request.POST[u'nivel_pride']
+                a.titulo = request.POST[u'titulo']
+                a.save()
+
+                return HttpResponseRedirect('/inicio/solicitudes/%s/'
+                                            % s.id)
 
         else:
             return render(request,
