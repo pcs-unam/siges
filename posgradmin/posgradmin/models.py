@@ -678,7 +678,7 @@ class Catedra(models.Model):
     solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE)
     semestre = models.PositiveSmallIntegerField(
         choices=((1, 1), (2, 2)))
-    year = models.PositiveSmallIntegerField()
+    year = models.PositiveSmallIntegerField("Año")
     profesor = models.ForeignKey(Academico, blank=True, null=True)
     sede = models.CharField(max_length=80, blank=True)
 
