@@ -593,9 +593,9 @@ class Comite(models.Model):
             <a href="/inicio/usuario/%s/">%s</a></li>
         </ul>
 """
-        return ul % (self.presidente.id, self.presidente,
-                     self.secretario.id, self.secretario,
-                     self.vocal.id, self.vocal)
+        return ul % (self.presidente.user.id, self.presidente,
+                     self.secretario.user.id, self.secretario,
+                     self.vocal.user.id, self.vocal)
 
 
 class Asistente(models.Model):
