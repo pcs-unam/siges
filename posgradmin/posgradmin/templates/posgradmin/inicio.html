@@ -98,8 +98,7 @@
 
 	   {% if user.academico.solicitud.dictamen_final.resolucion == 'denegada' or user.academico.solicitud.estado == 'cancelada' %}
 	       <a href="/inicio/academico/registro">registrarse como académico</a>
-	   {% else %}
-	       Registro como académico en proceso a través de la solicitud
+	   {% elif  user.academico.solicitud.dictamen_final.resolucion == 'nueva'  %}
 	       <a href="/inicio/solicitudes/{{ user.academico.solicitud.id }}">
 		 {{ user.academico.solicitud.as_a|safe }}</a>.
 	   {% endif %}
