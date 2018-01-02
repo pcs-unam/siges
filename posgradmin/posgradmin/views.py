@@ -45,6 +45,20 @@ class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(UserDetail, self).get_context_data(**kwargs)
         context['user'] = self.request.user
+
+        # may see intimacies?
+        u = context['object']
+
+        if (  # by authority
+                self.request.user == u
+                or self.request.user.is_staff
+                or hasattr(self.request.user, 'asistente')):
+            see_private = True
+        else:
+            see_private = False
+
+        context['see_private'] = see_private
+
         return context
 
 
@@ -53,6 +67,26 @@ class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
     def test_func(self):
         return True
+
+    def get_context_data(self, **kwargs):
+        context = super(PerfilDetail, self).get_context_data(**kwargs)
+        context['user'] = self.request.user
+
+        # may see intimacies?
+        u = context['object']
+
+        if (  # by authority
+                self.request.user == u
+                or self.request.user.is_staff
+                or hasattr(self.request.user, 'asistente')):
+            see_private = True
+        else:
+            see_private = False
+
+        context['see_private'] = see_private
+
+        return context
+
 
     def get_object(self):
         return self.request.user

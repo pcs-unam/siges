@@ -65,9 +65,11 @@
       </div>
       <div class="panel-body">
 	{{ object.estudiante.comite_tutoral.as_ul|safe }}
+	{% if see_private %}
 	<hr />
 	{{ object.estudiante.comite_tutoral.solicitud.as_a|safe }}
 	{{ object.estudiante.comite_tutoral.solicitud.dictamen_final.fecha }}
+	{% endif %}
       </div>
     </div>
 
@@ -87,6 +89,7 @@
 	<h4>{{ object.estudiante.get_proyecto.nombre }}</h4>
 	Campo de Conocimiento: {{ object.estudiante.proyecto_set.last.campo_conocimiento }}
 
+	{% if see_private %}
 	{% if not object.estudiante.get_proyecto.aprobado %}
 	<div class="alert alert-warning" role="alert">
 	  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
@@ -94,13 +97,16 @@
 	  Ver solicitud {{ object.estudiante.get_proyecto.solicitud.as_a|safe }}.
 	</div>
 	{% endif %}
+	{% endif %}
 
+	{% if see_private %}
 	{% if object.estudiante.get_proyecto_no_aprobado %}
 	<div class="alert alert-warning" role="alert">
 	  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 	  Solicitud de cambio: <strong>{{ object.estudiante.get_proyecto_no_aprobado }}</strong>
 	  {{ object.estudiante.get_proyecto_no_aprobado.solicitud.as_a|safe }}.
 	</div>
+	{% endif %}
 	{% endif %}
 	{% endif %}
       </div>
@@ -308,7 +314,7 @@
 
 
 
-
+{% if see_private %}
   <div class="panel-body">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -332,6 +338,8 @@
 	</ul>
       </div>
     </div>
+
+
 
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -361,11 +369,37 @@
     {% endif %}
 
   </div>
+  {% else %}
+  <div class="panel-body">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
+	  Información de contacto
+	</h3>
+      </div>
+      <div class="panel-body">
+	<ul class="list-group">
+	  <li class="list-group-item"><strong>email</strong> {{ object.email }}</li>
+	  <li class="list-group-item"><strong>email</strong> {{ object.perfil.email2|default:'' }}</li>
+	  <li class="list-group-item"><strong>Sitio Web</strong> {{ object.perfil.website|default:'' }}</li>
+	</ul>
+      </div>
+    </div>
+    {% if user == object %}
+    <a href="/inicio/perfil/editar">editar</a>
+    {% elif user.is_staff %}
+    <a href="/admin/auth/user/{{ object.id }}/">editar usuario</a><br />
+    <a href="/admin/posgradmin/perfil/{{ object.perfil.id }}/">editar perfil</a>
+    {% endif %}
+
+  </div>
+  {% endif %}
 </div>
 <!-- perfil -->
 {% endif %}
 
-
+{% if see_private %}
 <div class="panel panel-info">
   <div class="panel-heading">
     <h3 class="panel-title">
@@ -415,6 +449,6 @@
     </table>
   </div>
 </div>
-
+{% endif %}
 
 {% endblock %}
