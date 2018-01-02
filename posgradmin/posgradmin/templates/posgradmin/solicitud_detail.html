@@ -73,8 +73,26 @@
 
 
     {% if object.tipo == "cambio_proyecto" %}
+
     {% if object.proyecto_set.all %}
-    {{ object.proyecto_set.all.last }}
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+	  Proyecto
+	</h3>
+      </div>
+      <div class="panel-body">
+
+	<h4>{{ object.proyecto_set.all.last.nombre}}</h4>
+	Campo de Conocimiento: {{ object.proyecto_set.all.last.campo_conocimiento }}
+
+      </div>
+    </div>
+
+
+
+
     {% else %}
     <div class="alert alert-danger" role="alert">
       <strong>No se han especificado cambios al proyecto.</strong>.
@@ -107,7 +125,6 @@
     <a href="/inicio/perfil/editar">Editar mi perfil</a>.
     {% endif %}
     {% endif %}
-
 
   </div>
 
