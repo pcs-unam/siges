@@ -1,19 +1,18 @@
 {% extends "posgradmin/posgradmin_base.html" %}
 {% load crispy_forms_tags %}
 
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="/inicio">Inicio</a>
+  {% if object.academico %}
+  &rsaquo; <a href="/inicio/academicos/">Académicos</a>
+  {% endif %}
+  &rsaquo; <a href="/inicio/usuario/{{ object.user.id }}">{{ object.user.get_full_name }}</a>
+</div>
+{% endblock %}
 
 
 {% block content %}
-
-
-{% crispy form %}
-<script>
-$(document).ready(function() {
-    $('.dateinput').datepicker({ dateFormat: 'yy-mm-dd'});
-});
-</script>
-
-<br /><br />
 
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -47,7 +46,7 @@ $(document).ready(function() {
   <div class="panel-heading">
     <h3 class="panel-title">
       <span class="glyphicon glyphicon glyphicon-leaf" aria-hidden="true"></span>
-      Adscripciones
+      Empleos o Adscripciones
     </h3>
   </div>
   <div class="panel-body">
@@ -60,14 +59,25 @@ $(document).ready(function() {
 	  <button type="button" class="btn btn-danger btn-xs"
 		  onClick="if (confirm('¿eliminar {{ ad.nombramiento}} @ {{ ad.institucion }}?')) window.location='/inicio/perfil/eliminar-adscripcion/{{ad.id}}'">
 	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>
-
-	{{ ad.nombramiento }} en {{ ad.institucion }}
+	<strong>{{ ad.cargo }} </strong> @ {{ ad.institucion }}
       </li>
       {% endfor %}
     </ul>
   </div>
 </div>
 {% endif %}
+
+
+<br /><br />
+
+{% crispy form %}
+<script>
+$(document).ready(function() {
+    $('.dateinput').datepicker({ dateFormat: 'yy-mm-dd'});
+});
+</script>
+
+
 
 
 {% endblock %}

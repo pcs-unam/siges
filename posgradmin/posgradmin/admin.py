@@ -44,7 +44,8 @@ admin.site.register(Academico, AcademicoAdmin)
 
 
 class EmpleoAdmin(admin.ModelAdmin):
-    list_display = ['user', 'institucion', 'cargo']
+    search_fields = ['user__username']
+    list_display = ['cargo', 'institucion', 'user']
 
 
 admin.site.register(Empleo, EmpleoAdmin)
@@ -75,7 +76,8 @@ admin.site.register(Catedra, CatedraAdmin)
 
 
 class GradoAcademicoAdmin(admin.ModelAdmin):
-    list_display = ['user', 'nivel', 'grado_obtenido',
+    search_fields = ['user__username']
+    list_display = ['grado_obtenido', 'nivel', 'user',
                     'institucion', 'facultad', 'fecha_obtencion']
 
 

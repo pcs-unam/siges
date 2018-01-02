@@ -255,10 +255,7 @@ class EmpleoAgregar(LoginRequiredMixin, View):
                 id=int(request.POST['institucion']))
             a = models.Empleo(user=request.user,
                               institucion=ins,
-                              cargo=request.POST['nombramiento'],
-                              telefono=request.POST['telefono'],
-                              numero_trabajador=request.POST[
-                                  'numero_trabajador'])
+                              cargo=request.POST['cargo'])
             a.save()
 
             return HttpResponseRedirect("/inicio/perfil/")

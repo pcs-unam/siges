@@ -52,7 +52,7 @@
     </ul>
 
     {% if user.is_staff %}
-    <a href="/admin/posgradmin/estudiante/{{ object.estudiante.id }}/">editar</a><br /><br />
+    <a href="/admin/posgradmin/estudiante/{{ object.estudiante.id }}/">editar registro de estudiante</a><br /><br />
     {% endif %}
 
 
@@ -146,71 +146,93 @@
 	acreditación: {{ object.academico.acreditacion|default:'' }}</li>
     </ul>
 
+    <!-- subtablas -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-road" aria-hidden="true"></span>
+	  Líneas de Investigación
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.lineas|markdown }}
+      </div>
+    </div>
+
     {% if user.is_staff %}
-    <a href="/admin/posgradmin/perfil/{{ object.academico.id }}/">editar</a><br /><br />
+    <a href="/admin/posgradmin/academico/{{ object.academico.id }}/">editar registro de académico</a><br /><br />
     {% endif %}
 
 
-    <!-- subtablas -->
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon glyphicon-road" aria-hidden="true"></span>
-      Líneas de Investigación
-    </h3>
-  </div>
-  <div class="panel-body">
-    {{ object.academico.lineas|markdown }}
-  </div>
-</div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-apple" aria-hidden="true"></span>
+	  Estudiantes
+	</h3>
+      </div>
+      <div class="panel-body">
+	<ul class="list-group">
+	  {% for e in object.academico.estudiantes %}
+	  <li class="list-group-item">
+	    <a href="/inicio/usuario/{{ e.user.id }}">{{ e }}</a>
+	  </li>
+	  {% endfor %}
+	</ul>
+      </div>
+    </div>
 
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-apple" aria-hidden="true"></span>
-      Estudiantes
-    </h3>
-  </div>
-  <div class="panel-body">
-    <ul class="list-group">
-      {% for e in object.academico.estudiantes %}
-      <li class="list-group-item">
-	<a href="/inicio/usuario/{{ e.user.id }}">{{ e }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-</div>
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
-      Participación en Comités
-    </h3>
-  </div>
-  <div class="panel-body">
-    <ul class="list-group">
-      {% for c in object.academico.comites %}
-      <li class="list-group-item">
-	<h4>{{ c.tipo }} {{ c.solicitud.as_a|safe }}</h4>
-	{{ c.solicitud.dictamen_final.fecha }}<br />
-	Estudiante:
-	<a href="/inicio/estudiantes/{{ c.estudiante.id }}/">{{ c.estudiante }}</a><br />
-	{{ c.as_ul|safe }}
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-</div>
-
-
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
+	  Participación en Comités
+	</h3>
+      </div>
+      <div class="panel-body">
+	<ul class="list-group">
+	  {% for c in object.academico.comites %}
+	  <li class="list-group-item">
+	    <h4>{{ c.tipo }} {{ c.solicitud.as_a|safe }}</h4>
+	    {{ c.solicitud.dictamen_final.fecha }}<br />
+	    Estudiante:
+	    <a href="/inicio/estudiantes/{{ c.estudiante.id }}/">{{ c.estudiante }}</a><br />
+	    {{ c.as_ul|safe }}
+	  </li>
+	  {% endfor %}
+	</ul>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- academico -->
 {% endif %}
+
+
+
+
+
+<!--
+ #####   ######  #####   ######     #    #
+ #    #  #       #    #  #          #    #
+ #    #  #####   #    #  #####      #    #
+ #####   #       #####   #          #    #
+ #       #       #   #   #          #    #
+ #       ######  #    #  #          #    ######
+
+  -->
+{% if object.perfil %}
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+      Perfil
+    </h3>
+  </div>
+
+
+
 
 
 <!--
@@ -221,7 +243,8 @@
  #    #  #   #   #    #  #    #  #    #  #    #
   ####   #    #  #    #  #####    ####    ####
 -->
-<div class="panel panel-primary">
+<div class="panel panel-body">
+<div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
       <span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
@@ -237,6 +260,7 @@
 	  obtenido el {{ grado.fecha_obtencion }},
 	  promedio: {{ grado.promedio }}<br />
 	  <a href="{{ grado.documento_url }}">documento</a></p>
+
       </li>
       {% empty %}
       <li class="list-group-item">
@@ -244,11 +268,15 @@
       </li>
       {% endfor %}
     </ul>
+    {% if user.is_staff %}
+    <a href="/admin/posgradmin/gradoacademico/?q={{ object.username }}">editar grados</a>
+    {% endif %}
   </div>
 </div>
+</div>
 
-
-<div class="panel panel-primary">
+<div class="panel panel-body">
+<div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
       <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>
@@ -259,7 +287,7 @@
     <ul class="list-group">
       {% for empleo in object.empleo_set.all %}
       <li class="list-group-item">
-	<strong>{{ empleo.cargo }} </strong> @ {{ trabajo.institucion }}
+	<strong>{{ empleo.cargo }} </strong> @ {{ empleo.institucion }}
       </li>
       {% empty %}
       <li class="list-group-item">
@@ -267,32 +295,16 @@
       </li>
       {% endfor %}
     </ul>
+    {% if user.is_staff %}
+    <a href="/admin/posgradmin/empleo/?q={{ object.username }}">editar grados</a>
+    {% endif %}
   </div>
+</div>
 </div>
 
 
 
 
-
-
-
-<!--
- #####   ######  #####   ######     #    #
- #    #  #       #    #  #          #    #
- #    #  #####   #    #  #####      #    #
- #####   #       #####   #          #    #
- #       #       #   #   #          #    #
- #       ######  #    #  #          #    ######
-
--->
-{% if object.perfil %}
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-      Perfil
-    </h3>
-  </div>
   <div class="panel-body">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -340,14 +352,14 @@
     {% if user == object %}
     <a href="/inicio/perfil/editar">editar</a>
     {% elif user.is_staff %}
-    <a href="/admin/posgradmin/perfil/{{ object.perfil.id }}/">editar</a>
+    <a href="/admin/auth/user/{{ object.id }}/">editar usuario</a><br />
+    <a href="/admin/posgradmin/perfil/{{ object.perfil.id }}/">editar perfil</a>
     {% endif %}
 
   </div>
 </div>
 <!-- perfil -->
 {% endif %}
-
 
 
 <div class="panel panel-info">
