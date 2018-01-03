@@ -37,9 +37,25 @@
 {% endblock %}
 
 {% block branding %}
+
+<style>
+  #header {height: 60px;
+  padding-top: 1.2em;
+  background: #4b9040;}
+</style>
+
 <div id="branding">
   <h1 id="site-name"><a href="/">Posgrado en Ciencias de la Sostenibilidad</a></h1>
 </div>
+
+{% endblock %}
+
+{% block nav-global %}
+{% if user.is_staff %}
+<p>
+  <a href="/admin">Tablas de Datos</a>
+</p>
+{% endif %}
 {% endblock %}
 
 
@@ -57,11 +73,8 @@
 {% endblock %}
 
 
-
-
 {% block userlinks %}User link{% endblock %}
 
-{% block nav-global %}{% endblock %}
 {% block breadcrumbs %}
 <div class="breadcrumbs">
   {% for crumb in breadcrumbs %}
