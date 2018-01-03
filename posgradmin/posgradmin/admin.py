@@ -106,11 +106,29 @@ class SesionAdmin(admin.ModelAdmin):
 admin.site.register(Sesion, SesionAdmin)
 
 
+class SolicitudAdmin(admin.ModelAdmin):
+    search_fields = ['resumen', 'fecha_creacion',
+                     'solicitante__first_name',
+                     'solicitante__last_name']
+    list_display = ['resumen', 'user', 'fecha_creacion',
+                    'unificado', 'estado', 'tipo']
+
+    def unificado(self, solicitud):
+        return solicitud.as_a()
+
+    def user(self, solicitud):
+        return solicitud.solicitante.perfil
+
+    unificado.allow_tags = True
+    unificado.short_description = 'Ver'
+
+
+admin.site.register(Solicitud, SolicitudAdmin)
+
 
 admin.site.register(Perfil)
 admin.site.register(Entidad)
 admin.site.register(CampoConocimiento)
-admin.site.register(Solicitud)
 admin.site.register(Comentario)
 admin.site.register(Proyecto)
 admin.site.register(Dictamen)
