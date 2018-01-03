@@ -73,12 +73,14 @@
 	    {% endif %}
 
 	    {% if user.estudiante.get_proyecto_no_aprobado %}
+	    {% if user.estudiante.get_proyecto_no_aprobado.solicitud.estado != 'cancelada' %}
 	    <div class="alert alert-warning" role="alert">
 	      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 	      Solicitud de cambio: {{ user.estudiante.get_proyecto_no_aprobado }}
 	      Ver <a href="/inicio/solicitudes/{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}">
 		#{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}</a>.
 	    </div>
+	    {% endif %}
 	    {% endif %}
 
 

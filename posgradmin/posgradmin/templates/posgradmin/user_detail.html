@@ -101,11 +101,13 @@
 
 	{% if see_private %}
 	{% if object.estudiante.get_proyecto_no_aprobado %}
+	{% if object.estudiante.get_proyecto_no_aprobado.solicitud.estado != 'cancelada' %}
 	<div class="alert alert-warning" role="alert">
 	  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 	  Solicitud de cambio: <strong>{{ object.estudiante.get_proyecto_no_aprobado }}</strong>
 	  {{ object.estudiante.get_proyecto_no_aprobado.solicitud.as_a|safe }}.
 	</div>
+	{% endif %}
 	{% endif %}
 	{% endif %}
 	{% endif %}
@@ -301,12 +303,12 @@
       </li>
       {% empty %}
       <li class="list-group-item">
-	sin cargos ni adscripciones
-      </li>
+	sin empleos ni adscripciones
+	</li>
       {% endfor %}
     </ul>
     {% if user.is_staff %}
-    <a href="/admin/posgradmin/empleo/?q={{ object.username }}">editar grados</a>
+    <a href="/admin/posgradmin/empleo/?q={{ object.username }}">editar cargos</a>
     {% endif %}
   </div>
 </div>
