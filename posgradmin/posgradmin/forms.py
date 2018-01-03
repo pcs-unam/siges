@@ -172,11 +172,14 @@ class SolicitudDictamenForm(forms.Form):
     )
 
     helper = FormHelper()
+    denegar = Submit('denegar', 'denegar', css_class="btn-danger")
+    denegar.field_classes.replace('btn-primary', 'btn-danger')
+
     helper.layout = Layout(
         Field('comentario', rows="3", cols="40", css_class='input-xlarge'),
         FormActions(
-            Submit('conceder', 'conceder', css_class="btn-primary"),
-            Submit('denegar', 'denegar', css_class="btn-primary"),
+            Submit('conceder', 'conceder', css_class="btn-success"),
+            denegar
         )
     )
 

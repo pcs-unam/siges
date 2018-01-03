@@ -129,17 +129,19 @@
   </div>
 
   <div class="panel-footer">
-    <ul>
       {% if dictaminable %}
-      <li><a href="dictaminar">Emitir dictamen</a></li>
+	<a href="dictaminar" class="btn btn-success btn-lg" style="color: white">Emitir dictamen</a>
       {% endif %}
       {% if cancelable %}
-      <li><a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')">Cancelar</a></li>
+	<a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')"
+	    class="btn btn-danger btn-lg" style="color: white">Cancelar</a>
       {% endif %}
       {% if agendable %}
-      <li><a href="agendar">Agendar</a></li>
+	<a href="agendar" class="btn btn-primary btn-lg" style="color: white">
+	    Agendar
+	</a>
       {% endif %}
-    </ul>
+
   </div>
 
   <div class="panel-footer">
