@@ -81,7 +81,10 @@ class Perfil(models.Model):
                                  blank=True, null=True)
 
     def __unicode__(self):
-        return u"%s" % self.user
+        return u"%s" % self.user.get_full_name()
+
+    def __repr__(self):
+        return self.__unicode__()
 
     class Meta:
         verbose_name_plural = "Perfiles"
@@ -202,18 +205,12 @@ class Estudiante(models.Model):
         return None
 
     def get_proyecto(self):
-        if self.proyecto_set.count() == 0:
-            return None
+        for p in self.proyecto_set.all():
+            p.update_status()
 
-        aprobados = []
-        for p in self.proyecto_set.order_by('id'):
-            if p.aprobado:
-                aprobados.append(p)
-
-        if aprobados:
-            return aprobados[-1]
-        else:
-            return self.proyecto_set.last()
+        return self.proyecto_set.filter(
+            aprobado=True
+        ).order_by('id').last()
 
     def get_proyecto_no_aprobado(self):
         for p in self.proyecto_set.order_by('-id'):
@@ -302,10 +299,7 @@ class Solicitud(models.Model):
             return False
 
     def dictamen_final(self):
-        for d in self.dictamen_set.all():
-            if d.autor.is_staff or hasattr(d.autor, 'asistente'):
-                return d
-        return None
+        return self.dictamen_set.filter(autor__is_staff=True).last()
 
     def predictamen(self):
         if self.dictamen_final():
@@ -352,7 +346,7 @@ class Proyecto(models.Model):
     aprobado = models.BooleanField(default=False)
 
     def update_status(self):
-        if self.solicitud.dictamen_final():
+        if self.solicitud and self.solicitud.dictamen_final():
             if self.solicitud.dictamen_final().resolucion == 'concedida':
                 self.aprobado = True
                 self.save()
@@ -362,9 +356,9 @@ class Proyecto(models.Model):
             estado = 'aprobado'
         else:
             estado = 'no aprobado'
-        return u"%s en %s (%s)" % (self.nombre,
-                                   self.campo_conocimiento,
-                                   estado)
+        return u'"%s" en %s (%s)' % (self.nombre,
+                                     self.campo_conocimiento,
+                                     estado)
 
 
 def anexo_path(instance, filename):
@@ -456,7 +450,6 @@ class Academico(models.Model):
 
         return u"""<a href='/inicio/usuario/%s'>%s %s</a>""" % (
             self.user.id, icon, self.__unicode__())
-
 
     def nombre_completo(self):
         return self.user.get_full_name()
@@ -616,7 +609,6 @@ class Asistente(models.Model):
 
     class Meta:
         verbose_name_plural = "Asistentes de Proceso"
-
 
     def __unicode__(self):
         return "%s (asistente de proceso)" % self.user
