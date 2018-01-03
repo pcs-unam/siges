@@ -47,7 +47,7 @@ class CampoConocimiento(models.Model):
 
 def headshot_path(instance, filename):
     extension = filename.split('.')[-1]
-    return 'media/headshots/%s.%s' % (instance.user.id, extension)
+    return 'headshots/%s.%s' % (instance.user.id, extension)
 
 
 class Perfil(models.Model):
@@ -77,8 +77,13 @@ class Perfil(models.Model):
     fecha_nacimiento = models.DateField('fecha de nacimiento',
                                         blank=True, null=True)
 
-    headshot = models.ImageField(upload_to=headshot_path,
+    headshot = models.ImageField("foto credencial",
+                                 upload_to=headshot_path,
                                  blank=True, null=True)
+
+    def headshot_url(self):
+        return "%s/headshots/%s" % (MEDIA_URL,
+                                    os.path.basename(self.headshot.path))
 
     def __unicode__(self):
         return u"%s" % self.user.get_full_name()

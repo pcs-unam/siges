@@ -317,6 +317,7 @@
 
 
 {% if see_private %}
+
   <div class="panel-body">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -325,19 +326,28 @@
 	  Datos Personales</h3>
       </div>
       <div class="panel-body">
-	<ul class="list-group">
-	  {% if object.headshot %}
-	  <li class="list-group-item">
-	    <img src="/media/headshots/{{ object.id }}.png" width="100px" />
-	  </li>
-	  {% endif %}
-	  <li class="list-group-item"><strong>Fecha de Nacimiento</strong>
-	    {{ object.perfil.fecha_nacimiento|default:"" }}</li>
-	  <li class="list-group-item"><strong>Genero</strong> {{ object.perfil.genero }}</li>
-	  <li class="list-group-item"><strong>Nacionalidad</strong> {{ object.perfil.nacionalidad }}</li>
-	  <li class="list-group-item"><strong>CURP</strong> {{ object.perfil.curp }}</li>
-	  <li class="list-group-item"><strong>RFC</strong> {{ object.perfil.rfc }}</li>
-	</ul>
+
+	<div class="media">
+	  <div class="media-left media-middle">
+	    {% if object.perfil.headshot %}
+	    <img class="media-object"
+		 width="150px"
+		 src="{{ object.perfil.headshot_url }}" />
+
+	    {% endif %}
+	  </div>
+	  <div class="media-body">
+
+	    <ul class="list-group">
+	      <li class="list-group-item"><strong>Fecha de Nacimiento</strong>
+		{{ object.perfil.fecha_nacimiento|default:"" }}</li>
+	      <li class="list-group-item"><strong>Genero</strong> {{ object.perfil.genero }}</li>
+	      <li class="list-group-item"><strong>Nacionalidad</strong> {{ object.perfil.nacionalidad }}</li>
+	      <li class="list-group-item"><strong>CURP</strong> {{ object.perfil.curp }}</li>
+	      <li class="list-group-item"><strong>RFC</strong> {{ object.perfil.rfc }}</li>
+	    </ul>
+	  </div>
+	</div>
       </div>
     </div>
 
