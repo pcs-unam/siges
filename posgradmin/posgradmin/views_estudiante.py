@@ -5,11 +5,12 @@ from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 import posgradmin.models as models
 import posgradmin.forms as forms
+import authorization as auth
 
 
 class ComiteElegirView(View):
     def test_func(self):
-        return True
+        return auth.is_estudiante(self.request.user)
 
     form_class = forms.ComiteTutoralModelForm
 
@@ -63,7 +64,7 @@ class ComiteTutoralElegirView(LoginRequiredMixin,
                               ComiteElegirView):
 
     def test_func(self):
-        return True
+        return auth.is_estudiante(self.request.user)
 
     tipo = 'tutoral'
     title = 'Elegir Comité Tutoral'
@@ -84,6 +85,9 @@ class JuradoCandidaturaElegirView(LoginRequiredMixin,
     tipo = 'candidatura'
     title = 'Elegir Jurado para Candidatura'
 
+    def test_func(self):
+        return auth.is_estudiante(self.request.user)
+
     def get_breadcrumbs(self, pk):
         solicitud = models.Solicitud.objects.get(id=pk)
         return [('/inicio/', 'Inicio'),
@@ -97,9 +101,8 @@ class JuradoCandidaturaElegirView(LoginRequiredMixin,
 class JuradoGradoElegirView(LoginRequiredMixin,
                             UserPassesTestMixin,
                             ComiteElegirView):
-
     def test_func(self):
-        return True
+        return auth.is_estudiante(self.request.user)
 
     tipo = 'grado'
     title = 'Elegir Jurado para Examen de Grado'
@@ -115,8 +118,9 @@ class JuradoGradoElegirView(LoginRequiredMixin,
 
 
 class CambiarProyectoView(LoginRequiredMixin, UserPassesTestMixin, View):
+
     def test_func(self):
-        return True
+        return auth.is_estudiante(self.request.user)
 
     form_class = forms.ProyectoModelForm
     template_name = 'posgradmin/try.html'

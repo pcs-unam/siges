@@ -3,15 +3,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import ListView
 import posgradmin.models as models
+import authorization as auth
 
 
 class MisCatedrasView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def test_func(self):
-        if hasattr(self.request.user, 'academico'):
-            return True
-        else:
-            return False
+        return auth.is_academico(self.request.user)
 
     model = models.Catedra
 
@@ -25,7 +23,7 @@ class MisCatedrasView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 class MisComitesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def test_func(self):
-        return True
+        return auth.is_academico(self.request.user)
 
     model = models.Comite
     template_name = 'posgradmin/comite_list.html'
@@ -39,7 +37,7 @@ class MisComitesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 class MisEstudiantesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def test_func(self):
-        return True
+        return auth.is_academico(self.request.user)
 
     model = models.Estudiante
     template_name = 'posgradmin/mis_estudiantes_list.html'
