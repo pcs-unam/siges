@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load admin_urls %}
 
 {% block title %}{% endblock %}
 {% block extrahead %}
@@ -53,7 +53,7 @@
 {% block nav-global %}
 {% if user.is_staff %}
 <p>
-  <a href="/sigues/admin">Tablas de Datos</a>
+  <a href="{% url 'admin:index' %}">Tablas de Datos</a>
 </p>
 {% endif %}
 {% endblock %}

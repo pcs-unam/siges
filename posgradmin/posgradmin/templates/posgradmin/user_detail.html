@@ -52,7 +52,7 @@
     </ul>
 
     {% if user.is_staff %}
-    <a href="/siges/admin/posgradmin/estudiante/{{ object.estudiante.id }}/">editar registro de estudiante</a><br /><br />
+    <a href="{% url 'admin:posgradmin_estudiante_change'  object.estudiante.id %}">editar registro de estudiante</a><br /><br />
     {% endif %}
 
 
@@ -172,7 +172,7 @@
     {% endif %}
 
     {% if user.is_staff %}
-    <a href="/admin/posgradmin/academico/{{ object.academico.id }}/">editar registro de académico</a><br /><br />
+    <a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar registro de académico</a><br /><br />
     {% endif %}
 
 
@@ -376,8 +376,8 @@
     {% if user == object %}
     <a href="{% url 'editar_perfil' %}">editar</a>
     {% elif user.is_staff %}
-    <a href="/admin/auth/user/{{ object.id }}/">editar usuario</a><br />
-    <a href="/admin/posgradmin/perfil/{{ object.perfil.id }}/">editar perfil</a>
+    <a href="{% url 'admin:auth_user_change' object.id %}">editar usuario</a><br />
+    <a href="{% url 'admin:posgradmin_perfil_change' object.perfil.id %}">editar perfil</a>
     {% endif %}
 
   </div>
@@ -401,8 +401,8 @@
     {% if user == object %}
     <a href="{% url 'editar_perfil' %}">editar</a>
     {% elif user.is_staff %}
-    <a href="/admin/auth/user/{{ object.id }}/">editar usuario</a><br />
-    <a href="/admin/posgradmin/perfil/{{ object.perfil.id }}/">editar perfil</a>
+    <a href="{% url 'admin:auth_user_change' object.id %}">editar usuario</a><br />
+    <a href="{% url 'admin:posgradmin_perfil_change' object.perfil.id %}">editar perfil</a>
     {% endif %}
 
   </div>

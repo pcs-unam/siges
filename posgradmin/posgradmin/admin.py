@@ -2,7 +2,7 @@
 from django.contrib import admin
 from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, Entidad, CampoConocimiento, \
-    Solicitud, Comentario, Proyecto, Dictamen, \
+    Solicitud, Proyecto, Dictamen, \
     Comite, Asistente, Curso, Catedra, Sesion, Empleo
 
 admin.site.site_header = \

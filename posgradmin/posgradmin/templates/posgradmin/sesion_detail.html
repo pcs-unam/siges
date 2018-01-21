@@ -1,6 +1,7 @@
 {% extends "posgradmin/posgradmin_base.html" %}
 {% load md2 %}
 
+
 {% block breadcrumbs %}
 <div class="breadcrumbs">
   &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
@@ -12,7 +13,7 @@
 
 
 {% block content %}
-<a href="/admin/posgradmin/sesion/{{ object.id }}/change/">editar</a>
+<a href="{% url 'admin:posgradmin_sesion_change' object.id %}">editar</a>
 <h2>{{ object.fecha }}, {{ object.descripcion }}</h2>
 
 <div class="panel panel-default">
