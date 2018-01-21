@@ -2,8 +2,8 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/estudiantes/mis">Mis estudiantes</a>
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; <a href="{% url 'mis_estudiantes' %}">Mis estudiantes</a>
 </div>
 {% endblock %}
 
@@ -32,9 +32,9 @@
     {% for estudiante in object_list %}
 
     <tr>
-      <td><a href="/inicio/usuario/{{ estudiante.user.id }}/">
+      <td><a href="{% url 'user_detail' estudiante.user.id %}">
 	  {{ estudiante.user.id }}</a></td>
-      <td><a href="/inicio/usuario/{{ estudiante.user.id }}/">{{ estudiante }}</a></td>
+      <td><a href="{% url 'user_detail' estudiante.user.id %}">{{ estudiante }}</a></td>
       <td>{{ estudiante.estado|default:'' }}</td>
       <td>{{ estudiante.plan|default:'' }}</td>
       <td>{{ estudiante.entidad|default:'' }}</td>

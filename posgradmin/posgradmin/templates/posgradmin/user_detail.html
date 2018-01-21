@@ -3,11 +3,11 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
   {% if object.academico %}
-  &rsaquo; <a href="/inicio/academicos/">Académicos</a>
+  &rsaquo; <a href="{% url 'lista_academicos' %}">Académicos</a>
   {% endif %}
-  &rsaquo; <a href="/inicio/usuario/{{ object.id }}">{{ object.get_full_name }}</a>
+  &rsaquo; <a href="{% url 'user_detail' object.id %}">{{ object.get_full_name }}</a>
 </div>
 {% endblock %}
 
@@ -52,7 +52,7 @@
     </ul>
 
     {% if user.is_staff %}
-    <a href="/admin/posgradmin/estudiante/{{ object.estudiante.id }}/">editar registro de estudiante</a><br /><br />
+    <a href="/siges/admin/posgradmin/estudiante/{{ object.estudiante.id }}/">editar registro de estudiante</a><br /><br />
     {% endif %}
 
 
@@ -168,7 +168,7 @@
     </div>
 
     {% if user == object %}
-    <a href="/inicio/academico/registro/">editar registro de académico</a><br /><br />
+    <a href="{% url 'registrar_academico' %}">editar registro de académico</a><br /><br />
     {% endif %}
 
     {% if user.is_staff %}
@@ -187,7 +187,7 @@
 	<ul class="list-group">
 	  {% for e in object.academico.estudiantes %}
 	  <li class="list-group-item">
-	    <a href="/inicio/usuario/{{ e.user.id }}">{{ e }}</a>
+	    <a href="{% url 'user_detail' e.user.id %}">{{ e }}</a>
 	  </li>
 	  {% endfor %}
 	</ul>
@@ -208,7 +208,7 @@
 	    <h4>{{ c.tipo }} {{ c.solicitud.as_a|safe }}</h4>
 	    {{ c.solicitud.dictamen_final.fecha }}<br />
 	    Estudiante:
-	    <a href="/inicio/estudiantes/{{ c.estudiante.id }}/">{{ c.estudiante }}</a><br />
+	    <a href="{% url 'user_detail' c.estudiante.user.id %}">{{ c.estudiante }}</a><br />
 	    {{ c.as_ul|safe }}
 	  </li>
 	  {% endfor %}
@@ -374,7 +374,7 @@
       </div>
     </div>
     {% if user == object %}
-    <a href="/inicio/perfil/editar">editar</a>
+    <a href="{% url 'editar_perfil' %}">editar</a>
     {% elif user.is_staff %}
     <a href="/admin/auth/user/{{ object.id }}/">editar usuario</a><br />
     <a href="/admin/posgradmin/perfil/{{ object.perfil.id }}/">editar perfil</a>
@@ -399,7 +399,7 @@
       </div>
     </div>
     {% if user == object %}
-    <a href="/inicio/perfil/editar">editar</a>
+    <a href="{% url 'editar_perfil' %}">editar</a>
     {% elif user.is_staff %}
     <a href="/admin/auth/user/{{ object.id }}/">editar usuario</a><br />
     <a href="/admin/posgradmin/perfil/{{ object.perfil.id }}/">editar perfil</a>
@@ -416,7 +416,7 @@
   <div class="panel-heading">
     <h3 class="panel-title">
       <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
-      <a href="/inicio/solicitudes/">Solicitudes</a></h3>
+      <a href="{% url 'solicitudes' %}">Solicitudes</a></h3>
   </div>
   <div class="panel-body">
 
@@ -435,7 +435,7 @@
 	{% for solicitud in object.solicitud_set.all %}
 
 	<tr>
-	  <td><a href="/inicio/solicitudes/{{ solicitud.id }}/">
+	  <td><a href="{% url 'solicitud_detail' solicitud.id %}">
 	      {{ solicitud.id }}</a></td>
 	  <td>
 	    {% if solicitud.dictamen_final %}
@@ -451,7 +451,7 @@
 	    {{ solicitud.estado }}
 	  </td>
 	  <td>{{ solicitud.tipo }}</td>
-	  <td><a href="/inicio/solicitudes/{{ solicitud.id }}/">
+	  <td><a href="{% url 'solicitud_detail' solicitud.id %}">
 	      {{ solicitud.resumen }}</a></td>
 	  <td>{{ solicitud.fecha_creacion }}</td>
 	</tr>

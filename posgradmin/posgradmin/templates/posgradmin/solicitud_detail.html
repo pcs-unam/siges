@@ -7,8 +7,8 @@
   &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
   {% endfor %}
 
-  &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/solicitudes/">Solicitudes</a>
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; <a href="{% url 'solicitudes' %}">Solicitudes</a>
   &rsaquo; {{ object.as_a| safe }}
 </div>
 {% endblock %}
@@ -26,7 +26,7 @@
     <h3 class="panel-title">
       <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
       {{ object.fecha_creacion }}
-      por <a href="/inicio/usuario/{{ object.solicitante.id }}">
+      por <a href="{% url 'user_detail' object.solicitante.id %}">
 	{{ object.solicitante.get_full_name }}</a></h3>
   </div>
   <div class="panel-body">
@@ -42,7 +42,7 @@
     {% else %}
     <div class="alert alert-danger" role="alert">
       <strong>No ha hecho una elección</strong>.
-      <a href="elegir-comite-tutoral">Elegir comité tutoral</a>.
+      <a href="{% url 'elegir_comite_tutoral' %}">Elegir comité tutoral</a>.
     </div>
     {% endif %}
     {% endif %}
@@ -54,7 +54,7 @@
     {% else %}
     <div class="alert alert-danger" role="alert">
       <strong>No se ha elegido jurado.</strong>.
-      <a href="elegir-jurado-candidatura">Elegir Jurado de Candidatura</a>.
+      <a href="{% url 'elegir_jurado_candidatura' %}">Elegir Jurado de Candidatura</a>.
     </div>
     {% endif %}
     {% endif %}
@@ -66,7 +66,7 @@
     {% else %}
     <div class="alert alert-danger" role="alert">
       <strong>No se ha elegido jurado.</strong>.
-      <a href="elegir-jurado-grado">Elegir Jurado de Grado</a>.
+      <a href="{% url 'elegir_jurado_grado' %}">Elegir Jurado de Grado</a>.
     </div>
     {% endif %}
     {% endif %}
@@ -96,7 +96,7 @@
     {% else %}
     <div class="alert alert-danger" role="alert">
       <strong>No se han especificado cambios al proyecto.</strong>.
-      <a href="cambiar-proyecto">Cambiar proyecto</a>.
+      <a href="{% url 'cambiar_proyecto' %}">Cambiar proyecto</a>.
     </div>
     {% endif %}
     {% endif %}
@@ -112,7 +112,7 @@
     {% else %}
     <div class="alert alert-danger" role="alert">
       <strong>No se ha registrado cátedra.</strong>.
-      <a href="registrar-catedra">registrar cátedra</a>.
+      <a href="{% url 'registrar_catedra' %}">registrar cátedra</a>.
     </div>
     {% endif %}
     {% endif %}
@@ -122,7 +122,7 @@
 
     {% if not user.empleo_set.all %}
       Para ser registrado como académico es necesario que agregue sus adscripciones a su perfil.
-    <a href="/inicio/perfil/editar">Editar mi perfil</a>.
+    <a href="{% url 'editar_perfil' %}">Editar mi perfil</a>.
     {% endif %}
     {% endif %}
 
@@ -130,7 +130,7 @@
 
   <div class="panel-footer">
       {% if dictaminable %}
-	<a href="dictaminar" class="btn btn-success btn-lg" style="color: white">Emitir dictamen</a>
+	<a href="{% url 'dictaminar' %}" class="btn btn-success btn-lg" style="color: white">Emitir dictamen</a>
       {% endif %}
       {% if cancelable %}
 	<a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')"
@@ -148,7 +148,7 @@
       <strong>tipo:</strong> {{ object.tipo }} |
       <strong>estado:</strong> {{ object.estado }}
       {% if object.estado == 'agendada' %}
-      <a href="/inicio/sesiones/{{ object.sesion.id }}">{{ object.sesion.fecha }}</a>
+      <a href="{% url 'sesion_detail' object.sesion.id %}">{{ object.sesion.fecha }}</a>
       {% endif %}
       {% if object.dictamen_final %}
       | <strong>dictamen</strong>: {{ object.dictamen_final.resolucion }}

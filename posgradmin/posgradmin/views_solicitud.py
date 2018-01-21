@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
 from sortable_listview import SortableListView
 
 import posgradmin.models as models
@@ -35,7 +36,8 @@ class SolicitudCambiarEstado(LoginRequiredMixin, UserPassesTestMixin, View):
         s = models.Solicitud.objects.get(id=sid)
         s.estado = kwargs['estado']
         s.save()
-        return HttpResponseRedirect("/inicio/solicitudes/%s" % sid)
+        return HttpResponseRedirect(reverse('solicitud_detail',
+                                            args=(sid,)))
 
 
 class SolicitudNuevaView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -210,8 +212,8 @@ class SolicitudDictaminar(LoginRequiredMixin, UserPassesTestMixin, View):
                 solicitud.estado = 'atendida'
             solicitud.save()
 
-            return HttpResponseRedirect("/inicio/solicitudes/%s/"
-                                        % solicitud.id)
+            return HttpResponseRedirect(reverse('solicitud_detail',
+                                                args=(solicitud.id,)))
         else:
             return render(request,
                           self.template_name,
@@ -265,8 +267,8 @@ class SolicitudComment(LoginRequiredMixin, UserPassesTestMixin, View):
             c.comentario = request.POST['comentario']
             c.save()
 
-            return HttpResponseRedirect("/inicio/solicitudes/%s/"
-                                        % solicitud.id)
+            return HttpResponseRedirect(reverse('solicitud_detail',
+                                                args=(solicitud.id,)))
         else:
             return render(request,
                           self.template_name,
@@ -313,8 +315,8 @@ class SolicitudAgendar(LoginRequiredMixin, UserPassesTestMixin, View):
             solicitud.estado = "agendada"
             solicitud.save()
 
-            return HttpResponseRedirect("/inicio/solicitudes/%s/"
-                                        % solicitud.id)
+            return HttpResponseRedirect(reverse('solicitud_detail',
+                                                args=(solicitud.id,)))
         else:
             return render(request,
                           self.template_name,
@@ -373,8 +375,8 @@ class SolicitudAnexo(LoginRequiredMixin, UserPassesTestMixin, View):
             c.comentario = 'archivo anexado'
             c.save()
 
-            return HttpResponseRedirect("/inicio/solicitudes/%s/"
-                                        % solicitud.id)
+            return HttpResponseRedirect(reverse('solicitud_detail',
+                                                args=(solicitud.id,)))
         else:
             return render(request,
                           self.template_name,

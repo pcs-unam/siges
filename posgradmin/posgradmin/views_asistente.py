@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import DetailView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
 from sortable_listview import SortableListView
 import posgradmin.models as models
 import posgradmin.forms as forms
@@ -70,7 +71,8 @@ class CatedraRegistrar(LoginRequiredMixin, UserPassesTestMixin, View):
                                solicitud=s)
             c.save()
 
-            return HttpResponseRedirect("/inicio/solicitudes/%s" % s.id)
+            return HttpResponseRedirect(reverse('solicitud_detail',
+                                                args=(s.id,)))
         else:
             return render(request,
                           self.template_name,
@@ -119,7 +121,7 @@ class EstudianteCargar(LoginRequiredMixin, UserPassesTestMixin, View):
                                'form': form,
                                'breadcrumbs': self.breadcrumbs})
             else:
-                return HttpResponseRedirect("/inicio/estudiantes")
+                return HttpResponseRedirect(reverse('lista_estudiantes'))
         else:
             return render(request,
                           self.template_name,

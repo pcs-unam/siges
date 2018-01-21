@@ -6,8 +6,8 @@
   &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
   {% endfor %}
 
-  &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/solicitudes/">Solicitudes</a>
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; <a href="{% url 'solicitudes' %}">Solicitudes</a>
 </div>
 {% endblock %}
 
@@ -20,7 +20,7 @@
 <h2>Solicitudes</h2>
 
 <p>
-  <a href="/inicio/solicitudes/nueva">
+  <a href="{% url 'solicitud_nueva' %}">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     nueva solicitud </a>
 </p>
@@ -29,7 +29,7 @@
   {% if user.asistente or user.is_staff %}
   {% for s in user.asistente.cuantas_solicitudes %}
   <div class="btn-group" role="group">
-    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
+    <a href="{% url 'solicitudes_estado' s.0 %}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
   </div>
   {% endfor %}
 
@@ -37,7 +37,7 @@
 
   {% for s in user.academico.cuantas_solicitudes %}
   <div class="btn-group" role="group">
-     <span class="badge">{{ s.1 }}</span> <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }}
+     <span class="badge">{{ s.1 }}</span> <a href="{% url 'solicitudes_estado' s.0 %}">{{ s.0 }}
   </div>
   {% endfor %}
 
@@ -45,7 +45,7 @@
 
   {% for s in user.estudiante.cuantas_solicitudes %}
   <div class="btn-group" role="group">
-    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
+    <a href="{% url 'solicitudes_estado' s.0 %}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
   </div>
   {% endfor %}
 
@@ -70,7 +70,7 @@
     {% for solicitud in object_list %}
 
     <tr>
-      <td><a href="/inicio/solicitudes/{{ solicitud.id }}/">
+      <td><a href="{% url 'solicitud_detail' solicitud.id %}">
 	{{ solicitud.id }}</a></td>
       <td>
 	{% if solicitud.dictamen_final %}
@@ -86,9 +86,9 @@
 	{{ solicitud.estado }}
       </td>
       <td>{{ solicitud.tipo }}</td>
-      <td><a href="/inicio/solicitudes/{{ solicitud.id }}/">
+      <td><a href="{% url 'solicitud_detail' solicitud.id %}">
 	{{ solicitud.resumen }}</a></td>
-      <td><a href="/inicio/usuario/{{ solicitud.solicitante.id }}">{{ solicitud.solicitante.get_full_name }}</a></td>
+      <td><a href="{% url 'user_detail' solicitud.solicitante.id %}">{{ solicitud.solicitante.get_full_name }}</a></td>
       <td>{{ solicitud.fecha_creacion }}</td>
     </tr>
 

@@ -2,8 +2,8 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/comites/mis">Mis comités de jurado</a>
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; <a href="{% url 'mis_comites' %}">Mis comités de jurado</a>
 </div>
 {% endblock %}
 
@@ -21,7 +21,7 @@
 	<h4>{{ c.get_tipo }}</h4>
 	{{ c.solicitud.dictamen_final.fecha }}<br />
 	<h4>Estudiante:
-	<a href="/inicio/estudiantes/{{ c.estudiante.id }}/">{{ c.estudiante }}</a></h4>
+	<a href="{% url 'user_detail' c.estudiante.user.id %}">{{ c.estudiante }}</a></h4>
 	{{ c.as_ul|safe }}
 	por solicitud {{ c.solicitud.as_a|safe }}
       </li>

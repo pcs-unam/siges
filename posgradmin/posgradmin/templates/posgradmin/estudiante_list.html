@@ -6,8 +6,8 @@
   &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
   {% endfor %}
 
-  &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/estudiantes/">Estudiantes</a>
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; <a href="{% url 'lista_estudiantes' %}">Estudiantes</a>
 </div>
 {% endblock %}
 
@@ -19,7 +19,7 @@
 
 <h2>Estudiantes</h2>
 
-<a href="/inicio/estudiantes/cargar">Cargar lote de estudiantes</a>
+<a href="{% url 'cargar_estudiantes' %}">Cargar lote de estudiantes</a>
 <hr>
 
 <form action="" accept-charset="UTF-8">
@@ -45,9 +45,9 @@
     {% for estudiante in object_list %}
 
     <tr>
-      <td><a href="/inicio/usuario/{{ estudiante.user.id }}/">
+      <td><a href="{% url 'user_detail' estudiante.user.id %}">
 	  {{ estudiante.user.id }}</a></td>
-      <td><a href="/inicio/usuario/{{ estudiante.user.id }}/">{{ estudiante.user.get_full_name }}</a></td>
+      <td><a href="{% url 'user_detail' estudiante.user.id %}">{{ estudiante.user.get_full_name }}</a></td>
       <td>{{ estudiante.estado|default:'' }}</td>
       <td>{{ estudiante.plan|default:'' }}</td>
       <td>{{ estudiante.entidad|default:'' }}</td>

@@ -3,11 +3,11 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  &rsaquo; <a href="/inicio">Inicio</a>
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
   {% if object.academico %}
-  &rsaquo; <a href="/inicio/academicos/">Académicos</a>
+  &rsaquo; <a href="{% url 'lista_academicos' %}">Académicos</a>
   {% endif %}
-  &rsaquo; <a href="/inicio/usuario/{{ object.user.id }}">{{ object.user.get_full_name }}</a>
+  &rsaquo; <a href="{% url 'user_detail' object.user.id %}">{{ object.user.get_full_name }}</a>
 </div>
 {% endblock %}
 
@@ -23,7 +23,7 @@
     </h3>
   </div>
   <div class="panel-body">
-    <a href="agregar-grado"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> agregar grado académico</a><br /><br />
+    <a href="{% url 'agregar_grado' %}"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> agregar grado académico</a><br /><br />
     <ul class="list-group">
       {% for grado in object.user.gradoacademico_set.all %}
       <li class="list-group-item">
@@ -50,7 +50,7 @@
     </h3>
   </div>
   <div class="panel-body">
-    <a href="agregar-adscripcion"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+    <a href="{% url 'agregar_adscripcion' %}"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
       agregar adscripción</a><br /><br />
     <ul class="list-group">
       {% for ad in object.user.empleo_set.all %}

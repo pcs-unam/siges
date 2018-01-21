@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
 import posgradmin.models as models
 import posgradmin.forms as forms
 import authorization as auth
@@ -48,8 +49,8 @@ class ComiteElegirView(View):
                                    vocal=vocal)
             comite.save()
 
-            return HttpResponseRedirect('/inicio/solicitudes/%s/'
-                                        % solicitud.id)
+            return HttpResponseRedirect(reverse('solicitud_detail',
+                                                args=(solicitud.id,)))
         else:
             return render(request,
                           self.template_name,
@@ -154,8 +155,8 @@ class CambiarProyectoView(LoginRequiredMixin, UserPassesTestMixin, View):
                          solicitud=solicitud)
             p.save()
 
-            return HttpResponseRedirect("/inicio/solicitudes/%s"
-                                        % solicitud.id)
+            return HttpResponseRedirect(reverse('solicitud_detail',
+                                                args=(solicitud.id,)))
         else:
             return render(request,
                           self.template_name,

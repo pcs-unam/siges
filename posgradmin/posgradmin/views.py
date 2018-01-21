@@ -6,6 +6,7 @@ from django.views import View
 from django.views.generic import DetailView
 from sortable_listview import SortableListView
 from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
 
 from django.forms.models import model_to_dict
 import posgradmin.forms as forms
@@ -157,7 +158,7 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             p.headshot = request.FILES['headshot']
             p.save()
 
-            return HttpResponseRedirect('/inicio/usuario/%s' % request.user.id)
+            return HttpResponseRedirect(reverse('user_detail', args=(request.user.id,)))
         else:
             return render(request,
                           self.template,
@@ -211,7 +212,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.titulo = request.POST[u'titulo']
                 a.save()
 
-                return HttpResponseRedirect('/inicio/perfil/')
+                return HttpResponseRedirect(reverse('perfil'))
 
             else:
                 s = models.Solicitud()
@@ -231,8 +232,8 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.titulo = request.POST[u'titulo']
                 a.save()
 
-                return HttpResponseRedirect('/inicio/solicitudes/%s/'
-                                            % s.id)
+                return HttpResponseRedirect(reverse('solicitud_detail',
+                                                    args=(s.id,)))
 
         else:
             return render(request,
@@ -276,7 +277,7 @@ class GradoAcademicoAgregar(LoginRequiredMixin, View):
                 documento=request.FILES['documento'])
             g.save()
 
-            return HttpResponseRedirect("/inicio/perfil/")
+            return HttpResponseRedirect(reverse('perfil'))
         else:
             return render(request,
                           self.template_name,
@@ -290,7 +291,7 @@ class GradoAcademicoEliminar(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         g = models.GradoAcademico.objects.get(id=int(kwargs['pk']))
         g.delete()
-        return HttpResponseRedirect("/inicio/perfil/")
+        return HttpResponseRedirect(reverse('perfil'))
 
 
 class EmpleoAgregar(LoginRequiredMixin, View):
@@ -322,7 +323,7 @@ class EmpleoAgregar(LoginRequiredMixin, View):
                               cargo=request.POST['cargo'])
             a.save()
 
-            return HttpResponseRedirect("/inicio/perfil/")
+            return HttpResponseRedirect(reverse('perfil'))
         else:
             return render(request,
                           self.template_name,
@@ -336,7 +337,7 @@ class EmpleoEliminar(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         a = models.Empleo.objects.get(id=int(kwargs['pk']))
         a.delete()
-        return HttpResponseRedirect("/inicio/perfil/")
+        return HttpResponseRedirect(reverse('perfil'))
 
 
 class InstitucionAgregarView(LoginRequiredMixin, View):
@@ -364,7 +365,7 @@ class InstitucionAgregarView(LoginRequiredMixin, View):
                                    estado=request.POST['estado'])
             i.save()
 
-            return HttpResponseRedirect("/inicio/perfil/editar")
+            return HttpResponseRedirect(reverse('editar_perfil'))
         else:
             return render(request,
                           self.template_name,

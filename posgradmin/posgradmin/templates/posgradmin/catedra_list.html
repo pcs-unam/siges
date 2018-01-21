@@ -2,8 +2,8 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/catedras/mis">Cátedras registradas</a>
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; <a href="{% url 'mis_catedras' %}">Cátedras registradas</a>
 </div>
 {% endblock %}
 
@@ -28,14 +28,14 @@
 
   <tbody>
     {% for catedra in object_list %}
-    
+
     <tr>
-      <td><a href="/inicio/catedras/{{ catedra.id }}/">
+      <td><a href="">
 	  {{ catedra.id }}</a></td>
-      <td><a href="/inicio/catedras/{{ catedra.id }}/">{{ catedra.curso }}</a></td>      
+      <td><a href="/inicio/catedras/{{ catedra.id }}/">{{ catedra.curso }}</a></td>
       <td>{{ catedra.profesor }}</td>
-      <td>{{ catedra.year }}</td>      
-      <td>{{ catedra.semestre }}</td>      
+      <td>{{ catedra.year }}</td>
+      <td>{{ catedra.semestre }}</td>
 
     </tr>
 

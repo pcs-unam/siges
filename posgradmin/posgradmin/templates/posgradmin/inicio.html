@@ -33,7 +33,7 @@
 
 	<h4>{{ user.get_full_name }}</h4>
 
-	<p><a href="perfil/">Ver mi perfil</a></p>
+	<p><a href="{% url 'perfil' %}">Ver mi perfil</a></p>
 
 
 	{% if user.estudiante %}
@@ -41,7 +41,7 @@
 	{% if user.estudiante.faltan_documentos %}
 	<div class="alert alert-danger" role="alert">
 	  <strong>No ha registrado grados académicos</strong>
-	  <a href="/inicio/perfil/agregar-grado">Agregar grados académicos</a>.
+	  <a href="{% url 'agregar_grado' %}">Agregar grados académicos</a>.
 	</div>
 	{% else %}
 	<ul class="list-group">
@@ -57,7 +57,7 @@
 
 	{% if user.estudiante.get_proyecto is None %}
 	<div class="alert alert-danger" role="alert">
-	  <strong>No ha registrado proyecto</strong> <a href="/inicio/estudiante/registro">registre proyecto</a>
+	  <strong>No ha registrado proyecto</strong>
 	</div>
 	{% else %}
 	<ul class="list-group">
@@ -79,7 +79,7 @@
 	    <div class="alert alert-warning" role="alert">
 	      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 	      Solicitud de cambio: {{ user.estudiante.get_proyecto_no_aprobado }}
-	      Ver <a href="/inicio/solicitudes/{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}">
+	      Ver <a href="{% url 'solicitud_detail' user.estudiante.get_proyecto_no_aprobado.solicitud.id %}">
 		#{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}</a>.
 	    </div>
 	    {% endif %}
@@ -95,15 +95,15 @@
 
 	{% if user.academico %}
 	   {% if user.academico.tutor %}
-	       <p><a href="/inicio/comites/mis">Mis comités de jurado</a></p>
-	       <p><a href="/inicio/estudiantes/mis">Mis estudiantes</a></p>
+	       <p><a href="{% url 'mis_comites' %}">Mis comités de jurado</a></p>
+	       <p><a href="{% url 'mis_estudiantes' %}">Mis estudiantes</a></p>
 	   {% endif %}
-	   <p><a href="/inicio/catedras/mis">Mis cátedras</a></p>
+	   <p><a href="{% url 'mis_catedras' %}">Mis cátedras</a></p>
 
 	   {% if user.academico.solicitud.dictamen_final.resolucion == 'denegada' or user.academico.solicitud.estado == 'cancelada' %}
-	       <a href="/inicio/academico/registro">registrarse como académico</a>
+	       <a href="{% url 'registrar_academico' %}">registrarse como académico</a>
 	   {% elif  user.academico.solicitud.dictamen_final.resolucion == 'nueva'  %}
-	       <a href="/inicio/solicitudes/{{ user.academico.solicitud.id }}">
+	       <a href="{% url 'solicitud_detail' user.academico.solicitud.id %}">
 		 {{ user.academico.solicitud.as_a|safe }}</a>.
 	   {% endif %}
 
@@ -125,7 +125,7 @@
 	  {% empty %}
 	  <div class="alert alert-danger" role="alert">
 	    <strong>No ha registrado adscripciones</strong>
-	    <a href="/inicio/perfil/agregar-adscripcion">Agregar adscripción</a>.
+	    <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
 	  </div>
 	  {% endfor %}
 	</ul>
@@ -137,13 +137,13 @@
 
 	{% elif not user.academico and not user.estudiante and user.perfil %}
 	<ul>
-	  <li><a href="/inicio/academico/registro">registrarse como académico</a></li>
+	  <li><a href="{% url 'registrar_academico' %}">registrarse como académico</a></li>
 	</ul>
 	{% endif %}
 
 	{% else %}
 	  Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
-	  <a href="/inicio/perfil/editar">Completar registro de perfil</a>
+	  <a href="{% url 'editar_perfil' %}">Completar registro de perfil</a>
 	  {% endif %}
       </div>
     </div>
@@ -159,11 +159,11 @@
       <div class="panel-heading">
 	<h3 class="panel-title">
 	  <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
-	  <a href="/inicio/solicitudes/">Solicitudes</a></h3>
+	  <a href="{% url 'solicitudes' %}">Solicitudes</a></h3>
       </div>
       <div class="panel-body">
 	<p>
-	<a href="/inicio/solicitudes/nueva">
+	<a href="{% url 'solicitud_nueva' %}">
 	  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 	  nueva solicitud
 	</a>
@@ -174,7 +174,7 @@
 
 	  {% for s in user.asistente.cuantas_solicitudes %}
 	  <li class="list-group-item">
-	    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
+	    <a href="{% url 'solicitudes_estado' s.0 %}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
 	  </li>
 	  {% endfor %}
 
@@ -182,7 +182,7 @@
 
 	  {% for s in user.academico.cuantas_solicitudes %}
 	  <li class="list-group-item">
-	    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
+	    <a href="{% url 'solicitudes_estado' s.0 %}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
 	  </li>
 	  {% endfor %}
 
@@ -190,7 +190,7 @@
 
 	  {% for s in user.estudiante.cuantas_solicitudes %}
 	  <li class="list-group-item">
-	    <a href="/inicio/solicitudes/e/{{ s.0 }}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
+	    <a href="{% url 'solicitudes_estado' s.0 %}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
 	  </li>
 	  {% endfor %}
 
@@ -217,10 +217,10 @@
 	</h3>
       </div>
       <div class="panel-body">
-	<p><a href="/inicio/estudiantes/">Estudiantes</a></p>
-	<p><a href="/inicio/academicos/">Académicos</a></p>
-	<p><a href="/inicio/catedras/">Cátedras</a></p>
-	<p><a href="/inicio/sesiones/">Sesiones del Comité Académico</a></p>
+	<p><a href="{% url 'lista_estudiantes' %}">Estudiantes</a></p>
+	<p><a href="{% url 'lista_academicos' %}">Académicos</a></p>
+	<p><a href="{% url 'lista_catedras' %}">Cátedras</a></p>
+	<p><a href="{% url 'lista_sesiones' %}">Sesiones del Comité Académico</a></p>
       </div>
     </div>
   </div>

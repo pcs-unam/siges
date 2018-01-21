@@ -2,8 +2,8 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  &rsaquo; <a href="/inicio">Inicio</a>
-  &rsaquo; <a href="/inicio/sesiones/">Sesiones del Comité Académico</a>
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; <a href="{% url 'lista_sesiones' %}">Sesiones del Comité Académico</a>
 </div>
 {% endblock %}
 
@@ -29,12 +29,12 @@
 
   <tbody>
     {% for sesion in object_list %}
-    
+
     <tr>
-      <td><a href="/inicio/sesiones/{{ sesion.id }}/">
+      <td><a href="{% url 'sesion_detail' sesion.id %}">
 	  #{{ sesion.id }}</a></td>
-      <td>{{ sesion.fecha }}</td>      
-      <td>{{ sesion.descripcion }}</td>      
+      <td>{{ sesion.fecha }}</td>
+      <td>{{ sesion.descripcion }}</td>
     </tr>
 
   {% endfor %}
