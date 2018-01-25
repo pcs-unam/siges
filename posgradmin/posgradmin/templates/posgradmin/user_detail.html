@@ -281,7 +281,7 @@
       {% endfor %}
     </ul>
     {% if user.is_staff %}
-    <a href="/admin/posgradmin/gradoacademico/?q={{ object.username }}">editar grados</a>
+    <a href="{{ APP_PREFIX }}admin/posgradmin/gradoacademico/?q={{ object.username }}">editar grados</a>
     {% endif %}
   </div>
 </div>
@@ -308,7 +308,7 @@
       {% endfor %}
     </ul>
     {% if user.is_staff %}
-    <a href="/admin/posgradmin/empleo/?q={{ object.username }}">editar cargos</a>
+    <a href="{{ APP_PREFIX }}admin/posgradmin/empleo/?q={{ object.username }}">editar cargos</a>
     {% endif %}
   </div>
 </div>

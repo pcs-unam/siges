@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'posgradmin.context_processor.app_prefix',
             ],
         },
     },
@@ -130,6 +131,8 @@ DATE_FORMAT = 'Y-m-d'
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+APP_PREFIX = '/'
 
 ACCOUNT_ACTIVATION_DAYS = 2
 
