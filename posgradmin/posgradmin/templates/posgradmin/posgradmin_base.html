@@ -45,7 +45,7 @@
 </style>
 
 <div id="branding">
-  <h1 id="site-name"><a href="/sigues/">Posgrado en Ciencias de la Sostenibilidad</a></h1>
+  <h1 id="site-name"><a href="{{ APP_PREFIX }}">Posgrado en Ciencias de la Sostenibilidad</a></h1>
 </div>
 
 {% endblock %}
@@ -64,10 +64,10 @@
 <div id="user-tools">
   {% if user.is_authenticated %}
   <strong>{{ user.get_full_name}} ({{ user.get_username }})</strong> /
-  <a href="accounts/password/change/">cambiar contraseña</a> /
-  <a href="accounts/logout/">Terminar sesión</a>
+  <a href="{{ APP_PREFIX }}accounts/password/change/">cambiar contraseña</a> /
+  <a href="{{ APP_PREFIX }}accounts/logout/">Terminar sesión</a>
   {% else %}
-  <a href="accounts/login/">Iniciar sesión</a>
+  <a href="{{ APP_PREFIX }}accounts/login/">Iniciar sesión</a>
   {% endif %}
 </div>
 {% endblock %}
