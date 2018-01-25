@@ -7,6 +7,7 @@ from django.views.generic import DetailView
 from sortable_listview import SortableListView
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
+from django.conf import settings
 
 from django.forms.models import model_to_dict
 import posgradmin.forms as forms
@@ -18,7 +19,7 @@ from pprint import pprint
 
 class InicioView(LoginRequiredMixin, View):
 
-    breadcrumbs = (('/inicio/', 'Inicio'),)
+    breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),)
 
     template_name = 'posgradmin/inicio.html'
 
@@ -88,7 +89,6 @@ class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
         return context
 
-
     def get_object(self):
         return self.request.user
 
@@ -99,9 +99,9 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     form_class = forms.PerfilModelForm
 
-    breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/inicio/perfil', 'Mi perfil'),
-                   ('/inicio/perfil/editar', 'Editar'))
+    breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX + 'inicio/perfil', 'Mi perfil'),
+                   (settings.APP_PREFIX + 'inicio/perfil/editar', 'Editar'))
 
     template = 'posgradmin/perfil_editar.html'
 
@@ -158,7 +158,8 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             p.headshot = request.FILES['headshot']
             p.save()
 
-            return HttpResponseRedirect(reverse('user_detail', args=(request.user.id,)))
+            return HttpResponseRedirect(reverse('user_detail',
+                                                args=(request.user.id,)))
         else:
             return render(request,
                           self.template,
@@ -174,8 +175,8 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     form_class = forms.AcademicoModelForm
 
-    breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/inicio/academico/registro',
+    breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX + 'inicio/academico/registro',
                     'Solicitar registro como Académico'))
 
     template_name = 'posgradmin/try.html'
@@ -247,9 +248,11 @@ class GradoAcademicoAgregar(LoginRequiredMixin, View):
 
     form_class = forms.GradoAcademicoModelForm
 
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/perfil/', 'Mi perfil'),
-                   ('/inicio/perfil/agregar-grado', 'Agregar Grado Académico')]
+    breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX + 'inicio/perfil/', 'Mi perfil'),
+                   (settings.APP_PREFIX
+                    + 'inicio/perfil/agregar-grado',
+                    'Agregar Grado Académico')]
 
     template_name = 'posgradmin/grado_academico_agregar.html'
 
@@ -298,9 +301,9 @@ class EmpleoAgregar(LoginRequiredMixin, View):
 
     form_class = forms.EmpleoModelForm
 
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/perfil/', 'Mi perfil'),
-                   ('/inicio/perfil/agregar-adscrpcion',
+    breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX + 'inicio/perfil/', 'Mi perfil'),
+                   (settings.APP_PREFIX + 'inicio/perfil/agregar-adscrpcion',
                     'Agregar Adscripción')]
 
     template_name = 'posgradmin/try.html'
@@ -344,8 +347,9 @@ class InstitucionAgregarView(LoginRequiredMixin, View):
 
     form_class = forms.InstitucionModelForm
 
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/institucion/agregar', 'Agregar Institución')]
+    breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX +
+                    'institucion/agregar', 'Agregar Institución')]
 
     template_name = 'posgradmin/institucion_agregar.html'
 
@@ -382,8 +386,7 @@ class EstudianteSortableView(LoginRequiredMixin,
         return True
 
     def get_queryset(self):
-        #pprint(self.get_querystring())
-        #print search
+
         print self.request.encoding
         self.request.GET.encoding = 'utf-8'
         search = self.request.GET.get('search', None)

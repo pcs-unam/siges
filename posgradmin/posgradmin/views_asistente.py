@@ -5,6 +5,7 @@ from django.views.generic import DetailView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
+from django.conf import settings
 from sortable_listview import SortableListView
 import posgradmin.models as models
 import posgradmin.forms as forms
@@ -41,11 +42,12 @@ class CatedraRegistrar(LoginRequiredMixin, UserPassesTestMixin, View):
     form_class = forms.CatedraModelForm
 
     def get_breadcrumbs(self, pk):
-        return [('/inicio/', 'Inicio'),
-                ('/inicio/solicitudes/', 'Solicitudes'),
-                ('/inicio/solicitudes/%s/' % pk,
+        return [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                (settings.APP_PREFIX + 'inicio/solicitudes/', 'Solicitudes'),
+                (settings.APP_PREFIX + 'inicio/solicitudes/%s/' % pk,
                  '#%s' % pk),
-                ('/inicio/solicitudes/%s/registrar-catedra'
+                (settings.APP_PREFIX
+                 + 'inicio/solicitudes/%s/registrar-catedra'
                  % pk, 'Registrar Cátedra')]
 
     template_name = 'posgradmin/try.html'
@@ -92,8 +94,9 @@ class EstudianteCargar(LoginRequiredMixin, UserPassesTestMixin, View):
 
     form_class = forms.EstudianteCargarForm
 
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/estudiantes/', 'Estudiantes')]
+    breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX
+                    + 'inicio/estudiantes/', 'Estudiantes')]
 
     template_name = 'posgradmin/cargar_lote.html'
 

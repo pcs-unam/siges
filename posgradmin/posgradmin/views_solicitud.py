@@ -6,6 +6,7 @@ from django.views.generic import DetailView
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
+from django.conf import settings
 from sortable_listview import SortableListView
 
 import posgradmin.models as models
@@ -53,9 +54,10 @@ class SolicitudNuevaView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     form_class = forms.SolicitudForm
 
-    breadcrumbs = (('/inicio/', 'Inicio'),
-                   ('/inicio/solicitudes/', 'Solicitudes'),
-                   ('/inicio/solicitudes/nueva', 'Nueva'))
+    breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX
+                    + 'inicio/solicitudes/', 'Solicitudes'),
+                   (settings.APP_PREFIX + 'inicio/solicitudes/nueva', 'Nueva'))
 
     template_name = 'posgradmin/try.html'
 
@@ -111,7 +113,8 @@ class SolicitudNuevaView(LoginRequiredMixin, UserPassesTestMixin, View):
                 nx.save()
 
             next = workflows.solicitud.get(s.tipo,
-                                           '/inicio/solicitudes/%s')
+                                           settings.APP_PREFIX
+                                           + 'inicio/solicitudes/%s')
             return HttpResponseRedirect(next % s.id)
         else:
             return render(request,
@@ -161,8 +164,9 @@ class SolicitudDictaminar(LoginRequiredMixin, UserPassesTestMixin, View):
 
     form_class = forms.SolicitudDictamenForm
 
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/solicitudes/', 'Solicitudes')]
+    breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX
+                    + 'inicio/solicitudes/', 'Solicitudes')]
 
     template_name = 'posgradmin/solicitud_comment.html'
 
@@ -176,7 +180,8 @@ class SolicitudDictaminar(LoginRequiredMixin, UserPassesTestMixin, View):
                       {'object': solicitud,
                        'form': form,
                        'breadcrumbs': self.breadcrumbs.append(
-                           ('/inicio/solicitudes/%s/' % solicitud.id,
+                           (settings.APP_PREFIX
+                            + 'inicio/solicitudes/%s/' % solicitud.id,
                             '#%s' % solicitud.id))})
 
     def post(self, request, *args, **kwargs):
@@ -239,8 +244,9 @@ class SolicitudComment(LoginRequiredMixin, UserPassesTestMixin, View):
 
     form_class = forms.SolicitudCommentForm
 
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/solicitudes/', 'Solicitudes')]
+    breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX
+                    + 'inicio/solicitudes/', 'Solicitudes')]
 
     template_name = 'posgradmin/solicitud_comment.html'
 
@@ -254,7 +260,8 @@ class SolicitudComment(LoginRequiredMixin, UserPassesTestMixin, View):
                       {'object': solicitud,
                        'form': form,
                        'breadcrumbs': self.breadcrumbs.append(
-                           ('/inicio/solicitudes/%s/' % solicitud.id,
+                           (settings.APP_PREFIX
+                            + 'inicio/solicitudes/%s/' % solicitud.id,
                             '#%s' % solicitud.id))})
 
     def post(self, request, *args, **kwargs):
@@ -288,8 +295,9 @@ class SolicitudAgendar(LoginRequiredMixin, UserPassesTestMixin, View):
 
     form_class = forms.SolicitudAgendarForm
 
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/solicitudes/', 'Solicitudes')]
+    breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX
+                    + 'inicio/solicitudes/', 'Solicitudes')]
 
     template_name = 'posgradmin/solicitud_agendar.html'
 
@@ -303,7 +311,8 @@ class SolicitudAgendar(LoginRequiredMixin, UserPassesTestMixin, View):
                       {'object': solicitud,
                        'form': form,
                        'breadcrumbs': self.breadcrumbs.append(
-                           ('/inicio/solicitudes/%s/' % solicitud.id,
+                           (settings.APP_PREFIX
+                            + 'inicio/solicitudes/%s/' % solicitud.id,
                             '#%s' % solicitud.id))})
 
     def post(self, request, *args, **kwargs):
@@ -342,8 +351,9 @@ class SolicitudAnexo(LoginRequiredMixin, UserPassesTestMixin, View):
 
     form_class = forms.SolicitudAnexoForm
 
-    breadcrumbs = [('/inicio/', 'Inicio'),
-                   ('/inicio/solicitudes/', 'Solicitudes')]
+    breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX
+                    + 'inicio/solicitudes/', 'Solicitudes')]
 
     template_name = 'posgradmin/solicitud_anexo.html'
 
@@ -357,7 +367,8 @@ class SolicitudAnexo(LoginRequiredMixin, UserPassesTestMixin, View):
                       {'object': solicitud,
                        'form': form,
                        'breadcrumbs': self.breadcrumbs.append(
-                           ('/inicio/solicitudes/%s/' % solicitud.id,
+                           (settings.APP_PREFIX
+                            + 'inicio/solicitudes/%s/' % solicitud.id,
                             '#%s' % solicitud.id))})
 
     def post(self, request, *args, **kwargs):

@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
+from django.conf import settings
 import posgradmin.models as models
 import posgradmin.forms as forms
 import authorization as auth
@@ -72,11 +73,12 @@ class ComiteTutoralElegirView(LoginRequiredMixin,
 
     def get_breadcrumbs(self, pk):
         solicitud = models.Solicitud.objects.get(id=pk)
-        return [('/inicio/', 'Inicio'),
-                ('/inicio/solicitudes/', 'Solicitudes'),
-                ('/inicio/solicitudes/%s/' % solicitud.id,
+        return [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                (settings.APP_PREFIX + 'inicio/solicitudes/', 'Solicitudes'),
+                (settings.APP_PREFIX + 'inicio/solicitudes/%s/' % solicitud.id,
                  '#%s' % solicitud.id),
-                ('/inicio/solicitudes/%s/elegir-comite-tutoral'
+                (settings.APP_PREFIX
+                 + 'inicio/solicitudes/%s/elegir-comite-tutoral'
                  % solicitud.id, 'Elegir Comité Tutoral')]
 
 
@@ -91,11 +93,12 @@ class JuradoCandidaturaElegirView(LoginRequiredMixin,
 
     def get_breadcrumbs(self, pk):
         solicitud = models.Solicitud.objects.get(id=pk)
-        return [('/inicio/', 'Inicio'),
-                ('/inicio/solicitudes/', 'Solicitudes'),
-                ('/inicio/solicitudes/%s/' % solicitud.id,
+        return [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                (settings.APP_PREFIX + 'inicio/solicitudes/', 'Solicitudes'),
+                (settings.APP_PREFIX + 'inicio/solicitudes/%s/' % solicitud.id,
                  '#%s' % solicitud.id),
-                ('/inicio/solicitudes/%s/elegir-jurado-candidatura'
+                (settings.APP_PREFIX
+                 + 'inicio/solicitudes/%s/elegir-jurado-candidatura'
                  % solicitud.id, 'Elegir Jurado para Candidatura')]
 
 
@@ -110,11 +113,12 @@ class JuradoGradoElegirView(LoginRequiredMixin,
 
     def get_breadcrumbs(self, pk):
         solicitud = models.Solicitud.objects.get(id=pk)
-        return [('/inicio/', 'Inicio'),
-                ('/inicio/solicitudes/', 'Solicitudes'),
-                ('/inicio/solicitudes/%s/' % solicitud.id,
+        return [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                (settings.APP_PREFIX + 'inicio/solicitudes/', 'Solicitudes'),
+                (settings.APP_PREFIX + 'inicio/solicitudes/%s/' % solicitud.id,
                  '#%s' % solicitud.id),
-                ('/inicio/solicitudes/%s/elegir-jurado-grado'
+                (settings.APP_PREFIX
+                 + 'inicio/solicitudes/%s/elegir-jurado-grado'
                  % solicitud.id, 'Elegir Jurado para Examen de Grado')]
 
 
@@ -127,11 +131,11 @@ class CambiarProyectoView(LoginRequiredMixin, UserPassesTestMixin, View):
     template_name = 'posgradmin/try.html'
 
     def get_breadcrumbs(self, pk):
-        return [('/inicio/', 'Inicio'),
-                ('/inicio/solicitudes/', 'Solicitudes'),
-                ('/inicio/solicitudes/%s/' % pk,
+        return [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                (settings.APP_PREFIX + 'inicio/solicitudes/', 'Solicitudes'),
+                (settings.APP_PREFIX + 'inicio/solicitudes/%s/' % pk,
                  '#%s' % pk),
-                ('/inicio/solicitudes/%s/cambiar-proyecto'
+                (settings.APP_PREFIX + 'inicio/solicitudes/%s/cambiar-proyecto'
                  % pk, 'Cambios al Proyecto')]
 
     def get(self, request, *args, **kwargs):
