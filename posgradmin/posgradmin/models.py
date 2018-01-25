@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
-    solicitudes_estados, MEDIA_ROOT, MEDIA_URL
+    solicitudes_estados, MEDIA_ROOT, MEDIA_URL, \
+    APP_PREFIX
 
 
 class Institucion(models.Model):
@@ -225,7 +226,8 @@ class Estudiante(models.Model):
         return None
 
     def as_a(self):
-        return "<a href='/inicio/usuario/%s'>%s</a>" % (
+        return "<a href='%sinicio/usuario/%s'>%s</a>" % (
+            APP_PREFIX,
             self.user.id,
             self.user.get_full_name())
 
@@ -249,7 +251,8 @@ class Sesion(models.Model):
     minuta = models.TextField(blank=True)
 
     def as_a(self):
-        return u"""<a href='/inicio/sesiones/%s/'>%s %s</a>""" % (
+        return u"""<a href='%sinicio/sesiones/%s/'>%s %s</a>""" % (
+            APP_PREFIX,
             self.id, self.fecha, self.descripcion)
 
 
@@ -328,15 +331,17 @@ class Solicitud(models.Model):
         elif self.predictamen():
             status = '%s' % icon.format(icon='eye-open')
         elif self.estado == 'cancelada':
-            return u"""<a href='/inicio/solicitudes/%s'>
+            return u"""<a href='%sinicio/solicitudes/%s'>
                        <strike>#%s</strike></a>""" % (
-                self.id, self.id)
+                           APP_PREFIX,
+                           self.id, self.id)
         elif self.estado == 'agendada':
             status = '%s' % icon.format(icon='calendar')
         else:
             status = self.estado
 
-        return u"""<a href='/inicio/solicitudes/%s'>#%s %s</a>""" % (
+        return u"""<a href='%sinicio/solicitudes/%s'>#%s %s</a>""" % (
+            APP_PREFIX,
             self.id, self.id, status)
 
     class Meta:
@@ -453,7 +458,8 @@ class Academico(models.Model):
                         aria-hidden=true></span>"""
         icon.format(icon='thumbs-up')
 
-        return u"""<a href='/inicio/usuario/%s'>%s %s</a>""" % (
+        return u"""<a href='%sinicio/usuario/%s'>%s %s</a>""" % (
+            APP_PREFIX,
             self.user.id, icon, self.__unicode__())
 
     def nombre_completo(self):
@@ -584,16 +590,16 @@ class Comite(models.Model):
         ul = """
         <ul>
         <li><strong>presidente:</strong>
-            <a href="/inicio/usuario/%s/">%s</a></li>
+            <a href="%sinicio/usuario/%s/">%s</a></li>
         <li><strong>secretario:</strong>
-            <a href="/inicio/usuario/%s/">%s</a></li>
+            <a href="%sinicio/usuario/%s/">%s</a></li>
         <li><strong>vocal:</strong>
-            <a href="/inicio/usuario/%s/">%s</a></li>
+            <a href="%sinicio/usuario/%s/">%s</a></li>
         </ul>
 """
-        return ul % (self.presidente.user.id, self.presidente,
-                     self.secretario.user.id, self.secretario,
-                     self.vocal.user.id, self.vocal)
+        return ul % (APP_PREFIX, self.presidente.user.id, self.presidente,
+                     APP_PREFIX, self.secretario.user.id, self.secretario,
+                     APP_PREFIX, self.vocal.user.id, self.vocal)
 
 
 class Asistente(models.Model):
