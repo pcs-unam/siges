@@ -52,7 +52,7 @@ admin.site.register(Empleo, EmpleoAdmin)
 
 
 class ComiteAdmin(admin.ModelAdmin):
-    list_display = ['estudiante', 'tipo', 'presidente', 'secretario', 'vocal']
+    list_display = ['estudiante', 'tipo', 'miembro1', 'miembro2', 'miembro3']
     search_fields = ['estudiante__user__first_name',
                      'estudiante__user__last_name']
 

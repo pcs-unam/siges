@@ -42,7 +42,7 @@
     {% else %}
     <div class="alert alert-danger" role="alert">
       <strong>No ha hecho una elección</strong>.
-      <a href="{% url 'elegir_comite_tutoral' %}">Elegir comité tutoral</a>.
+      <a href="{% url 'elegir_comite_tutoral' object.id %}">Elegir comité tutoral</a>.
     </div>
     {% endif %}
     {% endif %}
@@ -54,7 +54,7 @@
     {% else %}
     <div class="alert alert-danger" role="alert">
       <strong>No se ha elegido jurado.</strong>.
-      <a href="{% url 'elegir_jurado_candidatura' %}">Elegir Jurado de Candidatura</a>.
+      <a href="{% url 'elegir_jurado_candidatura' object.id %}">Elegir Jurado de Candidatura</a>.
     </div>
     {% endif %}
     {% endif %}
@@ -66,7 +66,7 @@
     {% else %}
     <div class="alert alert-danger" role="alert">
       <strong>No se ha elegido jurado.</strong>.
-      <a href="{% url 'elegir_jurado_grado' %}">Elegir Jurado de Grado</a>.
+      <a href="{% url 'elegir_jurado_grado' object.id %}">Elegir Jurado de Grado</a>.
     </div>
     {% endif %}
     {% endif %}
@@ -130,7 +130,7 @@
 
   <div class="panel-footer">
       {% if dictaminable %}
-	<a href="{% url 'dictaminar' %}" class="btn btn-success btn-lg" style="color: white">Emitir dictamen</a>
+	<a href="{% url 'dictaminar' object.id %}" class="btn btn-success btn-lg" style="color: white">Emitir dictamen</a>
       {% endif %}
       {% if cancelable %}
 	<a href="estado/cancelada" onclick="return confirm('¿cancelar solicitud?')"

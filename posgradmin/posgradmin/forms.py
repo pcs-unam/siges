@@ -261,6 +261,72 @@ class InstitucionModelForm(forms.ModelForm):
 
 
 class ComiteTutoralModelForm(forms.ModelForm):
+    tutor = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True))
+
+    cotutor = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True))
+
+    miembro1 = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True))
+
+    miembro2 = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True),
+        required=False)
+
+    miembro3 = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True),
+        required=False)
+
+    class Meta:
+        model = Comite
+        exclude = ['solicitud', 'tipo', 'estudiante',
+                   'miembro1', 'miembro2', 'miembro3',
+                   'miembro4', 'miembro5']
+
+    def __init__(self, *args, **kwargs):
+
+        super(ComiteTutoralModelForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout.append(Submit('elegir', 'elegir'))
+
+
+class CandidaturaModelForm(forms.ModelForm):
+    presidente = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True))
+
+    secretario = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True))
+
+    miembro1 = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True))
+
+    miembro2 = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True),
+        required=False)
+
+    miembro3 = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True),
+        required=False)
+
+    class Meta:
+        model = Comite
+        exclude = ['solicitud', 'tipo', 'estudiante',
+                   'miembro1', 'miembro2', 'miembro3',
+                   'miembro4', 'miembro5']
+
+    def __init__(self, *args, **kwargs):
+
+        super(CandidaturaModelForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout.append(Submit('elegir', 'elegir'))
+
+
+class JuradoGradoModelForm(forms.ModelForm):
     presidente = forms.ModelChoiceField(
         queryset=Academico.objects.filter(tutor=True))
 
@@ -270,13 +336,18 @@ class ComiteTutoralModelForm(forms.ModelForm):
     vocal = forms.ModelChoiceField(
         queryset=Academico.objects.filter(tutor=True))
 
+    suplente = forms.ModelChoiceField(
+        queryset=Academico.objects.filter(tutor=True))
+
     class Meta:
         model = Comite
-        exclude = ['solicitud', 'tipo', 'estudiante']
+        exclude = ['solicitud', 'tipo', 'estudiante',
+                   'miembro1', 'miembro2', 'miembro3',
+                   'miembro4', 'miembro5']
 
     def __init__(self, *args, **kwargs):
 
-        super(ComiteTutoralModelForm, self).__init__(*args, **kwargs)
+        super(JuradoGradoModelForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'

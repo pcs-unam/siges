@@ -207,7 +207,7 @@
 	  <li class="list-group-item">
 	    <h4>{{ c.tipo }} {{ c.solicitud.as_a|safe }}</h4>
 	    {{ c.solicitud.dictamen_final.fecha }}<br />
-	    Estudiante:
+	    <strong>Estudiante:</strong>
 	    <a href="{% url 'user_detail' c.estudiante.user.id %}">{{ c.estudiante }}</a><br />
 	    {{ c.as_ul|safe }}
 	  </li>

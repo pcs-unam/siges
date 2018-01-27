@@ -204,7 +204,9 @@ class Estudiante(models.Model):
                                   self.cuenta)
 
     def comite_tutoral(self):
-        for c in Comite.objects.filter(Q(tipo='tutoral') & Q(estudiante=self)):
+        for c in Comite.objects.filter(
+                Q(tipo='tutoral')
+                & Q(estudiante=self)).order_by('-id'):
             if c.solicitud.dictamen_final():
                 if c.solicitud.dictamen_final().resolucion == 'concedida':
                     return c
@@ -501,9 +503,9 @@ class Academico(models.Model):
         estudiantes = set()
         if self.tutor:
             for c in Comite.objects.filter(Q(tipo='tutoral')
-                                           & (Q(presidente=self)
-                                              | Q(secretario=self)
-                                              | Q(vocal=self))):
+                                           & (Q(miembro1=self)
+                                              | Q(miembro2=self)
+                                              | Q(miembro3=self))):
                 if c.solicitud.dictamen_final():
                     if c.solicitud.dictamen_final().resolucion == 'concedida':
                         estudiantes.add(c.estudiante)
@@ -516,10 +518,11 @@ class Academico(models.Model):
     def comites(self):
         comites = list()
 
-        for c in Comite.objects.filter((Q(tipo='candidatura') | Q(tipo='grado'))
-                                       & (Q(presidente=self)
-                                          | Q(secretario=self)
-                                          | Q(vocal=self))):
+        for c in Comite.objects.filter(
+                (Q(tipo='candidatura') | Q(tipo='grado'))
+                & (Q(miembro1=self)
+                   | Q(miembro2=self)
+                   | Q(miembro3=self))):
             if c.solicitud.dictamen_final():
                 if c.solicitud.dictamen_final().resolucion == 'concedida':
                     comites.append(c)
@@ -555,12 +558,19 @@ class Empleo(models.Model):
 
 
 class Comite(models.Model):
-    presidente = models.ForeignKey(Academico,
-                                   related_name="preside_comites")
-    secretario = models.ForeignKey(Academico,
-                                   related_name="secretario_comites")
-    vocal = models.ForeignKey(Academico,
-                              related_name="vocal_comites")
+    miembro1 = models.ForeignKey(Academico,
+                                 related_name="miembro1_comites")
+    miembro2 = models.ForeignKey(Academico,
+                                 related_name="miembro2_comites")
+    miembro3 = models.ForeignKey(Academico,
+                                 related_name="miembro3_comites")
+    miembro4 = models.ForeignKey(Academico,
+                                 related_name="miembro4_comites",
+                                 null=True, blank=True)
+    miembro5 = models.ForeignKey(Academico,
+                                 related_name="miembro5_comites",
+                                 null=True, blank=True)
+
     solicitud = models.ForeignKey(Solicitud)
     estudiante = models.ForeignKey(Estudiante)
     tipo = models.CharField(max_length=15,
@@ -580,26 +590,37 @@ class Comite(models.Model):
         verbose_name_plural = "Comités"
 
     def __unicode__(self):
-        return u'[%s] presidente: %s, secretario: %s, vocal: %s' \
+        return u'[%s] %s, %s, %s' \
             % (self.tipo,
-               self.presidente,
-               self.secretario,
-               self.vocal)
+               self.miembro1,
+               self.miembro2,
+               self.miembro3)
 
     def as_ul(self):
         ul = """
         <ul>
-        <li><strong>presidente:</strong>
+        <li>
             <a href="%sinicio/usuario/%s/">%s</a></li>
-        <li><strong>secretario:</strong>
+        <li>
             <a href="%sinicio/usuario/%s/">%s</a></li>
-        <li><strong>vocal:</strong>
-            <a href="%sinicio/usuario/%s/">%s</a></li>
-        </ul>
-"""
-        return ul % (APP_PREFIX, self.presidente.user.id, self.presidente,
-                     APP_PREFIX, self.secretario.user.id, self.secretario,
-                     APP_PREFIX, self.vocal.user.id, self.vocal)
+        <li>
+            <a href="%sinicio/usuario/%s/">%s</a></li>""" % (
+                APP_PREFIX, self.miembro1.user.id, self.miembro1,
+                APP_PREFIX, self.miembro2.user.id, self.miembro2,
+                APP_PREFIX, self.miembro3.user.id, self.miembro3)
+
+        if self.miembro4:
+            ul += """<li>
+            <a href="%sinicio/usuario/%s/">%s</a></li>""" % (
+                APP_PREFIX, self.miembro3.user.id, self.miembro4)
+
+        if self.miembro5:
+            ul += """<li>
+            <a href="%sinicio/usuario/%s/">%s</a></li>""" % (
+                APP_PREFIX, self.miembro5.user.id, self.miembro5)
+
+        ul += "</ul>"
+        return ul
 
 
 class Asistente(models.Model):
