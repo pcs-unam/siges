@@ -126,7 +126,16 @@ class SolicitudAdmin(admin.ModelAdmin):
 admin.site.register(Solicitud, SolicitudAdmin)
 
 
-admin.site.register(Perfil)
+class PerfilAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'user',
+        ]
+
+
+admin.site.register(Perfil, PerfilAdmin)
+
+
 admin.site.register(Entidad)
 admin.site.register(CampoConocimiento)
 # admin.site.register(Comentario)
