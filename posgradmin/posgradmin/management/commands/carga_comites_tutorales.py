@@ -29,6 +29,8 @@ def load(f):
         validate_email(row['miembro1'].strip().decode('utf8'))
         u = User.objects.get(email=row['miembro1'].strip().decode('utf8'))
         m1 = u.academico
+        m1.tutor = True
+        m1.save()
 
         if not row['miembro2']:
             m2 = None
@@ -36,14 +38,16 @@ def load(f):
             validate_email(row['miembro2'].strip().decode('utf8'))
             u = User.objects.get(email=row['miembro2'].strip().decode('utf8'))
             m2 = u.academico
-
+            m2.tutor = True
+            m2.save()
         if not row['miembro3']:
             m3 = None
         else:
             validate_email(row['miembro3'].strip().decode('utf8'))
             u = User.objects.get(email=row['miembro3'].strip().decode('utf8'))
             m3 = u.academico
-
+            m3.tutor = True
+            m3.save()
         e = Estudiante.objects.get(cuenta=row['cuenta'])
 
         c = Comite(estudiante=e,
