@@ -426,7 +426,8 @@ class Academico(models.Model):
                                    choices=(('sin PRIDE', 'sin PRIDE'),
                                             ('A', 'A'),
                                             ('B', 'B'),
-                                            ('C', 'C')))
+                                            ('C', 'C'),
+                                            ('D', 'D')))
     nivel_SNI = models.CharField(max_length=15,
                                  choices=(('sin SNI', 'sin SNI'),
                                           ('I', 'I'),
@@ -451,7 +452,8 @@ class Academico(models.Model):
 
     entidad = models.ForeignKey(Entidad, null=True, blank=True)
 
-    solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE)
+    solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE,
+                                     blank=True, null=True)
 
     lineas = models.TextField(blank=True)
 
@@ -529,14 +531,9 @@ class Academico(models.Model):
         return comites
 
     def __unicode__(self):
-        estado = []
-        if self.tutor:
-            estado.append("tutor acreditado")
-
-        return u"%s %s (%s), %s" % (self.user.first_name,
-                                    self.user.last_name,
-                                    self.user.username,
-                                    ", ".join(estado))
+        return u"%s %s (%s)" % (self.user.first_name,
+                                self.user.last_name,
+                                self.user.username)
 
     class Meta:
         verbose_name_plural = "Académicos"
@@ -563,7 +560,8 @@ class Comite(models.Model):
     miembro2 = models.ForeignKey(Academico,
                                  related_name="miembro2_comites")
     miembro3 = models.ForeignKey(Academico,
-                                 related_name="miembro3_comites")
+                                 related_name="miembro3_comites",
+                                 null=True, blank=True)
     miembro4 = models.ForeignKey(Academico,
                                  related_name="miembro4_comites",
                                  null=True, blank=True)
@@ -571,7 +569,7 @@ class Comite(models.Model):
                                  related_name="miembro5_comites",
                                  null=True, blank=True)
 
-    solicitud = models.ForeignKey(Solicitud)
+    solicitud = models.ForeignKey(Solicitud, null=True, blank=True)
     estudiante = models.ForeignKey(Estudiante)
     tipo = models.CharField(max_length=15,
                             choices=(('tutoral', 'tutoral'),
