@@ -7,7 +7,6 @@
   {% if object.academico %}
   &rsaquo; <a href="{% url 'lista_academicos' %}">Académicos</a>
   {% endif %}
-  &rsaquo; <a href="{% url 'user_detail' object.user.id %}">{{ object.user.get_full_name }}</a>
 </div>
 {% endblock %}
 
