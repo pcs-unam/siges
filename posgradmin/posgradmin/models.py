@@ -204,12 +204,23 @@ class Estudiante(models.Model):
                                   self.cuenta)
 
     def comite_tutoral(self):
+        # comites solicitados
         for c in Comite.objects.filter(
                 Q(tipo='tutoral')
                 & Q(estudiante=self)).order_by('-id'):
-            if c.solicitud.dictamen_final():
-                if c.solicitud.dictamen_final().resolucion == 'concedida':
-                    return c
+            if c.solicitud:
+                if c.solicitud.dictamen_final():
+                    if c.solicitud.dictamen_final().resolucion == 'concedida':
+                        return c
+
+        # comites importados
+        if Comite.objects.filter(tipo='tutoral',
+                                 estudiante=self,
+                                 solicitud=None).count() > 0:
+            return Comite.objects.filter(tipo='tutoral',
+                                         estudiante=self,
+                                         solicitud=None).last()
+
         return None
 
     def get_proyecto(self):
@@ -601,16 +612,19 @@ class Comite(models.Model):
             <a href="%sinicio/usuario/%s/">%s</a></li>
         <li>
             <a href="%sinicio/usuario/%s/">%s</a></li>
-        <li>
-            <a href="%sinicio/usuario/%s/">%s</a></li>""" % (
+        """ % (
                 APP_PREFIX, self.miembro1.user.id, self.miembro1,
-                APP_PREFIX, self.miembro2.user.id, self.miembro2,
+                APP_PREFIX, self.miembro2.user.id, self.miembro2)
+
+        if self.miembro3:
+            ul += """<li>
+            <a href="%sinicio/usuario/%s/">%s</a></li>""" % (
                 APP_PREFIX, self.miembro3.user.id, self.miembro3)
 
         if self.miembro4:
             ul += """<li>
             <a href="%sinicio/usuario/%s/">%s</a></li>""" % (
-                APP_PREFIX, self.miembro3.user.id, self.miembro4)
+                APP_PREFIX, self.miembro4.user.id, self.miembro4)
 
         if self.miembro5:
             ul += """<li>
