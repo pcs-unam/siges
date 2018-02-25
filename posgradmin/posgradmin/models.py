@@ -267,8 +267,6 @@ class Sesion(models.Model):
             APP_PREFIX,
             self.id, self.fecha, self.descripcion)
 
-
-
     def __unicode__(self):
         return u'%s, %s' % (self.fecha,
                             self.descripcion)
