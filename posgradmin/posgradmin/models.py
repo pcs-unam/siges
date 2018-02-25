@@ -199,9 +199,8 @@ class Estudiante(models.Model):
         return solicitudes
 
     def __unicode__(self):
-        return u"%s (%s) [%s]" % (self.user.get_full_name(),
-                                  self.user.get_username(),
-                                  self.cuenta)
+        return u"%s [%s]" % (self.user.get_full_name(),
+                             self.cuenta)
 
     def comite_tutoral(self):
         # comites solicitados
@@ -518,12 +517,20 @@ class Academico(models.Model):
             for c in Comite.objects.filter(Q(tipo='tutoral')
                                            & (Q(miembro1=self)
                                               | Q(miembro2=self)
-                                              | Q(miembro3=self))):
-                if c.solicitud.dictamen_final():
-                    if c.solicitud.dictamen_final().resolucion == 'concedida':
+                                              | Q(miembro3=self)
+                                              | Q(miembro4=self)
+                                              | Q(miembro5=self))):
+                if c.solicitud:
+                    if c.solicitud.dictamen_final():
+                        if c.solicitud.dictamen_final()\
+                                      .resolucion == 'concedida':
+                            estudiantes.add(c.estudiante)
+                        elif c.solicitud.estado != 'cancelada':
+                            estudiantes.add(c.estudiante)
+                else:
+                    if Comite.objects.filter(
+                            estudiante=c.estudiante).count() == 1:
                         estudiantes.add(c.estudiante)
-                elif c.solicitud.estado != 'cancelada':
-                    estudiantes.add(c.estudiante)
             return estudiantes
         else:
             return []
@@ -542,9 +549,9 @@ class Academico(models.Model):
         return comites
 
     def __unicode__(self):
-        return u"%s %s (%s)" % (self.user.first_name,
-                                self.user.last_name,
-                                self.user.username)
+        return u"%s %s %s" % (self.titulo,
+                              self.user.first_name,
+                              self.user.last_name)
 
     class Meta:
         verbose_name_plural = "Académicos"
