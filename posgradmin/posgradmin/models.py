@@ -478,13 +478,14 @@ class Academico(models.Model):
         return self.user.get_full_name()
 
     def acreditado(self):
-        if self.solicitud.dictamen_final() is None:
-            return False
-        elif self.solicitud.dictamen_final().resolucion == 'concedida':
-            self.fecha_acreditacion = self.solicitud.dictamen_final().fecha
-            self.tutor = True
-            self.save()
-            return True
+        return self.tutor
+        # if self.solicitud.dictamen_final() is None:
+        #     return False
+        # elif self.solicitud.dictamen_final().resolucion == 'concedida':
+        #     self.fecha_acreditacion = self.solicitud.dictamen_final().fecha
+        #     self.tutor = True
+        #     self.save()
+        #     return True
 
     def solicitudes(self, estado=None):
         solicitudes_de_estudiantes = set()
