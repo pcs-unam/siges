@@ -155,7 +155,8 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             p.direccion1 = request.POST['direccion1']
             p.direccion2 = request.POST['direccion2']
             p.codigo_postal = request.POST['codigo_postal']
-            p.headshot = request.FILES['headshot']
+            if 'headshot' in request.FILES:
+                p.headshot = request.FILES['headshot']
             p.save()
 
             return HttpResponseRedirect(reverse('user_detail',

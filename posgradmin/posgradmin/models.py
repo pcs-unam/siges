@@ -62,7 +62,7 @@ class Perfil(models.Model):
 
     direccion1 = models.CharField("direccion linea 1", max_length=150)
     direccion2 = models.CharField("direccion linea 2", max_length=150)
-    codigo_postal = models.PositiveSmallIntegerField(blank=True, null=True)
+    codigo_postal = models.PositiveSmallIntegerField(default=0)
 
     email2 = models.EmailField(max_length=200, blank=True)
     website = models.CharField(max_length=200, blank=True)
