@@ -1,32 +1,35 @@
 # coding: utf-8
+from django.conf import settings
 
 solicitud = {
     "registrar_catedra":
-    "/inicio/solicitudes/%s/registrar-catedra",
+    settings.APP_PREFIX + "inicio/solicitudes/%s/registrar-catedra",
 
     "solicitar_apoyo_económico":
-    "/inicio/solicitudes/%s",
+    settings.APP_PREFIX + "inicio/solicitudes/%s",
     "solicitar_baja_tutor":
-    "/inicio/solicitudes/%s",
+    settings.APP_PREFIX + "inicio/solicitudes/%s",
     "avisar_ausencia":
-    "/inicio/solicitudes/%s",
+    settings.APP_PREFIX + "inicio/solicitudes/%s",
 
-    "registrar_actividad_complementaria": "/inicio/solicitudes/%s",
+    "registrar_actividad_complementaria":
+    settings.APP_PREFIX + "inicio/solicitudes/%s",
 
-    "solicitar_candidatura": "/inicio/solicitudes/%s",
+    "solicitar_candidatura":
+    settings.APP_PREFIX + "inicio/solicitudes/%s",
 
     "cambiar_comite_tutoral":
-    "/inicio/solicitudes/%s/elegir-comite-tutoral",
+    settings.APP_PREFIX + "inicio/solicitudes/%s/elegir-comite-tutoral",
 
     "seleccionar_jurado_candidatura":
-    "/inicio/solicitudes/%s/elegir-jurado-candidatura",
+    settings.APP_PREFIX + "inicio/solicitudes/%s/elegir-jurado-candidatura",
 
     "seleccionar_jurado_grado":
-    "/inicio/solicitudes/%s/elegir-jurado-grado",
+    settings.APP_PREFIX + "inicio/solicitudes/%s/elegir-jurado-grado",
 
     "cambio_proyecto":
-    "/inicio/solicitudes/%s/cambiar-proyecto",
+    settings.APP_PREFIX + "inicio/solicitudes/%s/cambiar-proyecto",
 
     "reportar_suspension":
-        "/inicio/solicitudes/%s",
+        settings.APP_PREFIX + "inicio/solicitudes/%s",
 }
