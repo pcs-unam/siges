@@ -45,7 +45,10 @@ from posgradmin.settings import MEDIA_ROOT, MEDIA_URL
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('registration.backends.hmac.urls')),
+#    url(r'^accounts/', include('registration.backends.hmac.urls')),
+
+    url('^accounts/', include('django.contrib.auth.urls')),
+
 
     url(r'^institucion/agregar',
         InstitucionAgregarView.as_view(),

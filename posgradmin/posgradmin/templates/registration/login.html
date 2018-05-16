@@ -1,34 +1,38 @@
 {% extends "posgradmin/posgradmin_base.html" %}
-{% load i18n %}
-{% block title %}{% trans "Login" %}{% endblock %}
+
 {% block content %}
-{% url 'auth_password_reset' as auth_pwd_reset_url %}
-{% url 'registration_register' as register_url%}
 
 {% if form.errors %}
-<p>{% blocktrans %}Your username and password didn't match. Please try again.{% endblocktrans %}</p>
+<p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 
-<form method="post" action="{% url 'auth_login' %}">{% csrf_token %}
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
 <table>
 <tr>
-    <td>{% trans form.username.label_tag %}</td>
+    <td>{{ form.username.label_tag }}</td>
     <td>{{ form.username }}</td>
 </tr>
 <tr>
-    <td>{% trans form.password.label_tag %}</td>
+    <td>{{ form.password.label_tag }}</td>
     <td>{{ form.password }}</td>
 </tr>
 </table>
-  <p>
-    <ul>
-    <li><a href="{{ auth_pwd_reset_url }}">Recuperar contraseña</a></li>
-    <li>Si es nuevo a este sistema puede <a href="{{ register_url }}">registrarse</a>.</li>
-    </ul>
-  </p>
 
-<input type="submit" value="iniciar" />
+<input type="submit" value="acceder" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">recuperar contraseña por correo</a></p>
 
 {% endblock %}
