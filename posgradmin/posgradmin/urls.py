@@ -47,7 +47,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 #    url(r'^accounts/', include('registration.backends.hmac.urls')),
 
-    url('^accounts/', include('django.contrib.auth.urls')),
+    url('^accounts/signup/', InicioView.as_view()),
+    url('^accounts/', include('allauth.urls')),
 
 
     url(r'^institucion/agregar',

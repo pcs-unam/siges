@@ -44,7 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'crispy_forms',
     'sortable_listview',
-    'django_markdown2'
+    'django_markdown2',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 SITE_ID = 1
@@ -78,6 +81,14 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+     # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 
 WSGI_APPLICATION = 'posgradmin.wsgi.application'
 
