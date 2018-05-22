@@ -50,6 +50,8 @@ urlpatterns = [
     url('^accounts/signup/', InicioView.as_view()),
     url('^accounts/', include('allauth.urls')),
 
+    url(r'^export_action/', include("export_action.urls",
+                                    namespace="export_action")),
 
     url(r'^institucion/agregar',
         InstitucionAgregarView.as_view(),

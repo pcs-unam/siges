@@ -3,3 +3,4 @@ django-registration
 django-crispy-forms
 django-sortable-listview
 django-markdown2
+django-export-action
