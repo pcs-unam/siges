@@ -8,7 +8,7 @@ from django.conf import settings
 import posgradmin.models as models
 import posgradmin.forms as forms
 import authorization as auth
-
+from django.conf import settings
 
 class ComiteElegirView(View):
     def test_func(self):
@@ -35,6 +35,8 @@ class ComiteElegirView(View):
 class ComiteTutoralElegirView(LoginRequiredMixin,
                               UserPassesTestMixin,
                               ComiteElegirView):
+
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         return auth.is_estudiante(self.request.user)
@@ -101,6 +103,9 @@ class ComiteTutoralElegirView(LoginRequiredMixin,
 class JuradoCandidaturaElegirView(LoginRequiredMixin,
                                   UserPassesTestMixin,
                                   ComiteElegirView):
+
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
     tipo = 'candidatura'
     title = 'Elegir Jurado para Candidatura'
     form_class = forms.CandidaturaModelForm
@@ -169,6 +174,9 @@ class JuradoCandidaturaElegirView(LoginRequiredMixin,
 class JuradoGradoElegirView(LoginRequiredMixin,
                             UserPassesTestMixin,
                             ComiteElegirView):
+
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
     def test_func(self):
         return auth.is_estudiante(self.request.user)
 
@@ -221,6 +229,7 @@ class JuradoGradoElegirView(LoginRequiredMixin,
 
 
 class CambiarProyectoView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         return auth.is_estudiante(self.request.user)

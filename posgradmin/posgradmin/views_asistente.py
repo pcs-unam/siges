@@ -9,6 +9,7 @@ from django.conf import settings
 from sortable_listview import SortableListView
 import posgradmin.models as models
 import posgradmin.forms as forms
+from django.conf import settings
 
 import etl
 
@@ -16,6 +17,9 @@ import etl
 class SesionesListView(LoginRequiredMixin,
                        UserPassesTestMixin,
                        SortableListView):
+
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
     def test_func(self):
         return True
 
@@ -28,6 +32,8 @@ class SesionesListView(LoginRequiredMixin,
 
 class SesionDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
     def test_func(self):
         return True
 
@@ -35,6 +41,8 @@ class SesionDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 
 class CatedraRegistrar(LoginRequiredMixin, UserPassesTestMixin, View):
+
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         return True
@@ -84,6 +92,8 @@ class CatedraRegistrar(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class EstudianteCargar(LoginRequiredMixin, UserPassesTestMixin, View):
+
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         if hasattr(self.request.user, 'asistente') \

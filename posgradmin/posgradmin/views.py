@@ -18,7 +18,7 @@ from pprint import pprint
 
 
 class InicioView(LoginRequiredMixin, View):
-
+    login_url = settings.APP_PREFIX + 'accounts/login/'
     breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),)
 
     template_name = 'posgradmin/inicio.html'
@@ -32,6 +32,7 @@ class InicioView(LoginRequiredMixin, View):
 
 
 class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
     model = models.User
     template_name = "posgradmin/user_detail.html"
 
@@ -65,6 +66,7 @@ class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 
 class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
     template_name = "posgradmin/user_detail.html"
 
     def test_func(self):
@@ -94,6 +96,7 @@ class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 
 class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
     def test_func(self):
         return True
 
@@ -171,6 +174,7 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
     def test_func(self):
         return True
 
@@ -246,6 +250,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class GradoAcademicoAgregar(LoginRequiredMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     form_class = forms.GradoAcademicoModelForm
 
@@ -291,6 +296,7 @@ class GradoAcademicoAgregar(LoginRequiredMixin, View):
 
 
 class GradoAcademicoEliminar(LoginRequiredMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def get(self, request, *args, **kwargs):
         g = models.GradoAcademico.objects.get(id=int(kwargs['pk']))
@@ -299,6 +305,7 @@ class GradoAcademicoEliminar(LoginRequiredMixin, View):
 
 
 class EmpleoAgregar(LoginRequiredMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     form_class = forms.EmpleoModelForm
 
@@ -337,6 +344,7 @@ class EmpleoAgregar(LoginRequiredMixin, View):
 
 
 class EmpleoEliminar(LoginRequiredMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def get(self, request, *args, **kwargs):
         a = models.Empleo.objects.get(id=int(kwargs['pk']))
@@ -345,6 +353,7 @@ class EmpleoEliminar(LoginRequiredMixin, View):
 
 
 class InstitucionAgregarView(LoginRequiredMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     form_class = forms.InstitucionModelForm
 
@@ -383,6 +392,8 @@ class EstudianteSortableView(LoginRequiredMixin,
                              UserPassesTestMixin,
                              SortableListView):
 
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
     def test_func(self):
         return True
 
@@ -418,6 +429,7 @@ class EstudianteSortableView(LoginRequiredMixin,
 class AcademicoSortableView(LoginRequiredMixin,
                             UserPassesTestMixin,
                             SortableListView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         return True
@@ -442,6 +454,9 @@ class AcademicoSortableView(LoginRequiredMixin,
 class CatedraSortableView(LoginRequiredMixin,
                           UserPassesTestMixin,
                           SortableListView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
+
 
     def test_func(self):
         return True

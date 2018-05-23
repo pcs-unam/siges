@@ -8,7 +8,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
 from sortable_listview import SortableListView
-
+from django.conf import settings
 import posgradmin.models as models
 import posgradmin.forms as forms
 from posgradmin import workflows
@@ -18,6 +18,7 @@ from settings import solicitudes_profesoriles,\
 
 
 class SolicitudCambiarEstado(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         if hasattr(self.request.user, 'asistente') \
@@ -42,6 +43,7 @@ class SolicitudCambiarEstado(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class SolicitudNuevaView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         if hasattr(self.request.user, 'asistente') \
@@ -125,6 +127,7 @@ class SolicitudNuevaView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class SolicitudDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         if hasattr(self.request.user, 'asistente') \
@@ -152,6 +155,7 @@ class SolicitudDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 
 class SolicitudDictaminar(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         if hasattr(self.request.user, 'asistente') \
@@ -228,6 +232,7 @@ class SolicitudDictaminar(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class SolicitudComment(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         if hasattr(self.request.user, 'asistente') \
@@ -285,6 +290,7 @@ class SolicitudComment(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class SolicitudAgendar(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         if hasattr(self.request.user, 'asistente') \
@@ -335,6 +341,7 @@ class SolicitudAgendar(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class SolicitudAnexo(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         if hasattr(self.request.user, 'asistente') \
@@ -399,6 +406,8 @@ class SolicitudAnexo(LoginRequiredMixin, UserPassesTestMixin, View):
 class SolicitudSortableView(LoginRequiredMixin,
                             UserPassesTestMixin,
                             SortableListView):
+
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         return True

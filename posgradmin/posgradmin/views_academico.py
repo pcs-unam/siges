@@ -4,9 +4,10 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import ListView
 import posgradmin.models as models
 import authorization as auth
-
+from django.conf import settings
 
 class MisCatedrasView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         return auth.is_academico(self.request.user)
@@ -21,6 +22,7 @@ class MisCatedrasView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 
 class MisComitesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         return auth.is_academico(self.request.user)
@@ -35,6 +37,7 @@ class MisComitesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 
 class MisEstudiantesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         return auth.is_academico(self.request.user)
