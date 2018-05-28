@@ -160,8 +160,8 @@ class Estudiante(models.Model):
                               choices=((u"graduado", u"graduado"),
                                        (u"egresado", u"egresado"),
                                        (u"vigente", u"vigente"),
-                                       (u"baja", u"baja"),
-                                       (u"suspenso", u"suspenso")))
+                                       (u"baja temporal", u"baja temporal"),
+                                       (u"baja definitiva", u"baja definitiva")))
 
     fecha_baja = models.DateField(blank=True, null=True)
     motivo_baja = models.CharField(max_length=200,
@@ -173,6 +173,7 @@ class Estudiante(models.Model):
     medalla_alfonso_caso = models.BooleanField(default=False)
     semestre_graduacion = models.PositiveSmallIntegerField(blank=True,
                                                            null=True)
+    observaciones = models.TextField(blank=True)
 
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
@@ -464,6 +465,7 @@ class Academico(models.Model):
                                      blank=True, null=True)
 
     lineas = models.TextField(blank=True)
+    observaciones = models.TextField(blank=True)
 
     def as_a(self):
         icon = """<span class='glyphicon glyphicon-{icon}'
