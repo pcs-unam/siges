@@ -150,10 +150,10 @@ class Estudiante(models.Model):
 
     plan = models.CharField(
         max_length=20,
-        choices=(("maestría", u"maestría"),
-                 ("doctorado", u"doctorado"),
-                 ("doctorado directo", u"doctorado directo"),
-                 ("opción a titulación", u"opción a titulación")))
+        choices=((u"Maestría", u"Maestría"),
+                 (u"Doctorado", u"Doctorado"),
+                 (u"Doctorado directo", u"Doctorado directo"),
+                 (u"Opción a titulación", u"Opción a titulación")))
 
     estado = models.CharField(max_length=15,
                               default=u"vigente",
