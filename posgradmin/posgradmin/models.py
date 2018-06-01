@@ -448,9 +448,11 @@ class Academico(models.Model):
     DGEE = models.CharField(max_length=6, blank=True, null=True)
 
     tutor = models.BooleanField(default=False)
+
     comite_academico = models.BooleanField(default=False)
 
     fecha_acreditacion = models.DateField(blank=True, null=True)
+
     acreditacion = models.CharField(max_length=15,
                                     choices=(('D', 'D'),
                                              ('M', 'M'),
@@ -464,7 +466,83 @@ class Academico(models.Model):
     solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE,
                                      blank=True, null=True)
 
+    # Resumen Curricular
+    tesis_licenciatura = models.PositiveSmallIntegerField(
+        "Número de tesis dirigidas a nivel Licenciatura",
+        null=True)
+    tesis_maestria = models.PositiveSmallIntegerField(
+        "Número de tesis dirigidas a nivel Maestría",
+        null=True)
+    tesis_doctorado = models.PositiveSmallIntegerField(
+        "Número de tesis dirigidas a nivel Doctorado",
+        null=True)
+
+    tesis_licenciatura_5 = models.PositiveSmallIntegerField(
+        "Número de tesis dirigidas a nivel Licenciatura en los últimos 5 años",
+        null=True)
+    tesis_maestria_5 = models.PositiveSmallIntegerField(
+        "Número de tesis dirigidas a nivel Maestría en los últimos 5 años",
+        null=True)
+    tesis_doctorado_5 = models.PositiveSmallIntegerField(
+        "Número de tesis dirigidas a nivel Doctorado en los últimos 5 años",
+        null=True)
+
+    participacion_comite_maestria = models.PositiveSmallIntegerField(
+        "Número de comités de nivel maestría en los que participa en el PCS",
+        null=True)
+    participacion_tutor_maestria = models.PositiveSmallIntegerField(
+        "Número de participaciones como tutor principal "
+        + "en el PCS a nivel maestría",
+        null=True)
+    participacion_comite_doctorado = models.PositiveSmallIntegerField(
+        "Número de comités de nivel doctorado en los que participa en el PCS",
+        null=True)
+    participacion_tutor_doctorado = models.PositiveSmallIntegerField(
+        "Número de participaciones como tutor principal "
+        + "en el PCS a nivel doctorado",
+        null=True)
+
+    tutor_otros_programas = models.TextField(
+        "Enliste otros programas en los que participa como "
+        + "miembro de comités tutorales",
+        blank=True)
+
+    tutor_principal_otros_programas = models.TextField(
+        "Enliste otros programas en los que participa como tutor principal",
+        blank=True)
+
+    articulos_internacionales_5 = models.PositiveSmallIntegerField(
+        "Número de artículos publicados en revistas internacionales "
+        + "durante los últimos 5 años",
+        null=True)
+
+    articulos_nacionales_5 = models.PositiveSmallIntegerField(
+        "Número total de artículos publicados en revistas nacionales "
+        + "durante los últimos 5 años",
+        null=True)
+
+    articulos_internacionales = models.PositiveSmallIntegerField(
+        "Número total de artículos publicados en revistas internacionales",
+        null=True)
+
+    articulos_nacionales = models.PositiveSmallIntegerField(
+        "Número total de artículos publicados en revistas nacionales",
+        null=True)
+
+    # Actividad profesional y de Investigación
     lineas = models.TextField(blank=True)
+    palabras_clave = models.TextField(blank=True)
+    motivacion = models.TextField(blank=True)
+    proyectos_vigentes = models.TextField(blank=True)
+
+    # disponibilidad
+    disponible_miembro = models.BooleanField(
+        "Disponible como miembro de comité tutor",
+        default=False)
+    disponible_tutor = models.BooleanField("Disponible como tutor principal",
+                                           default=False)
+
+    # epílogo
     observaciones = models.TextField(blank=True)
 
     def as_a(self):
@@ -556,6 +634,27 @@ class Academico(models.Model):
 
     class Meta:
         verbose_name_plural = "Académicos"
+
+
+class AnexoAcademico(models.Model):
+    academico = models.ForeignKey(Academico)
+    autor = models.ForeignKey(User)
+    fecha = models.DateTimeField(auto_now_add=True)
+    archivo = models.FileField(upload_to=anexo_path)
+
+    # def url(self):
+    #     return "%s/solicitudes/%s/%s" % (MEDIA_URL,
+    #                                      self.solicitud.id,
+    #                                      os.path.basename(self.archivo.path))
+
+    # def basename(self):
+    #     return os.path.basename(self.archivo.file.name)
+
+    # def __unicode__(self):
+    #     return u"[%s anexo a #%s por %s el %s]" % (self.basename(),
+    #                                                self.solicitud.id,
+    #                                                self.autor,
+    #                                                self.fecha)
 
 
 class Empleo(models.Model):
