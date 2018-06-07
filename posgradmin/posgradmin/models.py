@@ -480,7 +480,7 @@ class Academico(models.Model):
 
     tesis_licenciatura_5 = models.PositiveSmallIntegerField(
       "Cantidad de tesis dirigidas a nivel Licenciatura en los últimos 5 años",
-        null=True, blank=True)
+      null=True, blank=True)
     tesis_maestria_5 = models.PositiveSmallIntegerField(
         "Cantidad de tesis dirigidas a nivel Maestría en los últimos 5 años",
         null=True, blank=True)
@@ -497,7 +497,7 @@ class Academico(models.Model):
         null=True, blank=True)
     participacion_comite_doctorado = models.PositiveSmallIntegerField(
        "Cantidad de comités de nivel doctorado en los que participa en el PCS",
-        null=True, blank=True)
+       null=True, blank=True)
     participacion_tutor_doctorado = models.PositiveSmallIntegerField(
         "Cantidad de participaciones como tutor principal "
         + "en el PCS a nivel doctorado",
@@ -547,9 +547,13 @@ class Academico(models.Model):
         null=True, blank=True)
 
     # Actividad profesional y de Investigación
-    lineas = models.TextField(blank=True)
-    palabras_clave = models.TextField(blank=True)
-    motivacion = models.TextField(blank=True)
+    lineas = models.TextField(
+        "Líneas de investigación o campos de conocimiento",
+        blank=True)
+    palabras_clave = models.TextField("Palabras clave, separadas por comas",
+                                      blank=True)
+    motivacion = models.TextField("Motivación para participar en el Programa",
+                                  blank=True)
     proyectos_vigentes = models.TextField(blank=True)
 
     # disponibilidad
@@ -561,6 +565,62 @@ class Academico(models.Model):
 
     # epílogo
     observaciones = models.TextField(blank=True)
+
+    def resumen_completo(self):
+        if self.tesis_licenciatura == "":
+            return False
+        elif self.tesis_maestria == "":
+            return False
+        elif self.tesis_doctorado == "":
+            return False
+        elif self.tesis_licenciatura_5 == "":
+            return False
+        elif self.tesis_maestria_5 == "":
+            return False
+        elif self.tesis_doctorado_5 == "":
+            return False
+        elif self.participacion_comite_maestria == "":
+            return False
+        elif self.participacion_tutor_maestria == "":
+            return False
+        elif self.participacion_comite_doctorado == "":
+            return False
+        elif self.participacion_tutor_doctorado == "":
+            return False
+        elif self.tutor_otros_programas == "":
+            return False
+        elif self.tutor_principal_otros_programas == "":
+            return False
+        elif self.articulos_internacionales_5 == "":
+            return False
+        elif self.articulos_nacionales_5 == "":
+            return False
+        elif self.articulos_internacionales == "":
+            return False
+        elif self.articulos_nacionales == "":
+            return False
+        elif self.capitulos == "":
+            return False
+        elif self.capitulos_5 == "":
+            return False
+        elif self.libros == "":
+            return False
+        elif self.libros_5 == "":
+            return False
+        else:
+            return True
+
+    def actividad_completo(self):
+        if self.lineas == "":
+            return False
+        elif self.palabras_clave == "":
+            return False
+        elif self.motivacion == "":
+            return False
+        elif self.proyectos_vigentes == "":
+            return False
+        else:
+            return True
 
     def as_a(self):
         icon = """<span class='glyphicon glyphicon-{icon}'

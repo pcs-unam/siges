@@ -207,8 +207,11 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
         form = self.form_class(request.POST, request.FILES)
 
         if form.is_valid():
-            entidad = models.Entidad.objects.get(
-                id=int(request.POST['entidad']))
+            if request.POST['entidad'] != '':
+                entidad = models.Entidad.objects.get(
+                    id=int(request.POST['entidad']))
+            else:
+                entidad = None
 
             if hasattr(request.user, 'academico'):
                 a = request.user.academico
@@ -268,6 +271,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                     a.disponible_miembro = True
                 else:
                     a.disponible_miembro = False
+
                 if 'disponible_tutor' in request.POST:
                     a.disponible_tutor = True
                 else:

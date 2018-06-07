@@ -94,6 +94,22 @@
 
 
 	{% if user.academico %}
+
+	{% if not user.academico.resumen_completo %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>Resumen curricular está incompleto.</strong>
+	  <a href="{% url 'registrar_academico' %}">actualizar datos académicos</a>.
+	</div>
+	{% endif %}
+
+	{% if not user.academico.actividad_completo %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No hay descripciones de Actividad profesional y de investigación.</strong>
+	  <a href="{% url 'registrar_academico' %}">actualizar datos académicos</a>.
+	</div>
+	{% endif %}
+
+
 	   {% if user.academico.tutor %}
 	       <p><a href="{% url 'mis_comites' %}">Mis comités de jurado</a></p>
 	       <p><a href="{% url 'mis_estudiantes' %}">Mis estudiantes</a></p>

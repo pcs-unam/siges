@@ -135,7 +135,9 @@ class AcademicoModelForm(forms.ModelForm):
                            'nivel_SNI',
                            'CVU',),
                     Class="panel-body"),
-                Div(HTML(u"<h1 class='panel-title'>Resumen Curricular</h1>"),
+                Div(HTML(u"<h1 class='panel-title'>Resumen Curricular</h1>"
+                         + "En los campos siguientes, si no tiene cantidades "
+                         + u"qué reportar, por favor llene con ceros."),
                     Class="panel-heading"),
                 Div(Column('tesis_licenciatura',
                            'tesis_maestria',
