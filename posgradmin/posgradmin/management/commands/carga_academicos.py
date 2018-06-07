@@ -37,9 +37,9 @@ def load(f):
         u.save()
 
         if not row['pride'].strip():
-            nivel_pride = 'sin PRIDE'
+            nivel_PRIDE = 'sin PRIDE'
         else:
-            nivel_pride = row['pride'].decode('utf8')
+            nivel_PRIDE = row['pride'].decode('utf8')
 
         if not row['sni'].strip():
             nivel_sni = 'sin SNI'
@@ -55,7 +55,7 @@ def load(f):
 
         a = Academico(user=u,
                       titulo=row['titulo'].decode('utf8'),
-                      nivel_pride=nivel_pride,
+                      nivel_PRIDE=nivel_PRIDE,
                       nivel_SNI=nivel_sni,
                       CVU=row['cvu'].decode('utf8'),
                       lineas=row['lineas'].decode('utf8'),

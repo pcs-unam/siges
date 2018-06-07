@@ -429,9 +429,10 @@ class Comentario(models.Model):
 
 class Academico(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    titulo = models.CharField("Dr., MCC, etc.", max_length=15, blank=True)
+    titulo = models.CharField("Grado académico (e.g. Dr., Lic.)",
+                              max_length=15, blank=True)
 
-    nivel_pride = models.CharField(max_length=15,
+    nivel_PRIDE = models.CharField(max_length=15,
                                    choices=(('sin PRIDE', 'sin PRIDE'),
                                             ('A', 'A'),
                                             ('B', 'B'),
@@ -468,66 +469,82 @@ class Academico(models.Model):
 
     # Resumen Curricular
     tesis_licenciatura = models.PositiveSmallIntegerField(
-        "Número de tesis dirigidas a nivel Licenciatura",
-        null=True)
+        "Cantidad de tesis dirigidas a nivel Licenciatura",
+        null=True, blank=True)
     tesis_maestria = models.PositiveSmallIntegerField(
-        "Número de tesis dirigidas a nivel Maestría",
-        null=True)
+        "Cantidad de tesis dirigidas a nivel Maestría",
+        null=True, blank=True)
     tesis_doctorado = models.PositiveSmallIntegerField(
-        "Número de tesis dirigidas a nivel Doctorado",
-        null=True)
+        "Cantidad de tesis dirigidas a nivel Doctorado",
+        null=True, blank=True)
 
     tesis_licenciatura_5 = models.PositiveSmallIntegerField(
-        "Número de tesis dirigidas a nivel Licenciatura en los últimos 5 años",
-        null=True)
+      "Cantidad de tesis dirigidas a nivel Licenciatura en los últimos 5 años",
+        null=True, blank=True)
     tesis_maestria_5 = models.PositiveSmallIntegerField(
-        "Número de tesis dirigidas a nivel Maestría en los últimos 5 años",
-        null=True)
+        "Cantidad de tesis dirigidas a nivel Maestría en los últimos 5 años",
+        null=True, blank=True)
     tesis_doctorado_5 = models.PositiveSmallIntegerField(
-        "Número de tesis dirigidas a nivel Doctorado en los últimos 5 años",
-        null=True)
+        "Cantidad de tesis dirigidas a nivel Doctorado en los últimos 5 años",
+        null=True, blank=True)
 
     participacion_comite_maestria = models.PositiveSmallIntegerField(
-        "Número de comités de nivel maestría en los que participa en el PCS",
-        null=True)
+        "Cantidad de comités de nivel maestría en los que participa en el PCS",
+        null=True, blank=True)
     participacion_tutor_maestria = models.PositiveSmallIntegerField(
-        "Número de participaciones como tutor principal "
+        "Cantidad de participaciones como tutor principal "
         + "en el PCS a nivel maestría",
-        null=True)
+        null=True, blank=True)
     participacion_comite_doctorado = models.PositiveSmallIntegerField(
-        "Número de comités de nivel doctorado en los que participa en el PCS",
-        null=True)
+       "Cantidad de comités de nivel doctorado en los que participa en el PCS",
+        null=True, blank=True)
     participacion_tutor_doctorado = models.PositiveSmallIntegerField(
-        "Número de participaciones como tutor principal "
+        "Cantidad de participaciones como tutor principal "
         + "en el PCS a nivel doctorado",
-        null=True)
+        null=True, blank=True)
 
     tutor_otros_programas = models.TextField(
-        "Enliste otros programas en los que participa como "
+        "Otros programas en los que participa como "
         + "miembro de comités tutorales",
         blank=True)
 
     tutor_principal_otros_programas = models.TextField(
-        "Enliste otros programas en los que participa como tutor principal",
+        "Otros programas en los que participa como tutor principal",
         blank=True)
 
     articulos_internacionales_5 = models.PositiveSmallIntegerField(
-        "Número de artículos publicados en revistas internacionales "
+        "Cantidad de artículos publicados en revistas internacionales "
         + "durante los últimos 5 años",
-        null=True)
+        null=True, blank=True)
 
     articulos_nacionales_5 = models.PositiveSmallIntegerField(
-        "Número total de artículos publicados en revistas nacionales "
+        "Cantidad de artículos publicados en revistas nacionales "
         + "durante los últimos 5 años",
-        null=True)
+        null=True, blank=True)
 
     articulos_internacionales = models.PositiveSmallIntegerField(
-        "Número total de artículos publicados en revistas internacionales",
-        null=True)
+        "Cantidad de artículos publicados en revistas internacionales",
+        null=True, blank=True)
 
     articulos_nacionales = models.PositiveSmallIntegerField(
-        "Número total de artículos publicados en revistas nacionales",
-        null=True)
+        "Cantidad de artículos publicados en revistas nacionales",
+        null=True, blank=True)
+
+    capitulos = models.PositiveSmallIntegerField(
+        "Capítulos de libro publicados",
+        null=True, blank=True)
+
+    capitulos_5 = models.PositiveSmallIntegerField(
+        "Capítulos de libro publicados durante los últimos 5 años",
+        null=True, blank=True)
+
+    libros = models.PositiveSmallIntegerField(
+        "Libros publicados",
+        null=True, blank=True)
+
+    libros_5 = models.PositiveSmallIntegerField(
+        "Libros publicados durante los últimos 5 años",
+        null=True, blank=True)
 
     # Actividad profesional y de Investigación
     lineas = models.TextField(blank=True)

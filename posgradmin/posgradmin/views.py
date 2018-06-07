@@ -214,7 +214,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.lineas = request.POST[u'lineas']
                 a.CVU = request.POST[u'CVU']
                 a.nivel_SNI = request.POST[u'nivel_SNI']
-                a.nivel_pride = request.POST[u'nivel_pride']
+                a.nivel_PRIDE = request.POST[u'nivel_PRIDE']
                 a.titulo = request.POST[u'titulo']
                 a.save()
 
@@ -234,7 +234,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.lineas = request.POST[u'lineas']
                 a.CVU = request.POST[u'CVU']
                 a.nivel_SNI = request.POST[u'nivel_SNI']
-                a.nivel_pride = request.POST[u'nivel_pride']
+                a.nivel_PRIDE = request.POST[u'nivel_PRIDE']
                 a.titulo = request.POST[u'titulo']
                 a.save()
 
