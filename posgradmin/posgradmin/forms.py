@@ -120,12 +120,62 @@ class EstudianteModelForm(forms.ModelForm):
 class AcademicoModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-
         super(AcademicoModelForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
-        self.helper.form_class = 'form-horizontal'
-        self.helper.layout.append(Submit('guardar', 'guardar'))
+        self.helper.layout = Layout(
+            Div(Div(HTML("<h1 class='panel-title'>"
+                         + u"Participación en el Programa</h1>"),
+                    Class="panel-heading"),
+                Div(Column('titulo',
+                           'fecha_acreditacion',
+                           'acreditacion',
+                           'entidad',
+                           'nivel_PRIDE',
+                           'nivel_SNI',
+                           'CVU',
+                           'DGEE',),
+                    Class="panel-body"),
+                Div(HTML(u"<h1 class='panel-title'>Resumen Curricular</h1>"),
+                    Class="panel-heading"),
+                Div(Column('tesis_licenciatura',
+                           'tesis_maestria',
+                           'tesis_doctorado',
+                           'tesis_licenciatura_5',
+                           'tesis_maestria_5',
+                           'tesis_doctorado_5',
+                           'participacion_comite_maestria',
+                           'participacion_tutor_maestria',
+                           'participacion_comite_doctorado',
+                           'participacion_tutor_doctorado',
+                           'tutor_otros_programas',
+                           'tutor_principal_otros_programas',
+                           'articulos_internacionales_5',
+                           'articulos_nacionales_5',
+                           'articulos_internacionales',
+                           'articulos_nacionales',
+                           'capitulos',
+                           'capitulos_5',
+                           'libros',
+                           'libros_5'),
+                    Class="panel-body"),
+                Div(HTML("<h1 class='panel-title'>"
+                         + u"Actividad profesional y de Investigación</h1>"),
+                    Class="panel-heading"),
+                Div(Column("lineas",
+                           'palabras_clave',
+                           'motivacion',
+                           'proyectos_vigentes'),
+                    Class="panel-body"),
+                Div(HTML("<h1 class='panel-title'>"
+                         + u"Disponibilidad</h1>"),
+                    Class="panel-heading"),
+                Div(Column("disponible_miembro",
+                           'disponible_tutor'),
+                    Class="panel-body"),
+                Submit('guardar', 'guardar'),
+            Class="panel panel-default"),
+        )
 
     class Meta:
         model = Academico
@@ -152,8 +202,9 @@ class SolicitudCommentForm(forms.Form):
 
 class SolicitudAgendarForm(forms.Form):
 
-    sesion = forms.ModelChoiceField(queryset=Sesion.objects.filter(fecha__gt=datetime.now()),
-                                    label="Sesión")
+    sesion = forms.ModelChoiceField(queryset=Sesion.objects.filter(
+        fecha__gt=datetime.now()),
+                                    label=u"Sesión")
 
     helper = FormHelper()
     helper.layout = Layout(
