@@ -97,6 +97,7 @@ class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
+
     def test_func(self):
         return True
 
@@ -175,6 +176,7 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
+
     def test_func(self):
         return True
 
@@ -216,6 +218,61 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.nivel_SNI = request.POST[u'nivel_SNI']
                 a.nivel_PRIDE = request.POST[u'nivel_PRIDE']
                 a.titulo = request.POST[u'titulo']
+
+                if request.POST['tesis_licenciatura'] != "":
+                    a.tesis_licenciatura = request.POST['tesis_licenciatura']
+                if request.POST['tesis_maestria'] != "":
+                    a.tesis_maestria = request.POST['tesis_maestria']
+                if request.POST['tesis_doctorado'] != "":
+                    a.tesis_doctorado = request.POST['tesis_doctorado']
+                if request.POST['tesis_licenciatura_5'] != "":
+                    a.tesis_licenciatura_5 = request.POST['tesis_licenciatura_5']
+                if request.POST['tesis_maestria_5'] != "":
+                    a.tesis_maestria_5 = request.POST['tesis_maestria_5']
+                if request.POST['tesis_doctorado_5'] != "":
+                    a.tesis_doctorado_5 = request.POST['tesis_doctorado_5']
+                if request.POST['participacion_comite_maestria'] != "":
+                    a.participacion_comite_maestria = request.POST['participacion_comite_maestria']
+                if request.POST['participacion_tutor_maestria'] != "":
+                    a.participacion_tutor_maestria = request.POST['participacion_tutor_maestria']
+                if request.POST['participacion_comite_doctorado'] != "":
+                    a.participacion_comite_doctorado = request.POST['participacion_comite_doctorado']
+                if request.POST['participacion_tutor_doctorado'] != "":
+                    a.participacion_tutor_doctorado = request.POST['participacion_tutor_doctorado']
+
+                a.tutor_otros_programas = request.POST['tutor_otros_programas']
+                a.tutor_principal_otros_programas = request.POST['tutor_principal_otros_programas']
+
+                if request.POST['articulos_internacionales_5'] != "":
+                    a.articulos_internacionales_5 = request.POST['articulos_internacionales_5']
+                if request.POST['articulos_nacionales_5'] != "":
+                    a.articulos_nacionales_5 = request.POST['articulos_nacionales_5']
+                if request.POST['articulos_internacionales'] != "":
+                    a.articulos_internacionales = request.POST['articulos_internacionales']
+                if request.POST['articulos_nacionales'] != "":
+                    a.articulos_nacionales = request.POST['articulos_nacionales']
+                if request.POST['capitulos'] != "":
+                    a.capitulos = request.POST['capitulos']
+                if request.POST['capitulos_5'] != "":
+                    a.capitulos_5 = request.POST['capitulos_5']
+                if request.POST['libros'] != "":
+                    a.libros = request.POST['libros']
+                if request.POST['libros_5'] != "":
+                    a.libros_5 = request.POST['libros_5']
+
+                a.lineas = request.POST['lineas']
+                a.palabras_clave = request.POST['palabras_clave']
+                a.motivacion = request.POST['motivacion']
+                a.proyectos_vigentes = request.POST['proyectos_vigentes']
+                if 'disponible_miembro' in request.POST:
+                    a.disponible_miembro = True
+                else:
+                    a.disponible_miembro = False
+                if 'disponible_tutor' in request.POST:
+                    a.disponible_tutor = True
+                else:
+                    a.disponible_tutor = False
+
                 a.save()
 
                 return HttpResponseRedirect(reverse('perfil'))
@@ -236,6 +293,55 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.nivel_SNI = request.POST[u'nivel_SNI']
                 a.nivel_PRIDE = request.POST[u'nivel_PRIDE']
                 a.titulo = request.POST[u'titulo']
+
+                if request.POST['tesis_licenciatura'] != "":
+                    a.tesis_licenciatura = request.POST['tesis_licenciatura']
+                if request.POST['tesis_maestria'] != "":
+                    a.tesis_maestria = request.POST['tesis_maestria']
+                if request.POST['tesis_doctorado'] != "":
+                    a.tesis_doctorado = request.POST['tesis_doctorado']
+                if request.POST['tesis_licenciatura_5'] != "":
+                    a.tesis_licenciatura_5 = request.POST['tesis_licenciatura_5']
+                if request.POST['tesis_maestria_5'] != "":
+                    a.tesis_maestria_5 = request.POST['tesis_maestria_5']
+                if request.POST['tesis_doctorado_5'] != "":
+                    a.tesis_doctorado_5 = request.POST['tesis_doctorado_5']
+                if request.POST['participacion_comite_maestria'] != "":
+                    a.participacion_comite_maestria = request.POST['participacion_comite_maestria']
+                if request.POST['participacion_tutor_maestria'] != "":
+                    a.participacion_tutor_maestria = request.POST['participacion_tutor_maestria']
+                if request.POST['participacion_comite_doctorado'] != "":
+                    a.participacion_comite_doctorado = request.POST['participacion_comite_doctorado']
+                if request.POST['participacion_tutor_doctorado'] != "":
+                    a.participacion_tutor_doctorado = request.POST['participacion_tutor_doctorado']
+
+                a.tutor_otros_programas = request.POST['tutor_otros_programas']
+                a.tutor_principal_otros_programas = request.POST['tutor_principal_otros_programas']
+
+                if request.POST['articulos_internacionales_5'] != "":
+                    a.articulos_internacionales_5 = request.POST['articulos_internacionales_5']
+                if request.POST['articulos_nacionales_5'] != "":
+                    a.articulos_nacionales_5 = request.POST['articulos_nacionales_5']
+                if request.POST['articulos_internacionales'] != "":
+                    a.articulos_internacionales = request.POST['articulos_internacionales']
+                if request.POST['articulos_nacionales'] != "":
+                    a.articulos_nacionales = request.POST['articulos_nacionales']
+                if request.POST['capitulos'] != "":
+                    a.capitulos = request.POST['capitulos']
+                if request.POST['capitulos_5'] != "":
+                    a.capitulos_5 = request.POST['capitulos_5']
+                if request.POST['libros'] != "":
+                    a.libros = request.POST['libros']
+                if request.POST['libros_5'] != "":
+                    a.libros_5 = request.POST['libros_5']
+
+
+                a.lineas = request.POST['lineas']
+                a.palabras_clave = request.POST['palabras_clave']
+                a.motivacion = request.POST['motivacion']
+                a.proyectos_vigentes = request.POST['proyectos_vigentes']
+                a.disponible_miembro = request.POST['disponible_miembro']
+                a.disponible_tutor = request.POST['disponible_tutor']
                 a.save()
 
                 return HttpResponseRedirect(reverse('solicitud_detail',
