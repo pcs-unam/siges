@@ -133,6 +133,13 @@
  #    #  #    #  #    #  #    #  #       #    #     #    #    #  #    #
  #    #   ####   #    #  #####   ######  #    #     #     ####    ####
   -->
+    {% if user == object %}
+    <a href="{% url 'registrar_academico' %}">editar registro de académico</a><br /><br />
+    {% endif %}
+
+    {% if user.is_staff %}
+    <a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar registro de académico</a><br /><br />
+    {% endif %}
 
 <div class="panel panel-primary">
   <div class="panel-heading">
@@ -155,13 +162,6 @@
     </ul>
     
     
-    {% if user == object %}
-    <a href="{% url 'registrar_academico' %}">editar registro de académico</a><br /><br />
-    {% endif %}
-
-    {% if user.is_staff %}
-    <a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar registro de académico</a><br /><br />
-    {% endif %}
 
 
     <div class="panel panel-default">
@@ -534,7 +534,7 @@
       </div>
     </div>
     {% if user == object %}
-    <a href="{% url 'editar_perfil' %}">editar</a>
+    <a href="{% url 'editar_perfil' %}">editar perfil</a>
     {% elif user.is_staff %}
     <a href="{% url 'admin:auth_user_change' object.id %}">editar usuario</a><br />
     <a href="{% url 'admin:posgradmin_perfil_change' object.perfil.id %}">editar perfil</a>
