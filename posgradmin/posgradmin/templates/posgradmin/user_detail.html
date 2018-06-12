@@ -153,20 +153,8 @@
       <li class="list-group-item">
 	acreditación: {{ object.academico.acreditacion|default:'' }}</li>
     </ul>
-
-    <!-- subtablas -->
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-road" aria-hidden="true"></span>
-	  Líneas de Investigación
-	</h3>
-      </div>
-      <div class="panel-body">
-	{{ object.academico.lineas|markdown }}
-      </div>
-    </div>
-
+    
+    
     {% if user == object %}
     <a href="{% url 'registrar_academico' %}">editar registro de académico</a><br /><br />
     {% endif %}
@@ -239,6 +227,156 @@
     </div>
   </div>
 </div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>
+      Actividad profesional y de Investigación
+    </h3>
+  </div>
+  <div class="panel-body">  
+    <!-- subtablas -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-road" aria-hidden="true"></span>
+	  Líneas de Investigación
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.lineas|markdown }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Palabras clave
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.palabras_clave|markdown }}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+	  Proyectos vigentes
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.proyectos_vigentes|markdown }}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>
+      Resumen Curricular
+    </h3>
+  </div>
+  <div class="panel-body">  
+
+    
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+	  Tutorías
+	</h3>
+      </div>
+      <div class="panel-body">
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th></th><th>Licenciatura</th><th>Maestría</th><th>Doctorado</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td>Cantidad de tesis dirigidas </td>
+	      <td>{{ object.academico.tesis_licenciatura }}</td>
+	      <td>{{ object.academico.tesis_maestria }}</td>
+	      <td>{{ object.academico.tesis_doctorado }}</td>
+	    </tr>
+	    <tr>
+	      <td>Cantidad de tesis dirigidas los últimos 5 años</td>
+	      <td>{{ object.academico.tesis_licenciatura_5 }}</td>
+	      <td>{{ object.academico.tesis_maestria_5 }}</td>
+	      <td>{{ object.academico.tesis_doctorado_5 }}</td>
+	    </tr>
+	    <tr>
+	      <td>Cantidad de comités en los que participa en el PCS</td>
+	      <td></td>
+	      <td>{{ object.academico.participacion_comite_maestria }}</td>
+	      <td>{{ object.academico.participacion_tutor_maestria }}</td>
+	    </tr>
+	  </tbody>
+	</table>
+	
+	Cantidad de comités de nivel doctorado en los que participa en el PCS: {{ object.academico.participacion_comite_doctorado }}<br />
+	Cantidad de participaciones como <em>tutor principal</em> en el PCS a nivel doctorado:  {{ object.academico.participacion_tutor_doctorado }} <br />
+	<hr>
+	Otros programas en los que participa como miembro de comités tutorales: {{ object.academico.tutor_otros_programas }} <br />
+	Otros programas en los que participa como <em>tutor principal</em>: {{ object.academico.tutor_principal_otros_programas }} <br />
+	
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></span>
+	  Publicaciones
+	</h3>
+      </div>
+      <div class="panel-body">
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th></th><th>Total</th><th>Los últimos 5 años</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td>Cantidad de artículos publicados en revistas nacionales</td>
+	      <td>{{ object.academico.articulos_nacionales }}</td>
+	      <td>{{ object.academico.articulos_nacionales_5 }}</td>
+	    </tr>
+	    <tr>
+	      <td>Cantidad de artículos publicados en revistas internacionales</td>
+	      <td>{{ object.academico.articulos_internacionales }}</td>
+	      <td>{{ object.academico.articulos_internacionales_5 }}</td>
+	    </tr>
+	    <tr>
+	      <td>Capítulos de libro publicados</td>
+	      <td>{{ object.academico.capitulos }}</td>
+	      <td>{{ object.academico.capitulos_5 }}</td>
+	    </tr>
+	    <tr>
+	      <td>Libros publicados</td>
+	      <td>{{ object.academico.libros }}</td>
+	      <td>{{ object.academico.libros_5 }}</td>
+	    </tr>
+	  </tbody>
+	</table>
+      </div>
+    </div>
+    
+    
+  </div>
+</div>
+
 
 <!-- academico -->
 {% endif %}
