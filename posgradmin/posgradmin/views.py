@@ -8,7 +8,7 @@ from sortable_listview import SortableListView
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
-
+import datetime
 from django.forms.models import model_to_dict
 import posgradmin.forms as forms
 
@@ -147,7 +147,12 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 p = models.Perfil()
 
             p.user = request.user
-            p.fecha_nacimiento = request.POST['fecha_nacimiento']
+
+            fecha_nacimiento = datetime.date(
+                int(request.POST['fecha_nacimiento_year']),
+                int(request.POST['fecha_nacimiento_month']),
+                int(request.POST['fecha_nacimiento_day']))
+            p.fecha_nacimiento = fecha_nacimiento
             p.genero = request.POST['genero']
             p.nacionalidad = request.POST['nacionalidad']
             p.curp = request.POST['curp']

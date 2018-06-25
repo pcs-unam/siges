@@ -1,6 +1,7 @@
 # coding: utf-8
 from datetime import datetime
 from django import forms
+from django.forms import extras
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, Column
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
@@ -48,7 +49,9 @@ class PerfilModelForm(forms.ModelForm):
 
     nombre = forms.CharField()
     apellidos = forms.CharField()
-    fecha_nacimiento = forms.DateField()
+
+    fecha_nacimiento = forms.DateField(
+        widget=extras.SelectDateWidget(years=range(1940, 2000)))
 
     def __init__(self, *args, **kwargs):
 
