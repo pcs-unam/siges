@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.contrib import admin
 from .models import Perfil, Academico, Estudiante, \
-    GradoAcademico, Institucion, Entidad, CampoConocimiento, \
+    GradoAcademico, Institucion, CampoConocimiento, \
     Solicitud, Proyecto, Dictamen, \
     Comite, Asistente, Curso, Catedra, Sesion, Adscripcion
 
@@ -13,7 +13,7 @@ admin.site.site_url = "/"
 
 class EstudianteAdmin(admin.ModelAdmin):
     search_fields = ['cuenta', 'user__first_name', 'user__last_name']
-    list_display = ['user', 'cuenta', 'entidad',
+    list_display = ['user', 'cuenta',
                     'plan', 'ingreso', 'unificado']
 
     def unificado(self, estudiante):
@@ -29,7 +29,7 @@ admin.site.register(Estudiante, EstudianteAdmin)
 class AcademicoAdmin(admin.ModelAdmin):
     search_fields = ['user__first_name', 'user__last_name']
     list_display = ['nombre_completo', 'titulo',
-                    'entidad', 'tutor', 'comite_academico',
+                    'tutor', 'comite_academico',
                     'nivel_SNI', 'nivel_PRIDE',
                     'unificado']
 
@@ -43,7 +43,6 @@ class AcademicoAdmin(admin.ModelAdmin):
                      'comite_academico',
                      'fecha_acreditacion',
                      'acreditacion',
-                     'entidad',
                      'nivel_PRIDE',
                      'nivel_SNI',
                      'CVU',
@@ -182,7 +181,6 @@ class PerfilAdmin(admin.ModelAdmin):
 admin.site.register(Perfil, PerfilAdmin)
 
 
-admin.site.register(Entidad)
 admin.site.register(CampoConocimiento)
 # admin.site.register(Comentario)
 admin.site.register(Proyecto)

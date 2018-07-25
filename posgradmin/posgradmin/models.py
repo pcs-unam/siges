@@ -26,17 +26,6 @@ class Institucion(models.Model):
         verbose_name_plural = "instituciones"
 
 
-class Entidad(models.Model):
-    nombre = models.CharField(max_length=100)
-    domicilio = models.CharField(max_length=100, blank=True, null=True)
-
-    def __unicode__(self):
-        return u"%s" % self.nombre
-
-    class Meta:
-        verbose_name_plural = "entidades"
-
-
 class CampoConocimiento(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -144,7 +133,7 @@ class Estudiante(models.Model):
         choices=((1, 1),
                  (2, 2)),
         blank=True, null=True)
-    entidad = models.ForeignKey(Entidad, null=True, blank=True)
+
     convenio = models.CharField(max_length=100, blank=True)
     # plan = models.CharField("clave del plan de estudios",
     #                         max_length=100, blank=True)
@@ -174,6 +163,8 @@ class Estudiante(models.Model):
     medalla_alfonso_caso = models.BooleanField(default=False)
     semestre_graduacion = models.PositiveSmallIntegerField(blank=True,
                                                            null=True)
+
+    institucion = models.ForeignKey(Institucion)
     observaciones = models.TextField(blank=True)
 
     def faltan_documentos(self):
@@ -466,8 +457,6 @@ class Academico(models.Model):
                                              ('PD', 'PD'),
                                              ('PM', 'PM')))
 
-    entidad = models.ForeignKey(Entidad, null=True, blank=True)
-
     solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE,
                                      blank=True, null=True)
 
@@ -475,18 +464,19 @@ class Academico(models.Model):
     tesis_licenciatura = models.PositiveSmallIntegerField(
         "Cantidad de tesis dirigidas a nivel Licenciatura",
         null=True, blank=True)
-    tesis_maestria = models.PositiveSmallIntegerField(
-        "Cantidad de tesis dirigidas a nivel Maestría",
-        null=True, blank=True)
-    tesis_doctorado = models.PositiveSmallIntegerField(
-        "Cantidad de tesis dirigidas a nivel Doctorado",
-        null=True, blank=True)
-
     tesis_licenciatura_5 = models.PositiveSmallIntegerField(
       "Cantidad de tesis dirigidas a nivel Licenciatura en los últimos 5 años",
       null=True, blank=True)
+
+    tesis_maestria = models.PositiveSmallIntegerField(
+        "Cantidad de tesis dirigidas a nivel Maestría",
+        null=True, blank=True)
     tesis_maestria_5 = models.PositiveSmallIntegerField(
         "Cantidad de tesis dirigidas a nivel Maestría en los últimos 5 años",
+        null=True, blank=True)
+
+    tesis_doctorado = models.PositiveSmallIntegerField(
+        "Cantidad de tesis dirigidas a nivel Doctorado",
         null=True, blank=True)
     tesis_doctorado_5 = models.PositiveSmallIntegerField(
         "Cantidad de tesis dirigidas a nivel Doctorado en los últimos 5 años",
@@ -495,13 +485,14 @@ class Academico(models.Model):
     participacion_comite_maestria = models.PositiveSmallIntegerField(
         "Cantidad de comités de nivel maestría en los que participa en el PCS",
         null=True, blank=True)
+    participacion_comite_doctorado = models.PositiveSmallIntegerField(
+       "Cantidad de comités de nivel doctorado en los que participa en el PCS",
+       null=True, blank=True)
+
     participacion_tutor_maestria = models.PositiveSmallIntegerField(
         "Cantidad de participaciones como tutor principal "
         + "en el PCS a nivel maestría",
         null=True, blank=True)
-    participacion_comite_doctorado = models.PositiveSmallIntegerField(
-       "Cantidad de comités de nivel doctorado en los que participa en el PCS",
-       null=True, blank=True)
     participacion_tutor_doctorado = models.PositiveSmallIntegerField(
         "Cantidad de participaciones como tutor principal "
         + "en el PCS a nivel doctorado",
@@ -516,9 +507,17 @@ class Academico(models.Model):
         "Otros programas en los que participa como tutor principal",
         blank=True)
 
+    articulos_internacionales = models.PositiveSmallIntegerField(
+        "Cantidad de artículos publicados en revistas internacionales",
+        null=True, blank=True)
+
     articulos_internacionales_5 = models.PositiveSmallIntegerField(
         "Cantidad de artículos publicados en revistas internacionales "
         + "durante los últimos 5 años",
+        null=True, blank=True)
+
+    articulos_nacionales = models.PositiveSmallIntegerField(
+        "Cantidad de artículos publicados en revistas nacionales",
         null=True, blank=True)
 
     articulos_nacionales_5 = models.PositiveSmallIntegerField(
@@ -526,39 +525,39 @@ class Academico(models.Model):
         + "durante los últimos 5 años",
         null=True, blank=True)
 
-    articulos_internacionales = models.PositiveSmallIntegerField(
-        "Cantidad de artículos publicados en revistas internacionales",
-        null=True, blank=True)
-
-    articulos_nacionales = models.PositiveSmallIntegerField(
-        "Cantidad de artículos publicados en revistas nacionales",
-        null=True, blank=True)
-
-    capitulos = models.PositiveSmallIntegerField(
-        "Capítulos de libro publicados",
-        null=True, blank=True)
-
-    capitulos_5 = models.PositiveSmallIntegerField(
-        "Capítulos de libro publicados durante los últimos 5 años",
-        null=True, blank=True)
-
     libros = models.PositiveSmallIntegerField(
-        "Libros publicados",
+        "Cantidad de libros publicados",
         null=True, blank=True)
 
     libros_5 = models.PositiveSmallIntegerField(
-        "Libros publicados durante los últimos 5 años",
+        "Cantidad de libros publicados durante los últimos 5 años",
+        null=True, blank=True)
+
+    capitulos = models.PositiveSmallIntegerField(
+        "Cantidad de capítulos de libro publicados",
+        null=True, blank=True)
+
+    capitulos_5 = models.PositiveSmallIntegerField(
+        "Cantidad de capítulos de libro publicados durante los últimos 5 años",
         null=True, blank=True)
 
     # Actividad profesional y de Investigación
     lineas = models.TextField(
-        "Líneas de investigación o campos de conocimiento",
+        "Temas de interés y/o experiencia en ciencias de la sostenibilidad",
         blank=True)
-    palabras_clave = models.TextField("Palabras clave, separadas por comas",
-                                      blank=True)
+
+    palabras_clave = models.TextField(
+        "Palabras clave de temas de interés y/o experiencia"
+        + "en ciencias de la sostenibilidad separadas por comas",
+        blank=True)
     motivacion = models.TextField("Motivación para participar en el Programa",
                                   blank=True)
-    proyectos_vigentes = models.TextField(blank=True)
+    proyectos_sostenibilidad = models.TextField(
+        "Principales proyectos relacionados con "
+        + "ciencias de la sostenibilidad", blank=True)
+    proyectos_vigentes = models.TextField(
+        "Proyectos vigentes en los que pueden "
+        + "participar alumnos del PCS", blank=True)
 
     # disponibilidad
     disponible_miembro = models.BooleanField(

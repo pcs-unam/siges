@@ -44,7 +44,7 @@
       <li class="list-group-item">
 	plan: {{ object.estudiante.plan|default:'' }}</li>
       <li class="list-group-item">
-	entidad: {{ object.estudiante.entidad|default:'' }}</li>
+	entidad: {{ object.estudiante.institucion|default:'' }}</li>
       <li class="list-group-item">
 	ingreso: {{ object.estudiante.ingreso|default:'' }}</li>
       <li class="list-group-item">
@@ -156,8 +156,6 @@
       <li class="list-group-item">
 	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
       <li class="list-group-item">
-	entidad: {{ object.academico.entidad|default:'' }}</li>
-      <li class="list-group-item">
 	acreditación: {{ object.academico.acreditacion|default:'' }}</li>
     </ul>
 
@@ -193,7 +191,7 @@
 	      <td><a href="{% url 'user_detail' estudiante.user.id %}">{{ estudiante.user.get_full_name }}</a></td>
 	      <td>{{ estudiante.estado|default:'' }}</td>
 	      <td>{{ estudiante.plan|default:'' }}</td>
-	      <td>{{ estudiante.entidad|default:'' }}</td>
+	      <td>{{ estudiante.institucion|default:'' }}</td>
 	      <td>{{ estudiante.ingreso|default:'' }}</td>
 	      <td>{{ estudiante.semestre|default:'' }}</td>
 	    </tr>
@@ -266,6 +264,18 @@
       <div class="panel-heading">
 	<h3 class="panel-title">
 	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+	  Proyectos relacionados con Ciencias de la Sostenibilidad
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.proyectos_sostenibilidad|markdown }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
 	  Proyectos vigentes
 	</h3>
       </div>
@@ -273,6 +283,8 @@
 	{{ object.academico.proyectos_vigentes|markdown }}
       </div>
     </div>
+
+
   </div>
 </div>
 

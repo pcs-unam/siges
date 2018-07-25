@@ -212,15 +212,9 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
         form = self.form_class(request.POST, request.FILES)
 
         if form.is_valid():
-            if request.POST['entidad'] != '':
-                entidad = models.Entidad.objects.get(
-                    id=int(request.POST['entidad']))
-            else:
-                entidad = None
 
             if hasattr(request.user, 'academico'):
                 a = request.user.academico
-                a.entidad = entidad
                 a.lineas = request.POST[u'lineas']
                 a.CVU = request.POST[u'CVU']
                 a.nivel_SNI = request.POST[u'nivel_SNI']
@@ -271,6 +265,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.lineas = request.POST['lineas']
                 a.palabras_clave = request.POST['palabras_clave']
                 a.motivacion = request.POST['motivacion']
+                a.proyectos_sostenibilidad = request.POST['proyectos_vigentes']
                 a.proyectos_vigentes = request.POST['proyectos_vigentes']
                 if 'disponible_miembro' in request.POST:
                     a.disponible_miembro = True
@@ -296,7 +291,6 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a = models.Academico()
                 a.user = request.user
                 a.solicitud = s
-                a.entidad = entidad
                 a.lineas = request.POST[u'lineas']
                 a.CVU = request.POST[u'CVU']
                 a.nivel_SNI = request.POST[u'nivel_SNI']
@@ -344,13 +338,21 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 if request.POST['libros_5'] != "":
                     a.libros_5 = request.POST['libros_5']
 
-
                 a.lineas = request.POST['lineas']
                 a.palabras_clave = request.POST['palabras_clave']
                 a.motivacion = request.POST['motivacion']
+                a.proyectos_sostenibilidad = request.POST['proyectos_vigentes']
                 a.proyectos_vigentes = request.POST['proyectos_vigentes']
-                a.disponible_miembro = request.POST['disponible_miembro']
-                a.disponible_tutor = request.POST['disponible_tutor']
+
+                if 'disponible_miembro' in request.POST:
+                    a.disponible_miembro = True
+                else:
+                    a.disponible_miembro = False
+
+                if 'disponible_tutor' in request.POST:
+                    a.disponible_tutor = True
+                else:
+                    a.disponible_tutor = False
                 a.save()
 
                 return HttpResponseRedirect(reverse('solicitud_detail',
@@ -560,8 +562,6 @@ class AcademicoSortableView(LoginRequiredMixin,
 
     allowed_sort_fields = {'user': {'default_direction': '',
                                     'verbose_name': 'nombre'},
-                           'entidad': {'default_direction': '-',
-                                       'verbose_name': 'entidad'},
                            'acreditacion': {'default_direction': '-',
                                             'verbose_name':
                                             'acreditación'}}

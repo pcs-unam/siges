@@ -2,7 +2,7 @@
 
 from django.contrib.auth.models import User
 
-from posgradmin.models import Estudiante, Entidad, Proyecto, \
+from posgradmin.models import Estudiante, Proyecto, \
     CampoConocimiento
 
 import csv
@@ -25,14 +25,9 @@ def load(f, ingreso, semestre):
             errores.append(row)
             break
 
-        entidad, creada = Entidad.objects.get_or_create(nombre=row["entidad"])
-        if creada:
-            row['error'] = 'Entidad creada, posible error de captura'
-            errores.append(row)
 
         e = Estudiante(cuenta=row['cuenta'],
                        plan=row['plan'],
-                       entidad=entidad,
                        ingreso=ingreso,
                        semestre=semestre,
                        user=u)
