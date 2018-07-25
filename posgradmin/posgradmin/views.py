@@ -265,7 +265,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.lineas = request.POST['lineas']
                 a.palabras_clave = request.POST['palabras_clave']
                 a.motivacion = request.POST['motivacion']
-                a.proyectos_sostenibilidad = request.POST['proyectos_vigentes']
+                a.proyectos_sostenibilidad = request.POST['proyectos_sostenibilidad']
                 a.proyectos_vigentes = request.POST['proyectos_vigentes']
                 if 'disponible_miembro' in request.POST:
                     a.disponible_miembro = True
@@ -341,7 +341,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.lineas = request.POST['lineas']
                 a.palabras_clave = request.POST['palabras_clave']
                 a.motivacion = request.POST['motivacion']
-                a.proyectos_sostenibilidad = request.POST['proyectos_vigentes']
+                a.proyectos_sostenibilidad = request.POST['proyectos_sostenibilidad']
                 a.proyectos_vigentes = request.POST['proyectos_vigentes']
 
                 if 'disponible_miembro' in request.POST:
