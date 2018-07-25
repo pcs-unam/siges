@@ -17,6 +17,7 @@ class Institucion(models.Model):
     pais = models.CharField(max_length=100, blank=True)
     estado = models.CharField(max_length=100, blank=True)
     dependencia_unam = models.BooleanField(default=False)
+    entidad_PCS = models.BooleanField(default=False)
 
     def __unicode__(self):
         return u"%s, %s" % (self.nombre, self.suborganizacion)
@@ -447,6 +448,9 @@ class Academico(models.Model):
                                           ('E', 'E')))
     CVU = models.CharField(max_length=100, blank=True, null=True)
     DGEE = models.CharField(max_length=6, blank=True, null=True)
+    numero_trabajador_unam = models.CharField("Número de trabajador (UNAM)",
+                                              max_length=100,
+                                              blank=True, null=True)
 
     tutor = models.BooleanField(default=False)
 
@@ -734,14 +738,10 @@ class AnexoAcademico(models.Model):
     #                                                self.fecha)
 
 
-class Empleo(models.Model):
+class Adscripcion(models.Model):
     user = models.ForeignKey(User)
     institucion = models.ForeignKey(Institucion)
     cargo = models.CharField(max_length=100)
-
-    numero_trabajador_unam = models.CharField("Número de trabajador (UNAM)",
-                                              max_length=100,
-                                              blank=True, null=True)
 
     def __unicode__(self):
         return u"%s, %s en %s" % (self.user,

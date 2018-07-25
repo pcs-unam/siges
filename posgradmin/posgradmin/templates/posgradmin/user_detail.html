@@ -160,8 +160,8 @@
       <li class="list-group-item">
 	acreditación: {{ object.academico.acreditacion|default:'' }}</li>
     </ul>
-    
-    
+
+
 
 
     <div class="panel panel-default">
@@ -235,7 +235,7 @@
       Actividad profesional y de Investigación
     </h3>
   </div>
-  <div class="panel-body">  
+  <div class="panel-body">
     <!-- subtablas -->
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -285,9 +285,9 @@
       Resumen Curricular
     </h3>
   </div>
-  <div class="panel-body">  
+  <div class="panel-body">
 
-    
+
     <div class="panel panel-default">
       <div class="panel-heading">
 	<h3 class="panel-title">
@@ -323,13 +323,13 @@
 	    </tr>
 	  </tbody>
 	</table>
-	
+
 	Cantidad de comités de nivel doctorado en los que participa en el PCS: {{ object.academico.participacion_comite_doctorado }}<br />
 	Cantidad de participaciones como <em>tutor principal</em> en el PCS a nivel doctorado:  {{ object.academico.participacion_tutor_doctorado }} <br />
 	<hr>
 	Otros programas en los que participa como miembro de comités tutorales: {{ object.academico.tutor_otros_programas }} <br />
 	Otros programas en los que participa como <em>tutor principal</em>: {{ object.academico.tutor_principal_otros_programas }} <br />
-	
+
       </div>
     </div>
 
@@ -372,8 +372,8 @@
 	</table>
       </div>
     </div>
-    
-    
+
+
   </div>
 </div>
 
@@ -457,13 +457,13 @@
   </div>
   <div class="panel-body">
     <ul class="list-group">
-      {% for empleo in object.empleo_set.all %}
+      {% for ad in object.adscripcion_set.all %}
       <li class="list-group-item">
-	<strong>{{ empleo.cargo }} </strong> @ {{ empleo.institucion }}
+	<strong>{{ ad.cargo }} </strong> @ {{ ad.institucion }}
       </li>
       {% empty %}
       <li class="list-group-item">
-	sin empleos ni adscripciones
+	sin adscripciones
 	</li>
       {% endfor %}
     </ul>

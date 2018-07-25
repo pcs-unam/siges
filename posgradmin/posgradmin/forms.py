@@ -8,7 +8,8 @@ from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, \
     CampoConocimiento, GradoAcademico, Institucion, Comite, \
-    Proyecto, Catedra, Sesion, Empleo
+    Proyecto, Catedra, Sesion, Adscripcion
+from django.conf import settings
 
 
 class SolicitudForm(forms.Form):
@@ -131,8 +132,6 @@ class AcademicoModelForm(forms.ModelForm):
                          + u"Participación en el Programa</h1>"),
                     Class="panel-heading"),
                 Div(Column('titulo',
-                           'fecha_acreditacion',
-                           'acreditacion',
                            'entidad',
                            'nivel_PRIDE',
                            'nivel_SNI',
@@ -272,7 +271,7 @@ class GradoAcademicoModelForm(forms.ModelForm):
             'nivel',
             'grado_obtenido',
             'institucion',
-            HTML('<a href="/institucion/agregar">agregar institucion</a><br /><br />'),
+            HTML('<a href="%sinstitucion/agregar">agregar institucion</a><br /><br />' % settings.APP_PREFIX),
             'facultad',
             'fecha_obtencion',
             'promedio',
@@ -280,23 +279,22 @@ class GradoAcademicoModelForm(forms.ModelForm):
             Submit('agregar', 'agregar'))
 
 
-class EmpleoModelForm(forms.ModelForm):
+class AdscripcionModelForm(forms.ModelForm):
 
     class Meta:
-        model = Empleo
+        model = Adscripcion
         exclude = ['user', ]
 
     def __init__(self, *args, **kwargs):
 
-        super(EmpleoModelForm, self).__init__(*args, **kwargs)
+        super(AdscripcionModelForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
 
         self.helper.layout = Layout(
             'institucion',
-            HTML('<a href="/institucion/agregar">agregar institucion</a><br /><br />'),
+            HTML('<a href="%sinstitucion/agregar">agregar institucion</a><br /><br />' % settings.APP_PREFIX),
             'cargo',
-            'numero_trabajador',
             Submit('agregar', 'agregar'))
 
 

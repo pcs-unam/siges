@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, Entidad, CampoConocimiento, \
     Solicitud, Proyecto, Dictamen, \
-    Comite, Asistente, Curso, Catedra, Sesion, Empleo
+    Comite, Asistente, Curso, Catedra, Sesion, Adscripcion
 
 admin.site.site_header = \
                 "Administración de Posgrado en Ciencias de la Sostenibilidad"
@@ -89,12 +89,12 @@ class AcademicoAdmin(admin.ModelAdmin):
 admin.site.register(Academico, AcademicoAdmin)
 
 
-class EmpleoAdmin(admin.ModelAdmin):
+class AdscripcionAdmin(admin.ModelAdmin):
     search_fields = ['user__username']
     list_display = ['cargo', 'institucion', 'user']
 
 
-admin.site.register(Empleo, EmpleoAdmin)
+admin.site.register(Adscripcion, AdscripcionAdmin)
 
 
 class ComiteAdmin(admin.ModelAdmin):

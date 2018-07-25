@@ -419,10 +419,10 @@ class GradoAcademicoEliminar(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse('perfil'))
 
 
-class EmpleoAgregar(LoginRequiredMixin, View):
+class AdscripcionAgregar(LoginRequiredMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 
-    form_class = forms.EmpleoModelForm
+    form_class = forms.AdscripcionModelForm
 
     breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
                    (settings.APP_PREFIX + 'inicio/perfil/', 'Mi perfil'),
@@ -444,9 +444,9 @@ class EmpleoAgregar(LoginRequiredMixin, View):
         if form.is_valid():
             ins = models.Institucion.objects.get(
                 id=int(request.POST['institucion']))
-            a = models.Empleo(user=request.user,
-                              institucion=ins,
-                              cargo=request.POST['cargo'])
+            a = models.Adscripcion(user=request.user,
+                                   institucion=ins,
+                                   cargo=request.POST['cargo'])
             a.save()
 
             return HttpResponseRedirect(reverse('perfil'))
@@ -458,11 +458,11 @@ class EmpleoAgregar(LoginRequiredMixin, View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class EmpleoEliminar(LoginRequiredMixin, View):
+class AdscripcionEliminar(LoginRequiredMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def get(self, request, *args, **kwargs):
-        a = models.Empleo.objects.get(id=int(kwargs['pk']))
+        a = models.Adscripcion.objects.get(id=int(kwargs['pk']))
         a.delete()
         return HttpResponseRedirect(reverse('perfil'))
 
@@ -489,9 +489,15 @@ class InstitucionAgregarView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            i = models.Institucion(nombre=request.POST['nombre'],
-                                   pais=request.POST['pais'],
-                                   estado=request.POST['estado'])
+            i = models.Institucion(
+                nombre=request.POST['nombre'],
+                pais=request.POST['pais'],
+                estado=request.POST['estado'],
+                suborganizacion=request.POST['suborganizacion'],
+                dependencia_unam=True
+                if request.POST['dependencia_unam'] == 'on' else False,
+                entidad_PCS=True
+                if request.POST['entidad_PCS'] == 'on' else False)
             i.save()
 
             return HttpResponseRedirect(reverse('editar_perfil'))

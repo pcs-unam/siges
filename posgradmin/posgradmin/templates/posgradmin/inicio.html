@@ -134,7 +134,7 @@
 	</ul>
 
 	<ul class="list-group">
-	  {% for ad in user.empleo_set.all %}
+	  {% for ad in user.adscripcion_set.all %}
 	  <li class="list-group-item">
 	    {{ ad.cargo }} en {{ ad.institucion }}
 	  </li>

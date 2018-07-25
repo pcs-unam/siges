@@ -45,14 +45,14 @@
   <div class="panel-heading">
     <h3 class="panel-title">
       <span class="glyphicon glyphicon glyphicon-leaf" aria-hidden="true"></span>
-      Empleos o Adscripciones
+      Adscripciones
     </h3>
   </div>
   <div class="panel-body">
     <a href="{% url 'agregar_adscripcion' %}"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
       agregar adscripción</a><br /><br />
     <ul class="list-group">
-      {% for ad in object.user.empleo_set.all %}
+      {% for ad in object.user.adscripcion_set.all %}
       <li class="list-group-item">
 	<div style="float: right">
 	  <button type="button" class="btn btn-danger btn-xs"

@@ -20,7 +20,7 @@ from django.contrib import admin
 from posgradmin.views import PerfilRegistroView, PerfilDetail, \
     AcademicoRegistroView, InicioView, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
-    EmpleoEliminar, EmpleoAgregar, \
+    AdscripcionEliminar, AdscripcionAgregar, \
     EstudianteSortableView, AcademicoSortableView, CatedraSortableView, \
     UserDetail
 
@@ -74,14 +74,14 @@ urlpatterns = [
         name="eliminar_grado"),
 
     url(r'^inicio/perfil/eliminar-adscripcion/(?P<pk>[0-9]+)$',
-        EmpleoEliminar.as_view()),
+        AdscripcionEliminar.as_view()),
 
     url(r'^inicio/perfil/agregar-grado$',
         GradoAcademicoAgregar.as_view(),
         name="agregar_grado"),
 
     url(r'^inicio/perfil/agregar-adscripcion$',
-        EmpleoAgregar.as_view(),
+        AdscripcionAgregar.as_view(),
         name="agregar_adscripcion"),
 
     url(r'^inicio/perfil/$',
