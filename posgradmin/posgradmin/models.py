@@ -485,10 +485,10 @@ class Academico(models.Model):
         null=True, blank=True)
 
     participacion_comite_maestria = models.PositiveSmallIntegerField(
-        "Cantidad de comités de nivel maestría en los que participa en el PCS",
+        "Cantidad de participaciones como miembro de comité tutor en el PCS a nivel maestría",
         null=True, blank=True)
     participacion_comite_doctorado = models.PositiveSmallIntegerField(
-       "Cantidad de comités de nivel doctorado en los que participa en el PCS",
+       "Cantidad de participaciones como miembro de comité tutor en el PCS a nivel doctorado",
        null=True, blank=True)
 
     participacion_tutor_maestria = models.PositiveSmallIntegerField(
@@ -500,13 +500,13 @@ class Academico(models.Model):
         + "en el PCS a nivel doctorado",
         null=True, blank=True)
 
-    tutor_otros_programas = models.TextField(
-        "Otros programas en los que participa como "
-        + "miembro de comités tutorales",
-        blank=True)
-
     tutor_principal_otros_programas = models.TextField(
         "Otros programas en los que participa como tutor principal",
+        blank=True)
+
+    tutor_otros_programas = models.TextField(
+        "Otros programas en los que participa como "
+        + "miembro de comité tutor",
         blank=True)
 
     articulos_internacionales = models.PositiveSmallIntegerField(
@@ -562,11 +562,12 @@ class Academico(models.Model):
         + "participar alumnos del PCS", blank=True)
 
     # disponibilidad
+    disponible_tutor = models.BooleanField("Disponible como tutor principal",
+                                           default=False)
+
     disponible_miembro = models.BooleanField(
         "Disponible como miembro de comité tutor",
         default=False)
-    disponible_tutor = models.BooleanField("Disponible como tutor principal",
-                                           default=False)
 
     # epílogo
     observaciones = models.TextField(blank=True)

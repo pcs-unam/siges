@@ -173,8 +173,7 @@ class AcademicoModelForm(forms.ModelForm):
                 Div(HTML("<h1 class='panel-title'>"
                          + u"Disponibilidad</h1>"),
                     Class="panel-heading"),
-                Div(Column("disponible_miembro",
-                           'disponible_tutor'),
+                Div(Column('disponible_tutor', "disponible_miembro"),
                     Class="panel-body"),
                 Submit('guardar', 'guardar'),
                 Class="panel panel-default"),
