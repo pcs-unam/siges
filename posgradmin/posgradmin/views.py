@@ -189,7 +189,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
                    (settings.APP_PREFIX + 'inicio/academico/registro',
-                    'Solicitar registro como Académico'))
+                    'Académico'))
 
     template_name = 'posgradmin/try.html'
 
@@ -362,7 +362,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             return render(request,
                           self.template_name,
                           {'form': form,
-                           'title': 'Solicitar registro como Académico',
+                           'title': 'Académico',
                            'breadcrumbs': self.breadcrumbs})
 
 

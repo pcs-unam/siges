@@ -558,11 +558,12 @@ class Academico(models.Model):
         + "participar alumnos del PCS", blank=True)
 
     # disponibilidad
-    disponible_tutor = models.BooleanField("Disponible como tutor principal",
-                                           default=False)
+    disponible_tutor = models.BooleanField(
+        "Disponible como tutor principal (dirección de alumnos)",
+        default=False)
 
     disponible_miembro = models.BooleanField(
-        "Disponible como miembro de comité tutor",
+        "Disponible como miembro de comité tutor (asesoría de alumnos)",
         default=False)
 
     # epílogo

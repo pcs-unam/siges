@@ -134,7 +134,9 @@
  #    #   ####   #    #  #####   ######  #    #     #     ####    ####
   -->
     {% if user == object %}
-    <a href="{% url 'registrar_academico' %}">editar registro de académico</a><br /><br />
+    <a href="{% url 'registrar_academico' %}">editar registro de académico</a> |
+    <a href="{% url 'editar_perfil' %}">editar perfil</a>
+    <br /><br />
     {% endif %}
 
     {% if user.is_staff %}
@@ -159,6 +161,28 @@
 	acreditación: {{ object.academico.show_acreditacion }}</li>
       <li class="list-group-item">
 	CVU: {{ object.academico.CVU|default:'!' }}</li>
+
+      {% if object.academico.DGEE %}
+      <li class="list-group-item">
+	DGEE: {{ object.academico.DGEE|default:'' }}</li>
+      {% endif %}
+
+      {% if object.academico.numero_trabajador_unam %}
+      <li class="list-group-item">
+	Número de trabajador UNAM: {{ object.academico.numero_trabajador_unam|default:'' }}</li>
+      {% endif %}
+
+      {% if object.academico.disponible_tutor %}
+      <li class="list-group-item">
+	Disponible como tutor principal (dirección de alumnos).
+      </li>
+      {% endif %}
+
+      {% if object.academico.disponible_miembro %}
+      <li class="list-group-item">
+	Disponible como miembro de comité tutor (asesoría de alumnos)</li>
+      {% endif %}
+
 
     </ul>
 
