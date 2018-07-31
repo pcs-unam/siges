@@ -130,7 +130,7 @@ admin.site.register(GradoAcademico, GradoAcademicoAdmin)
 
 
 class InstitucionAdmin(admin.ModelAdmin):
-    list_display = ['nombre', 'suborganizacion', 'dependencia_unam']
+    list_display = ['nombre', 'suborganizacion', 'dependencia_UNAM']
 
 
 admin.site.register(Institucion, InstitucionAdmin)

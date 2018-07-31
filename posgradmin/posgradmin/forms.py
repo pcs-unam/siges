@@ -302,7 +302,7 @@ class InstitucionModelForm(forms.ModelForm):
 
     class Meta:
         model = Institucion
-        exclude = []
+        exclude = ['entidad_PCS']
 
     def __init__(self, *args, **kwargs):
 

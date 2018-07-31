@@ -12,11 +12,12 @@ from settings import solicitudes_profesoriles,\
 
 
 class Institucion(models.Model):
-    nombre = models.CharField(max_length=150)
-    suborganizacion = models.CharField(max_length=150)
-    pais = models.CharField(max_length=100, blank=True)
+    nombre = models.CharField("Institución u Organización", max_length=150)
+    suborganizacion = models.CharField(
+        "Dependencia, Entidad o Departamento", max_length=150)
+    pais = models.CharField("País", max_length=100, blank=True)
     estado = models.CharField(max_length=100, blank=True)
-    dependencia_unam = models.BooleanField(default=False)
+    dependencia_UNAM = models.BooleanField(default=False)
     entidad_PCS = models.BooleanField(default=False)
 
     def __unicode__(self):
