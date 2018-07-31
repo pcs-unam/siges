@@ -254,7 +254,8 @@ class SolicitudAnexoForm(forms.Form):
 
 class GradoAcademicoModelForm(forms.ModelForm):
 
-    fecha_obtencion = forms.DateField()
+    fecha_obtencion = forms.DateField(
+        widget=extras.SelectDateWidget(years=range(1960, datetime.now().year + 1)))
 
     class Meta:
         model = GradoAcademico

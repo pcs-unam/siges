@@ -123,7 +123,7 @@ admin.site.register(Catedra, CatedraAdmin)
 class GradoAcademicoAdmin(admin.ModelAdmin):
     search_fields = ['user__username']
     list_display = ['grado_obtenido', 'nivel', 'user',
-                    'institucion', 'facultad', 'fecha_obtencion']
+                    'institucion', 'fecha_obtencion']
 
 
 admin.site.register(GradoAcademico, GradoAcademicoAdmin)

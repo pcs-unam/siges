@@ -104,10 +104,8 @@ class GradoAcademico(models.Model):
     grado_obtenido = models.CharField(max_length=100)
 
     institucion = models.ForeignKey(Institucion)
-    facultad = models.CharField(max_length=100)
 
     fecha_obtencion = models.DateField("Fecha de obtención de grado")
-    promedio = models.DecimalField(max_digits=4, decimal_places=2)
 
     documento = models.FileField("Copia de documento probatorio",
                                  upload_to=grado_path)

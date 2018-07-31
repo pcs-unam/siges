@@ -397,9 +397,10 @@ class GradoAcademicoAgregar(LoginRequiredMixin, View):
                 nivel=request.POST['nivel'],
                 grado_obtenido=request.POST['grado_obtenido'],
                 institucion=ins,
-                facultad=request.POST['facultad'],
-                fecha_obtencion=request.POST['fecha_obtencion'],
-                promedio=request.POST['promedio'],
+                fecha_obtencion=datetime.date(
+                    int(request.POST['fecha_obtencion_year']),
+                    int(request.POST['fecha_obtencion_month']),
+                    int(request.POST['fecha_obtencion_day'])),
                 documento=request.FILES['documento'])
             g.save()
 
