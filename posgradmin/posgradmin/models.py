@@ -51,25 +51,23 @@ class Perfil(models.Model):
     telefono = models.CharField(max_length=100)
     telefono_movil = models.CharField(max_length=100, blank=True)
 
-    direccion1 = models.CharField("direccion linea 1", max_length=150)
-    direccion2 = models.CharField("direccion linea 2", max_length=150)
+    direccion1 = models.CharField("dirección", max_length=150)
+
     codigo_postal = models.PositiveSmallIntegerField(default=0)
 
-    email2 = models.EmailField(max_length=200, blank=True)
     website = models.CharField(max_length=200, blank=True)
     pasaporte = models.CharField(max_length=200, blank=True)
     estado_civil = models.CharField(max_length=200, blank=True)
 
     genero = models.CharField(max_length=1, choices=(('M', 'masculino'),
-                                                     ('F', 'femenino'),
-                                                     ('N', 'no especificado')))
+                                                     ('F', 'femenino')))
 
     nacionalidad = models.CharField(max_length=100)
 
     fecha_nacimiento = models.DateField('fecha de nacimiento',
                                         blank=True, null=True)
 
-    headshot = models.ImageField("foto credencial",
+    headshot = models.ImageField("fotografía",
                                  upload_to=headshot_path,
                                  blank=True, null=True)
 
