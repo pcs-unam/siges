@@ -496,10 +496,9 @@ class InstitucionAgregarView(LoginRequiredMixin, View):
                 pais=request.POST['pais'],
                 estado=request.POST['estado'],
                 suborganizacion=request.POST['suborganizacion'],
-                dependencia_unam=True
-                if request.POST['dependencia_unam'] == 'on' else False,
-                entidad_PCS=True
-                if request.POST['entidad_PCS'] == 'on' else False)
+                dependencia_UNAM=True
+                if 'dependencia_UNAM' in request.POST else False,
+                entidad_PCS=False)
             i.save()
 
             return HttpResponseRedirect(reverse('editar_perfil'))
