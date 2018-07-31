@@ -451,11 +451,12 @@ class Academico(models.Model):
     fecha_acreditacion = models.DateField(blank=True, null=True)
 
     acreditacion = models.CharField(max_length=15,
-                                    choices=(('D', 'D'),
-                                             ('M', 'M'),
-                                             ('NPD', 'NPD'),
-                                             ('NPM', 'NPM'),
+                                    choices=(('E', 'E'),
+                                             ('D', 'D'),
                                              ('PD', 'PD'),
+                                             ('NPD', 'NPD'),
+                                             ('M', 'M'),
+                                             ('NPM', 'NPM'),
                                              ('PM', 'PM')))
 
     solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE,
@@ -569,6 +570,16 @@ class Academico(models.Model):
 
     # epílogo
     observaciones = models.TextField(blank=True)
+
+    def show_acreditacion(self):
+        if self.acreditacion == 'E':
+            return u"Comité tutor específico"
+        elif (self.acreditacion == 'D'
+              or self.acreditacion == 'PD'
+              or self.acreditacion == 'NPD'):
+            return "Doctorado"
+        else:
+            return "Maestría"
 
     def resumen_completo(self):
         if self.tesis_licenciatura == "":
