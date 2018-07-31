@@ -95,6 +95,13 @@
 
 	{% if user.academico %}
 
+	{% if not user.academico.CVU %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No ha registrado su número de CVU.</strong>
+	  <a href="{% url 'registrar_academico' %}">actualizar datos académicos</a>.
+	</div>
+	{% endif %}
+
 	{% if not user.academico.resumen_completo %}
 	<div class="alert alert-danger" role="alert">
 	  <strong>Resumen curricular está incompleto.</strong>
