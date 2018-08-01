@@ -76,10 +76,8 @@ class PerfilModelForm(forms.ModelForm):
                     Class="panel-heading"),
                 Div(Column('telefono',
                            'telefono_movil',
-                           'email2',
                            'website',
                            'direccion1',
-                           'direccion2',
                            'codigo_postal'),
                     Class="panel-body"),
                 Class="panel panel-default"),
@@ -288,7 +286,7 @@ class AdscripcionModelForm(forms.ModelForm):
 
     class Meta:
         model = Adscripcion
-        exclude = ['user', ]
+        exclude = ['perfil', ]
 
     def __init__(self, *args, **kwargs):
 
@@ -298,9 +296,20 @@ class AdscripcionModelForm(forms.ModelForm):
 
         self.helper.layout = Layout(
             'institucion',
-            HTML('<a href="%sinstitucion/agregar">agregar institucion</a><br /><br />' % settings.APP_PREFIX),
-            'cargo',
+            HTML(u'<a href="%sinstitucion/agregar">agregar institución a la lista</a><br /><br />'
+                 % settings.APP_PREFIX),
+            HTML(u'<p>Si no está usted adscrito en alguna de las entidades participantes del Posgrado, elija una marcada como "entidad del PCS" con la que crea que prefiera estar asociado para la comunicación con los representantes en el Comité Académico del Programa, y marque la siguiente casilla.</p>'),
+            'asociacion_PCS',
             Submit('agregar', 'agregar'))
+
+    def clean_asociacion_PCS(self):
+        ins = self.cleaned_data['institucion']
+        asoc = self.cleaned_data['asociacion_PCS']
+        if asoc and not ins.entidad_PCS:
+            raise forms.ValidationError(
+                u"Ha elegido asociarse al PCS a través de una institución que no es entidad.")
+
+        return asoc
 
 
 class InstitucionModelForm(forms.ModelForm):

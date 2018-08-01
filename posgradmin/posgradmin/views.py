@@ -159,10 +159,8 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             p.rfc = request.POST['rfc']
             p.telefono = request.POST['telefono']
             p.telefono_movil = request.POST['telefono_movil']
-            p.email2 = request.POST['email2']
             p.website = request.POST['website']
             p.direccion1 = request.POST['direccion1']
-            p.direccion2 = request.POST['direccion2']
             p.codigo_postal = request.POST['codigo_postal']
             if 'headshot' in request.FILES:
                 p.headshot = request.FILES['headshot']
@@ -464,13 +462,19 @@ class AdscripcionAgregar(LoginRequiredMixin, View):
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
+        form = self.form_class(request.POST)
         if form.is_valid():
             ins = models.Institucion.objects.get(
                 id=int(request.POST['institucion']))
-            a = models.Adscripcion(user=request.user,
+
+            if 'asociacion_PCS' in request.POST:
+                asociacion_PCS = True
+            else:
+                asociacion_PCS = False
+
+            a = models.Adscripcion(perfil=request.user.perfil,
                                    institucion=ins,
-                                   cargo=request.POST['cargo'])
+                                   asociacion_PCS=asociacion_PCS)
             a.save()
 
             return HttpResponseRedirect(reverse('perfil'))

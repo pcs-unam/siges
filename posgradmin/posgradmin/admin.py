@@ -93,8 +93,8 @@ admin.site.register(Academico, AcademicoAdmin)
 
 
 class AdscripcionAdmin(admin.ModelAdmin):
-    search_fields = ['user__username']
-    list_display = ['cargo', 'institucion', 'user']
+    search_fields = ['perfil__user']
+    list_display = ['institucion', 'perfil']
 
 
 admin.site.register(Adscripcion, AdscripcionAdmin)

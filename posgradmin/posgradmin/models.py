@@ -21,7 +21,11 @@ class Institucion(models.Model):
     entidad_PCS = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return u"%s, %s" % (self.nombre, self.suborganizacion)
+        if self.entidad_PCS:
+            pcs = "(entidad del PCS)"
+        else:
+            pcs = ""
+        return u"%s, %s %s" % (self.nombre, self.suborganizacion, pcs)
 
     class Meta:
         verbose_name_plural = "instituciones"
@@ -93,6 +97,34 @@ class Perfil(models.Model):
 
     class Meta:
         verbose_name_plural = "Perfiles"
+
+    def asociado_PCS(self):
+        for a in self.adscripcion_set.all():
+            if a.institucion.entidad_PCS or a.asociacion_PCS:
+                return True
+        return False
+
+    def adscripcion_ok(self):
+        """
+        si tiene adscripciones virtuales, debe tener una real tambien
+        """
+
+        if self.adscripcion_set.filter(asociacion_PCS=True).count() > 0:
+            # ha registrado virtuales
+            if self.adscripcion_set.filter(asociacion_PCS=False).count() > 0:
+                # y reales
+                return True
+            else:
+                # pero no reales
+                return False
+        else:
+            # no ha registrado virtuales
+            if self.adscripcion_set.count() > 0:
+                # pero ha registrado
+                return True
+            else:
+                # no ha registrado ninguna!
+                return False
 
 
 def grado_path(instance, filename):
@@ -765,14 +797,20 @@ class AnexoAcademico(models.Model):
 
 
 class Adscripcion(models.Model):
-    user = models.ForeignKey(User)
+    perfil = models.ForeignKey(Perfil)
     institucion = models.ForeignKey(Institucion)
-    cargo = models.CharField(max_length=100)
+
+    asociacion_PCS = models.BooleanField(
+        "sólo para asociación con el PCS",
+        default=False)
 
     def __unicode__(self):
-        return u"%s, %s en %s" % (self.user,
-                                  self.cargo,
-                                  self.institucion)
+        if self.asociacion_PCS:
+            asoc = u"(sólo para asociación con el Posgrado)"
+        else:
+            asoc = ""
+        return u"%s %s" % (self.institucion,
+                           asoc)
 
 
 class Comite(models.Model):

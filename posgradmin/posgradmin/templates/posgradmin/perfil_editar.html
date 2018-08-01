@@ -52,13 +52,13 @@
     <a href="{% url 'agregar_adscripcion' %}"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
       agregar adscripción</a><br /><br />
     <ul class="list-group">
-      {% for ad in object.user.adscripcion_set.all %}
+      {% for ad in object.adscripcion_set.all %}
       <li class="list-group-item">
 	<div style="float: right">
 	  <button type="button" class="btn btn-danger btn-xs"
-		  onClick="if (confirm('¿eliminar {{ ad.nombramiento}} @ {{ ad.institucion }}?')) window.location='/inicio/perfil/eliminar-adscripcion/{{ad.id}}'">
+		  onClick="if (confirm('¿eliminar adscripción a {{ ad.institucion }}?')) window.location='/inicio/perfil/eliminar-adscripcion/{{ad.id}}'">
 	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>
-	<strong>{{ ad.cargo }} </strong> @ {{ ad.institucion }}
+	{{ ad }}
       </li>
       {% endfor %}
     </ul>
