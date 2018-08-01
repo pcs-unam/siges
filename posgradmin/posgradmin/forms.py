@@ -164,13 +164,16 @@ class AcademicoModelForm(forms.ModelForm):
                 Div(HTML("<h1 class='panel-title'>"
                          + u"Actividad profesional y de Investigación</h1>"),
                     Class="panel-heading"),
-                Div(Column('campos_de_conocimiento',
-                           "lineas_de_investigacion",
-                           "lineas",
-                           'palabras_clave',
-                           'motivacion',
-                           'proyectos_sostenibilidad',
-                           'proyectos_vigentes'),
+                Div(Column(
+                    HTML(u"Para más información acerca de los Campos de Conocimiento y las Líneas de Investigación consulte <a href='https://github.com/sostenibilidad-unam/posgrado/files/2233071/Campos.y.lineas.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>este documento</a>."),
+                    'campos_de_conocimiento',
+                    "lineas_de_investigacion",
+                    HTML("<hr>"),
+                    "lineas",
+                    'palabras_clave',
+                    'motivacion',
+                    'proyectos_sostenibilidad',
+                    'proyectos_vigentes'),
                     Class="panel-body"),
                 Div(HTML("<h1 class='panel-title'>"
                          + u"Disponibilidad</h1>"),
