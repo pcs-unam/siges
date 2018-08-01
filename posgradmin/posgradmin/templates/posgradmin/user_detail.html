@@ -408,27 +408,27 @@
 	  <tbody>
 	    <tr>
 	      <td>Cantidad de tesis dirigidas </td>
-	      <td>{{ object.academico.tesis_licenciatura|default:"" }}</td>
-	      <td>{{ object.academico.tesis_maestria|default:"" }}</td>
-	      <td>{{ object.academico.tesis_doctorado|default:"" }}</td>
+	      <td>{{ object.academico.tesis_licenciatura|default_if_none:"" }}</td>
+	      <td>{{ object.academico.tesis_maestria|default_if_none:"" }}</td>
+	      <td>{{ object.academico.tesis_doctorado|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Cantidad de tesis dirigidas los últimos 5 años</td>
-	      <td>{{ object.academico.tesis_licenciatura_5|default:"" }}</td>
-	      <td>{{ object.academico.tesis_maestria_5|default:"" }}</td>
-	      <td>{{ object.academico.tesis_doctorado_5|default:"" }}</td>
+	      <td>{{ object.academico.tesis_licenciatura_5|default_if_none:"" }}</td>
+	      <td>{{ object.academico.tesis_maestria_5|default_if_none:"" }}</td>
+	      <td>{{ object.academico.tesis_doctorado_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Cantidad de comités en los que participa en el PCS</td>
 	      <td></td>
-	      <td>{{ object.academico.participacion_comite_maestria|default:"" }}</td>
-	      <td>{{ object.academico.participacion_tutor_maestria|default:"" }}</td>
+	      <td>{{ object.academico.participacion_comite_maestria|default_if_none:"" }}</td>
+	      <td>{{ object.academico.participacion_tutor_maestria|default_if_none:"" }}</td>
 	    </tr>
 	  </tbody>
 	</table>
 
-	Cantidad de comités de nivel doctorado en los que participa en el PCS: {{ object.academico.participacion_comite_doctorado|default:"" }}<br />
-	Cantidad de participaciones como <em>tutor principal</em> en el PCS a nivel doctorado:  {{ object.academico.participacion_tutor_doctorado|default:"" }} <br />
+	Cantidad de comités de nivel doctorado en los que participa en el PCS: {{ object.academico.participacion_comite_doctorado|default_if_none:"" }}<br />
+	Cantidad de participaciones como <em>tutor principal</em> en el PCS a nivel doctorado:  {{ object.academico.participacion_tutor_doctorado|default_if_none:"" }} <br />
 	<hr>
 	Otros programas en los que participa como miembro de comité tutor: {{ object.academico.tutor_otros_programas|default:"" }} <br />
 	Otros programas en los que participa como <em>tutor principal</em>: {{ object.academico.tutor_principal_otros_programas|default:"" }} <br />
@@ -453,23 +453,23 @@
 	  <tbody>
 	    <tr>
 	      <td>Cantidad de artículos publicados en revistas nacionales</td>
-	      <td>{{ object.academico.articulos_nacionales|default:"" }}</td>
-	      <td>{{ object.academico.articulos_nacionales_5|default:"" }}</td>
+	      <td>{{ object.academico.articulos_nacionales|default_if_none:"" }}</td>
+	      <td>{{ object.academico.articulos_nacionales_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Cantidad de artículos publicados en revistas internacionales</td>
-	      <td>{{ object.academico.articulos_internacionales|default:"" }}</td>
-	      <td>{{ object.academico.articulos_internacionales_5|default:"" }}</td>
+	      <td>{{ object.academico.articulos_internacionales|default_if_none:"" }}</td>
+	      <td>{{ object.academico.articulos_internacionales_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Capítulos de libro publicados</td>
-	      <td>{{ object.academico.capitulos|default:"" }}</td>
-	      <td>{{ object.academico.capitulos_5|default:"" }}</td>
+	      <td>{{ object.academico.capitulos|default_if_none:"" }}</td>
+	      <td>{{ object.academico.capitulos_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Libros publicados</td>
-	      <td>{{ object.academico.libros|default:"" }}</td>
-	      <td>{{ object.academico.libros_5|default:"" }}</td>
+	      <td>{{ object.academico.libros|default_if_none:"" }}</td>
+	      <td>{{ object.academico.libros_5|default_if_none:"" }}</td>
 	    </tr>
 	  </tbody>
 	</table>

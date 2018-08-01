@@ -140,18 +140,37 @@
 	  {% endfor %}
 	</ul>
 
+    {% if user.perfil %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+	  Adscripción
+	</h3>
+      </div>
+      <div class="panel-body">
 	<ul class="list-group">
-	  {% for ad in user.adscripcion_set.all %}
+	  {% for ad in user.perfil.adscripcion_set.all %}
 	  <li class="list-group-item">
-	    {{ ad.cargo }} en {{ ad.institucion }}
+	    {{ ad }}
 	  </li>
-	  {% empty %}
-	  <div class="alert alert-danger" role="alert">
-	    <strong>No ha registrado adscripciones</strong>
-	    <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
-	  </div>
 	  {% endfor %}
 	</ul>
+	{% if not user.perfil.adscripcion_ok %}
+	    <div class="alert alert-danger" role="alert">
+	      <strong>No ha registrado su adscripción</strong>
+	      <a href="{% url 'agregar_adscripcion' %}">Registrar adscripción</a>.
+	    </div>
+	{% elif not user.perfil.asociado_PCS %}
+	    <div class="alert alert-danger" role="alert">
+	      <strong>No asociado a entidad del PCS</strong>
+	      <a href="{% url 'agregar_adscripcion' %}">Registrar adscripción</a>.
+	    </div>
+	{% endif %}
+      </div>
+    </div>
+    {% endif %}
+
 
 	{% endif %}
 

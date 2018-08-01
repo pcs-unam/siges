@@ -275,7 +275,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 if 'campos_de_conocimiento' in request.POST:
                     campos = []
                     for c in request.POST.getlist('campos_de_conocimiento'):
-                        cid = int(l)
+                        cid = int(c)
                         campo = models.CampoConocimiento.objects.get(pk=cid)
                         campos.append(campo)
                     a.campos_de_conocimiento.set(campos)

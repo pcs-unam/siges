@@ -649,10 +649,6 @@ class Academico(models.Model):
             return False
         elif self.participacion_tutor_doctorado == "":
             return False
-        elif self.tutor_otros_programas == "":
-            return False
-        elif self.tutor_principal_otros_programas == "":
-            return False
         elif self.articulos_internacionales_5 == "":
             return False
         elif self.articulos_nacionales_5 == "":

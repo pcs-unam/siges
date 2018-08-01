@@ -164,8 +164,8 @@ class AcademicoModelForm(forms.ModelForm):
                     Class="panel-heading"),
                 Div(Column(
                     HTML(u"Para más información acerca de los Campos de Conocimiento y las Líneas de Investigación consulte <a href='https://github.com/sostenibilidad-unam/posgrado/files/2233071/Campos.y.lineas.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>este documento</a>."),
-                    'campos_de_conocimiento',
                     "lineas_de_investigacion",
+                    'campos_de_conocimiento',
                     HTML("<hr>"),
                     "lineas",
                     'palabras_clave',
