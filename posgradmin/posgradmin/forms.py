@@ -164,7 +164,9 @@ class AcademicoModelForm(forms.ModelForm):
                 Div(HTML("<h1 class='panel-title'>"
                          + u"Actividad profesional y de Investigación</h1>"),
                     Class="panel-heading"),
-                Div(Column("lineas",
+                Div(Column('campos_de_conocimiento',
+                           "lineas_de_investigacion",
+                           "lineas",
                            'palabras_clave',
                            'motivacion',
                            'proyectos_sostenibilidad',

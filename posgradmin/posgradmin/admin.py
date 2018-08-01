@@ -3,7 +3,8 @@ from django.contrib import admin
 from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
     Solicitud, Proyecto, Dictamen, \
-    Comite, Asistente, Curso, Catedra, Sesion, Adscripcion
+    Comite, Asistente, Curso, Catedra, Sesion, Adscripcion, \
+    LineaInvestigacion
 
 admin.site.site_header = \
                 "Administración de Posgrado en Ciencias de la Sostenibilidad"
@@ -47,6 +48,9 @@ class AcademicoAdmin(admin.ModelAdmin):
                      'nivel_SNI',
                      'CVU',
                      'DGEE',)}),
+        ('Líneas de investigación, Campos de Conocimiento',
+         {'fields': ('lineas_de_investigacion',
+                     'campos_de_conocimiento')}),
         ('Resumen Curricular',
          {'fields': ('tesis_licenciatura',
                      'tesis_maestria',
@@ -182,6 +186,7 @@ admin.site.register(Perfil, PerfilAdmin)
 
 
 admin.site.register(CampoConocimiento)
+admin.site.register(LineaInvestigacion)
 # admin.site.register(Comentario)
 admin.site.register(Proyecto)
 admin.site.register(Dictamen)

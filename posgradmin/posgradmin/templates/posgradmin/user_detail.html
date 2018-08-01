@@ -262,11 +262,43 @@
   </div>
   <div class="panel-body">
     <!-- subtablas -->
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Líneas de Investigación
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% for l in object.academico.lineas_de_investigacion.all %}
+	<li>{{ l }}</li>
+	{% endfor %}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Campos de Conocimiento
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% for c in object.academico.campos_de_conocimiento.all %}
+	<li>{{ c }}</li>
+	{% endfor %}
+      </div>
+    </div>
+
+
     <div class="panel panel-default">
       <div class="panel-heading">
 	<h3 class="panel-title">
 	  <span class="glyphicon glyphicon glyphicon-road" aria-hidden="true"></span>
-	  Líneas de Investigación
+	  Temas de Interés
 	</h3>
       </div>
       <div class="panel-body">

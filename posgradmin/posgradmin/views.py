@@ -263,6 +263,27 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                     a.libros_5 = request.POST['libros_5']
 
                 a.lineas = request.POST['lineas']
+
+                if 'lineas_de_investigacion' in request.POST:
+                    lineas = []
+                    for l in request.POST.getlist('lineas_de_investigacion'):
+                        lid = int(l)
+                        linea = models.LineaInvestigacion.objects.get(pk=lid)
+                        lineas.append(linea)
+                    a.lineas_de_investigacion.set(lineas)
+                else:
+                    a.lineas_de_investigacion.set([])
+
+                if 'campos_de_conocimiento' in request.POST:
+                    campos = []
+                    for c in request.POST.getlist('campos_de_conocimiento'):
+                        cid = int(l)
+                        campo = models.CampoConocimiento.objects.get(pk=cid)
+                        campos.append(campo)
+                    a.campos_de_conocimiento.set(campos)
+                else:
+                    a.campos_de_conocimiento.set([])
+
                 a.palabras_clave = request.POST['palabras_clave']
                 a.motivacion = request.POST['motivacion']
                 a.proyectos_sostenibilidad = request.POST['proyectos_sostenibilidad']

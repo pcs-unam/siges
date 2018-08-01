@@ -37,6 +37,16 @@ class CampoConocimiento(models.Model):
         verbose_name_plural = "campos de conocimiento"
 
 
+class LineaInvestigacion(models.Model):
+    nombre = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return u"%s" % self.nombre
+
+    class Meta:
+        verbose_name_plural = "líneas de investigación"
+
+
 def headshot_path(instance, filename):
     extension = filename.split('.')[-1]
     return 'headshots/%s.%s' % (instance.user.id, extension)
@@ -457,6 +467,13 @@ class Academico(models.Model):
 
     solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE,
                                      blank=True, null=True)
+
+    campos_de_conocimiento = models.ManyToManyField(
+        CampoConocimiento,
+        blank=True)
+    lineas_de_investigacion = models.ManyToManyField(
+        LineaInvestigacion,
+        blank=True)
 
     # Resumen Curricular
     tesis_licenciatura = models.PositiveSmallIntegerField(
