@@ -1,0 +1,51 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+      Perfil
+    </h3>
+  </div>
+
+  <div class="panel-body">
+
+    {% if user.perfil.headshot %}
+    <img src="{{ user.perfil.headshot_url }}" width="100px" />
+    {% endif %}
+
+    <h4>{{ user.get_full_name }}</h4>
+
+    <p><a href="{% url 'perfil' %}">perfil personal</a></p>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+	  Adscripción
+	</h3>
+      </div>
+      <div class="panel-body">
+	<ul class="list-group">
+	  {% for ad in user.perfil.adscripcion_set.all %}
+	  <li class="list-group-item">
+	    {{ ad }}
+	  </li>
+	  {% endfor %}
+	</ul>
+
+	{% if not user.perfil.adscripcion_ok %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No ha agregado su adscripción</strong>
+	  <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
+	</div>
+	{% elif not user.perfil.asociado_PCS %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No asociado a entidad del PCS</strong>
+	  <a href="{% url 'agregar_adscripcion' %}">Registrar adscripción</a>.
+	</div>
+	{% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+

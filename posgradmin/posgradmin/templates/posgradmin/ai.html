@@ -1,0 +1,182 @@
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  {% if not user.perfil %}
+	  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+	  Perfil
+	  {% elif user.estudiante %}
+	  <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+	  Estudiante [{{ user.estudiante.estado }}]
+	  {% elif user.academico %}
+	  <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+	  Académico
+	  {% endif %}
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% if user.perfil %}
+
+
+	{% if user.perfil.headshot %}
+	  <img src="{{ user.perfil.headshot_url }}" width="100px" />
+	{% endif %}
+
+	<h4>{{ user.get_full_name }}</h4>
+
+	<p><a href="{% url 'perfil' %}">Ver mi perfil</a></p>
+
+
+	{% if user.estudiante %}
+
+	{% if user.estudiante.faltan_documentos %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No ha registrado grados académicos</strong>
+	  <a href="{% url 'agregar_grado' %}">Agregar grados académicos</a>.
+	</div>
+	{% else %}
+	<ul class="list-group">
+	  {% for grado in user.gradoacademico_set.all %}
+	  <li class="list-group-item">
+	    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
+	    <p class="list-group-item-text">nivel {{ grado.nivel }}
+	  </li>
+	  {% endfor %}
+	</ul>
+	{% endif %}
+
+
+	{% if user.estudiante.get_proyecto is None %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No ha registrado proyecto</strong>
+	</div>
+	{% else %}
+	<ul class="list-group">
+	  <li class="list-group-item">
+	    <h4>Proyecto: {{ user.estudiante.get_proyecto.nombre }}</h4>
+	    Campo de Conocimiento: {{ user.estudiante.proyecto_set.last.campo_conocimiento }}
+
+	    {% if not user.estudiante.get_proyecto.aprobado %}
+	    <div class="alert alert-warning" role="alert">
+	      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+	      Proyecto no aprobado.
+	      Ver solicitud {{ user.estudiante.get_proyecto.solicitud.as_a|safe }}.
+
+	    </div>
+	    {% endif %}
+
+	    {% if user.estudiante.get_proyecto_no_aprobado %}
+	    {% if user.estudiante.get_proyecto_no_aprobado.solicitud.estado != 'cancelada' %}
+	    <div class="alert alert-warning" role="alert">
+	      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+	      Solicitud de cambio: {{ user.estudiante.get_proyecto_no_aprobado }}
+	      Ver <a href="{% url 'solicitud_detail' user.estudiante.get_proyecto_no_aprobado.solicitud.id %}">
+		#{{ user.estudiante.get_proyecto_no_aprobado.solicitud.id }}</a>.
+	    </div>
+	    {% endif %}
+	    {% endif %}
+
+
+	  </li>
+	</ul>
+	{% endif %}
+	{% endif %}
+
+
+
+	{% if user.academico %}
+
+	{% if not user.academico.CVU %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No ha registrado su número de CVU.</strong>
+	  <a href="{% url 'registrar_academico' %}">actualizar datos académicos</a>.
+	</div>
+	{% endif %}
+
+	{% if not user.academico.resumen_completo %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>Resumen curricular está incompleto.</strong>
+	  <a href="{% url 'registrar_academico' %}">actualizar datos académicos</a>.
+	</div>
+	{% endif %}
+
+	{% if not user.academico.actividad_completo %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No hay descripciones de Actividad profesional y de investigación.</strong>
+	  <a href="{% url 'registrar_academico' %}">actualizar datos académicos</a>.
+	</div>
+	{% endif %}
+
+
+	   {% if user.academico.tutor %}
+	       <p><a href="{% url 'mis_comites' %}">Mis comités de jurado</a></p>
+	       <p><a href="{% url 'mis_estudiantes' %}">Mis estudiantes</a></p>
+	   {% endif %}
+	   <p><a href="{% url 'mis_catedras' %}">Mis cátedras</a></p>
+
+	   {% if user.academico.solicitud.dictamen_final.resolucion == 'denegada' or user.academico.solicitud.estado == 'cancelada' %}
+	       <a href="{% url 'registrar_academico' %}">registrarse como académico</a>
+	   {% elif  user.academico.solicitud.dictamen_final.resolucion == 'nueva'  %}
+	       <a href="{% url 'solicitud_detail' user.academico.solicitud.id %}">
+		 {{ user.academico.solicitud.as_a|safe }}</a>.
+	   {% endif %}
+
+
+	<ul class="list-group">
+	  {% for grado in user.gradoacademico_set.all %}
+	  <li class="list-group-item">
+	    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
+	    <p class="list-group-item-text">nivel {{ grado.nivel }}
+	  </li>
+	  {% endfor %}
+	</ul>
+
+    {% if user.perfil %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+	  Adscripción
+	</h3>
+      </div>
+      <div class="panel-body">
+	<ul class="list-group">
+	  {% for ad in user.perfil.adscripcion_set.all %}
+	  <li class="list-group-item">
+	    {{ ad }}
+	  </li>
+	  {% endfor %}
+	</ul>
+	{% if not user.perfil.adscripcion_ok %}
+	    <div class="alert alert-danger" role="alert">
+	      <strong>No ha registrado su adscripción</strong>
+	      <a href="{% url 'agregar_adscripcion' %}">Registrar adscripción</a>.
+	    </div>
+	{% elif not user.perfil.asociado_PCS %}
+	    <div class="alert alert-danger" role="alert">
+	      <strong>No asociado a entidad del PCS</strong>
+	      <a href="{% url 'agregar_adscripcion' %}">Registrar adscripción</a>.
+	    </div>
+	{% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+
+	{% endif %}
+
+
+	{% if user.is_staff or user.asistente %}
+
+	{% elif not user.academico and not user.estudiante and user.perfil %}
+	<ul>
+	  <li><a href="{% url 'registrar_academico' %}">registrarse como académico</a></li>
+	</ul>
+	{% endif %}
+
+	{% else %}
+	  Para interactuar con el programa de posgrado necesitamos algunos datos personales y de contacto:
+	  <a href="{% url 'editar_perfil' %}">Completar registro de perfil</a>
+	  {% endif %}
+      </div>
+    </div>
+
