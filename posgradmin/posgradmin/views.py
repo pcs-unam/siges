@@ -124,7 +124,7 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             return render(request,
                           self.template,
                           {'form': form,
-                           'title': 'Editar mi perfil',
+                           'title': 'Perfil Personal',
                            'breadcrumbs': self.breadcrumbs})
 
         return render(request,
@@ -447,7 +447,7 @@ class AdscripcionAgregar(LoginRequiredMixin, View):
     form_class = forms.AdscripcionModelForm
 
     breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
-                   (settings.APP_PREFIX + 'inicio/perfil/', 'Mi perfil'),
+                   (settings.APP_PREFIX + 'inicio/perfil/', 'Perfil Personal'),
                    (settings.APP_PREFIX + 'inicio/perfil/agregar-adscrpcion',
                     'Agregar Adscripción')]
 
@@ -466,18 +466,15 @@ class AdscripcionAgregar(LoginRequiredMixin, View):
         if form.is_valid():
             ins = models.Institucion.objects.get(
                 id=int(request.POST['institucion']))
-
-            if 'asociacion_PCS' in request.POST:
-                asociacion_PCS = True
-            else:
-                asociacion_PCS = False
-
             a = models.Adscripcion(perfil=request.user.perfil,
-                                   institucion=ins,
-                                   asociacion_PCS=asociacion_PCS)
+                                   institucion=ins)
             a.save()
 
-            return HttpResponseRedirect(reverse('perfil'))
+            if ins.entidad_PCS or request.user.perfil.asociado_PCS():
+                return HttpResponseRedirect(reverse('perfil'))
+            else:
+                return HttpResponseRedirect(reverse('agregar_asociacion'))
+                
         else:
             return render(request,
                           self.template_name,
@@ -485,6 +482,49 @@ class AdscripcionAgregar(LoginRequiredMixin, View):
                            'form': form,
                            'breadcrumbs': self.breadcrumbs})
 
+
+class AsociacionAgregar(LoginRequiredMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
+    form_class = forms.AsociacionModelForm
+
+    breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX + 'inicio/perfil/', 'Perfil Personal'),
+                   (settings.APP_PREFIX + 'inicio/perfil/agregar-asociacion',
+                    'Agregar Asociación al PCS')]
+
+    template_name = 'posgradmin/try.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request,
+                      self.template_name,
+                      {'title': 'Agregar Asociación al PCS',
+                       'form': form,
+                       'breadcrumbs': self.breadcrumbs})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            ins = models.Institucion.objects.get(
+                id=int(request.POST['institucion']))
+
+            assert ins.entidad_PCS
+            
+            a = models.Adscripcion(perfil=request.user.perfil,
+                                   institucion=ins,
+                                   asociacion_PCS=True)
+            a.save()
+            return HttpResponseRedirect(reverse('perfil'))
+                
+        else:
+            return render(request,
+                          self.template_name,
+                          {'title': 'Agregar Asociación al PCS',
+                           'form': form,
+                           'breadcrumbs': self.breadcrumbs})
+
+        
 
 class AdscripcionEliminar(LoginRequiredMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'

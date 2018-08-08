@@ -297,19 +297,28 @@ class AdscripcionModelForm(forms.ModelForm):
             'institucion',
             HTML(u'<a href="%sinstitucion/agregar/ad/">agregar institución a la lista</a><br /><br />'
                  % settings.APP_PREFIX),
-            HTML(u'<p>Si no está usted adscrito en alguna de las entidades participantes del Posgrado, elija una marcada como "entidad del PCS" con la que crea que prefiera estar asociado para la comunicación con los representantes en el Comité Académico del Programa, y marque la siguiente casilla.</p>'),
-            'asociacion_PCS',
             Submit('agregar', 'agregar'))
 
-    def clean_asociacion_PCS(self):
-        ins = self.cleaned_data['institucion']
-        asoc = self.cleaned_data['asociacion_PCS']
-        if asoc and not ins.entidad_PCS:
-            raise forms.ValidationError(
-                u"Ha elegido asociarse al PCS a través de una institución que no es entidad.")
 
-        return asoc
 
+class AsociacionModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Adscripcion
+        exclude = ['perfil', ]
+
+    def __init__(self, *args, **kwargs):
+
+        super(AsociacionModelForm, self).__init__(*args, **kwargs)
+        self.fields['institucion'].queryset = Institucion.objects.filter(entidad_PCS=True)
+        self.helper = FormHelper(self)
+
+        self.helper.layout = Layout(
+            HTML(u'<p>Usted no está adscrito en alguna de las entidades participantes del Posgrado. Elija a la que prefiera asociarse para la comunicación con los representantes en el Comité Académico del Programa.</p>'),
+            'institucion',            
+            Submit('agregar', 'agregar'))
+
+        
 
 class InstitucionModelForm(forms.ModelForm):
 

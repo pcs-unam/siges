@@ -4,9 +4,6 @@
 {% block breadcrumbs %}
 <div class="breadcrumbs">
   &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
-  {% if object.academico %}
-  &rsaquo; <a href="{% url 'lista_academicos' %}">Académicos</a>
-  {% endif %}
 </div>
 {% endblock %}
 

@@ -206,13 +206,13 @@
 	</ul>
 	{% if not object.perfil.adscripcion_ok %}
 	    <div class="alert alert-danger" role="alert">
-	      <strong>No ha registrado su adscripción</strong>
-	      <a href="{% url 'agregar_adscripcion' %}">Registrar adscripción</a>.
+	      <strong>No ha agregado su adscripción</strong>
+	      <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
 	    </div>
 	{% elif not object.perfil.asociado_PCS %}
 	    <div class="alert alert-danger" role="alert">
-	      <strong>No asociado a entidad del PCS</strong>
-	      <a href="{% url 'agregar_adscripcion' %}">Registrar adscripción</a>.
+	      <strong>No asociado a entidad del PCS.</strong>
+	      <a href="{% url 'agregar_asociacion' %}">Agregar asociación al PCS</a>.
 	    </div>
 	{% endif %}
       </div>
