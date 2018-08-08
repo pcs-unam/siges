@@ -53,7 +53,7 @@ urlpatterns = [
     url(r'^export_action/', include("export_action.urls",
                                     namespace="export_action")),
 
-    url(r'^institucion/agregar',
+    url(r'^institucion/agregar/(?P<devolver>[\w-]+)/',
         InstitucionAgregarView.as_view(),
         name="agregar_institucion"),
 

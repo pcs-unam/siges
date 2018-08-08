@@ -32,8 +32,7 @@
 	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>
 	<strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
 	<p class="list-group-item-text">nivel {{ grado.nivel }}
-	  obtenido el {{ grado.fecha_obtencion }},
-	  promedio: {{ grado.promedio }}<br />
+	  obtenido el {{ grado.fecha_obtencion }}<br />
 	  <a href="{{ grado.documento }}">documento</a></p>
       </li>
       {% endfor %}

@@ -526,8 +526,10 @@ class InstitucionAgregarView(LoginRequiredMixin, View):
                 if 'dependencia_UNAM' in request.POST else False,
                 entidad_PCS=False)
             i.save()
-
-            return HttpResponseRedirect(reverse('editar_perfil'))
+            if kwargs['devolver'] == 'ga':
+                return HttpResponseRedirect(reverse('agregar_grado'))
+            elif kwargs['devolver'] == 'ad':
+                return HttpResponseRedirect(reverse('agregar_adscripcion'))
         else:
             return render(request,
                           self.template_name,

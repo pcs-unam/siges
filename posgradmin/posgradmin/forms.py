@@ -274,10 +274,9 @@ class GradoAcademicoModelForm(forms.ModelForm):
             'nivel',
             'grado_obtenido',
             'institucion',
-            HTML('<a href="%sinstitucion/agregar">agregar institucion</a><br /><br />' % settings.APP_PREFIX),
+            HTML('<a href="%sinstitucion/agregar/ga/">agregar institucion</a><br /><br />' % settings.APP_PREFIX),
             'facultad',
             'fecha_obtencion',
-            'promedio',
             'documento',
             Submit('agregar', 'agregar'))
 
@@ -296,7 +295,7 @@ class AdscripcionModelForm(forms.ModelForm):
 
         self.helper.layout = Layout(
             'institucion',
-            HTML(u'<a href="%sinstitucion/agregar">agregar institución a la lista</a><br /><br />'
+            HTML(u'<a href="%sinstitucion/agregar/ad/">agregar institución a la lista</a><br /><br />'
                  % settings.APP_PREFIX),
             HTML(u'<p>Si no está usted adscrito en alguna de las entidades participantes del Posgrado, elija una marcada como "entidad del PCS" con la que crea que prefiera estar asociado para la comunicación con los representantes en el Comité Académico del Programa, y marque la siguiente casilla.</p>'),
             'asociacion_PCS',
