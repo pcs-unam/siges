@@ -7,10 +7,7 @@
 
 <div class="row">
   <div class="col-sm-4">
-
-    {% if user.perfil %}
-    {% include 'posgradmin/inicio_perfil.html' %}
-    {% else %}
+    {% if not user.perfil %}
     <div class="alert alert-danger" role="alert">
       <strong>No tiene perfil personal.</strong>
       <a href="{% url 'editar_perfil' %}">Crear perfil personal.</a>.
@@ -19,19 +16,60 @@
 
 
     {% if user.academico %}
-    {% include 'posgradmin/inicio_academico.html' %}
+    {% if not user.academico.CVU %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No ha registrado su número de CVU.</strong>
+      <a href="{% url 'registrar_academico' %}">Actualizar datos académicos.</a>.
+    </div>
     {% endif %}
     
-
-    {% if user.estudiante %}
-    {% include 'posgradmin/inicio_estudiante.html' %}
+    {% if not user.academico.resumen_completo %}
+    <div class="alert alert-danger" role="alert">
+      <strong>Resumen curricular incompleto.</strong>
+      <a href="{% url 'registrar_academico' %}">Actualizar datos académicos.</a>.
+    </div>
     {% endif %}
+    
+    {% if not user.academico.actividad_completo %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No hay descripciones de Actividad profesional y de investigación.</strong>
+      <a href="{% url 'registrar_academico' %}">actualizar datos académicos</a>.
+    </div>
+    {% endif %}    
+    {% endif %}
+
+    
+    <div class="list-group">
+      {% if user.perfil %}
+      <a href="{% url 'perfil' %}" class="list-group-item">Perfil Personal</a>
+      {% endif %}
+
+      {% if user.academico %}
+      <a href="{% url 'perfil_academico' %}" class="list-group-item">Perfil Académico</a>
+      {% endif %}
+    </div>
+    
+    {# if user.perfil #}
+    {# include 'posgradmin/inicio_perfil.html' #}
+    {# else #}
+    {# endif #}
+
+
+    {# if user.academico #}
+    {# include 'posgradmin/inicio_academico.html' #}
+    {# endif #}
+    
+
+    {# if user.estudiante #}
+    {# include 'posgradmin/inicio_estudiante.html' #}
+    {# endif #}
 
   </div><!-- /.col-sm-4 -->
 
 
-<!-- Solicitudes -->
-{% if user.estudiante or user.academico or user.asistente or user.is_staff %}
+  <!-- Solicitudes -->
+  {% if False %} {# deshabilito mientras tanto #}
+{# if user.estudiante or user.academico or user.asistente or user.is_staff #}
   <div class="col-sm-4">
     <div class="panel panel-info">
       <div class="panel-heading">
@@ -78,9 +116,10 @@
 
       </div>
     </div>
-{% endif %}
-
   </div>
+  {% endif %}
+
+  
 </div>
 
 {% if user.is_staff or user.asistente %}
