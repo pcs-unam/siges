@@ -764,9 +764,8 @@ class Academico(models.Model):
         return comites
 
     def __unicode__(self):
-        return u"%s %s %s" % (self.titulo,
-                              self.user.first_name,
-                              self.user.last_name)
+        return u"%s %s" % (self.user.first_name,
+                           self.user.last_name)
 
     class Meta:
         verbose_name_plural = "Académicos"

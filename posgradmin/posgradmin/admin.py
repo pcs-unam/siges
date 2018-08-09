@@ -36,8 +36,7 @@ class AcademicoAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None,
-         {'fields': ('titulo',
-                     'user',
+         {'fields': ('user',
                      'observaciones',)}),
         ('Participación en el Programa',
          {'fields': ('tutor',
