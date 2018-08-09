@@ -1,0 +1,100 @@
+<!--
+ ######   ####    #####  #    #  #####      #      ##    #    #   #####  ######
+ #       #          #    #    #  #    #     #     #  #   ##   #     #    #
+ #####    ####      #    #    #  #    #     #    #    #  # #  #     #    #####
+ #            #     #    #    #  #    #     #    ######  #  # #     #    #
+ #       #    #     #    #    #  #    #     #    #    #  #   ##     #    #
+ ######   ####      #     ####   #####      #    #    #  #    #     #    ######
+-->
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+      Estudiante
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li class="list-group-item">
+	Cuenta: {{ object.estudiante.cuenta|default:'' }}
+      </li>
+      <li class="list-group-item">
+	Estado: {{ object.estudiante.estado|default:'' }}
+      </li>
+      <li class="list-group-item">
+	plan: {{ object.estudiante.plan|default:'' }}</li>
+      <li class="list-group-item">
+	entidad: {{ object.estudiante.institucion|default:'' }}</li>
+      <li class="list-group-item">
+	ingreso: {{ object.estudiante.ingreso|default:'' }}</li>
+      <li class="list-group-item">
+	semestre: {{ object.estudiante.semestre|default:'' }}</li>
+    </ul>
+
+    {% if user.is_staff %}
+    <a href="{% url 'admin:posgradmin_estudiante_change'  object.estudiante.id %}">editar registro de estudiante</a><br /><br />
+    {% endif %}
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
+	  Comité Tutor
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.estudiante.comite_tutoral.as_ul|safe }}
+	{% if see_private %}
+	<hr />
+	{{ object.estudiante.comite_tutoral.solicitud.as_a|safe }}
+	{{ object.estudiante.comite_tutoral.solicitud.dictamen_final.fecha }}
+	{% endif %}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+	  Proyecto
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% if object.estudiante.get_proyecto is None %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No ha registrado proyecto</strong>
+	</div>
+	{% else %}
+	<h4>{{ object.estudiante.get_proyecto.nombre }}</h4>
+	Campo de Conocimiento: {{ object.estudiante.proyecto_set.last.campo_conocimiento }}
+
+	{% if see_private %}
+	{% if not object.estudiante.get_proyecto.aprobado %}
+	<div class="alert alert-warning" role="alert">
+	  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+	  Proyecto no aprobado.
+	  Ver solicitud {{ object.estudiante.get_proyecto.solicitud.as_a|safe }}.
+	</div>
+	{% endif %}
+	{% endif %}
+
+	{% if see_private %}
+	{% if object.estudiante.get_proyecto_no_aprobado %}
+	{% if object.estudiante.get_proyecto_no_aprobado.solicitud.estado != 'cancelada' %}
+	<div class="alert alert-warning" role="alert">
+	  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+	  Solicitud de cambio: <strong>{{ object.estudiante.get_proyecto_no_aprobado }}</strong>
+	  {{ object.estudiante.get_proyecto_no_aprobado.solicitud.as_a|safe }}.
+	</div>
+	{% endif %}
+	{% endif %}
+	{% endif %}
+	{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- estudiante -->

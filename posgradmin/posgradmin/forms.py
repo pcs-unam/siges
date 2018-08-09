@@ -127,10 +127,9 @@ class AcademicoModelForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
             Div(Div(HTML("<h1 class='panel-title'>"
-                         + u"Participación en el Programa</h1>"),
+                         + u"Generales</h1>"),
                     Class="panel-heading"),
-                Div(Column('titulo',
-                           'nivel_PRIDE',
+                Div(Column('nivel_PRIDE',
                            'nivel_SNI',
                            'CVU',),
                     Class="panel-body"),

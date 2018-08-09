@@ -2,7 +2,7 @@
   <div class="panel-heading">
     <h3 class="panel-title">
       <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-      Perfil
+      Perfil Personal
     </h3>
   </div>
 
@@ -16,6 +16,34 @@
 
     <p><a href="{% url 'perfil' %}">perfil personal</a></p>
 
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
+	  Grados Académicos
+	</h3>
+      </div>
+      <div class="panel-body">
+	<ul class="list-group">
+	  {% for grado in user.gradoacademico_set.all %}
+	  <li class="list-group-item">
+	    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}
+	  </li>
+	  {% empty %}
+	  <li class="list-group-item">
+	    <div class="alert alert-danger" role="alert">
+	      <strong>No ha registrado grados académicos.</strong>
+	      <a href="{% url 'agregar_grado' %}">Agregar grado académico.</a>.
+	    </div>
+	  </li>
+	  {% endfor %}
+	</ul>
+      </div>
+    </div>
+
+
+    
     <div class="panel panel-default">
       <div class="panel-heading">
 	<h3 class="panel-title">

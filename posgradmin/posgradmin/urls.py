@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from posgradmin.views import PerfilRegistroView, PerfilDetail, \
+from posgradmin.views import PerfilEditar, PerfilDetail, PerfilAcademicoDetail, \
     AcademicoRegistroView, InicioView, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
     AdscripcionEliminar, AdscripcionAgregar, AsociacionAgregar, \
@@ -66,7 +66,7 @@ urlpatterns = [
         name="registrar_academico"),
 
     url(r'^inicio/perfil/editar$',
-        PerfilRegistroView.as_view(),
+        PerfilEditar.as_view(),
         name="editar_perfil"),
 
     url(r'^inicio/perfil/eliminar-grado/(?P<pk>[0-9]+)$',
@@ -87,12 +87,16 @@ urlpatterns = [
     url(r'^inicio/perfil/agregar-asociacion$',
         AsociacionAgregar.as_view(),
         name="agregar_asociacion"),
-
     
     url(r'^inicio/perfil/$',
         PerfilDetail.as_view(),
         name='perfil'),
 
+    url(r'^inicio/perfil-academico/$',
+        PerfilAcademicoDetail.as_view(),
+        name='perfil_academico'),
+
+    
     url(r'^inicio/estudiantes/mis$',
         MisEstudiantesView.as_view(),
         name="mis_estudiantes"),

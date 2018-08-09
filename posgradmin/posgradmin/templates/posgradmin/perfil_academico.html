@@ -1,0 +1,270 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load md2 %}
+<!--
+   ##     ####     ##    #####   ######  #    #     #     ####    ####
+  #  #   #    #   #  #   #    #  #       ##  ##     #    #    #  #    #
+ #    #  #       #    #  #    #  #####   # ## #     #    #       #    #
+ ######  #       ######  #    #  #       #    #     #    #       #    #
+ #    #  #    #  #    #  #    #  #       #    #     #    #    #  #    #
+ #    #   ####   #    #  #####   ######  #    #     #     ####    ####
+  -->
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; <a href="{% url 'perfil_academico' %}">{{ object.get_full_name }} (perfil académico)</a>
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>
+      Perfil Académico
+    </h3>
+  </div>
+  <div class="panel-body">
+
+    <h1>{{ object.get_full_name }}</h1>
+    <hr />
+    {% if user == object %}
+    <a href="{% url 'registrar_academico' %}">editar perfil académico</a>
+    {% elif user.is_staff %}
+    <a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar perfil académico</a><br /><br />
+    {% endif %}
+    <br />  <br />    
+    
+    <ul class="list-group">
+      <li class="list-group-item">
+	Nivel PRIDE: {{ object.academico.nivel_PRIDE|default:'' }}
+      </li>
+      <li class="list-group-item">
+	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
+      <li class="list-group-item">
+	acreditación: {{ object.academico.show_acreditacion }}</li>
+      <li class="list-group-item">
+	CVU: {{ object.academico.CVU|default:'!' }}</li>
+
+      {% if object.academico.DGEE %}
+      <li class="list-group-item">
+	DGEE: {{ object.academico.DGEE|default:'' }}</li>
+      {% endif %}
+
+      {% if object.academico.numero_trabajador_unam %}
+      <li class="list-group-item">
+	Número de trabajador UNAM: {{ object.academico.numero_trabajador_unam|default:'' }}</li>
+      {% endif %}
+
+      {% if object.academico.disponible_tutor %}
+      <li class="list-group-item">
+	Disponible como tutor principal (dirección de alumnos).
+      </li>
+      {% endif %}
+
+      {% if object.academico.disponible_miembro %}
+      <li class="list-group-item">
+	Disponible como miembro de comité tutor (asesoría de alumnos)</li>
+      {% endif %}
+
+    </ul>
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-road" aria-hidden="true"></span>
+      Resumen Curricular
+    </h3>
+  </div>
+  <div class="panel-body">
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+	  Tutorías
+	</h3>
+      </div>
+      <div class="panel-body">
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th></th><th>Licenciatura</th><th>Maestría</th><th>Doctorado</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td>Cantidad de tesis dirigidas </td>
+	      <td>{{ object.academico.tesis_licenciatura|default_if_none:"" }}</td>
+	      <td>{{ object.academico.tesis_maestria|default_if_none:"" }}</td>
+	      <td>{{ object.academico.tesis_doctorado|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Cantidad de tesis dirigidas los últimos 5 años</td>
+	      <td>{{ object.academico.tesis_licenciatura_5|default_if_none:"" }}</td>
+	      <td>{{ object.academico.tesis_maestria_5|default_if_none:"" }}</td>
+	      <td>{{ object.academico.tesis_doctorado_5|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Cantidad de comités en los que participa en el PCS</td>
+	      <td></td>
+	      <td>{{ object.academico.participacion_comite_maestria|default_if_none:"" }}</td>
+	      <td>{{ object.academico.participacion_tutor_maestria|default_if_none:"" }}</td>
+	    </tr>
+	  </tbody>
+	</table>
+
+	Cantidad de comités de nivel doctorado en los que participa en el PCS: {{ object.academico.participacion_comite_doctorado|default_if_none:"" }}<br />
+	Cantidad de participaciones como <em>tutor principal</em> en el PCS a nivel doctorado:  {{ object.academico.participacion_tutor_doctorado|default_if_none:"" }} <br />
+	<hr>
+	Otros programas en los que participa como miembro de comité tutor: {{ object.academico.tutor_otros_programas|default:"" }} <br />
+	Otros programas en los que participa como <em>tutor principal</em>: {{ object.academico.tutor_principal_otros_programas|default:"" }} <br />
+
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></span>
+	  Publicaciones
+	</h3>
+      </div>
+      <div class="panel-body">
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th></th><th>Total</th><th>Los últimos 5 años</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td>Cantidad de artículos publicados en revistas nacionales</td>
+	      <td>{{ object.academico.articulos_nacionales|default_if_none:"" }}</td>
+	      <td>{{ object.academico.articulos_nacionales_5|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Cantidad de artículos publicados en revistas internacionales</td>
+	      <td>{{ object.academico.articulos_internacionales|default_if_none:"" }}</td>
+	      <td>{{ object.academico.articulos_internacionales_5|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Capítulos de libro publicados</td>
+	      <td>{{ object.academico.capitulos|default_if_none:"" }}</td>
+	      <td>{{ object.academico.capitulos_5|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Libros publicados</td>
+	      <td>{{ object.academico.libros|default_if_none:"" }}</td>
+	      <td>{{ object.academico.libros_5|default_if_none:"" }}</td>
+	    </tr>
+	  </tbody>
+	</table>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-lamp" aria-hidden="true"></span>
+      Actividad profesional y de Investigación
+    </h3>
+  </div>
+  <div class="panel-body">
+    <!-- subtablas -->
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Temas de Interés
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.lineas|markdown }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Palabras clave
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.palabras_clave|markdown }}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+	  Proyectos relacionados con Ciencias de la Sostenibilidad
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.proyectos_sostenibilidad|markdown }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+	  Proyectos vigentes
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.proyectos_vigentes|markdown }}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Líneas de Investigación
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% for l in object.academico.lineas_de_investigacion.all %}
+	<li>{{ l }}</li>
+	{% endfor %}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Campos de Conocimiento
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% for c in object.academico.campos_de_conocimiento.all %}
+	<li>{{ c }}</li>
+	{% endfor %}
+      </div>
+    </div>
+    
+
+  </div>
+</div>
+
+
+<!-- academico -->
+{% endblock %}

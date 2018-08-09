@@ -67,7 +67,7 @@ class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     login_url = settings.APP_PREFIX + 'accounts/login/'
-    template_name = "posgradmin/user_detail.html"
+    template_name = "posgradmin/perfil_personal.html"
 
     def test_func(self):
         return True
@@ -95,7 +95,7 @@ class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return self.request.user
 
 
-class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
+class PerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
@@ -166,8 +166,7 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 p.headshot = request.FILES['headshot']
             p.save()
 
-            return HttpResponseRedirect(reverse('user_detail',
-                                                args=(request.user.id,)))
+            return HttpResponseRedirect(reverse('perfil'))
         else:
             return render(request,
                           self.template,
@@ -177,6 +176,39 @@ class PerfilRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                            'breadcrumbs': self.breadcrumbs})
 
 
+
+class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+    template_name = "posgradmin/perfil_academico.html"
+
+    def test_func(self):
+        return True
+
+    def get_context_data(self, **kwargs):
+        context = super(PerfilAcademicoDetail, self).get_context_data(**kwargs)
+        context['user'] = self.request.user
+
+        # may see intimacies?
+        u = context['object']
+
+        if (  # by authority
+                self.request.user == u
+                or self.request.user.is_staff
+                or hasattr(self.request.user, 'asistente')):
+            see_private = True
+        else:
+            see_private = False
+
+        context['see_private'] = see_private
+
+        return context
+
+    def get_object(self):
+        return self.request.user
+
+        
+
+        
 class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 
@@ -186,8 +218,9 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
     form_class = forms.AcademicoModelForm
 
     breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                   (settings.APP_PREFIX + 'inicio/perfil-academico/', 'Perfil Académico'),
                    (settings.APP_PREFIX + 'inicio/academico/registro',
-                    'Académico'))
+                    'Editar'))
 
     template_name = 'posgradmin/try.html'
 
@@ -203,185 +236,104 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
         return render(request,
                       self.template_name,
                       {'form': form,
-                       'title': 'Editar registro Académico',
+                       'title': 'Editar Perfil Académico',
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
 
         if form.is_valid():
+            a = request.user.academico
+            a.lineas = request.POST[u'lineas']
+            a.CVU = request.POST[u'CVU']
+            a.nivel_SNI = request.POST[u'nivel_SNI']
+            a.nivel_PRIDE = request.POST[u'nivel_PRIDE']
+            
+            if request.POST['tesis_licenciatura'] != "":
+                a.tesis_licenciatura = request.POST['tesis_licenciatura']
+            if request.POST['tesis_maestria'] != "":
+                a.tesis_maestria = request.POST['tesis_maestria']
+            if request.POST['tesis_doctorado'] != "":
+                a.tesis_doctorado = request.POST['tesis_doctorado']
+            if request.POST['tesis_licenciatura_5'] != "":
+                a.tesis_licenciatura_5 = request.POST['tesis_licenciatura_5']
+            if request.POST['tesis_maestria_5'] != "":
+                a.tesis_maestria_5 = request.POST['tesis_maestria_5']
+            if request.POST['tesis_doctorado_5'] != "":
+                a.tesis_doctorado_5 = request.POST['tesis_doctorado_5']
+            if request.POST['participacion_comite_maestria'] != "":
+                a.participacion_comite_maestria = request.POST['participacion_comite_maestria']
+            if request.POST['participacion_tutor_maestria'] != "":
+                a.participacion_tutor_maestria = request.POST['participacion_tutor_maestria']
+            if request.POST['participacion_comite_doctorado'] != "":
+                a.participacion_comite_doctorado = request.POST['participacion_comite_doctorado']
+            if request.POST['participacion_tutor_doctorado'] != "":
+                a.participacion_tutor_doctorado = request.POST['participacion_tutor_doctorado']
 
-            if hasattr(request.user, 'academico'):
-                a = request.user.academico
-                a.lineas = request.POST[u'lineas']
-                a.CVU = request.POST[u'CVU']
-                a.nivel_SNI = request.POST[u'nivel_SNI']
-                a.nivel_PRIDE = request.POST[u'nivel_PRIDE']
-                a.titulo = request.POST[u'titulo']
+            a.tutor_otros_programas = request.POST['tutor_otros_programas']
+            a.tutor_principal_otros_programas = request.POST['tutor_principal_otros_programas']
 
-                if request.POST['tesis_licenciatura'] != "":
-                    a.tesis_licenciatura = request.POST['tesis_licenciatura']
-                if request.POST['tesis_maestria'] != "":
-                    a.tesis_maestria = request.POST['tesis_maestria']
-                if request.POST['tesis_doctorado'] != "":
-                    a.tesis_doctorado = request.POST['tesis_doctorado']
-                if request.POST['tesis_licenciatura_5'] != "":
-                    a.tesis_licenciatura_5 = request.POST['tesis_licenciatura_5']
-                if request.POST['tesis_maestria_5'] != "":
-                    a.tesis_maestria_5 = request.POST['tesis_maestria_5']
-                if request.POST['tesis_doctorado_5'] != "":
-                    a.tesis_doctorado_5 = request.POST['tesis_doctorado_5']
-                if request.POST['participacion_comite_maestria'] != "":
-                    a.participacion_comite_maestria = request.POST['participacion_comite_maestria']
-                if request.POST['participacion_tutor_maestria'] != "":
-                    a.participacion_tutor_maestria = request.POST['participacion_tutor_maestria']
-                if request.POST['participacion_comite_doctorado'] != "":
-                    a.participacion_comite_doctorado = request.POST['participacion_comite_doctorado']
-                if request.POST['participacion_tutor_doctorado'] != "":
-                    a.participacion_tutor_doctorado = request.POST['participacion_tutor_doctorado']
+            if request.POST['articulos_internacionales_5'] != "":
+                a.articulos_internacionales_5 = request.POST['articulos_internacionales_5']
+            if request.POST['articulos_nacionales_5'] != "":
+                a.articulos_nacionales_5 = request.POST['articulos_nacionales_5']
+            if request.POST['articulos_internacionales'] != "":
+                a.articulos_internacionales = request.POST['articulos_internacionales']
+            if request.POST['articulos_nacionales'] != "":
+                a.articulos_nacionales = request.POST['articulos_nacionales']
+            if request.POST['capitulos'] != "":
+                a.capitulos = request.POST['capitulos']
+            if request.POST['capitulos_5'] != "":
+                a.capitulos_5 = request.POST['capitulos_5']
+            if request.POST['libros'] != "":
+                a.libros = request.POST['libros']
+            if request.POST['libros_5'] != "":
+                a.libros_5 = request.POST['libros_5']
 
-                a.tutor_otros_programas = request.POST['tutor_otros_programas']
-                a.tutor_principal_otros_programas = request.POST['tutor_principal_otros_programas']
+            a.lineas = request.POST['lineas']
 
-                if request.POST['articulos_internacionales_5'] != "":
-                    a.articulos_internacionales_5 = request.POST['articulos_internacionales_5']
-                if request.POST['articulos_nacionales_5'] != "":
-                    a.articulos_nacionales_5 = request.POST['articulos_nacionales_5']
-                if request.POST['articulos_internacionales'] != "":
-                    a.articulos_internacionales = request.POST['articulos_internacionales']
-                if request.POST['articulos_nacionales'] != "":
-                    a.articulos_nacionales = request.POST['articulos_nacionales']
-                if request.POST['capitulos'] != "":
-                    a.capitulos = request.POST['capitulos']
-                if request.POST['capitulos_5'] != "":
-                    a.capitulos_5 = request.POST['capitulos_5']
-                if request.POST['libros'] != "":
-                    a.libros = request.POST['libros']
-                if request.POST['libros_5'] != "":
-                    a.libros_5 = request.POST['libros_5']
-
-                a.lineas = request.POST['lineas']
-
-                if 'lineas_de_investigacion' in request.POST:
-                    lineas = []
-                    for l in request.POST.getlist('lineas_de_investigacion'):
-                        lid = int(l)
-                        linea = models.LineaInvestigacion.objects.get(pk=lid)
-                        lineas.append(linea)
-                    a.lineas_de_investigacion.set(lineas)
-                else:
-                    a.lineas_de_investigacion.set([])
-
-                if 'campos_de_conocimiento' in request.POST:
-                    campos = []
-                    for c in request.POST.getlist('campos_de_conocimiento'):
-                        cid = int(c)
-                        campo = models.CampoConocimiento.objects.get(pk=cid)
-                        campos.append(campo)
-                    a.campos_de_conocimiento.set(campos)
-                else:
-                    a.campos_de_conocimiento.set([])
-
-                a.palabras_clave = request.POST['palabras_clave']
-                a.motivacion = request.POST['motivacion']
-                a.proyectos_sostenibilidad = request.POST['proyectos_sostenibilidad']
-                a.proyectos_vigentes = request.POST['proyectos_vigentes']
-                if 'disponible_miembro' in request.POST:
-                    a.disponible_miembro = True
-                else:
-                    a.disponible_miembro = False
-
-                if 'disponible_tutor' in request.POST:
-                    a.disponible_tutor = True
-                else:
-                    a.disponible_tutor = False
-
-                a.save()
-
-                return HttpResponseRedirect(reverse('perfil'))
-
+            if 'lineas_de_investigacion' in request.POST:
+                lineas = []
+                for l in request.POST.getlist('lineas_de_investigacion'):
+                    lid = int(l)
+                    linea = models.LineaInvestigacion.objects.get(pk=lid)
+                    lineas.append(linea)
+                a.lineas_de_investigacion.set(lineas)
             else:
-                s = models.Solicitud()
-                s.resumen = 'registrar como académico'
-                s.tipo = 'registrar_academico'
-                s.solicitante = request.user
-                s.save()
+                a.lineas_de_investigacion.set([])
 
-                a = models.Academico()
-                a.user = request.user
-                a.solicitud = s
-                a.lineas = request.POST[u'lineas']
-                a.CVU = request.POST[u'CVU']
-                a.nivel_SNI = request.POST[u'nivel_SNI']
-                a.nivel_PRIDE = request.POST[u'nivel_PRIDE']
-                a.titulo = request.POST[u'titulo']
+            if 'campos_de_conocimiento' in request.POST:
+                campos = []
+                for c in request.POST.getlist('campos_de_conocimiento'):
+                    cid = int(c)
+                    campo = models.CampoConocimiento.objects.get(pk=cid)
+                    campos.append(campo)
+                a.campos_de_conocimiento.set(campos)
+            else:
+                a.campos_de_conocimiento.set([])
 
-                if request.POST['tesis_licenciatura'] != "":
-                    a.tesis_licenciatura = request.POST['tesis_licenciatura']
-                if request.POST['tesis_maestria'] != "":
-                    a.tesis_maestria = request.POST['tesis_maestria']
-                if request.POST['tesis_doctorado'] != "":
-                    a.tesis_doctorado = request.POST['tesis_doctorado']
-                if request.POST['tesis_licenciatura_5'] != "":
-                    a.tesis_licenciatura_5 = request.POST['tesis_licenciatura_5']
-                if request.POST['tesis_maestria_5'] != "":
-                    a.tesis_maestria_5 = request.POST['tesis_maestria_5']
-                if request.POST['tesis_doctorado_5'] != "":
-                    a.tesis_doctorado_5 = request.POST['tesis_doctorado_5']
-                if request.POST['participacion_comite_maestria'] != "":
-                    a.participacion_comite_maestria = request.POST['participacion_comite_maestria']
-                if request.POST['participacion_tutor_maestria'] != "":
-                    a.participacion_tutor_maestria = request.POST['participacion_tutor_maestria']
-                if request.POST['participacion_comite_doctorado'] != "":
-                    a.participacion_comite_doctorado = request.POST['participacion_comite_doctorado']
-                if request.POST['participacion_tutor_doctorado'] != "":
-                    a.participacion_tutor_doctorado = request.POST['participacion_tutor_doctorado']
+            a.palabras_clave = request.POST['palabras_clave']
+            a.motivacion = request.POST['motivacion']
+            a.proyectos_sostenibilidad = request.POST['proyectos_sostenibilidad']
+            a.proyectos_vigentes = request.POST['proyectos_vigentes']
+            if 'disponible_miembro' in request.POST:
+                a.disponible_miembro = True
+            else:
+                a.disponible_miembro = False
 
-                a.tutor_otros_programas = request.POST['tutor_otros_programas']
-                a.tutor_principal_otros_programas = request.POST['tutor_principal_otros_programas']
+            if 'disponible_tutor' in request.POST:
+                a.disponible_tutor = True
+            else:
+                a.disponible_tutor = False
 
-                if request.POST['articulos_internacionales_5'] != "":
-                    a.articulos_internacionales_5 = request.POST['articulos_internacionales_5']
-                if request.POST['articulos_nacionales_5'] != "":
-                    a.articulos_nacionales_5 = request.POST['articulos_nacionales_5']
-                if request.POST['articulos_internacionales'] != "":
-                    a.articulos_internacionales = request.POST['articulos_internacionales']
-                if request.POST['articulos_nacionales'] != "":
-                    a.articulos_nacionales = request.POST['articulos_nacionales']
-                if request.POST['capitulos'] != "":
-                    a.capitulos = request.POST['capitulos']
-                if request.POST['capitulos_5'] != "":
-                    a.capitulos_5 = request.POST['capitulos_5']
-                if request.POST['libros'] != "":
-                    a.libros = request.POST['libros']
-                if request.POST['libros_5'] != "":
-                    a.libros_5 = request.POST['libros_5']
+            a.save()
 
-                a.lineas = request.POST['lineas']
-                a.palabras_clave = request.POST['palabras_clave']
-                a.motivacion = request.POST['motivacion']
-                a.proyectos_sostenibilidad = request.POST['proyectos_sostenibilidad']
-                a.proyectos_vigentes = request.POST['proyectos_vigentes']
-
-                if 'disponible_miembro' in request.POST:
-                    a.disponible_miembro = True
-                else:
-                    a.disponible_miembro = False
-
-                if 'disponible_tutor' in request.POST:
-                    a.disponible_tutor = True
-                else:
-                    a.disponible_tutor = False
-                a.save()
-
-                return HttpResponseRedirect(reverse('solicitud_detail',
-                                                    args=(s.id,)))
-
+            return HttpResponseRedirect(reverse('perfil_academico'))
         else:
             return render(request,
                           self.template_name,
                           {'form': form,
-                           'title': 'Académico',
+                           'title': 'Editar Perfil Académico',
                            'breadcrumbs': self.breadcrumbs})
 
 

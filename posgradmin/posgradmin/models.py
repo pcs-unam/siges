@@ -59,6 +59,9 @@ def headshot_path(instance, filename):
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    titulo = models.CharField("Grado académico (e.g. Dr., Lic.)",
+                              max_length=15, blank=True)
+    
     curp = models.CharField(max_length=100, blank=True)
     rfc = models.CharField(max_length=100, blank=True)
 
@@ -460,8 +463,6 @@ class Comentario(models.Model):
 
 class Academico(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    titulo = models.CharField("Grado académico (e.g. Dr., Lic.)",
-                              max_length=15, blank=True)
 
     nivel_PRIDE = models.CharField(max_length=15,
                                    choices=(('sin PRIDE', 'sin PRIDE'),

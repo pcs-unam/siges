@@ -16,6 +16,17 @@
       <a href="{% url 'editar_perfil' %}">Crear perfil personal.</a>.
     </div>
     {% endif %}
+
+
+    {% if user.academico %}
+    {% include 'posgradmin/inicio_academico.html' %}
+    {% endif %}
+    
+
+    {% if user.estudiante %}
+    {% include 'posgradmin/inicio_estudiante.html' %}
+    {% endif %}
+
   </div><!-- /.col-sm-4 -->
 
 

@@ -1,0 +1,41 @@
+<div class="panel panel-default">
+
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+      Perfil Académico
+    </h3>
+  </div>
+  
+  <div class="panel-body">
+    <p><a href="{% url 'perfil_academico' %}">perfil académico</a></p>    
+    {% if not user.academico.CVU %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No ha registrado su número de CVU.</strong>
+      <a href="{% url 'registrar_academico' %}">Actualizar datos académicos.</a>.
+    </div>
+    {% endif %}
+    
+    {% if not user.academico.resumen_completo %}
+    <div class="alert alert-danger" role="alert">
+      <strong>Resumen curricular incompleto.</strong>
+      <a href="{% url 'registrar_academico' %}">Actualizar datos académicos.</a>.
+    </div>
+    {% endif %}
+    
+    {% if not user.academico.actividad_completo %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No hay descripciones de Actividad profesional y de investigación.</strong>
+      <a href="{% url 'registrar_academico' %}">actualizar datos académicos</a>.
+    </div>
+    {% endif %}
+    
+    
+    {% if user.academico.tutor %}
+    <p><a href="{% url 'mis_comites' %}">Mis comités de jurado</a></p>
+    <p><a href="{% url 'mis_estudiantes' %}">Mis estudiantes</a></p>
+    {% endif %}
+    <p><a href="{% url 'mis_catedras' %}">Mis cátedras</a></p>
+    
+  </div>
+</div>

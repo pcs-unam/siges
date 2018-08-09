@@ -519,34 +519,34 @@
   ####   #    #  #    #  #####    ####    ####
 -->
 <div class="panel panel-body">
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
-      Grados Académicos
-    </h3>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+	<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
+	Grados Académicos
+      </h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+	{% for grado in object.gradoacademico_set.all %}
+	<li class="list-group-item">
+	  <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}
+	  <p class="list-group-item-text">nivel {{ grado.nivel }}
+	    obtenido el {{ grado.fecha_obtencion }}<br />
+	    <a href="{{ grado.documento_url }}">documento</a></p>
+	  
+	</li>
+	{% empty %}
+	<li class="list-group-item">
+	  sin grados
+	</li>
+	{% endfor %}
+      </ul>
+      {% if user.is_staff %}
+      <a href="{{ APP_PREFIX }}admin/posgradmin/gradoacademico/?q={{ object.username }}">editar grados</a>
+      {% endif %}
+    </div>
   </div>
-  <div class="panel-body">
-    <ul class="list-group">
-      {% for grado in object.gradoacademico_set.all %}
-      <li class="list-group-item">
-	<strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}
-	<p class="list-group-item-text">nivel {{ grado.nivel }}
-	  obtenido el {{ grado.fecha_obtencion }}<br />
-	  <a href="{{ grado.documento_url }}">documento</a></p>
-
-      </li>
-      {% empty %}
-      <li class="list-group-item">
-	sin grados
-      </li>
-      {% endfor %}
-    </ul>
-    {% if user.is_staff %}
-    <a href="{{ APP_PREFIX }}admin/posgradmin/gradoacademico/?q={{ object.username }}">editar grados</a>
-    {% endif %}
-  </div>
-</div>
 </div>
 
 

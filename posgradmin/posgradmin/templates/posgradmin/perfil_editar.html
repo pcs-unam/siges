@@ -3,12 +3,19 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  {% for crumb in breadcrumbs %}
+  &rsaquo; <a href="{{ crumb.0 }}">{{ crumb.1 }}</a>
+  {% endfor %}
 </div>
+
 {% endblock %}
 
 
 {% block content %}
+
+{% crispy form %}
+
+<hr />
 
 {% if object %}
 <div class="panel panel-default">
@@ -61,18 +68,5 @@
   </div>
 </div>
 {% endif %}
-
-
-<br /><br />
-
-{% crispy form %}
-<!-- <script> -->
-<!-- $(document).ready(function() { -->
-<!--     $('.dateinput').datepicker({ dateFormat: 'yy-mm-dd'}); -->
-<!-- }); -->
-<!-- </script> -->
-
-
-
 
 {% endblock %}
