@@ -61,14 +61,14 @@ class Perfil(models.Model):
 
     titulo = models.CharField("Grado académico (e.g. Dr., Lic.)",
                               max_length=15, blank=True)
-    
-    curp = models.CharField(max_length=100, blank=True)
-    rfc = models.CharField(max_length=100, blank=True)
+
+    curp = models.CharField("CURP, en caso de ser extranjero(a) ingresar la palabra extranjero(a)", max_length=100)
+    rfc = models.CharField("RFC, en caso de ser extranjero(a) ingresar la palabra extranjero(a)", max_length=100)
 
     telefono = models.CharField(max_length=100)
     telefono_movil = models.CharField(max_length=100, blank=True)
 
-    direccion1 = models.CharField("dirección", max_length=150)
+    direccion1 = models.CharField("dirección del lugar de trabajo", max_length=150)
 
     codigo_postal = models.PositiveSmallIntegerField(default=0)
 
@@ -490,7 +490,8 @@ class Academico(models.Model):
     fecha_acreditacion = models.DateField(blank=True, null=True)
 
     acreditacion = models.CharField(max_length=15,
-                                    choices=(('E', 'E'),
+                                    choices=(('no acreditado', 'no acreditado'),
+                                             ('E', 'E'),
                                              ('D', 'D'),
                                              ('PD', 'PD'),
                                              ('NPD', 'NPD'),
@@ -602,10 +603,10 @@ class Academico(models.Model):
                                   blank=True)
     proyectos_sostenibilidad = models.TextField(
         "Principales proyectos relacionados con "
-        + "ciencias de la sostenibilidad", blank=True)
+        + "ciencias de la sostenibilidad durante los últimos cinco años", blank=True)
     proyectos_vigentes = models.TextField(
         "Proyectos vigentes en los que pueden "
-        + "participar alumnos del PCS", blank=True)
+        + "participar alumnos del PCS. Incluya fechas de terminación.", blank=True)
 
     # disponibilidad
     disponible_tutor = models.BooleanField(
@@ -620,7 +621,9 @@ class Academico(models.Model):
     observaciones = models.TextField(blank=True)
 
     def show_acreditacion(self):
-        if self.acreditacion == 'E':
+        if self.acreditacion == 'no acreditado':
+            return 'no acreditado'
+        elif self.acreditacion == 'E':
             return u"Comité tutor específico"
         elif (self.acreditacion == 'D'
               or self.acreditacion == 'PD'

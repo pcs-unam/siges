@@ -34,8 +34,8 @@
     {% elif user.is_staff %}
     <a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar perfil académico</a><br /><br />
     {% endif %}
-    <br />  <br />    
-    
+    <br />  <br />
+
     <ul class="list-group">
       <li class="list-group-item">
 	Nivel PRIDE: {{ object.academico.nivel_PRIDE|default:'' }}
@@ -43,7 +43,7 @@
       <li class="list-group-item">
 	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
       <li class="list-group-item">
-	acreditación: {{ object.academico.show_acreditacion }}</li>
+	Acreditación: {{ object.academico.show_acreditacion }}</li>
       <li class="list-group-item">
 	CVU: {{ object.academico.CVU|default:'!' }}</li>
 
@@ -143,30 +143,30 @@
 	  </thead>
 	  <tbody>
 	    <tr>
-	      <td>Cantidad de artículos publicados en revistas nacionales</td>
-	      <td>{{ object.academico.articulos_nacionales|default_if_none:"" }}</td>
-	      <td>{{ object.academico.articulos_nacionales_5|default_if_none:"" }}</td>
-	    </tr>
-	    <tr>
 	      <td>Cantidad de artículos publicados en revistas internacionales</td>
 	      <td>{{ object.academico.articulos_internacionales|default_if_none:"" }}</td>
 	      <td>{{ object.academico.articulos_internacionales_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
-	      <td>Capítulos de libro publicados</td>
-	      <td>{{ object.academico.capitulos|default_if_none:"" }}</td>
-	      <td>{{ object.academico.capitulos_5|default_if_none:"" }}</td>
+	      <td>Cantidad de artículos publicados en revistas nacionales</td>
+	      <td>{{ object.academico.articulos_nacionales|default_if_none:"" }}</td>
+	      <td>{{ object.academico.articulos_nacionales_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Libros publicados</td>
 	      <td>{{ object.academico.libros|default_if_none:"" }}</td>
 	      <td>{{ object.academico.libros_5|default_if_none:"" }}</td>
 	    </tr>
+	    <tr>
+	      <td>Capítulos de libro publicados</td>
+	      <td>{{ object.academico.capitulos|default_if_none:"" }}</td>
+	      <td>{{ object.academico.capitulos_5|default_if_none:"" }}</td>
+	    </tr>
 	  </tbody>
 	</table>
       </div>
     </div>
-    
+
   </div>
 </div>
 
@@ -260,7 +260,7 @@
 	{% endfor %}
       </div>
     </div>
-    
+
 
   </div>
 </div>
