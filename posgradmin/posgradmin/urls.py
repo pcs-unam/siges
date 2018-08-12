@@ -65,7 +65,7 @@ urlpatterns = [
         AcademicoRegistroView.as_view(),
         name="registrar_academico"),
 
-    url(r'^inicio/perfil/editar',
+    url(r'^inicio/perfil/editar$',
         PerfilEditar.as_view(),
         name="editar_perfil"),
 

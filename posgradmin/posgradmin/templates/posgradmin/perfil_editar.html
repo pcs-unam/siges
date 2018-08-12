@@ -60,7 +60,7 @@
 	<div style="float: right">
 	  <button type="button" class="btn btn-danger btn-xs"
 		  onClick="if (confirm('¿eliminar adscripción a {{ ad.institucion }}?'))
-			      window.location='{% url 'No module named posgradmin.views' ad.id%}'">
+			      window.location='{% url 'eliminar_adscripcion' ad.id%}'">
 	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>
 	{{ ad }}
       </li>
