@@ -93,27 +93,27 @@
 	<table class="table table-striped">
 	  <thead>
 	    <tr>
-	      <th></th><th>Licenciatura</th><th>Maestría</th><th>Doctorado</th>
+	      <th></th><th style="text-align:right">Licenciatura</th><th style="text-align:right">Maestría</th><th style="text-align:right">Doctorado</th>
 	    </tr>
 	  </thead>
 	  <tbody>
 	    <tr>
 	      <td>Cantidad de tesis dirigidas </td>
-	      <td>{{ object.academico.tesis_licenciatura|default_if_none:"" }}</td>
-	      <td>{{ object.academico.tesis_maestria|default_if_none:"" }}</td>
-	      <td>{{ object.academico.tesis_doctorado|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.tesis_licenciatura|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.tesis_maestria|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.tesis_doctorado|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Cantidad de tesis dirigidas los últimos 5 años</td>
-	      <td>{{ object.academico.tesis_licenciatura_5|default_if_none:"" }}</td>
-	      <td>{{ object.academico.tesis_maestria_5|default_if_none:"" }}</td>
-	      <td>{{ object.academico.tesis_doctorado_5|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.tesis_licenciatura_5|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.tesis_maestria_5|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.tesis_doctorado_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Cantidad de comités en los que participa en el PCS</td>
 	      <td></td>
-	      <td>{{ object.academico.participacion_comite_maestria|default_if_none:"" }}</td>
-	      <td>{{ object.academico.participacion_tutor_maestria|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.participacion_comite_maestria|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.participacion_tutor_maestria|default_if_none:"" }}</td>
 	    </tr>
 	  </tbody>
 	</table>
@@ -138,29 +138,29 @@
 	<table class="table table-striped">
 	  <thead>
 	    <tr>
-	      <th></th><th>Total</th><th>Los últimos 5 años</th>
+	      <th></th><th style="text-align:right">Total</th><th style="text-align:right">Los últimos 5 años</th>
 	    </tr>
 	  </thead>
 	  <tbody>
 	    <tr>
 	      <td>Cantidad de artículos publicados en revistas internacionales</td>
-	      <td>{{ object.academico.articulos_internacionales|default_if_none:"" }}</td>
-	      <td>{{ object.academico.articulos_internacionales_5|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.articulos_internacionales|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.articulos_internacionales_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Cantidad de artículos publicados en revistas nacionales</td>
-	      <td>{{ object.academico.articulos_nacionales|default_if_none:"" }}</td>
-	      <td>{{ object.academico.articulos_nacionales_5|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.articulos_nacionales|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.articulos_nacionales_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Libros publicados</td>
-	      <td>{{ object.academico.libros|default_if_none:"" }}</td>
-	      <td>{{ object.academico.libros_5|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.libros|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.libros_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
 	      <td>Capítulos de libro publicados</td>
-	      <td>{{ object.academico.capitulos|default_if_none:"" }}</td>
-	      <td>{{ object.academico.capitulos_5|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.capitulos|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.capitulos_5|default_if_none:"" }}</td>
 	    </tr>
 	  </tbody>
 	</table>
@@ -203,6 +203,19 @@
       </div>
       <div class="panel-body">
 	{{ object.academico.palabras_clave|markdown }}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-fire" aria-hidden="true"></span>
+	  Motivación para participar en el Programa
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.motivacion|markdown }}
       </div>
     </div>
 
