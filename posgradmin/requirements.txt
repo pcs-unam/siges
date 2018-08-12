@@ -1,6 +1,7 @@
 django
-django-registration
+django-allauth
 django-crispy-forms
 django-sortable-listview
 django-markdown2
 django-export-action
+Pillow

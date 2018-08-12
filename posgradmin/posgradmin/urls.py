@@ -74,7 +74,8 @@ urlpatterns = [
         name="eliminar_grado"),
 
     url(r'^inicio/perfil/eliminar-adscripcion/(?P<pk>[0-9]+)$',
-        AdscripcionEliminar.as_view()),
+        AdscripcionEliminar.as_view(),
+        name="eliminar_adscripcion"),
 
     url(r'^inicio/perfil/agregar-grado$',
         GradoAcademicoAgregar.as_view(),
@@ -87,7 +88,7 @@ urlpatterns = [
     url(r'^inicio/perfil/agregar-asociacion$',
         AsociacionAgregar.as_view(),
         name="agregar_asociacion"),
-    
+
     url(r'^inicio/perfil/$',
         PerfilDetail.as_view(),
         name='perfil'),
@@ -96,7 +97,7 @@ urlpatterns = [
         PerfilAcademicoDetail.as_view(),
         name='perfil_academico'),
 
-    
+
     url(r'^inicio/estudiantes/mis$',
         MisEstudiantesView.as_view(),
         name="mis_estudiantes"),

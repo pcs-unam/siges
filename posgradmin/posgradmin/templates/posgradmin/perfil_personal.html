@@ -17,12 +17,12 @@
       <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
       Perfil Personal
     </h3>
-    
+
   </div>
-  
+
   <div class="panel panel-body">
-    
-    
+
+
     <h1>{{ object.get_full_name }}</h1>
     <hr>
     {% if user == object %}
@@ -32,8 +32,8 @@
     <a href="{% url 'admin:posgradmin_perfil_change' object.perfil.id %}">editar perfil personal</a>
     {% endif %}
     <br />  <br />
-    
-    
+
+
     {% if see_private %}
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -42,18 +42,18 @@
 	  Datos Personales</h3>
       </div>
       <div class="panel-body">
-	
+
 	<div class="media">
 	  <div class="media-left media-middle">
 	    {% if object.perfil.headshot %}
 	    <img class="media-object"
 		 width="150px"
 		 src="{{ object.perfil.headshot_url }}" />
-	    
+
 	    {% endif %}
 	  </div>
 	  <div class="media-body">
-	    
+
 	    <ul class="list-group">
 	      <li class="list-group-item"><strong>Fecha de Nacimiento</strong>
 		{{ object.perfil.fecha_nacimiento|default:"" }}</li>
@@ -66,7 +66,7 @@
 	</div>
       </div>
     </div>
-    
+
     <div class="panel panel-default">
       <div class="panel-heading">
 	<h3 class="panel-title">
@@ -85,7 +85,7 @@
 	</ul>
       </div>
     </div>
-    
+
     {% else %}
     <div class="panel-body">
       <div class="panel panel-default">
@@ -101,11 +101,11 @@
 	    <li class="list-group-item"><strong>Sitio Web</strong> {{ object.perfil.website|default:'' }}</li>
 	  </ul>
 	</div>
-      </div>    
+      </div>
     </div>
     {% endif %}
-    
-    
+
+
     <div class="panel panel-default">
       <div class="panel-heading">
 	<h3 class="panel-title">
@@ -121,11 +121,14 @@
 	    <p class="list-group-item-text">nivel {{ grado.nivel }}
 	      obtenido el {{ grado.fecha_obtencion }}<br />
 	      <a href="{{ grado.documento_url }}">documento</a></p>
-	    
+
 	  </li>
 	  {% empty %}
 	  <li class="list-group-item">
-	    sin grados
+	    <div class="alert alert-danger" role="alert">
+	      <strong>No ha agregado grados académicos</strong>
+	      <a href="{% url 'agregar_grado' %}">Agregar grados académicos</a>.
+	    </div>
 	  </li>
 	  {% endfor %}
 	</ul>
@@ -166,8 +169,8 @@
 	{% endif %}
       </div>
     </div>
-    
-    
+
+
   </div>
 </div>
 <!-- perfil -->
