@@ -104,8 +104,8 @@ class PerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
     form_class = forms.PerfilModelForm
 
     breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
-                   (settings.APP_PREFIX + 'inicio/perfil', 'Mi perfil'),
-                   (settings.APP_PREFIX + 'inicio/perfil/editar', 'Editar'))
+                   (settings.APP_PREFIX + 'inicio/perfil/', 'Mi perfil'),
+                   (settings.APP_PREFIX + 'inicio/perfil/editar/', 'Editar'))
 
     template = 'posgradmin/perfil_editar.html'
 
@@ -206,9 +206,9 @@ class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView)
     def get_object(self):
         return self.request.user
 
-        
 
-        
+
+
 class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 
@@ -248,7 +248,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             a.CVU = request.POST[u'CVU']
             a.nivel_SNI = request.POST[u'nivel_SNI']
             a.nivel_PRIDE = request.POST[u'nivel_PRIDE']
-            
+
             if request.POST['tesis_licenciatura'] != "":
                 a.tesis_licenciatura = request.POST['tesis_licenciatura']
             if request.POST['tesis_maestria'] != "":
@@ -426,7 +426,7 @@ class AdscripcionAgregar(LoginRequiredMixin, View):
                 return HttpResponseRedirect(reverse('perfil'))
             else:
                 return HttpResponseRedirect(reverse('agregar_asociacion'))
-                
+
         else:
             return render(request,
                           self.template_name,
@@ -462,13 +462,13 @@ class AsociacionAgregar(LoginRequiredMixin, View):
                 id=int(request.POST['institucion']))
 
             assert ins.entidad_PCS
-            
+
             a = models.Adscripcion(perfil=request.user.perfil,
                                    institucion=ins,
                                    asociacion_PCS=True)
             a.save()
             return HttpResponseRedirect(reverse('perfil'))
-                
+
         else:
             return render(request,
                           self.template_name,
@@ -476,7 +476,7 @@ class AsociacionAgregar(LoginRequiredMixin, View):
                            'form': form,
                            'breadcrumbs': self.breadcrumbs})
 
-        
+
 
 class AdscripcionEliminar(LoginRequiredMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
