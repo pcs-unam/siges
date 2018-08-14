@@ -54,7 +54,6 @@ def load(f):
                 nivel_sni = row['sni'].decode('utf8')
 
         a = Academico(user=u,
-                      titulo=row['titulo'].decode('utf8'),
                       nivel_PRIDE=nivel_PRIDE,
                       nivel_SNI=nivel_sni,
                       CVU=row['cvu'].decode('utf8'),
