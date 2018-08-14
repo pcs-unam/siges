@@ -212,7 +212,7 @@ class Estudiante(models.Model):
     semestre_graduacion = models.PositiveSmallIntegerField(blank=True,
                                                            null=True)
 
-    institucion = models.ForeignKey(Institucion)
+    institucion = models.ForeignKey(Institucion, blank=True, null=True)
     observaciones = models.TextField(blank=True)
 
     def faltan_documentos(self):
