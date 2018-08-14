@@ -840,6 +840,11 @@ class Adscripcion(models.Model):
         "sólo para asociación con el PCS",
         default=False)
 
+
+    class Meta:
+        verbose_name_plural = "Adscripciones"
+
+    
     def __unicode__(self):
         if self.asociacion_PCS:
             asoc = u"(sólo para asociación con el Posgrado)"

@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
     Solicitud, Proyecto, Dictamen, \
-    Comite, Asistente, Curso, Catedra, Sesion, Adscripcion, \
+    Comite, Curso, Catedra, Sesion, Adscripcion, \
     LineaInvestigacion
 
 admin.site.site_header = \
@@ -189,4 +189,3 @@ admin.site.register(LineaInvestigacion)
 # admin.site.register(Comentario)
 admin.site.register(Proyecto)
 admin.site.register(Dictamen)
-admin.site.register(Asistente)
