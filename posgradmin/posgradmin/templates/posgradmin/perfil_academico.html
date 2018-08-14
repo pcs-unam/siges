@@ -18,6 +18,21 @@
 
 {% block content %}
 
+    {% if not user.perfil %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No tiene perfil personal.</strong>
+      <a href="{% url 'editar_perfil' %}">Crear perfil personal.</a>.
+    </div>
+    {% endif %}
+
+    {% if not user.academico.resumen_completo %}
+    <div class="alert alert-danger" role="alert">
+      <strong>Perfil académico incompleto.</strong>
+      <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>.      
+    </div>
+    {% endif %}
+
+
 <div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">
@@ -37,11 +52,28 @@
     <br />  <br />
 
     <ul class="list-group">
+
+      {% if object.academico.anexo_CV %}
+      <li class="list-group-item">
+	<a href="{{ object.academico.anexo_CV_url }}">CV extenso</a></li>
+      {% endif %}
+
+      {% if object.academico.anexo_solicitud %}
+      <li class="list-group-item">
+	<a href="{{ object.academico.anexo_solicitud_url }}">Solicitud de Acreditación como Tutor</a></li>
+      {% endif %}
+      
+      
       <li class="list-group-item">
 	Nivel PRIDE: {{ object.academico.nivel_PRIDE|default:'' }}
       </li>
       <li class="list-group-item">
 	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
+      {% if object.academico.anexo_SNI %}
+      <li class="list-group-item">
+	<a href="{{ object.academico.anexo_SNI_url }}">Documento probatorio de nivel SNI</a></li>
+      {% endif %}
+      
       <li class="list-group-item">
 	Acreditación: {{ object.academico.show_acreditacion }}</li>
       <li class="list-group-item">

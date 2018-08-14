@@ -176,8 +176,8 @@ class PerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-
-class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin,
+                            DetailView):
     login_url = settings.APP_PREFIX + 'accounts/login/'
     template_name = "posgradmin/perfil_academico.html"
 
@@ -207,8 +207,6 @@ class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView)
         return self.request.user
 
 
-
-
 class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 
@@ -217,8 +215,10 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     form_class = forms.AcademicoModelForm
 
-    breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
-                   (settings.APP_PREFIX + 'inicio/perfil-academico/', 'Perfil Académico'),
+    breadcrumbs = ((settings.APP_PREFIX + 'inicio/',
+                    'Inicio'),
+                   (settings.APP_PREFIX + 'inicio/perfil-academico/',
+                    'Perfil Académico'),
                    (settings.APP_PREFIX + 'inicio/academico/registro',
                     'Editar'))
 
@@ -248,6 +248,15 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             a.CVU = request.POST[u'CVU']
             a.nivel_SNI = request.POST[u'nivel_SNI']
             a.nivel_PRIDE = request.POST[u'nivel_PRIDE']
+
+            if 'anexo_CV' in request.FILES:
+                a.anexo_CV = request.FILES['anexo_CV']
+
+            if 'anexo_solicitud' in request.FILES:
+                a.anexo_solicitud = request.FILES['anexo_solicitud']
+
+            if 'anexo_SNI' in request.FILES:
+                a.anexo_SNI = request.FILES['anexo_SNI']
 
             if request.POST['tesis_licenciatura'] != "":
                 a.tesis_licenciatura = request.POST['tesis_licenciatura']
@@ -477,7 +486,6 @@ class AsociacionAgregar(LoginRequiredMixin, View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-
 class AdscripcionEliminar(LoginRequiredMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 
@@ -595,8 +603,6 @@ class CatedraSortableView(LoginRequiredMixin,
                           UserPassesTestMixin,
                           SortableListView):
     login_url = settings.APP_PREFIX + 'accounts/login/'
-
-
 
     def test_func(self):
         return True

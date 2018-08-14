@@ -62,13 +62,18 @@ class Perfil(models.Model):
     titulo = models.CharField("Grado académico (e.g. Dr., Lic.)",
                               max_length=15, blank=True)
 
-    curp = models.CharField("CURP, en caso de ser extranjero(a) ingresar la palabra extranjero(a)", max_length=100)
-    rfc = models.CharField("RFC, en caso de ser extranjero(a) ingresar la palabra extranjero(a)", max_length=100)
+    curp = models.CharField("CURP, en caso de ser extranjero(a) "
+                            + "ingresar la palabra extranjero(a)",
+                            max_length=100)
+    rfc = models.CharField("RFC, en caso de ser extranjero(a) "
+                           + "ingresar la palabra extranjero(a)",
+                           max_length=100)
 
     telefono = models.CharField(max_length=100)
     telefono_movil = models.CharField(max_length=100, blank=True)
 
-    direccion1 = models.CharField("dirección del lugar de trabajo", max_length=150)
+    direccion1 = models.CharField("dirección del lugar de trabajo",
+                                  max_length=150)
 
     codigo_postal = models.PositiveSmallIntegerField(default=0)
 
@@ -189,11 +194,12 @@ class Estudiante(models.Model):
 
     estado = models.CharField(max_length=15,
                               default=u"vigente",
-                              choices=((u"graduado", u"graduado"),
-                                       (u"egresado", u"egresado"),
-                                       (u"vigente", u"vigente"),
-                                       (u"baja temporal", u"baja temporal"),
-                                       (u"baja definitiva", u"baja definitiva")))
+                              choices=(
+                                  (u"graduado", u"graduado"),
+                                  (u"egresado", u"egresado"),
+                                  (u"vigente", u"vigente"),
+                                  (u"baja temporal", u"baja temporal"),
+                                  (u"baja definitiva", u"baja definitiva")))
 
     fecha_baja = models.DateField(blank=True, null=True)
     motivo_baja = models.CharField(max_length=200,
@@ -461,8 +467,52 @@ class Comentario(models.Model):
         return u'%s por %s: "%s"' % (self.fecha, self.autor, self.comentario)
 
 
+def anexo_academico_CV_path(instance, filename):
+    return os.path.join(MEDIA_ROOT,
+                        'perfil-academico/%s/cv_%s' % (instance.id,
+                                                       filename))
+
+
+def anexo_academico_solicitud_path(instance, filename):
+    return os.path.join(MEDIA_ROOT,
+                        'perfil-academico/%s/solicitud_%s' % (instance.id,
+                                                              filename))
+
+
+def anexo_academico_SNI_path(instance, filename):
+    return os.path.join(MEDIA_ROOT,
+                        'perfil-academico/%s/sni_%s' % (instance.id,
+                                                        filename))
+
+
 class Academico(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    anexo_CV = models.FileField("CV en extenso",
+                                upload_to=anexo_academico_CV_path,
+                                blank=True, null=True)
+    anexo_solicitud = models.FileField(
+        "Carta de solicitud de acreditación como tutor",
+        upload_to=anexo_academico_solicitud_path,
+        blank=True, null=True)
+    anexo_SNI = models.FileField(
+        upload_to=anexo_academico_SNI_path,
+        blank=True, null=True)
+
+    def anexo_CV_url(self):
+        return "%s/perfil-academico/%s/%s" % (
+            MEDIA_URL, self.id,
+            os.path.basename(self.anexo_CV.path))
+
+    def anexo_solicitud_url(self):
+        return "%s/perfil-academico/%s/%s" % (
+            MEDIA_URL, self.id,
+            os.path.basename(self.anexo_solicitud.path))
+
+    def anexo_SNI_url(self):
+        return "%s/perfil-academico/%s/%s" % (
+            MEDIA_URL, self.id,
+            os.path.basename(self.anexo_SNI.path))
 
     nivel_PRIDE = models.CharField(max_length=15,
                                    choices=(('sin PRIDE', 'sin PRIDE'),
@@ -489,15 +539,16 @@ class Academico(models.Model):
 
     fecha_acreditacion = models.DateField(blank=True, null=True)
 
-    acreditacion = models.CharField(max_length=15,
-                                    choices=(('no acreditado', 'no acreditado'),
-                                             ('E', 'E'),
-                                             ('D', 'D'),
-                                             ('PD', 'PD'),
-                                             ('NPD', 'NPD'),
-                                             ('M', 'M'),
-                                             ('NPM', 'NPM'),
-                                             ('PM', 'PM')))
+    acreditacion = models.CharField(
+        max_length=15,
+        choices=(('no acreditado', 'no acreditado'),
+                 ('E', 'E'),
+                 ('D', 'D'),
+                 ('PD', 'PD'),
+                 ('NPD', 'NPD'),
+                 ('M', 'M'),
+                 ('NPM', 'NPM'),
+                 ('PM', 'PM')))
 
     solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE,
                                      blank=True, null=True)
@@ -603,10 +654,12 @@ class Academico(models.Model):
                                   blank=True)
     proyectos_sostenibilidad = models.TextField(
         "Principales proyectos relacionados con "
-        + "ciencias de la sostenibilidad durante los últimos cinco años", blank=True)
+        + "ciencias de la sostenibilidad durante los últimos cinco años",
+        blank=True)
     proyectos_vigentes = models.TextField(
         "Proyectos vigentes en los que pueden "
-        + "participar alumnos del PCS. Incluya fechas de terminación.", blank=True)
+        + "participar alumnos del PCS. Incluya fechas de terminación.",
+        blank=True)
 
     # disponibilidad
     disponible_tutor = models.BooleanField(
@@ -633,6 +686,15 @@ class Academico(models.Model):
             return "Maestría"
 
     def resumen_completo(self):
+        if self.CVU == "":
+            return False
+        if self.anexo_CV == "":
+            return False
+        if self.anexo_solicitud == "":
+            return False
+        if self.nivel_SNI != "sin SNI":
+            if self.anexo_SNI == "":
+                return False
         if self.tesis_licenciatura == "":
             return False
         elif self.tesis_maestria == "":
@@ -669,11 +731,7 @@ class Academico(models.Model):
             return False
         elif self.libros_5 == "":
             return False
-        else:
-            return True
-
-    def actividad_completo(self):
-        if self.lineas == "":
+        elif self.lineas == "":
             return False
         elif self.palabras_clave == "":
             return False
@@ -772,27 +830,6 @@ class Academico(models.Model):
 
     class Meta:
         verbose_name_plural = "Académicos"
-
-
-class AnexoAcademico(models.Model):
-    academico = models.ForeignKey(Academico)
-    autor = models.ForeignKey(User)
-    fecha = models.DateTimeField(auto_now_add=True)
-    archivo = models.FileField(upload_to=anexo_path)
-
-    # def url(self):
-    #     return "%s/solicitudes/%s/%s" % (MEDIA_URL,
-    #                                      self.solicitud.id,
-    #                                      os.path.basename(self.archivo.path))
-
-    # def basename(self):
-    #     return os.path.basename(self.archivo.file.name)
-
-    # def __unicode__(self):
-    #     return u"[%s anexo a #%s por %s el %s]" % (self.basename(),
-    #                                                self.solicitud.id,
-    #                                                self.autor,
-    #                                                self.fecha)
 
 
 class Adscripcion(models.Model):

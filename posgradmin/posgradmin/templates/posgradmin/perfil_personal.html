@@ -11,6 +11,14 @@
 
 {% block content %}
 
+    {% if not user.academico.resumen_completo %}
+    <div class="alert alert-danger" role="alert">
+      <strong>Perfil académico incompleto.</strong>
+      <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>.      
+    </div>
+    {% endif %}
+
+
 <div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">

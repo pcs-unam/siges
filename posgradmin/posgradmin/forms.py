@@ -129,9 +129,18 @@ class AcademicoModelForm(forms.ModelForm):
             Div(Div(HTML("<h1 class='panel-title'>"
                          + u"Generales</h1>"),
                     Class="panel-heading"),
-                Div(Column('nivel_PRIDE',
-                           'nivel_SNI',
-                           'CVU',),
+                Div(
+                    Column(
+                        'anexo_CV',
+                        'anexo_solicitud',
+                        HTML(u"Anexar carta solicitud en papel membreteado y firmada. <br />"
+                             + u"<a href='https://github.com/sostenibilidad-unam/posgrado/files/2278987/Linemientos.para.proyectos.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>Lineamientos para el desarrollo y evaluación de proyectos.</a><br />"
+                             + u"<a href='https://github.com/sostenibilidad-unam/posgrado/files/2278991/Formato.carta.de.solicitud.acreditacion-reacreditacion.de.tutores.nvo.sistema.docx'>Formato de carta de solicitud acreditación/reacreditación de tutores.</a>"),                        
+                        'nivel_PRIDE',
+                        'nivel_SNI',
+                        HTML('De ser miembro del SNI anexe el documento probatorio.'),
+                        'anexo_SNI',                        
+                        'CVU',),
                     Class="panel-body"),
                 Div(HTML(u"<h1 class='panel-title'>Resumen Curricular</h1>"
                          + "En los campos siguientes, si no tiene cantidades "
