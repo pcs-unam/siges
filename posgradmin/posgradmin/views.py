@@ -321,6 +321,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             else:
                 a.campos_de_conocimiento.set([])
 
+            a.top_5 = request.POST['top_5']
             a.palabras_clave = request.POST['palabras_clave']
             a.motivacion = request.POST['motivacion']
             a.proyectos_sostenibilidad = request.POST['proyectos_sostenibilidad']
@@ -398,7 +399,10 @@ class GradoAcademicoEliminar(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         g = models.GradoAcademico.objects.get(id=int(kwargs['pk']))
-        g.delete()
+
+        if request.user == g.user:
+            g.delete()
+
         return HttpResponseRedirect(reverse('perfil'))
 
 
@@ -427,8 +431,17 @@ class AdscripcionAgregar(LoginRequiredMixin, View):
         if form.is_valid():
             ins = models.Institucion.objects.get(
                 id=int(request.POST['institucion']))
-            a = models.Adscripcion(perfil=request.user.perfil,
-                                   institucion=ins)
+            if 'catedra_conacyt' in request.POST:
+                catedra_conacyt = True
+            else:
+                catedra_conacyt = False
+
+            a = models.Adscripcion(
+                perfil=request.user.perfil,
+                nombramiento=request.POST['nombramiento'],
+                anno_nombramiento=request.POST['anno_nombramiento'],
+                catedra_conacyt=catedra_conacyt,
+                institucion=ins)
             a.save()
 
             if ins.entidad_PCS or request.user.perfil.asociado_PCS():
@@ -491,7 +504,8 @@ class AdscripcionEliminar(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         a = models.Adscripcion.objects.get(id=int(kwargs['pk']))
-        a.delete()
+        if request.user == a.perfil.user:
+            a.delete()
         return HttpResponseRedirect(reverse('perfil'))
 
 

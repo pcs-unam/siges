@@ -63,6 +63,12 @@
 			      window.location='{% url 'eliminar_adscripcion' ad.id%}'">
 	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>
 	{{ ad }}
+	{% if ad.catedra_conacyt %}
+	<br />
+	Cátedra CONACYT
+	{% endif %}
+	<br />
+	{{ ad.nombramiento }} desde {{ ad.anno_nombramiento }}
       </li>
       {% endfor %}
     </ul>

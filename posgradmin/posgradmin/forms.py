@@ -135,11 +135,11 @@ class AcademicoModelForm(forms.ModelForm):
                         'anexo_solicitud',
                         HTML(u"Anexar carta solicitud en papel membreteado y firmada. <br />"
                              + u"<a href='https://github.com/sostenibilidad-unam/posgrado/files/2278987/Linemientos.para.proyectos.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>Lineamientos para el desarrollo y evaluación de proyectos.</a><br />"
-                             + u"<a href='https://github.com/sostenibilidad-unam/posgrado/files/2278991/Formato.carta.de.solicitud.acreditacion-reacreditacion.de.tutores.nvo.sistema.docx'>Formato de carta de solicitud acreditación/reacreditación de tutores.</a>"),                        
+                             + u"<a href='https://github.com/sostenibilidad-unam/posgrado/files/2278991/Formato.carta.de.solicitud.acreditacion-reacreditacion.de.tutores.nvo.sistema.docx'>Formato de carta de solicitud acreditación/reacreditación de tutores.</a>"),
                         'nivel_PRIDE',
                         'nivel_SNI',
                         HTML('De ser miembro del SNI anexe el documento probatorio.'),
-                        'anexo_SNI',                        
+                        'anexo_SNI',
                         'CVU',),
                     Class="panel-body"),
                 Div(HTML(u"<h1 class='panel-title'>Resumen Curricular</h1>"
@@ -171,6 +171,7 @@ class AcademicoModelForm(forms.ModelForm):
                          + u"Actividad profesional y de Investigación</h1>"),
                     Class="panel-heading"),
                 Div(Column(
+                    "top_5",
                     "lineas",
                     'palabras_clave',
                     'motivacion',
@@ -266,7 +267,8 @@ class SolicitudAnexoForm(forms.Form):
 class GradoAcademicoModelForm(forms.ModelForm):
 
     fecha_obtencion = forms.DateField(
-        widget=extras.SelectDateWidget(years=range(1960, datetime.now().year + 1)))
+        widget=extras.SelectDateWidget(
+            years=range(1960, datetime.now().year + 1)))
 
     class Meta:
         model = GradoAcademico
@@ -305,8 +307,10 @@ class AdscripcionModelForm(forms.ModelForm):
             'institucion',
             HTML(u'<a href="%sinstitucion/agregar/ad/">agregar institución a la lista</a><br /><br />'
                  % settings.APP_PREFIX),
+            'catedra_conacyt',            
+            'nombramiento',
+            'anno_nombramiento',
             Submit('agregar', 'agregar'))
-
 
 
 class AsociacionModelForm(forms.ModelForm):
@@ -318,15 +322,15 @@ class AsociacionModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
 
         super(AsociacionModelForm, self).__init__(*args, **kwargs)
-        self.fields['institucion'].queryset = Institucion.objects.filter(entidad_PCS=True)
+        self.fields['institucion'].queryset = Institucion.objects.filter(
+            entidad_PCS=True)
         self.helper = FormHelper(self)
 
         self.helper.layout = Layout(
             HTML(u'<p>Usted no está adscrito en alguna de las entidades participantes del Posgrado. Elija a la que prefiera asociarse para la comunicación con los representantes en el Comité Académico del Programa.</p>'),
-            'institucion',            
+            'institucion',
             Submit('agregar', 'agregar'))
 
-        
 
 class InstitucionModelForm(forms.ModelForm):
 

@@ -562,31 +562,36 @@ class Academico(models.Model):
 
     # Resumen Curricular
     tesis_licenciatura = models.PositiveSmallIntegerField(
-        "Cantidad de tesis dirigidas a nivel Licenciatura",
+        "Cantidad total de tesis dirigidas y concluidas a nivel Licenciatura",
         null=True, blank=True)
     tesis_licenciatura_5 = models.PositiveSmallIntegerField(
-      "Cantidad de tesis dirigidas a nivel Licenciatura en los últimos 5 años",
-      null=True, blank=True)
+        "Cantidad de tesis dirigidas y concluidas"
+        + " a nivel Licenciatura en los últimos 5 años",
+        null=True, blank=True)
 
     tesis_maestria = models.PositiveSmallIntegerField(
-        "Cantidad de tesis dirigidas a nivel Maestría",
+        "Cantidad total de tesis dirigidas y concluidas a nivel Maestría",
         null=True, blank=True)
     tesis_maestria_5 = models.PositiveSmallIntegerField(
-        "Cantidad de tesis dirigidas a nivel Maestría en los últimos 5 años",
+        "Cantidad de tesis dirigidas y concluidas"
+        + " a nivel Maestría en los últimos 5 años",
         null=True, blank=True)
 
     tesis_doctorado = models.PositiveSmallIntegerField(
-        "Cantidad de tesis dirigidas a nivel Doctorado",
+        "Cantidad total de tesis dirigidas y concluidas a nivel Doctorado",
         null=True, blank=True)
     tesis_doctorado_5 = models.PositiveSmallIntegerField(
-        "Cantidad de tesis dirigidas a nivel Doctorado en los últimos 5 años",
+        "Cantidad de tesis dirigidas y concluidas"
+        + " a nivel Doctorado en los últimos 5 años",
         null=True, blank=True)
 
     participacion_comite_maestria = models.PositiveSmallIntegerField(
-        "Cantidad de participaciones como miembro de comité tutor en el PCS a nivel maestría",
+        "Cantidad de participaciones como miembro de comité tutor"
+        + " en el PCS a nivel maestría",
         null=True, blank=True)
     participacion_comite_doctorado = models.PositiveSmallIntegerField(
-       "Cantidad de participaciones como miembro de comité tutor en el PCS a nivel doctorado",
+       "Cantidad de participaciones como miembro de comité tutor"
+       + " en el PCS a nivel doctorado",
        null=True, blank=True)
 
     participacion_tutor_maestria = models.PositiveSmallIntegerField(
@@ -608,7 +613,7 @@ class Academico(models.Model):
         blank=True)
 
     articulos_internacionales = models.PositiveSmallIntegerField(
-        "Cantidad de artículos publicados en revistas internacionales",
+        "Cantidad total de artículos publicados en revistas internacionales",
         null=True, blank=True)
 
     articulos_internacionales_5 = models.PositiveSmallIntegerField(
@@ -617,7 +622,7 @@ class Academico(models.Model):
         null=True, blank=True)
 
     articulos_nacionales = models.PositiveSmallIntegerField(
-        "Cantidad de artículos publicados en revistas nacionales",
+        "Cantidad total de artículos publicados en revistas nacionales",
         null=True, blank=True)
 
     articulos_nacionales_5 = models.PositiveSmallIntegerField(
@@ -626,7 +631,7 @@ class Academico(models.Model):
         null=True, blank=True)
 
     libros = models.PositiveSmallIntegerField(
-        "Cantidad de libros publicados",
+        "Cantidad total de libros publicados",
         null=True, blank=True)
 
     libros_5 = models.PositiveSmallIntegerField(
@@ -634,7 +639,7 @@ class Academico(models.Model):
         null=True, blank=True)
 
     capitulos = models.PositiveSmallIntegerField(
-        "Cantidad de capítulos de libro publicados",
+        "Cantidad total de capítulos de libro publicados",
         null=True, blank=True)
 
     capitulos_5 = models.PositiveSmallIntegerField(
@@ -642,6 +647,12 @@ class Academico(models.Model):
         null=True, blank=True)
 
     # Actividad profesional y de Investigación
+    top_5 = models.TextField(
+        "Cinco publicaciones más destacadas "
+        + "en temas relacionados con las Ciencias de la Sostenibilidad."
+        + " De ser posible incluir ligas para acceder a las publicaciones.",
+        blank=True)
+
     lineas = models.TextField(
         "Temas de interés y/o experiencia en ciencias de la sostenibilidad",
         blank=True)
@@ -730,6 +741,8 @@ class Academico(models.Model):
         elif self.libros == "":
             return False
         elif self.libros_5 == "":
+            return False
+        elif self.top_5 == "":
             return False
         elif self.lineas == "":
             return False
@@ -836,15 +849,17 @@ class Adscripcion(models.Model):
     perfil = models.ForeignKey(Perfil)
     institucion = models.ForeignKey(Institucion)
 
+    catedra_conacyt = models.BooleanField(default=False)
+    nombramiento = models.CharField(max_length=50)
+    anno_nombramiento = models.PositiveSmallIntegerField("año de nombramiento")
+
     asociacion_PCS = models.BooleanField(
         "sólo para asociación con el PCS",
         default=False)
 
-
     class Meta:
         verbose_name_plural = "Adscripciones"
 
-    
     def __unicode__(self):
         if self.asociacion_PCS:
             asoc = u"(sólo para asociación con el Posgrado)"

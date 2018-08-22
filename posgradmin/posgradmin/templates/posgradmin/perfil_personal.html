@@ -160,6 +160,12 @@
 	  {% for ad in user.perfil.adscripcion_set.all %}
 	  <li class="list-group-item">
 	    {{ ad }}
+	    {% if ad.catedra_conacyt %}
+	    <br />
+	    Cátedra CONACYT
+	    {% endif %}
+	    <br />
+	    {{ ad.nombramiento }} desde {{ ad.anno_nombramiento }}
 	  </li>
 	  {% endfor %}
 	</ul>
