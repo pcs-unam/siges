@@ -258,6 +258,9 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             if 'anexo_SNI' in request.FILES:
                 a.anexo_SNI = request.FILES['anexo_SNI']
 
+            if 'ultimo_grado' in request.FILES:
+                a.ultimo_grado = request.FILES['ultimo_grado']
+
             if request.POST['tesis_licenciatura'] != "":
                 a.tesis_licenciatura = request.POST['tesis_licenciatura']
             if request.POST['tesis_maestria'] != "":
@@ -381,8 +384,7 @@ class GradoAcademicoAgregar(LoginRequiredMixin, View):
                 fecha_obtencion=datetime.date(
                     int(request.POST['fecha_obtencion_year']),
                     int(request.POST['fecha_obtencion_month']),
-                    int(request.POST['fecha_obtencion_day'])),
-                documento=request.FILES['documento'])
+                    int(request.POST['fecha_obtencion_day'])))
             g.save()
 
             return HttpResponseRedirect(reverse('perfil'))

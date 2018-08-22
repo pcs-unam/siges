@@ -35,9 +35,10 @@
 		  onClick="if (confirm('¿eliminar {{ grado.grado_obtenido}}?')) window.location='{% url 'eliminar_grado' grado.id %}'">
 	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>
 	<strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
-	<p class="list-group-item-text">nivel {{ grado.nivel }}
-	  obtenido el {{ grado.fecha_obtencion }}<br />
-	  <a href="{{ grado.documento }}">documento</a></p>
+	<p class="list-group-item-text">
+	  nivel {{ grado.nivel }}
+	  obtenido el {{ grado.fecha_obtencion }}
+	</p>
       </li>
       {% endfor %}
   </div>

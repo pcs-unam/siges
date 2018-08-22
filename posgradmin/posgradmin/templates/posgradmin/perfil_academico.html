@@ -62,8 +62,13 @@
       <li class="list-group-item">
 	<a href="{{ object.academico.anexo_solicitud_url }}">Solicitud de Acreditación como Tutor</a></li>
       {% endif %}
-      
-      
+
+      {% if object.academico.ultimo_grado %}
+      <li class="list-group-item">      
+      	<a href="{{ object.academico.ultimo_grado_url }}">Último grado académico</a>
+      </li>
+      {% endif %}
+	      
       <li class="list-group-item">
 	Nivel PRIDE: {{ object.academico.nivel_PRIDE|default:'' }}
       </li>

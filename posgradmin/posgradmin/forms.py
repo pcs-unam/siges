@@ -136,6 +136,7 @@ class AcademicoModelForm(forms.ModelForm):
                         HTML(u"Anexar carta solicitud en papel membreteado y firmada. <br />"
                              + u"<a href='https://github.com/sostenibilidad-unam/posgrado/files/2278987/Linemientos.para.proyectos.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>Lineamientos para el desarrollo y evaluación de proyectos.</a><br />"
                              + u"<a href='https://github.com/sostenibilidad-unam/posgrado/files/2278991/Formato.carta.de.solicitud.acreditacion-reacreditacion.de.tutores.nvo.sistema.docx'>Formato de carta de solicitud acreditación/reacreditación de tutores.</a>"),
+                        'ultimo_grado',
                         'nivel_PRIDE',
                         'nivel_SNI',
                         HTML('De ser miembro del SNI anexe el documento probatorio.'),
@@ -287,7 +288,6 @@ class GradoAcademicoModelForm(forms.ModelForm):
             HTML('<a href="%sinstitucion/agregar/ga/">agregar institucion</a><br /><br />' % settings.APP_PREFIX),
             'facultad',
             'fecha_obtencion',
-            'documento',
             Submit('agregar', 'agregar'))
 
 

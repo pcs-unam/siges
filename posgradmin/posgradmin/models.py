@@ -135,12 +135,6 @@ class Perfil(models.Model):
                 return False
 
 
-def grado_path(instance, filename):
-    return os.path.join(MEDIA_ROOT,
-                        'grados/%s/%s' % (instance.user.id,
-                                          filename))
-
-
 class GradoAcademico(models.Model):
     user = models.ForeignKey(User)
 
@@ -154,14 +148,6 @@ class GradoAcademico(models.Model):
     institucion = models.ForeignKey(Institucion)
 
     fecha_obtencion = models.DateField("Fecha de obtención de grado")
-
-    documento = models.FileField("Copia de documento probatorio",
-                                 upload_to=grado_path)
-
-    def documento_url(self):
-        return "%s/grados/%s/%s" % (MEDIA_URL,
-                                    self.user.id,
-                                    os.path.basename(self.documento.path))
 
     def __unicode__(self):
         return u"%s @ %s" % (self.grado_obtenido, self.institucion)
@@ -485,12 +471,24 @@ def anexo_academico_SNI_path(instance, filename):
                                                         filename))
 
 
+def grado_path(instance, filename):
+    return os.path.join(MEDIA_ROOT,
+                        'perfil-academico/%s/ultimo_grado_%s' % (
+                            instance.id,
+                            filename))
+
+
 class Academico(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     anexo_CV = models.FileField("CV en extenso",
                                 upload_to=anexo_academico_CV_path,
                                 blank=True, null=True)
+
+    ultimo_grado = models.FileField("Copia de último grado académico",
+                                    upload_to=grado_path,
+                                    blank=True, null=True)
+
     anexo_solicitud = models.FileField(
         "Carta de solicitud de acreditación como tutor",
         upload_to=anexo_academico_solicitud_path,
@@ -513,6 +511,11 @@ class Academico(models.Model):
         return "%s/perfil-academico/%s/%s" % (
             MEDIA_URL, self.id,
             os.path.basename(self.anexo_SNI.path))
+
+    def ultimo_grado_url(self):
+        return "%s/perfil-academico/%s/%s" % (
+            MEDIA_URL, self.id,
+            os.path.basename(self.ultimo_grado.path))
 
     nivel_PRIDE = models.CharField(max_length=15,
                                    choices=(('sin PRIDE', 'sin PRIDE'),
@@ -702,6 +705,8 @@ class Academico(models.Model):
         if self.anexo_CV == "":
             return False
         if self.anexo_solicitud == "":
+            return False
+        if not self.ultimo_grado:
             return False
         if self.nivel_SNI != "sin SNI":
             if self.anexo_SNI == "":

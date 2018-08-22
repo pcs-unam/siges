@@ -126,9 +126,10 @@
 	  {% for grado in object.gradoacademico_set.all %}
 	  <li class="list-group-item">
 	    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}
-	    <p class="list-group-item-text">nivel {{ grado.nivel }}
+	    <p class="list-group-item-text">
+	      nivel {{ grado.nivel }}
 	      obtenido el {{ grado.fecha_obtencion }}<br />
-	      <a href="{{ grado.documento_url }}">documento</a></p>
+	    </p>
 
 	  </li>
 	  {% empty %}
