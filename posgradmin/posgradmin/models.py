@@ -409,8 +409,7 @@ class Proyecto(models.Model):
 
 
 def anexo_path(instance, filename):
-    return os.path.join(MEDIA_ROOT,
-                        u'solicitudes/%s/%s' % (instance.solicitud.id,
+    return os.path.join(u'solicitudes/%s/%s' % (instance.solicitud.id,
                                                filename))
 
 
@@ -459,20 +458,17 @@ def anexo_academico_CV_path(instance, filename):
 
 
 def anexo_academico_solicitud_path(instance, filename):
-    return os.path.join(MEDIA_MEDIAPATH,
-                        u'perfil-academico/%s/solicitud_%s' % (instance.id,
+    return os.path.join(u'perfil-academico/%s/solicitud_%s' % (instance.id,
                                                               filename))
 
 
 def anexo_academico_SNI_path(instance, filename):
-    return os.path.join(MEDIA_ROOT,
-                        u'perfil-academico/%s/sni_%s' % (instance.id,
+    return os.path.join(u'perfil-academico/%s/sni_%s' % (instance.id,
                                                         filename))
 
 
 def grado_path(instance, filename):
-    return os.path.join(MEDIA_ROOT,
-                        u'perfil-academico/%s/ultimo_grado_%s' % (
+    return os.path.join(u'perfil-academico/%s/ultimo_grado_%s' % (
                             instance.id,
                             filename))
 
@@ -988,8 +984,7 @@ class Dictamen(models.Model):
 
 
 def curso_path(instance, filename):
-    return os.path.join(MEDIA_ROOT,
-                        u'cursos/%s/%s' % (instance.id,
+    return os.path.join(u'cursos/%s/%s' % (instance.id,
                                           filename))
 
 

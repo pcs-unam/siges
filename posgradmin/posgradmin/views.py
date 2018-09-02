@@ -164,6 +164,8 @@ class PerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
             p.codigo_postal = request.POST['codigo_postal']
             if 'headshot' in request.FILES:
                 p.headshot = request.FILES['headshot']
+            elif 'headshot-clear' in request.POST and a.headshot.name != '':
+                a.headshot.delete()
             p.save()
 
             return HttpResponseRedirect(reverse('perfil'))
@@ -243,6 +245,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
         form = self.form_class(request.POST, request.FILES)
 
         if form.is_valid():
+
             a = request.user.academico
             a.lineas = request.POST[u'lineas']
             a.CVU = request.POST[u'CVU']
@@ -251,15 +254,23 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
 
             if 'anexo_CV' in request.FILES:
                 a.anexo_CV = request.FILES['anexo_CV']
+            elif 'anexo_CV-clear' in request.POST and a.anexo_CV.name != '':
+                a.anexo_CV.delete()
 
             if 'anexo_solicitud' in request.FILES:
                 a.anexo_solicitud = request.FILES['anexo_solicitud']
+            elif 'anexo_solicitud-clear' in request.POST and a.anexo_solicitud.name != '':
+                a.anexo_solicitud.delete()
 
             if 'anexo_SNI' in request.FILES:
                 a.anexo_SNI = request.FILES['anexo_SNI']
+            elif 'anexo_SNI-clear' in request.POST and a.anexo_SNI.name != '':
+                a.anexo_SNI.delete()
 
             if 'ultimo_grado' in request.FILES:
                 a.ultimo_grado = request.FILES['ultimo_grado']
+            elif 'ultimo_grado-clear' in request.POST and a.ultimo_grado.name != '':
+                a.ultimo_grado.delete()
 
             if request.POST['tesis_licenciatura'] != "":
                 a.tesis_licenciatura = request.POST['tesis_licenciatura']
