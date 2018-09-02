@@ -178,7 +178,7 @@ class AcademicoModelForm(forms.ModelForm):
                     'motivacion',
                     'proyectos_sostenibilidad',
                     'proyectos_vigentes',
-                    HTML(u"Marque los campos de conocimiento y líneas de investigación relacionados con los temas de su interés y/o experiencia para facilitar la búsqueda por parte de los aspirantes y alumnos (use Ctrl+click para elegir más de uno). Para más información acerca de los Campos de Conocimiento y las Líneas de Investigación consulte <a href='https://github.com/sostenibilidad-unam/posgrado/files/2233071/Campos.y.lineas.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>este documento</a>."),
+                    HTML(u"Marque los campos de conocimiento y líneas de investigación relacionados con los temas de su interés y/o experiencia para facilitar la búsqueda por parte de los aspirantes y alumnos (para elegir más de uno use Ctrl+Click en Windows, Cmd+Click en Mac). Para más información acerca de los Campos de Conocimiento y las Líneas de Investigación consulte <a href='https://github.com/sostenibilidad-unam/posgrado/files/2233071/Campos.y.lineas.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>este documento</a>."),
                     "lineas_de_investigacion",
                     'campos_de_conocimiento',
                     ),
@@ -307,7 +307,7 @@ class AdscripcionModelForm(forms.ModelForm):
             'institucion',
             HTML(u'<a href="%sinstitucion/agregar/ad/">agregar institución a la lista</a><br /><br />'
                  % settings.APP_PREFIX),
-            'catedra_conacyt',            
+            'catedra_conacyt',
             'nombramiento',
             'anno_nombramiento',
             Submit('agregar', 'agregar'))
