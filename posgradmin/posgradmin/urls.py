@@ -46,8 +46,8 @@ from posgradmin.settings import MEDIA_ROOT, MEDIA_URL
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 #    url(r'^accounts/', include('registration.backends.hmac.urls')),
+    url('^inicio/', InicioView.as_view()),
 
-    url('^accounts/signup/', InicioView.as_view()),
     url('^accounts/', include('allauth.urls')),
 
     url(r'^export_action/', include("export_action.urls",
