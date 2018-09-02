@@ -1,5 +1,6 @@
 # coding: utf-8
 import os
+from django.template.defaultfilters import slugify
 from django.db import models
 from django.db.models import Q
 
@@ -409,8 +410,9 @@ class Proyecto(models.Model):
 
 
 def anexo_path(instance, filename):
+    (root, ext) = os.path.splitext(filename)
     return os.path.join(u'solicitudes/%s/%s' % (instance.solicitud.id,
-                                               filename))
+                                                slugify(root) + ext))
 
 
 class Anexo(models.Model):
@@ -453,24 +455,28 @@ class Comentario(models.Model):
 
 
 def anexo_academico_CV_path(instance, filename):
+    (root, ext) = os.path.splitext(filename)
     return os.path.join(u'perfil-academico/%s/cv_%s' % (instance.id,
-                                                        filename))
+                                                        slugify(root) + ext))
 
 
 def anexo_academico_solicitud_path(instance, filename):
+    (root, ext) = os.path.splitext(filename)
     return os.path.join(u'perfil-academico/%s/solicitud_%s' % (instance.id,
-                                                              filename))
+                                                            slugify(root) + ext))
 
 
 def anexo_academico_SNI_path(instance, filename):
+    (root, ext) = os.path.splitext(filename)
     return os.path.join(u'perfil-academico/%s/sni_%s' % (instance.id,
-                                                        filename))
+                                                        slugify(root) + ext))
 
 
 def grado_path(instance, filename):
+    (root, ext) = os.path.splitext(filename)
     return os.path.join(u'perfil-academico/%s/ultimo_grado_%s' % (
-                            instance.id,
-                            filename))
+        instance.id,
+        slugify(root) + ext))
 
 
 class Academico(models.Model):
@@ -980,8 +986,9 @@ class Dictamen(models.Model):
 
 
 def curso_path(instance, filename):
+    (root, ext) = os.path.splitext(filename)
     return os.path.join(u'cursos/%s/%s' % (instance.id,
-                                          filename))
+            slugify(root) + ext))
 
 
 class Curso(models.Model):
