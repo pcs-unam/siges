@@ -53,7 +53,7 @@ class LineaInvestigacion(models.Model):
 
 def headshot_path(instance, filename):
     extension = filename.split('.')[-1]
-    return 'headshots/%s.%s' % (instance.user.id, extension)
+    return u'headshots/%s.%s' % (instance.user.id, extension)
 
 
 class Perfil(models.Model):
@@ -94,7 +94,7 @@ class Perfil(models.Model):
                                  blank=True, null=True)
 
     def headshot_url(self):
-        return "%s/headshots/%s" % (MEDIA_URL,
+        return u"%s/headshots/%s" % (MEDIA_ROOT,
                                     os.path.basename(self.headshot.path))
 
     def __unicode__(self):
@@ -410,7 +410,7 @@ class Proyecto(models.Model):
 
 def anexo_path(instance, filename):
     return os.path.join(MEDIA_ROOT,
-                        'solicitudes/%s/%s' % (instance.solicitud.id,
+                        u'solicitudes/%s/%s' % (instance.solicitud.id,
                                                filename))
 
 
@@ -421,7 +421,7 @@ class Anexo(models.Model):
     archivo = models.FileField(upload_to=anexo_path)
 
     def url(self):
-        return "%s/solicitudes/%s/%s" % (MEDIA_URL,
+        return u"%s/solicitudes/%s/%s" % (MEDIA_ROOT,
                                          self.solicitud.id,
                                          os.path.basename(self.archivo.path))
 
@@ -454,26 +454,25 @@ class Comentario(models.Model):
 
 
 def anexo_academico_CV_path(instance, filename):
-    return os.path.join(MEDIA_ROOT,
-                        'perfil-academico/%s/cv_%s' % (instance.id,
-                                                       filename))
+    return os.path.join(u'perfil-academico/%s/cv_%s' % (instance.id,
+                                                        filename))
 
 
 def anexo_academico_solicitud_path(instance, filename):
-    return os.path.join(MEDIA_ROOT,
-                        'perfil-academico/%s/solicitud_%s' % (instance.id,
+    return os.path.join(MEDIA_MEDIAPATH,
+                        u'perfil-academico/%s/solicitud_%s' % (instance.id,
                                                               filename))
 
 
 def anexo_academico_SNI_path(instance, filename):
     return os.path.join(MEDIA_ROOT,
-                        'perfil-academico/%s/sni_%s' % (instance.id,
+                        u'perfil-academico/%s/sni_%s' % (instance.id,
                                                         filename))
 
 
 def grado_path(instance, filename):
     return os.path.join(MEDIA_ROOT,
-                        'perfil-academico/%s/ultimo_grado_%s' % (
+                        u'perfil-academico/%s/ultimo_grado_%s' % (
                             instance.id,
                             filename))
 
@@ -482,7 +481,7 @@ class Academico(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     anexo_CV = models.FileField("CV en extenso",
-                                upload_to=anexo_academico_CV_path,
+                                upload_to=anexo_academico_CV_path, #'media/',
                                 blank=True, null=True)
 
     ultimo_grado = models.FileField("Copia de último grado académico",
@@ -498,23 +497,26 @@ class Academico(models.Model):
         blank=True, null=True)
 
     def anexo_CV_url(self):
-        return "%s/perfil-academico/%s/%s" % (
-            MEDIA_URL, self.id,
-            os.path.basename(self.anexo_CV.path))
+        if self.anexo_CV.name != '':
+            return u"%s/perfil-academico/%s/%s" % (
+                MEDIA_ROOT, self.id,
+                os.path.basename(self.anexo_CV.path))
+        else:
+            return False
 
     def anexo_solicitud_url(self):
         return "%s/perfil-academico/%s/%s" % (
-            MEDIA_URL, self.id,
+            MEDIA_ROOT, self.id,
             os.path.basename(self.anexo_solicitud.path))
 
     def anexo_SNI_url(self):
         return "%s/perfil-academico/%s/%s" % (
-            MEDIA_URL, self.id,
+            MEDIA_ROOT, self.id,
             os.path.basename(self.anexo_SNI.path))
 
     def ultimo_grado_url(self):
-        return "%s/perfil-academico/%s/%s" % (
-            MEDIA_URL, self.id,
+        return u"%s/perfil-academico/%s/%s" % (
+            MEDIA_ROOT, self.id,
             os.path.basename(self.ultimo_grado.path))
 
     nivel_PRIDE = models.CharField(max_length=15,
@@ -589,11 +591,11 @@ class Academico(models.Model):
         null=True, blank=True)
 
     participacion_comite_maestria = models.PositiveSmallIntegerField(
-        "Cantidad de participaciones como miembro de comité tutor"
+        "Cantidad de participaciones como miembro de comité tutor (no tutor principal)"
         + " en el PCS a nivel maestría",
         null=True, blank=True)
     participacion_comite_doctorado = models.PositiveSmallIntegerField(
-       "Cantidad de participaciones como miembro de comité tutor"
+       "Cantidad de participaciones como miembro de comité tutor (no tutor principal)"
        + " en el PCS a nivel doctorado",
        null=True, blank=True)
 
@@ -668,7 +670,7 @@ class Academico(models.Model):
                                   blank=True)
     proyectos_sostenibilidad = models.TextField(
         "Principales proyectos relacionados con "
-        + "ciencias de la sostenibilidad durante los últimos cinco años",
+        + "ciencias de la sostenibilidad durante los últimos cinco años, especificar si se es responsable o colaborador.",
         blank=True)
     proyectos_vigentes = models.TextField(
         "Proyectos vigentes en los que pueden "
@@ -987,7 +989,7 @@ class Dictamen(models.Model):
 
 def curso_path(instance, filename):
     return os.path.join(MEDIA_ROOT,
-                        'cursos/%s/%s' % (instance.id,
+                        u'cursos/%s/%s' % (instance.id,
                                           filename))
 
 
