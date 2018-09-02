@@ -229,7 +229,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
         if hasattr(request.user, 'academico'):
             a = request.user.academico
             data = model_to_dict(a)
-            form = self.form_class(data=data)
+            form = self.form_class(data=data, instance=a)
         else:
             form = self.form_class()
 
