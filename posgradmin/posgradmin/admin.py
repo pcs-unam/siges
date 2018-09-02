@@ -32,6 +32,7 @@ class AcademicoAdmin(admin.ModelAdmin):
     list_display = ['nombre_completo',
                     'acreditacion', 'disponible_tutor', 'disponible_miembro',
                     'unificado']
+    list_filter = ['acreditacion', 'disponible_tutor', 'disponible_miembro', ]
 
     fieldsets = (
         (None,
