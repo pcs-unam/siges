@@ -12,4 +12,4 @@ class AccountAdapter(DefaultAccountAdapter):
                                  acreditacion='no acreditado')
             a.save()
 
-        return resolve_url('/inicio/')
+        return resolve_url(settings.APP_PREFIX + '/inicio/')
