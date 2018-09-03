@@ -46,7 +46,6 @@ from posgradmin.settings import MEDIA_ROOT, MEDIA_URL
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 #    url(r'^accounts/', include('registration.backends.hmac.urls')),
-    url('^inicio/', InicioView.as_view()),
 
     url('^accounts/', include('allauth.urls')),
 
@@ -189,6 +188,8 @@ urlpatterns = [
     url(r'^inicio/sesiones/$',
         SesionesListView.as_view(),
         name='lista_sesiones'),
+
+    url('^inicio/', InicioView.as_view()),
 
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 
