@@ -1,0 +1,14 @@
+{% load account %}
+{% user_display user as user_display %}
+{% load i18n %}
+{% autoescape off %}
+
+Este mensaje es para verificar el correo electrónico que usted registró en el Sistema de Gestión Escolar del Posgrado en Ciencias de la Sostenibilidad. Para confirmarlo favor de hacer clic en la siguiente liga: {{ activate_url }}
+
+Gracias por su atención.
+
+Saludos cordiales,
+La Coordiación
+
+
+{% endautoescape %}
