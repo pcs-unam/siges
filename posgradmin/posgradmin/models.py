@@ -74,7 +74,7 @@ class Perfil(models.Model):
     telefono_movil = models.CharField(max_length=100, blank=True)
 
     direccion1 = models.CharField("dirección del lugar de trabajo",
-                                  max_length=150)
+                                  max_length=350)
 
     codigo_postal = models.PositiveSmallIntegerField(default=0)
 
@@ -521,12 +521,18 @@ class Academico(models.Model):
             MEDIA_ROOT, self.id,
             os.path.basename(self.ultimo_grado.path))
 
-    nivel_PRIDE = models.CharField(max_length=15,
-                                   choices=(('sin PRIDE', 'sin PRIDE'),
-                                            ('A', 'A'),
-                                            ('B', 'B'),
-                                            ('C', 'C'),
-                                            ('D', 'D')))
+    estimulo_UNAM = models.CharField("Estímulo UNAM",
+                                     max_length=15,
+                                     default='ninguno',
+                                     choices=(('ninguno', 'ninguno'),
+                                              ('Equivalencia', 'Equivalencia'),
+                                              ('PEPASIG', 'PEPASIG'),
+                                              ('PEI', 'PEI'),
+                                              ('PEDMETI', 'PEDMETI'),
+                                              ('PRIDE A', 'PRIDE A'),
+                                              ('PRIDE B', 'PRIDE B'),
+                                              ('PRIDE C', 'PRIDE C'),
+                                              ('PRIDE D', 'PRIDE D')))
     nivel_SNI = models.CharField(max_length=15,
                                  choices=(('sin SNI', 'sin SNI'),
                                           ('I', 'I'),
