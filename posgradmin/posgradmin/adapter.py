@@ -3,6 +3,7 @@ from django.conf import settings
 from django.shortcuts import resolve_url
 import posgradmin.models as models
 
+
 class AccountAdapter(DefaultAccountAdapter):
 
     def get_login_redirect_url(self, request):
