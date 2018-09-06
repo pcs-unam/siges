@@ -659,14 +659,14 @@ class Academico(models.Model):
         blank=True)
 
     lineas = models.TextField(
-        "Temas de interés y/o experiencia en ciencias de la sostenibilidad",
+        "Temas de interés y/o experiencia en ciencias de la sostenibilidad, máximo 10, uno por renglón",
         blank=True)
 
     palabras_clave = models.TextField(
         "Palabras clave de temas de interés y/o experiencia"
-        + "en ciencias de la sostenibilidad separadas por comas",
+        + "en ciencias de la sostenibilidad, máximo 10, una por renglón",
         blank=True)
-    motivacion = models.TextField("Motivación para participar en el Programa",
+    motivacion = models.TextField("Motivación para participar en el Programa, máximo 200 palabras",
                                   blank=True)
     proyectos_sostenibilidad = models.TextField(
         "Principales proyectos relacionados con "
