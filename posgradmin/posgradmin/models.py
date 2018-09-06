@@ -548,10 +548,12 @@ class Academico(models.Model):
 
     acreditacion = models.CharField(
         max_length=15,
-        choices=(('no acreditado', 'no acreditado'),
-                 ('D', 'D'),
-                 ('M', 'M'),
-                 ('E', 'E')))
+        choices=(
+            ('candidato', 'candidato'),
+            ('no acreditado', 'no acreditado'),
+            ('D', 'D'),
+            ('M', 'M'),
+            ('E', 'E')))
 
     solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE,
                                      blank=True, null=True)

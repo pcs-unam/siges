@@ -9,7 +9,7 @@ class AccountAdapter(DefaultAccountAdapter):
 
         if not hasattr(request.user, 'academico'):
             a = models.Academico(user=request.user,
-                                 acreditacion='no acreditado')
+                                 acreditacion='candidato')
             a.save()
 
         return resolve_url(settings.APP_PREFIX + '/inicio/')
