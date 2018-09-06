@@ -423,8 +423,8 @@ class Anexo(models.Model):
 
     def url(self):
         return u"%s/solicitudes/%s/%s" % (MEDIA_ROOT,
-                                         self.solicitud.id,
-                                         os.path.basename(self.archivo.path))
+                                          self.solicitud.id,
+                                          os.path.basename(self.archivo.path))
 
     def basename(self):
         return os.path.basename(self.archivo.file.name)
@@ -462,14 +462,22 @@ def anexo_academico_CV_path(instance, filename):
 
 def anexo_academico_solicitud_path(instance, filename):
     (root, ext) = os.path.splitext(filename)
-    return os.path.join(u'perfil-academico/%s/solicitud_%s' % (instance.id,
-                                                            slugify(root) + ext))
+    return os.path.join(
+        u'perfil-academico/%s/solicitud_%s' % (instance.id,
+                                               slugify(root) + ext))
 
 
 def anexo_academico_SNI_path(instance, filename):
     (root, ext) = os.path.splitext(filename)
     return os.path.join(u'perfil-academico/%s/sni_%s' % (instance.id,
-                                                        slugify(root) + ext))
+                                                         slugify(root) + ext))
+
+
+def anexo_academico_estimulo_path(instance, filename):
+    (root, ext) = os.path.splitext(filename)
+    return os.path.join(
+        u'perfil-academico/%s/estimulo_%s' % (instance.id,
+                                              slugify(root) + ext))
 
 
 def grado_path(instance, filename):
@@ -483,7 +491,7 @@ class Academico(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     anexo_CV = models.FileField("CV en extenso",
-                                upload_to=anexo_academico_CV_path, #'media/',
+                                upload_to=anexo_academico_CV_path,
                                 blank=True, null=True)
 
     ultimo_grado = models.FileField("Copia de último grado académico",
@@ -496,6 +504,10 @@ class Academico(models.Model):
         blank=True, null=True)
     anexo_SNI = models.FileField(
         upload_to=anexo_academico_SNI_path,
+        blank=True, null=True)
+    anexo_estimulo = models.FileField(
+        "Documento probatorio de Estímulo UNAM",
+        upload_to=anexo_academico_estimulo_path,
         blank=True, null=True)
 
     def anexo_CV_url(self):
@@ -515,6 +527,11 @@ class Academico(models.Model):
         return "%s/perfil-academico/%s/%s" % (
             MEDIA_ROOT, self.id,
             os.path.basename(self.anexo_SNI.path))
+
+    def anexo_estimulo_url(self):
+        return "%s/perfil-academico/%s/%s" % (
+            MEDIA_ROOT, self.id,
+            os.path.basename(self.anexo_estimulo.path))
 
     def ultimo_grado_url(self):
         return u"%s/perfil-academico/%s/%s" % (
@@ -665,18 +682,21 @@ class Academico(models.Model):
         blank=True)
 
     lineas = models.TextField(
-        "Temas de interés y/o experiencia en ciencias de la sostenibilidad, máximo 10, uno por renglón",
+        "Temas de interés y/o experiencia en ciencias de la sostenibilidad, "
+        + "máximo 10, uno por renglón",
         blank=True)
 
     palabras_clave = models.TextField(
         "Palabras clave de temas de interés y/o experiencia"
         + "en ciencias de la sostenibilidad, máximo 10, una por renglón",
         blank=True)
-    motivacion = models.TextField("Motivación para participar en el Programa, máximo 200 palabras",
-                                  blank=True)
+    motivacion = models.TextField(
+        "Motivación para participar en el Programa, máximo 200 palabras",
+        blank=True)
     proyectos_sostenibilidad = models.TextField(
         "Principales proyectos relacionados con "
-        + "ciencias de la sostenibilidad durante los últimos cinco años, especificar si se es responsable o colaborador.",
+        + "ciencias de la sostenibilidad durante los últimos cinco años, "
+        + "especificar si se es responsable o colaborador.",
         blank=True)
     proyectos_vigentes = models.TextField(
         "Proyectos vigentes en los que pueden "
@@ -716,6 +736,9 @@ class Academico(models.Model):
             return False
         if not self.ultimo_grado:
             return False
+        if self.estimulo_UNAM != "ninguno":
+            if self.anexo_estimulo == "":
+                return False
         if self.nivel_SNI != "sin SNI":
             if self.anexo_SNI == "":
                 return False

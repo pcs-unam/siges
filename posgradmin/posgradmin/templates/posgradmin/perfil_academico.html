@@ -71,7 +71,12 @@
       {% endif %}
 
       <li class="list-group-item">
-	Nivel PRIDE: {{ object.academico.nivel_PRIDE|default:'' }}
+	Estímulo UNAM: {{ object.academico.estimulo_UNAM|default:'' }}
+      {% if object.academico.anexo_estimulo %}
+      <li class="list-group-item">
+	<a href="{{ object.academico.anexo_estimulo.url }}">Documento probatorio de Estímulo UNAM</a></li>
+      {% endif %}
+	
       </li>
       <li class="list-group-item">
 	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>

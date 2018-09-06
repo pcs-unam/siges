@@ -250,7 +250,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             a.lineas = request.POST[u'lineas']
             a.CVU = request.POST[u'CVU']
             a.nivel_SNI = request.POST[u'nivel_SNI']
-            a.nivel_PRIDE = request.POST[u'nivel_PRIDE']
+            a.estimulo_UNAM = request.POST[u'estimulo_UNAM']
 
             if 'anexo_CV' in request.FILES:
                 a.anexo_CV = request.FILES['anexo_CV']
@@ -261,6 +261,11 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.anexo_solicitud = request.FILES['anexo_solicitud']
             elif 'anexo_solicitud-clear' in request.POST and a.anexo_solicitud.name != '':
                 a.anexo_solicitud.delete()
+
+            if 'anexo_estimulo' in request.FILES:
+                a.anexo_estimulo = request.FILES['anexo_estimulo']
+            elif 'anexo_estimulo-clear' in request.POST and a.anexo_estimulo.name != '':
+                a.anexo_estimulo.delete()
 
             if 'anexo_SNI' in request.FILES:
                 a.anexo_SNI = request.FILES['anexo_SNI']
