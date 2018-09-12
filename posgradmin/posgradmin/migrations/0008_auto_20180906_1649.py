@@ -16,6 +16,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='academico',
             name='anexo_estimulo',
-            field=models.FileField(blank=True, null=True, upload_to=posgradmin.models.anexo_academico_estimulo_path, verbose_name=b'Documento probatorio de Est\xc3\xadmulo UNAM'),
+            field=models.FileField(blank=True, null=True, verbose_name=b'Documento probatorio de Est\xc3\xadmulo UNAM'),
         ),
     ]

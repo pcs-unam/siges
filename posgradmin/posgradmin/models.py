@@ -467,19 +467,6 @@ def anexo_academico_solicitud_path(instance, filename):
                                                slugify(root) + ext))
 
 
-def anexo_academico_SNI_path(instance, filename):
-    (root, ext) = os.path.splitext(filename)
-    return os.path.join(u'perfil-academico/%s/sni_%s' % (instance.id,
-                                                         slugify(root) + ext))
-
-
-def anexo_academico_estimulo_path(instance, filename):
-    (root, ext) = os.path.splitext(filename)
-    return os.path.join(
-        u'perfil-academico/%s/estimulo_%s' % (instance.id,
-                                              slugify(root) + ext))
-
-
 def grado_path(instance, filename):
     (root, ext) = os.path.splitext(filename)
     return os.path.join(u'perfil-academico/%s/ultimo_grado_%s' % (
@@ -502,13 +489,6 @@ class Academico(models.Model):
         "Carta de solicitud de acreditación como tutor",
         upload_to=anexo_academico_solicitud_path,
         blank=True, null=True)
-    anexo_SNI = models.FileField(
-        upload_to=anexo_academico_SNI_path,
-        blank=True, null=True)
-    anexo_estimulo = models.FileField(
-        "Documento probatorio de Estímulo UNAM",
-        upload_to=anexo_academico_estimulo_path,
-        blank=True, null=True)
 
     def anexo_CV_url(self):
         if self.anexo_CV.name != '':
@@ -522,16 +502,6 @@ class Academico(models.Model):
         return "%s/perfil-academico/%s/%s" % (
             MEDIA_ROOT, self.id,
             os.path.basename(self.anexo_solicitud.path))
-
-    def anexo_SNI_url(self):
-        return "%s/perfil-academico/%s/%s" % (
-            MEDIA_ROOT, self.id,
-            os.path.basename(self.anexo_SNI.path))
-
-    def anexo_estimulo_url(self):
-        return "%s/perfil-academico/%s/%s" % (
-            MEDIA_ROOT, self.id,
-            os.path.basename(self.anexo_estimulo.path))
 
     def ultimo_grado_url(self):
         return u"%s/perfil-academico/%s/%s" % (
@@ -736,12 +706,6 @@ class Academico(models.Model):
             return False
         if not self.ultimo_grado:
             return False
-        if self.estimulo_UNAM != "ninguno":
-            if self.anexo_estimulo == "":
-                return False
-        if self.nivel_SNI != "sin SNI":
-            if self.anexo_SNI == "":
-                return False
         if self.tesis_licenciatura == "":
             return False
         elif self.tesis_maestria == "":

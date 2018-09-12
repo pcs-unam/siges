@@ -262,16 +262,6 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             elif 'anexo_solicitud-clear' in request.POST and a.anexo_solicitud.name != '':
                 a.anexo_solicitud.delete()
 
-            if 'anexo_estimulo' in request.FILES:
-                a.anexo_estimulo = request.FILES['anexo_estimulo']
-            elif 'anexo_estimulo-clear' in request.POST and a.anexo_estimulo.name != '':
-                a.anexo_estimulo.delete()
-
-            if 'anexo_SNI' in request.FILES:
-                a.anexo_SNI = request.FILES['anexo_SNI']
-            elif 'anexo_SNI-clear' in request.POST and a.anexo_SNI.name != '':
-                a.anexo_SNI.delete()
-
             if 'ultimo_grado' in request.FILES:
                 a.ultimo_grado = request.FILES['ultimo_grado']
             elif 'ultimo_grado-clear' in request.POST and a.ultimo_grado.name != '':

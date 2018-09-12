@@ -71,19 +71,10 @@
       {% endif %}
 
       <li class="list-group-item">
-	Estímulo UNAM: {{ object.academico.estimulo_UNAM|default:'' }}
-      {% if object.academico.anexo_estimulo %}
-      <li class="list-group-item">
-	<a href="{{ object.academico.anexo_estimulo.url }}">Documento probatorio de Estímulo UNAM</a></li>
-      {% endif %}
-	
+	Estímulo UNAM: {{ object.academico.estimulo_UNAM|default:'' }}	
       </li>
       <li class="list-group-item">
 	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
-      {% if object.academico.anexo_SNI %}
-      <li class="list-group-item">
-	<a href="{{ object.academico.anexo_SNI.url }}">Documento probatorio de nivel SNI</a></li>
-      {% endif %}
 
       <li class="list-group-item">
 	Acreditación: {{ object.academico.show_acreditacion }}</li>

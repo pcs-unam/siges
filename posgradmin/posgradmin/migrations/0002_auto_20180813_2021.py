@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='academico',
             name='anexo_SNI',
-            field=models.FileField(blank=True, null=True, upload_to=posgradmin.models.anexo_academico_SNI_path),
+            field=models.FileField(blank=True, null=True),
         ),
         migrations.AddField(
             model_name='academico',
