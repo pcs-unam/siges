@@ -168,9 +168,12 @@ class Estudiante(models.Model):
                  (2, 2)),
         blank=True, null=True)
 
+    institucion = models.ForeignKey(Institucion,
+                                    help_text=u"Institución de Inscripción",
+                                    limit_choices_to={'entidad_PCS': True},
+                                    blank=True, null=True)
+
     convenio = models.CharField(max_length=100, blank=True)
-    # plan = models.CharField("clave del plan de estudios",
-    #                         max_length=100, blank=True)
 
     plan = models.CharField(
         max_length=20,
@@ -196,14 +199,23 @@ class Estudiante(models.Model):
     motivo_baja = models.CharField(max_length=200,
                                    blank=True)
 
-    fecha_titulacion = models.DateField(blank=True, null=True)
-    folio_titulacion = models.CharField(max_length=200, blank=True)
+    fecha_graduacion = models.DateField(u"Fecha de graduación",
+                                        blank=True, null=True)
+    folio_graduacion = models.CharField(u"Folio de acta de examen de grado",
+                                        max_length=200, blank=True)
     mencion_honorifica = models.BooleanField(default=False)
-    medalla_alfonso_caso = models.BooleanField(default=False)
-    semestre_graduacion = models.PositiveSmallIntegerField(blank=True,
-                                                           null=True)
+    medalla_alfonso_caso = models.BooleanField(u"Medalla Alfonso Caso",
+                                               default=False)
+    anno_graduacion = models.PositiveSmallIntegerField(u"año de graduación",
+                                                       blank=True,
+                                                       null=True)
+    semestre_graduacion = models.PositiveSmallIntegerField(
+        u"semestre de graduación",
+        choices=((1, 1),
+                 (2, 2)),
+        blank=True,
+        null=True)
 
-    institucion = models.ForeignKey(Institucion, blank=True, null=True)
     observaciones = models.TextField(blank=True)
 
     def faltan_documentos(self):
