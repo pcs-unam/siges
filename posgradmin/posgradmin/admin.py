@@ -29,7 +29,7 @@ admin.site.register(Estudiante, EstudianteAdmin)
 
 class AcademicoAdmin(admin.ModelAdmin):
     search_fields = ['user__first_name', 'user__last_name']
-    list_display = ['nombre_completo',
+    list_display = ['fullname',
                     'acreditacion', 'disponible_tutor', 'disponible_miembro',
                     'unificado']
     list_filter = ['acreditacion', 'disponible_tutor', 'disponible_miembro', ]
@@ -80,6 +80,13 @@ class AcademicoAdmin(admin.ModelAdmin):
          {"fields": ("disponible_miembro",
                      'disponible_tutor',)}),
     )
+
+    def fullname(self, obj):
+        name = obj.user.get_full_name()
+        if name:
+            return name
+        else:
+            return obj.user.username
 
     def unificado(self, academico):
         return academico.as_a()

@@ -282,7 +282,7 @@ class Estudiante(models.Model):
         return None
 
     def as_a(self):
-        return "<a href='%sinicio/usuario/%s'>%s</a>" % (
+        return "<a href='%sinicio/usuario/%s/'>%s</a>" % (
             APP_PREFIX,
             self.user.id,
             self.user.get_full_name())
@@ -777,7 +777,7 @@ class Academico(models.Model):
                         aria-hidden=true></span>"""
         icon.format(icon='thumbs-up')
 
-        return u"""<a href='%sinicio/usuario/%s'>%s %s</a>""" % (
+        return u"""<a href='%sinicio/usuario/%s/'>%s %s</a>""" % (
             APP_PREFIX,
             self.user.id, icon, self.__unicode__())
 
@@ -855,8 +855,13 @@ class Academico(models.Model):
         return comites
 
     def __unicode__(self):
-        return u"%s %s" % (self.user.first_name,
-                           self.user.last_name)
+        name = self.user.get_full_name()
+        if name:
+            return name
+        else:
+            return self.user.username
+
+        return name
 
     class Meta:
         verbose_name_plural = "Académicos"
