@@ -43,7 +43,7 @@ class AcademicoAdmin(admin.ModelAdmin):
                      'comite_academico',
                      'fecha_acreditacion',
                      'acreditacion',
-                     'nivel_PRIDE',
+                     'estimulo_UNAM',
                      'nivel_SNI',
                      'CVU',
                      'DGEE',)}),
