@@ -546,6 +546,7 @@ class Academico(models.Model):
         choices=(
             ('candidato', 'candidato'),
             ('no acreditado', 'no acreditado'),
+            ('baja', 'baja'),
             ('D', 'D'),
             ('M', 'M'),
             ('E', 'E')))
