@@ -186,7 +186,9 @@ class Estudiante(models.Model):
                               choices=(
                                   (u"graduado", u"graduado"),
                                   (u"egresado", u"egresado"),
-                                  (u"vigente", u"vigente"),
+                                  (u"inscrito", u"inscrito"),
+                                  (u'plazo adicional', u'plazo adicional'),
+                                  (u'indeterminado', u'indeterminado'),
                                   (u"baja temporal", u"baja temporal"),
                                   (u"baja definitiva", u"baja definitiva")))
 
