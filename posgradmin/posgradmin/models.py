@@ -782,7 +782,7 @@ class Academico(models.Model):
             self.user.id, icon, self.__unicode__())
 
     def nombre_completo(self):
-        return self.user.get_full_name()
+        return self.__unicode__()
 
     def acreditado(self):
         return self.tutor
