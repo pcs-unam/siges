@@ -43,7 +43,7 @@
 	</a>
       </td>
       <td>
-	{% if user.perfil %}
+	{% if academico.user.perfil.id %}
 	<span class="glyphicon glyphicon-check" aria-hidden="true"></span>
 	<a href="{% url 'user_detail' academico.user.id %}">
 	  perfil personal
