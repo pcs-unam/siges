@@ -94,10 +94,6 @@ class Perfil(models.Model):
                                  upload_to=headshot_path,
                                  blank=True, null=True)
 
-    def headshot_url(self):
-        return u"%s/headshots/%s" % (MEDIA_ROOT,
-                                    os.path.basename(self.headshot.path))
-
     def __unicode__(self):
         return u"%s" % self.user.get_full_name()
 
@@ -438,7 +434,7 @@ class Anexo(models.Model):
     archivo = models.FileField(upload_to=anexo_path)
 
     def url(self):
-        return u"%s/solicitudes/%s/%s" % (MEDIA_ROOT,
+        return u"%s/solicitudes/%s/%s" % (MEDIA_URL,
                                           self.solicitud.id,
                                           os.path.basename(self.archivo.path))
 
@@ -505,24 +501,6 @@ class Academico(models.Model):
         "Carta de solicitud de acreditación como tutor",
         upload_to=anexo_academico_solicitud_path,
         blank=True, null=True)
-
-    def anexo_CV_url(self):
-        if self.anexo_CV.name != '':
-            return u"%s/perfil-academico/%s/%s" % (
-                MEDIA_ROOT, self.id,
-                os.path.basename(self.anexo_CV.path))
-        else:
-            return False
-
-    def anexo_solicitud_url(self):
-        return "%s/perfil-academico/%s/%s" % (
-            MEDIA_ROOT, self.id,
-            os.path.basename(self.anexo_solicitud.path))
-
-    def ultimo_grado_url(self):
-        return u"%s/perfil-academico/%s/%s" % (
-            MEDIA_ROOT, self.id,
-            os.path.basename(self.ultimo_grado.path))
 
     estimulo_UNAM = models.CharField("Estímulo UNAM",
                                      max_length=15,

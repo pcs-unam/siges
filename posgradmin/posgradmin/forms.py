@@ -125,7 +125,6 @@ class AcademicoModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AcademicoModelForm, self).__init__(*args, **kwargs)
-        #pprint(type(self.data))
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
             Div(Div(HTML("<h1 class='panel-title'>"
@@ -134,7 +133,6 @@ class AcademicoModelForm(forms.ModelForm):
                 Div(
                     Column(
                         'anexo_CV',
-#                        HTML("esto <a href='%s'>CV extenso</a>" % self.data['anexo_CV']),
                         'anexo_solicitud',
                         HTML(u"Anexar carta solicitud en papel membreteado y firmada. <br />"
                              + u"<a href='https://github.com/sostenibilidad-unam/posgrado/files/2278987/Linemientos.para.proyectos.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>Lineamientos para el desarrollo y evaluación de proyectos.</a><br />"
