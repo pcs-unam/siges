@@ -4,7 +4,7 @@
 {% block breadcrumbs %}
 <div class="breadcrumbs">
   &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
-  &rsaquo; <a href="{% url 'perfil' %}">{{ object.get_full_name }}</a>
+  &rsaquo; {{ object.get_full_name }}
 </div>
 {% endblock %}
 
@@ -14,10 +14,27 @@
     {% if not user.academico.resumen_completo %}
     <div class="alert alert-danger" role="alert">
       <strong>Perfil académico incompleto.</strong>
-      <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>.      
+      <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>
+    </div>
+    {% endif %}
+    {% if not user.perfil.adscripcion_ok %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No ha agregado su adscripción</strong>
+      <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
+    </div>
+    {% elif not user.perfil.asociado_PCS %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No asociado a entidad del PCS</strong>
+      <a href="{% url 'agregar_asociacion' %}">Registrar asociación</a>.
     </div>
     {% endif %}
 
+    {% if not user.gradoacademico_set.all %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No ha agregado grados académicos</strong>
+      <a href="{% url 'agregar_grado' %}">Agregar grados académicos</a>.
+    </div>
+    {% endif %}
 
 <div class="panel panel-primary">
   <div class="panel-heading">
@@ -34,10 +51,12 @@
     <h1>{{ object.get_full_name }}</h1>
     <hr>
     {% if user == object %}
-    <a href="{% url 'editar_perfil' %}">editar perfil personal</a>
+    <a class="btn btn-default" role="button" href="{% url 'editar_perfil' %}">editar perfil personal</a>
     {% elif user.is_staff %}
     <a href="{% url 'admin:auth_user_change' object.id %}">editar usuario</a><br />
+    {% if object.perfil %}
     <a href="{% url 'admin:posgradmin_perfil_change' object.perfil.id %}">editar perfil personal</a>
+    {% endif %}
     {% endif %}
     <br />  <br />
 
@@ -166,7 +185,9 @@
 	    Cátedra CONACYT
 	    {% endif %}
 	    <br />
+	    {% if not ad.asociacion_PCS %}
 	    {{ ad.nombramiento }} desde {{ ad.anno_nombramiento }}
+	    {% endif %}
 	  </li>
 	  {% endfor %}
 	</ul>
@@ -179,7 +200,7 @@
 	{% elif not user.perfil.asociado_PCS %}
 	<div class="alert alert-danger" role="alert">
 	  <strong>No asociado a entidad del PCS</strong>
-	  <a href="{% url 'agregar_adscripcion' %}">Registrar adscripción</a>.
+	  <a href="{% url 'agregar_asociacion' %}">Registrar asociación</a>.
 	</div>
 	{% endif %}
       </div>

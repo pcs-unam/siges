@@ -322,10 +322,9 @@ class AsociacionModelForm(forms.ModelForm):
 
     class Meta:
         model = Adscripcion
-        exclude = ['perfil', ]
+        exclude = ['perfil', 'nombramiento', 'anno_nombramiento']
 
     def __init__(self, *args, **kwargs):
-
         super(AsociacionModelForm, self).__init__(*args, **kwargs)
         self.fields['institucion'].queryset = Institucion.objects.filter(
             entidad_PCS=True)

@@ -28,7 +28,7 @@
     {% if not user.academico.resumen_completo %}
     <div class="alert alert-danger" role="alert">
       <strong>Perfil académico incompleto.</strong>
-      <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>.
+      <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>
     </div>
     {% endif %}
 
@@ -71,7 +71,7 @@
       {% endif %}
 
       <li class="list-group-item">
-	Estímulo UNAM: {{ object.academico.estimulo_UNAM|default:'' }}	
+	Estímulo UNAM: {{ object.academico.estimulo_UNAM|default:'' }}
       </li>
       <li class="list-group-item">
 	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
@@ -160,7 +160,7 @@
 
 	<hr>
 	Otros programas en los que participa como <em>tutor principal</em>: {{ object.academico.tutor_principal_otros_programas|default:"" }} <br />
-	
+
 	Otros programas en los que participa como miembro de comité tutor: {{ object.academico.tutor_otros_programas|default:"" }} <br />
 
 

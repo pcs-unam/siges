@@ -12,21 +12,43 @@
       <strong>No tiene perfil personal.</strong>
       <a href="{% url 'editar_perfil' %}">Crear perfil personal.</a>.
     </div>
+    {% else %}
+
+    {% if not user.perfil.adscripcion_ok %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No ha agregado su adscripción</strong>
+      <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
+    </div>
+    {% elif not user.perfil.asociado_PCS %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No asociado a entidad del PCS</strong>
+      <a href="{% url 'agregar_asociacion' %}">Registrar asociación</a>.
+    </div>
     {% endif %}
+    {% endif %}
+
+
+    {% if not user.gradoacademico_set.all %}
+    <div class="alert alert-danger" role="alert">
+      <strong>No ha agregado grados académicos</strong>
+      <a href="{% url 'agregar_grado' %}">Agregar grados académicos</a>.
+    </div>
+    {% endif %}
+
 
 
     {% if user.academico %}
-    
+
     {% if not user.academico.resumen_completo %}
     <div class="alert alert-danger" role="alert">
       <strong>Perfil académico incompleto.</strong>
-      <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>.
+      <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>
     </div>
     {% endif %}
-    
+
     {% endif %}
 
-    
+
     <div class="list-group">
       {% if user.perfil %}
       <a href="{% url 'perfil' %}" class="list-group-item">Perfil Personal</a>
@@ -36,7 +58,7 @@
       <a href="{% url 'perfil_academico' %}" class="list-group-item">Perfil Académico</a>
       {% endif %}
     </div>
-    
+
     {# if user.perfil #}
     {# include 'posgradmin/inicio_perfil.html' #}
     {# else #}
@@ -46,7 +68,7 @@
     {# if user.academico #}
     {# include 'posgradmin/inicio_academico.html' #}
     {# endif #}
-    
+
 
     {# if user.estudiante #}
     {# include 'posgradmin/inicio_estudiante.html' #}
@@ -107,7 +129,7 @@
   </div>
   {% endif %}
 
-  
+
 </div>
 
 {% if user.is_staff or user.asistente %}

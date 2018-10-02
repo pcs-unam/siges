@@ -34,7 +34,7 @@ class InicioView(LoginRequiredMixin, View):
 class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     login_url = settings.APP_PREFIX + 'accounts/login/'
     model = models.User
-    template_name = "posgradmin/user_detail.html"
+    template_name = "posgradmin/perfil_personal.html"
 
     def test_func(self):
         if hasattr(self.request.user, 'asistente') \
@@ -131,7 +131,7 @@ class PerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
                       self.template,
                       {'object': perfil,
                        'form': form,
-                       'title': 'Editar mi perfil',
+                       'title': 'Editar Perfil Personal',
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
@@ -493,13 +493,17 @@ class AsociacionAgregar(LoginRequiredMixin, View):
 
             assert ins.entidad_PCS
 
-            a = models.Adscripcion(perfil=request.user.perfil,
-                                   institucion=ins,
-                                   asociacion_PCS=True)
+            a = models.Adscripcion(
+                perfil=request.user.perfil,
+                institucion=ins,
+                nombramiento='asociación',
+                anno_nombramiento=datetime.datetime.now().year,
+                asociacion_PCS=True)
             a.save()
             return HttpResponseRedirect(reverse('perfil'))
 
         else:
+            print "aga"
             return render(request,
                           self.template_name,
                           {'title': 'Agregar Asociación al PCS',
