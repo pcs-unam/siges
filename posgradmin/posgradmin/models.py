@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
-    solicitudes_estados, MEDIA_ROOT, MEDIA_URL, \
+    solicitudes_estados, MEDIA_URL, \
     APP_PREFIX
 
 
@@ -63,11 +63,11 @@ class Perfil(models.Model):
     titulo = models.CharField("Grado académico (e.g. Dr., Lic.)",
                               max_length=15, blank=True)
 
-    curp = models.CharField("CURP, en caso de ser extranjero(a) "
-                            + "ingresar la palabra extranjero(a)",
+    curp = models.CharField("CURP. Si usted es extranjero(a) y no cuenta con "
+                            + "este dato, ingresar la palabra extranjero(a)",
                             max_length=100)
-    rfc = models.CharField("RFC, en caso de ser extranjero(a) "
-                           + "ingresar la palabra extranjero(a)",
+    rfc = models.CharField("RFC. Si usted es extranjero(a) y no cuenta con "
+                           + "este dato, ingresar la palabra extranjero(a)",
                            max_length=100)
 
     telefono = models.CharField(max_length=100)
