@@ -101,7 +101,10 @@ admin.site.register(Academico, AcademicoAdmin)
 class AdscripcionAdmin(admin.ModelAdmin):
     search_fields = ['perfil__user__first_name',
                      'perfil__user__last_name']
-    list_display = ['perfil', 'institucion', 'nombramiento', 'anno_nombramiento']
+    list_display = ['perfil',
+                    'institucion',
+                    'nombramiento',
+                    'anno_nombramiento']
     list_filter = ['catedra_conacyt', 'asociacion_PCS', ]
 
 
@@ -185,9 +188,29 @@ admin.site.register(Solicitud, SolicitudAdmin)
 
 class PerfilAdmin(admin.ModelAdmin):
     list_display = [
-        'id',
-        'user',
-        ]
+        'fullname',
+        'telefono',
+        'email',
+        'academico_unificado'
+       ]
+    search_fields = ['user__first_name', 'user__last_name']
+
+    def email(self, obj):
+        return obj.user.email
+
+    def fullname(self, obj):
+        name = obj.user.get_full_name()
+        if name:
+            return name
+        else:
+            return obj.user.username
+
+    def academico_unificado(self, perfil):
+        if hasattr(perfil.user, 'academico'):
+            return perfil.user.academico.as_a()
+        else:
+            return ""
+    academico_unificado.allow_tags = True
 
 
 admin.site.register(Perfil, PerfilAdmin)

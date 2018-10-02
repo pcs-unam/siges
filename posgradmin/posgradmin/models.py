@@ -101,7 +101,7 @@ class Perfil(models.Model):
         return self.__unicode__()
 
     class Meta:
-        verbose_name_plural = "Perfiles"
+        verbose_name_plural = "Perfiles Personales"
 
     def asociado_PCS(self):
         for a in self.adscripcion_set.all():
