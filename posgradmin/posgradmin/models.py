@@ -745,8 +745,6 @@ class Academico(models.Model):
             return False
         elif self.motivacion == "":
             return False
-        elif self.proyectos_vigentes == "":
-            return False
         else:
             return True
 
