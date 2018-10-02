@@ -99,8 +99,10 @@ admin.site.register(Academico, AcademicoAdmin)
 
 
 class AdscripcionAdmin(admin.ModelAdmin):
-    search_fields = ['perfil__user']
-    list_display = ['institucion', 'perfil']
+    search_fields = ['perfil__user__first_name',
+                     'perfil__user__last_name']
+    list_display = ['perfil', 'institucion', 'nombramiento', 'anno_nombramiento']
+    list_filter = ['catedra_conacyt', 'asociacion_PCS', ]
 
 
 admin.site.register(Adscripcion, AdscripcionAdmin)
