@@ -30,6 +30,7 @@ class Institucion(models.Model):
 
     class Meta:
         verbose_name_plural = "instituciones"
+        unique_together = ('nombre', 'suborganizacion')
 
 
 class CampoConocimiento(models.Model):
