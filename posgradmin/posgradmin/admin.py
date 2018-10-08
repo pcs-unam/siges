@@ -48,7 +48,10 @@ class AcademicoAdmin(admin.ModelAdmin):
                      'estimulo_UNAM',
                      'nivel_SNI',
                      'CVU',
-                     'DGEE',)}),
+                     'DGEE',
+                     'anexo_CV',
+                     'anexo_solicitud'
+         )}),
         ('Líneas de investigación, Campos de Conocimiento',
          {'fields': ('lineas_de_investigacion',
                      'campos_de_conocimiento')}),
