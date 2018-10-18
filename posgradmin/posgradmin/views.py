@@ -267,29 +267,45 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             elif 'ultimo_grado-clear' in request.POST and a.ultimo_grado.name != '':
                 a.ultimo_grado.delete()
 
-            if request.POST['tesis_licenciatura'] != "":
-                a.tesis_licenciatura = request.POST['tesis_licenciatura']
-            if request.POST['tesis_maestria'] != "":
-                a.tesis_maestria = request.POST['tesis_maestria']
             if request.POST['tesis_doctorado'] != "":
                 a.tesis_doctorado = request.POST['tesis_doctorado']
-            if request.POST['tesis_licenciatura_5'] != "":
-                a.tesis_licenciatura_5 = request.POST['tesis_licenciatura_5']
-            if request.POST['tesis_maestria_5'] != "":
-                a.tesis_maestria_5 = request.POST['tesis_maestria_5']
             if request.POST['tesis_doctorado_5'] != "":
                 a.tesis_doctorado_5 = request.POST['tesis_doctorado_5']
-            if request.POST['participacion_comite_maestria'] != "":
-                a.participacion_comite_maestria = request.POST['participacion_comite_maestria']
-            if request.POST['participacion_tutor_maestria'] != "":
-                a.participacion_tutor_maestria = request.POST['participacion_tutor_maestria']
-            if request.POST['participacion_comite_doctorado'] != "":
-                a.participacion_comite_doctorado = request.POST['participacion_comite_doctorado']
+
+            if request.POST['tesis_maestria'] != "":
+                a.tesis_maestria = request.POST['tesis_maestria']
+            if request.POST['tesis_maestria_5'] != "":
+                a.tesis_maestria_5 = request.POST['tesis_maestria_5']
+
+            if request.POST['tesis_licenciatura'] != "":
+                a.tesis_licenciatura = request.POST['tesis_licenciatura']
+            if request.POST['tesis_licenciatura_5'] != "":
+                a.tesis_licenciatura_5 = request.POST['tesis_licenciatura_5']
+
+            if request.POST['tutor_principal_otros_programas']:
+                a.tutor_principal_otros_programas = request.POST['tutor_principal_otros_programas']
+
+            if request.POST['comite_doctorado_otros'] != "":
+                a.comite_doctorado_otros = request.POST['comite_doctorado_otros']
+            if request.POST['comite_maestria_otros'] != "":
+                a.comite_maestria_otros = request.POST['comite_maestria_otros']
+
+            if request.POST['tutor_otros_programas']:
+                a.tutor_otros_programas = request.POST['tutor_otros_programas']
+
+            if request.POST['otras_actividades'] != "":
+                a.otras_actividades = request.POST['otras_actividades']
+
             if request.POST['participacion_tutor_doctorado'] != "":
                 a.participacion_tutor_doctorado = request.POST['participacion_tutor_doctorado']
+            if request.POST['participacion_comite_doctorado'] != "":
+                a.participacion_comite_doctorado = request.POST['participacion_comite_doctorado']
 
-            a.tutor_otros_programas = request.POST['tutor_otros_programas']
-            a.tutor_principal_otros_programas = request.POST['tutor_principal_otros_programas']
+            if request.POST['participacion_tutor_maestria'] != "":
+                a.participacion_tutor_maestria = request.POST['participacion_tutor_maestria']
+            if request.POST['participacion_comite_maestria'] != "":
+                a.participacion_comite_maestria = request.POST['participacion_comite_maestria']
+
 
             if request.POST['articulos_internacionales_5'] != "":
                 a.articulos_internacionales_5 = request.POST['articulos_internacionales_5']
@@ -307,6 +323,10 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.libros = request.POST['libros']
             if request.POST['libros_5'] != "":
                 a.libros_5 = request.POST['libros_5']
+            a.top_5 = request.POST['top_5']
+            if request.POST['otras_publicaciones'] != "":
+                a.otras_publicaciones = request.POST['otras_publicaciones']
+
 
             a.lineas = request.POST['lineas']
 
@@ -330,7 +350,6 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             else:
                 a.campos_de_conocimiento.set([])
 
-            a.top_5 = request.POST['top_5']
             a.palabras_clave = request.POST['palabras_clave']
             a.motivacion = request.POST['motivacion']
             a.proyectos_sostenibilidad = request.POST['proyectos_sostenibilidad']

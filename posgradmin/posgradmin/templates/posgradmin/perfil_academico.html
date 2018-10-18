@@ -132,29 +132,37 @@
 	  </thead>
 	  <tbody>
 	    <tr>
-	      <td>Cantidad de tesis dirigidas </td>
+	      <td>Cantidad de participaciones como tutor principal de estudiantes graduados </td>
 	      <td align="right">{{ object.academico.tesis_licenciatura|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.tesis_maestria|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.tesis_doctorado|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
-	      <td>Cantidad de tesis dirigidas los últimos 5 años</td>
+	      <td>Cantidad de participaciones como tutor principal de estudiantes graduados los últimos 5 años</td>
 	      <td align="right">{{ object.academico.tesis_licenciatura_5|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.tesis_maestria_5|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.tesis_doctorado_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
-	      <td>Cantidad de comités en los que participa como tutor principal en el PCS</td>
+	      <td>Cantidad de comités en los que participa como tutor principal en el Posgrado en Ciencias de la Sostenibilidad</td>
 	      <td></td>
 	      <td align="right">{{ object.academico.participacion_tutor_maestria|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.participacion_tutor_doctorado|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
-	      <td>Cantidad de comités en los que participa en el PCS</td>
+	      <td>Cantidad de comités en los que participa en el Posgrado en Ciencias de la Sostenibilidad</td>
 	      <td></td>
 	      <td align="right">{{ object.academico.participacion_comite_maestria|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.participacion_comite_doctorado|default_if_none:"" }}</td>
 	    </tr>
+
+	    <tr>
+	      <td>Cantidad total de participaciones como miembro de comité tutor (no tutor principal) de estudiantes graduados en otros programas</td>
+	      <td></td>
+	      <td align="right">{{ object.academico.comite_maestria_otros|default_if_none:"" }}</td>
+	      <td align="right">{{ object.academico.comite_doctorado_otros|default_if_none:"" }}</td>
+	    </tr>
+
 	  </tbody>
 	</table>
 
@@ -163,6 +171,8 @@
 
 	Otros programas en los que participa como miembro de comité tutor: {{ object.academico.tutor_otros_programas|default:"" }} <br />
 
+	<hr />
+	Otras actividades: {{ object.academico.otras_actividades|default_if_none:""|markdown }}
 
       </div>
     </div>
@@ -204,6 +214,7 @@
 	    </tr>
 	  </tbody>
 	</table>
+	Otras publicaciones: {{ object.academico.otras_publicaciones|default_if_none:""|markdown }}
       </div>
     </div>
 

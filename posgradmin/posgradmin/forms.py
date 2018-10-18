@@ -146,32 +146,44 @@ class AcademicoModelForm(forms.ModelForm):
                          + "En los campos siguientes, si no tiene cantidades "
                          + u"que reportar, por favor llene con ceros."),
                     Class="panel-heading"),
-                Div(Column('tesis_licenciatura',
-                           'tesis_licenciatura_5',
-                           'tesis_maestria',
-                           'tesis_maestria_5',
-                           'tesis_doctorado',
-                           'tesis_doctorado_5',
-                           'participacion_tutor_doctorado',
-                           'participacion_comite_doctorado',
-                           'participacion_tutor_maestria',
-                           'participacion_comite_maestria',
-                           'tutor_principal_otros_programas',
-                           'tutor_otros_programas',
-                           'articulos_internacionales',
-                           'articulos_internacionales_5',
-                           'articulos_nacionales',
-                           'articulos_nacionales_5',
-                           'libros',
-                           'libros_5',
-                           'capitulos',
-                           'capitulos_5'),
+                Div(Column(
+                    HTML(u"<h4>Formación de estudiantes</h4>"),
+                    'tesis_doctorado',
+                    'tesis_doctorado_5',
+                    'tesis_maestria',
+                    'tesis_maestria_5',
+                    'tesis_licenciatura',
+                    'tesis_licenciatura_5',
+                    'tutor_principal_otros_programas',
+
+                    'comite_doctorado_otros',
+                    'comite_maestria_otros',
+                    'tutor_otros_programas',
+
+                    'otras_actividades',
+                    HTML("""<h4>En el Posgrado en
+                        Ciencias de la Sostenibilidad</h4>"""),
+                    'participacion_tutor_doctorado',
+                    'participacion_comite_doctorado',
+                    'participacion_tutor_maestria',
+                    'participacion_comite_maestria',
+                    HTML("<h3>Publicaciones</h3>"),
+                    'articulos_internacionales',
+                    'articulos_internacionales_5',
+                    'articulos_nacionales',
+                    'articulos_nacionales_5',
+                    'libros',
+                    'libros_5',
+                    'capitulos',
+                    'capitulos_5',
+                    'top_5',
+                    'otras_publicaciones'
+                ),
                     Class="panel-body"),
                 Div(HTML("<h1 class='panel-title'>"
                          + u"Actividad profesional y de Investigación</h1>"),
                     Class="panel-heading"),
                 Div(Column(
-                    "top_5",
                     "lineas",
                     'palabras_clave',
                     'motivacion',
@@ -195,11 +207,7 @@ class AcademicoModelForm(forms.ModelForm):
         model = Academico
         exclude = ['user', 'tutor',
                    'fecha_acreditacion', 'acreditacion',
-                   'DGEE', 'solicitud', 'comite_academico', 'observaciones']
-
-        # widgets = {
-        #     'anexo_CV': forms.FileField(widget=FileInput)
-        #     }
+                   'solicitud', 'comite_academico', 'observaciones']
 
 
 class SolicitudCommentForm(forms.Form):
