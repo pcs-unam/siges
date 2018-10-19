@@ -161,8 +161,10 @@ class AcademicoModelForm(forms.ModelForm):
                     'tutor_otros_programas',
 
                     'otras_actividades',
-                    HTML("""<h4>En el Posgrado en
-                        Ciencias de la Sostenibilidad</h4>"""),
+                    HTML(u"""<h4>En el Posgrado en
+                        Ciencias de la Sostenibilidad</h4>
+                    Sólo llenar en caso de reacreditación.
+                    """),
                     'participacion_tutor_doctorado',
                     'participacion_comite_doctorado',
                     'participacion_tutor_maestria',
