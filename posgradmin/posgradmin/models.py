@@ -751,6 +751,10 @@ class Academico(models.Model):
             return False
         elif self.tesis_doctorado_5 == "":
             return False
+        elif self.comite_doctorado_otros == "":
+            return False
+        elif self.comite_maestria_otros == "":
+            return False
         elif self.participacion_comite_maestria == "":
             return False
         elif self.participacion_tutor_maestria == "":
@@ -782,6 +786,10 @@ class Academico(models.Model):
         elif self.palabras_clave == "":
             return False
         elif self.motivacion == "":
+            return False
+        elif self.campos_de_conocimiento.count() == 0:
+            return False
+        elif self.lineas_de_investigacion.count() == 0:
             return False
         else:
             return True
