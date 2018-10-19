@@ -191,13 +191,32 @@ class AcademicoModelForm(forms.ModelForm):
                     'motivacion',
                     'proyectos_sostenibilidad',
                     'proyectos_vigentes',
-                    HTML(u"Marque los campos de conocimiento y líneas de investigación relacionados con los temas de su interés y/o experiencia para facilitar la búsqueda por parte de los aspirantes y alumnos (para elegir más de uno use Ctrl+Click en Windows, Cmd+Click en Mac). Para más información acerca de los Campos de Conocimiento y las Líneas de Investigación consulte <a href='https://github.com/sostenibilidad-unam/posgrado/files/2233071/Campos.y.lineas.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>este documento</a>."),
+                    HTML(u"""
+                         Marque los campos de conocimiento y líneas de
+                         investigación relacionados con los temas de
+                         su interés y/o experiencia para facilitar la
+                         búsqueda por parte de los aspirantes y
+                         alumnos (para elegir más de uno use
+                         Ctrl+Click en Windows, Cmd+Click en
+                         Mac). Para más información acerca de los
+                         Campos de Conocimiento y las Líneas de
+                         Investigación consulte <a
+                         href='https://github.com/sostenibilidad-unam/posgrado/files/2233071/Campos.y.lineas.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>este
+                         documento</a>."""),
                     "lineas_de_investigacion",
                     'campos_de_conocimiento',
                     ),
                     Class="panel-body"),
-                Div(HTML("<h1 class='panel-title'>"
-                         + u"Disponibilidad</h1>"),
+                Div(HTML(u"""
+                     <h1 class='panel-title'>
+                     Disponibilidad
+                     </h1>
+                         ¿Estaría usted interesado en formar parte de
+                         la plantilla pública de tutores del Posgrado
+                         para que los aspirantes y alumnos puedan
+                         contactarlo y solicitar su asesoría? En ese
+                         caso favor de especificar su disponibilidad:
+                         """),
                     Class="panel-heading"),
                 Div(Column('disponible_tutor', "disponible_miembro"),
                     Class="panel-body"),
