@@ -32,9 +32,14 @@ class AcademicoAdmin(admin.ModelAdmin):
     list_display = ['fullname',
                     'acreditacion',
                     'perfil_personal_completo',
-                    'perfil_academico_completo',
+                    'resumen_completo',
                     'unificado']
-    list_filter = ['acreditacion', 'disponible_tutor', 'disponible_miembro', ]
+    list_filter = ['acreditacion',
+                   'disponible_tutor',
+                   'disponible_miembro',
+                   'resumen_completo',
+                   'perfil_personal_completo',
+                       ]
 
     fieldsets = (
         (None,
@@ -100,20 +105,6 @@ class AcademicoAdmin(admin.ModelAdmin):
                      'disponible_tutor',)}),
     )
 
-    def perfil_academico_completo(self, obj):
-        return obj.resumen_completo()
-
-    perfil_academico_completo.boolean = True
-
-    def perfil_personal_completo(self, obj):
-        ok = False
-        if hasattr(obj.user, 'perfil'):
-            if obj.user.gradoacademico_set.count > 0:
-                if obj.user.perfil.adscripcion_ok():
-                    ok = True
-        return ok
-
-    perfil_personal_completo.boolean = True
 
     def fullname(self, obj):
         name = obj.user.get_full_name()

@@ -718,6 +718,10 @@ class Academico(models.Model):
     # epílogo
     observaciones = models.TextField(blank=True)
 
+    resumen_completo = models.BooleanField(default=False)
+
+    perfil_personal_completo = models.BooleanField(default=False)
+
     def show_acreditacion(self):
         if self.acreditacion == 'no acreditado':
             return 'no acreditado'
@@ -730,7 +734,17 @@ class Academico(models.Model):
         else:
             return "Maestría"
 
-    def resumen_completo(self):
+
+    def verifica_perfil_personal(self):
+        ok = False
+        if hasattr(self.user, 'perfil'):
+            if self.user.gradoacademico_set.count > 0:
+                if self.user.perfil.adscripcion_ok():
+                    ok = True
+        return ok
+
+
+    def verifica_resumen(self):
         if self.CVU == "":
             return False
         if self.anexo_CV == "":
