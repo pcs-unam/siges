@@ -175,7 +175,7 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
                     'otras_actividades',
                     HTML(u"""<h4>En el Posgrado en
                         Ciencias de la Sostenibilidad</h4>
-                    Sólo llenar en caso de reacreditación.
+                    Esta sección sólo deberá completarse en caso de reacreditación.
                     """),
                     'participacion_tutor_doctorado',
                     'participacion_comite_doctorado',
