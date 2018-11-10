@@ -170,7 +170,6 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
 
                     'comite_doctorado_otros',
                     'comite_maestria_otros',
-                    'tutor_otros_programas',
 
                     'otras_actividades',
                     HTML(u"""<h4>En el Posgrado en

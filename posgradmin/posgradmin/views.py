@@ -290,9 +290,6 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             if request.POST['comite_maestria_otros'] != "":
                 a.comite_maestria_otros = request.POST['comite_maestria_otros']
 
-            if request.POST['tutor_otros_programas']:
-                a.tutor_otros_programas = request.POST['tutor_otros_programas']
-
             if request.POST['otras_actividades'] != "":
                 a.otras_actividades = request.POST['otras_actividades']
 

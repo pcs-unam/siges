@@ -71,7 +71,6 @@ class AcademicoAdmin(admin.ModelAdmin):
 
              'comite_doctorado_otros',
              'comite_maestria_otros',
-             'tutor_otros_programas',
 
              'otras_actividades',
              )}),

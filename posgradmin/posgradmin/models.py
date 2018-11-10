@@ -585,24 +585,18 @@ class Academico(models.Model):
         años""", null=True, blank=True)
 
     tutor_principal_otros_programas = models.TextField(
-        """Nombres de los otros programas en los que participa como tutor
-           principal""",
+        """Nombres de los otros programas de posgrado en los que participa""",
         blank=True)
 
     comite_doctorado_otros = models.PositiveSmallIntegerField(
         """Cantidad total de participaciones como miembro de comité
         tutor (no tutor principal) de estudiantes graduados de nivel
-        doctorado en otros programas.""", null=True, blank=True)
+        doctorado.""", null=True, blank=True)
 
     comite_maestria_otros = models.PositiveSmallIntegerField(
         """Cantidad total de participaciones como miembro de comité
         tutor (no tutor principal) de estudiantes graduados de nivel
         maestría en otros programas.""", null=True, blank=True)
-
-    tutor_otros_programas = models.TextField(
-        """Nombres de los otros programas en los que participa como miembro de
-        comité tutor (no tutor principal).""",
-        blank=True)
 
     # en el PCS
     participacion_tutor_doctorado = models.PositiveSmallIntegerField(
