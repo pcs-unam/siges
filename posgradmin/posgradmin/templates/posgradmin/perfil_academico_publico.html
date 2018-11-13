@@ -1,0 +1,139 @@
+{% load md2 %}
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>
+      Perfil Académico
+    </h3>
+  </div>
+  <div class="panel-body">
+
+    <ul class="list-group">
+
+      <li class="list-group-item">
+	Acreditación: {{ user.academico.show_acreditacion }}</li>
+
+      {% if user.academico.disponible_tutor %}
+      <li class="list-group-item">
+	Disponible como tutor principal (dirección de alumnos).
+      </li>
+      {% endif %}
+
+      {% if user.academico.disponible_miembro %}
+      <li class="list-group-item">
+	Disponible como miembro de comité tutor (asesoría de alumnos)</li>
+      {% endif %}
+
+    </ul>
+
+
+
+  </div>
+
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-lamp" aria-hidden="true"></span>
+      Actividad profesional y de Investigación
+    </h3>
+  </div>
+  <div class="panel-body">
+    <!-- subtablas -->
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Temas de Interés
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ user.academico.lineas|markdown }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Palabras clave
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ user.academico.palabras_clave|markdown }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></span>
+	  Cinco publicaciones más destacadas en temas relacionados con las Ciencias de la Sostenibilidad
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ user.academico.top_5|markdown }}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+	  Proyectos relacionados con Ciencias de la Sostenibilidad
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ user.academico.proyectos_sostenibilidad|markdown }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+	  Proyectos vigentes
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ user.academico.proyectos_vigentes|markdown }}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Líneas de Investigación
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% for l in user.academico.lineas_de_investigacion.all %}
+	<li>{{ l }}</li>
+	{% endfor %}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Campos de Conocimiento
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% for c in user.academico.campos_de_conocimiento.all %}
+	<li>{{ c }}</li>
+	{% endfor %}
+      </div>
+    </div>
+
+
+  </div>
+</div>

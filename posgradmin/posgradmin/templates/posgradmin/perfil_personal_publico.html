@@ -1,0 +1,79 @@
+<div class="panel-body">
+
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+	<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
+	Información de contacto
+      </h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+	<li class="list-group-item"><strong>email</strong> {{ user.email }}</li>
+	<li class="list-group-item"><strong>Sitio Web</strong> {{ user.perfil.website|default:'' }}</li>
+      </ul>
+    </div>
+  </div>
+
+
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+	<span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+	Adscripción
+      </h3>
+    </div>
+
+    <div class="panel-body">
+      <ul class="list-group">
+	{% for ad in user.perfil.adscripcion_set.all %}
+	<li class="list-group-item">
+	  {{ ad }}
+	  {% if ad.catedra_conacyt %}
+	  <br />
+	  Cátedra CONACYT
+	  {% endif %}
+	  <br />
+	  {% if not ad.asociacion_PCS %}
+	  {{ ad.nombramiento }} desde {{ ad.anno_nombramiento }}
+	  {% endif %}
+	</li>
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+	<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
+	Grados Académicos
+      </h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+	{% for grado in user.gradoacademico_set.all %}
+	<li class="list-group-item">
+	  <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}
+	  <p class="list-group-item-text">
+	    nivel {{ grado.nivel }}
+	    obtenido el {{ grado.fecha_obtencion }}<br />
+	  </p>
+
+	</li>
+	{% empty %}
+	<li class="list-group-item">&nbsp;
+	</li>
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+
+
+</div>

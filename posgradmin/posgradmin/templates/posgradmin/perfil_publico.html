@@ -1,0 +1,20 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load md2 %}
+
+{% block content %}
+
+{% if user.perfil %}
+{% include "posgradmin/perfil_personal_publico.html" %}
+{% else %}
+<div class="alert alert-danger" role="alert">
+  <strong>No tiene perfil personal.</strong>
+</div>
+{% endif %}
+
+
+
+{% if user.academico %}
+{% include "posgradmin/perfil_academico_publico.html" %}
+{% endif %}
+
+{% endblock %}

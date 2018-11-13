@@ -31,6 +31,27 @@ class InicioView(LoginRequiredMixin, View):
                        'breadcrumbs': self.breadcrumbs})
 
 
+class PerfilPublico(View):
+    template = "posgradmin/perfil_publico.html"
+
+    def get(self, request, *args, **kwargs):
+
+        user = models.User.objects.get(username=kwargs['username'])
+
+        breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                       (settings.APP_PREFIX + 'inicio/perfil/', 'Perfiles'),
+                       (settings.APP_PREFIX + 'inicio/perfil/%s' % user.get_username(), user.get_full_name()),
+                           )
+
+        return render(request,
+                      self.template,
+                      {'user': user,
+                       'title': user.get_full_name(),
+                       'breadcrumbs': breadcrumbs})
+
+class PerfilPublicoIndice(View):
+    pass
+
 class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     login_url = settings.APP_PREFIX + 'accounts/login/'
     model = models.User
@@ -195,8 +216,7 @@ class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin,
 
         if (  # by authority
                 self.request.user == u
-                or self.request.user.is_staff
-                or hasattr(self.request.user, 'asistente')):
+                or self.request.user.is_staff):
             see_private = True
         else:
             see_private = False
