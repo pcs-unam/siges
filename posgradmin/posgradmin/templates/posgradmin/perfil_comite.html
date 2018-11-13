@@ -4,6 +4,17 @@
 {% block content %}
 
 {% if U.perfil %}
+
+{% if not U.perfil.adscripcion_ok %}
+<div class="alert alert-danger" role="alert">
+  <strong>No ha agregado su adscripción</strong>
+</div>
+{% elif not U.perfil.asociado_PCS %}
+<div class="alert alert-danger" role="alert">
+  <strong>No asociado a entidad del PCS</strong>
+</div>
+{% endif %}
+
 {% include "posgradmin/perfil_personal_comite.html" %}
 {% else %}
 <div class="alert alert-danger" role="alert">
@@ -12,9 +23,24 @@
 {% endif %}
 
 
+{% if not U.gradoacademico_set.all %}
+<div class="alert alert-danger" role="alert">
+  <strong>No ha agregado grados académicos</strong>
+</div>
+{% endif %}
+
+
 
 {% if U.academico %}
+
+{% if not U.academico.resumen_completo %}
+<div class="alert alert-danger" role="alert">
+  <strong>Perfil académico incompleto.</strong>
+</div>
+{% endif %}
+
 {% include "posgradmin/perfil_academico_comite.html" %}
+
 {% endif %}
 
 {% endblock %}

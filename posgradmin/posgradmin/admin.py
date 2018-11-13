@@ -33,7 +33,9 @@ class AcademicoAdmin(admin.ModelAdmin):
                     'acreditacion',
                     'perfil_personal_completo',
                     'resumen_completo',
-                    'unificado']
+                    'perfil_publico',
+                    'perfil_comite',
+    ]
     list_filter = ['acreditacion',
                    'disponible_tutor',
                    'disponible_miembro',
@@ -112,11 +114,18 @@ class AcademicoAdmin(admin.ModelAdmin):
         else:
             return obj.user.username
 
-    def unificado(self, academico):
-        return academico.as_a()
+    def perfil_publico(self, academico):
+        return academico.perfil_publico_anchor()
 
-    unificado.allow_tags = True
-    unificado.short_description = 'Vista unificada'
+    perfil_publico.allow_tags = True
+    perfil_publico.short_description = u'Perfil Público'
+
+
+    def perfil_comite(self, academico):
+        return academico.perfil_comite_anchor()
+
+    perfil_comite.allow_tags = True
+    perfil_comite.short_description = u'Perfil para el Comité Académico'
 
 
 admin.site.register(Academico, AcademicoAdmin)
@@ -209,15 +218,22 @@ class SolicitudAdmin(admin.ModelAdmin):
 
 admin.site.register(Solicitud, SolicitudAdmin)
 
+class AdscripcionInline(admin.TabularInline):
+    model = Adscripcion
+    fk_name = 'perfil'
+    extra = 1
 
 class PerfilAdmin(admin.ModelAdmin):
     list_display = [
         'fullname',
         'telefono',
         'email',
-        'academico_unificado'
+        'perfil_publico',
+        'perfil_comite',
        ]
     search_fields = ['user__first_name', 'user__last_name']
+
+    inlines = [AdscripcionInline, ]
 
     def email(self, obj):
         return obj.user.email
@@ -229,12 +245,19 @@ class PerfilAdmin(admin.ModelAdmin):
         else:
             return obj.user.username
 
-    def academico_unificado(self, perfil):
-        if hasattr(perfil.user, 'academico'):
-            return perfil.user.academico.as_a()
-        else:
-            return ""
-    academico_unificado.allow_tags = True
+
+    def perfil_publico(self, perfil):
+        return perfil.perfil_publico_anchor()
+
+    perfil_publico.allow_tags = True
+    perfil_publico.short_description = u'Perfil Público'
+
+
+    def perfil_comite(self, perfil):
+        return perfil.perfil_comite_anchor()
+
+    perfil_comite.allow_tags = True
+    perfil_comite.short_description = u'Perfil para el Comité Académico'
 
 
 admin.site.register(Perfil, PerfilAdmin)

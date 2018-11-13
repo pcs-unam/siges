@@ -132,6 +132,16 @@ class Perfil(models.Model):
                 # no ha registrado ninguna!
                 return False
 
+    def perfil_publico_anchor(self):
+        return u"""<a href='%sinicio/perfil/publico/%s'>%s</a>""" % (
+            APP_PREFIX,
+            self.user.get_username(), self.__unicode__())
+
+    def perfil_comite_anchor(self):
+        return u"""<a href='%sinicio/perfil/comite/%s'>%s</a>""" % (
+            APP_PREFIX,
+            self.user.get_username(), self.__unicode__())
+
 
 class GradoAcademico(models.Model):
     user = models.ForeignKey(User)
@@ -810,6 +820,17 @@ class Academico(models.Model):
         return u"""<a href='%sinicio/usuario/%s/'>%s %s</a>""" % (
             APP_PREFIX,
             self.user.id, icon, self.__unicode__())
+
+    def perfil_publico_anchor(self):
+        return u"""<a href='%sinicio/perfil/publico/%s'>%s</a>""" % (
+            APP_PREFIX,
+            self.user.get_username(), self.__unicode__())
+
+    def perfil_comite_anchor(self):
+        return u"""<a href='%sinicio/perfil/comite/%s'>%s</a>""" % (
+            APP_PREFIX,
+            self.user.get_username(), self.__unicode__())
+
 
     def nombre_completo(self):
         return self.__unicode__()
