@@ -1,0 +1,117 @@
+<div class="panel-body">
+
+
+
+      <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+	  Datos Personales</h3>
+      </div>
+      <div class="panel-body">
+
+	<div class="media">
+	  <div class="media-left media-middle">
+	    {% if U.perfil.headshot %}
+	    <img class="media-object"
+		 width="150px"
+		 src="{{ U.perfil.headshot.url }}" />
+
+	    {% endif %}
+	  </div>
+	  <div class="media-body">
+
+	    <ul class="list-group">
+	      <li class="list-group-item"><strong>Fecha de Nacimiento</strong>
+		{{ U.perfil.fecha_nacimiento|default:"" }}</li>
+	      <li class="list-group-item"><strong>Genero</strong> {{ U.perfil.genero }}</li>
+	      <li class="list-group-item"><strong>Nacionalidad</strong> {{ U.perfil.nacionalidad }}</li>
+	      <li class="list-group-item"><strong>CURP</strong> {{ U.perfil.curp }}</li>
+	      <li class="list-group-item"><strong>RFC</strong> {{ U.perfil.rfc }}</li>
+	    </ul>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
+	  Información de contacto
+	</h3>
+      </div>
+      <div class="panel-body">
+	<ul class="list-group">
+	  <li class="list-group-item"><strong>Teléfono</strong> {{ U.perfil.telefono }}</li>
+	  <li class="list-group-item"><strong>Teléfono Móvil</strong> {{ U.perfil.telefono_movil }}</li>
+	  <li class="list-group-item"><strong>email</strong> <a href="mailto:{{ U.email }}">{{ U.email }}</a></li>
+	  <li class="list-group-item"><strong>Sitio Web</strong> {{ U.perfil.website }}</li>
+	  <li class="list-group-item"><strong>Dirección</Strong> {{ U.perfil.direccion1 }}</li>
+	  <li class="list-group-item"><strong>Código Postal</strong> {{ U.perfil.codigo_postal|default:"" }}</li>
+	</ul>
+      </div>
+    </div>
+
+
+
+
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+	<span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+	Adscripción
+      </h3>
+    </div>
+
+    <div class="panel-body">
+      <ul class="list-group">
+	{% for ad in U.perfil.adscripcion_set.all %}
+	<li class="list-group-item">
+	  {{ ad }}
+	  {% if ad.catedra_conacyt %}
+	  <br />
+	  Cátedra CONACYT
+	  {% endif %}
+	  <br />
+	  {% if not ad.asociacion_PCS %}
+	  {{ ad.nombramiento }} desde {{ ad.anno_nombramiento }}
+	  {% endif %}
+	</li>
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+	<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
+	Grados Académicos
+      </h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+	{% for grado in U.gradoacademico_set.all %}
+	<li class="list-group-item">
+	  <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}
+	  <p class="list-group-item-text">
+	    nivel {{ grado.nivel }}
+	    obtenido el {{ grado.fecha_obtencion }}<br />
+	  </p>
+
+	</li>
+	{% empty %}
+	<li class="list-group-item">&nbsp;
+	</li>
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+
+
+</div>

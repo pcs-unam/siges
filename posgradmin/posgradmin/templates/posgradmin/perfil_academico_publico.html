@@ -11,15 +11,15 @@
     <ul class="list-group">
 
       <li class="list-group-item">
-	Acreditación: {{ user.academico.show_acreditacion }}</li>
+	Acreditación: {{ U.academico.show_acreditacion }}</li>
 
-      {% if user.academico.disponible_tutor %}
+      {% if U.academico.disponible_tutor %}
       <li class="list-group-item">
 	Disponible como tutor principal (dirección de alumnos).
       </li>
       {% endif %}
 
-      {% if user.academico.disponible_miembro %}
+      {% if U.academico.disponible_miembro %}
       <li class="list-group-item">
 	Disponible como miembro de comité tutor (asesoría de alumnos)</li>
       {% endif %}
@@ -51,7 +51,7 @@
 	</h3>
       </div>
       <div class="panel-body">
-	{{ user.academico.lineas|markdown }}
+	{{ U.academico.lineas|markdown }}
       </div>
     </div>
 
@@ -63,7 +63,7 @@
 	</h3>
       </div>
       <div class="panel-body">
-	{{ user.academico.palabras_clave|markdown }}
+	{{ U.academico.palabras_clave|markdown }}
       </div>
     </div>
 
@@ -75,7 +75,7 @@
 	</h3>
       </div>
       <div class="panel-body">
-	{{ user.academico.top_5|markdown }}
+	{{ U.academico.top_5|markdown }}
       </div>
     </div>
 
@@ -88,7 +88,7 @@
 	</h3>
       </div>
       <div class="panel-body">
-	{{ user.academico.proyectos_sostenibilidad|markdown }}
+	{{ U.academico.proyectos_sostenibilidad|markdown }}
       </div>
     </div>
 
@@ -100,7 +100,7 @@
 	</h3>
       </div>
       <div class="panel-body">
-	{{ user.academico.proyectos_vigentes|markdown }}
+	{{ U.academico.proyectos_vigentes|markdown }}
       </div>
     </div>
 
@@ -113,7 +113,7 @@
 	</h3>
       </div>
       <div class="panel-body">
-	{% for l in user.academico.lineas_de_investigacion.all %}
+	{% for l in U.academico.lineas_de_investigacion.all %}
 	<li>{{ l }}</li>
 	{% endfor %}
       </div>
@@ -128,7 +128,7 @@
 	</h3>
       </div>
       <div class="panel-body">
-	{% for c in user.academico.campos_de_conocimiento.all %}
+	{% for c in U.academico.campos_de_conocimiento.all %}
 	<li>{{ c }}</li>
 	{% endfor %}
       </div>

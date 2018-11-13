@@ -4,7 +4,7 @@
 {% block content %}
 
 {% if U.perfil %}
-{% include "posgradmin/perfil_personal_publico.html" %}
+{% include "posgradmin/perfil_personal_comite.html" %}
 {% else %}
 <div class="alert alert-danger" role="alert">
   <strong>No tiene perfil personal.</strong>
@@ -14,7 +14,7 @@
 
 
 {% if U.academico %}
-{% include "posgradmin/perfil_academico_publico.html" %}
+{% include "posgradmin/perfil_academico_comite.html" %}
 {% endif %}
 
 {% endblock %}

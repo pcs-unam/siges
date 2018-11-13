@@ -11,8 +11,8 @@
     </div>
     <div class="panel-body">
       <ul class="list-group">
-	<li class="list-group-item"><strong>email</strong> {{ user.email }}</li>
-	<li class="list-group-item"><strong>Sitio Web</strong> {{ user.perfil.website|default:'' }}</li>
+	<li class="list-group-item"><strong>email</strong> {{ U.email }}</li>
+	<li class="list-group-item"><strong>Sitio Web</strong> {{ U.perfil.website|default:'' }}</li>
       </ul>
     </div>
   </div>
@@ -30,7 +30,7 @@
 
     <div class="panel-body">
       <ul class="list-group">
-	{% for ad in user.perfil.adscripcion_set.all %}
+	{% for ad in U.perfil.adscripcion_set.all %}
 	<li class="list-group-item">
 	  {{ ad }}
 	  {% if ad.catedra_conacyt %}
@@ -58,7 +58,7 @@
     </div>
     <div class="panel-body">
       <ul class="list-group">
-	{% for grado in user.gradoacademico_set.all %}
+	{% for grado in U.gradoacademico_set.all %}
 	<li class="list-group-item">
 	  <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}
 	  <p class="list-group-item-text">

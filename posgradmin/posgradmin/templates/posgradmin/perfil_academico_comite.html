@@ -1,0 +1,290 @@
+{% load md2 %}
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>
+      Perfil Académico
+    </h3>
+  </div>
+  <div class="panel-body">
+
+    <ul class="list-group">
+
+      {% if U.academico.anexo_CV %}
+      <li class="list-group-item">
+	<a href="{{ U.academico.anexo_CV.url }}">CV extenso</a></li>
+      {% endif %}
+
+      {% if U.academico.anexo_solicitud %}
+      <li class="list-group-item">
+	<a href="{{ U.academico.anexo_solicitud.url }}">Solicitud de Acreditación como Tutor</a></li>
+      {% endif %}
+
+      {% if U.academico.ultimo_grado %}
+      <li class="list-group-item">
+	<a href="{{ U.academico.ultimo_grado.url }}">Último grado académico</a>
+      </li>
+      {% endif %}
+
+      <li class="list-group-item">
+	Estímulo UNAM: {{ U.academico.estimulo_UNAM|default:'' }}
+      </li>
+      <li class="list-group-item">
+	Nivel SNI: {{ U.academico.nivel_SNI|default:'' }}</li>
+
+      <li class="list-group-item">
+	Acreditación: {{ U.academico.show_acreditacion }}</li>
+      <li class="list-group-item">
+	CVU: {{ U.academico.CVU|default:'!' }}</li>
+
+      {% if U.academico.DGEE %}
+      <li class="list-group-item">
+	DGEE: {{ U.academico.DGEE|default:'' }}</li>
+      {% endif %}
+
+      {% if U.academico.numero_trabajador_unam %}
+      <li class="list-group-item">
+	Número de trabajador UNAM: {{ U.academico.numero_trabajador_unam|default:'' }}</li>
+      {% endif %}
+
+
+      <li class="list-group-item">
+	Acreditación: {{ U.academico.show_acreditacion }}</li>
+
+      {% if U.academico.disponible_tutor %}
+      <li class="list-group-item">
+	Disponible como tutor principal (dirección de alumnos).
+      </li>
+      {% endif %}
+
+      {% if U.academico.disponible_miembro %}
+      <li class="list-group-item">
+	Disponible como miembro de comité tutor (asesoría de alumnos)</li>
+      {% endif %}
+
+    </ul>
+  </div>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-road" aria-hidden="true"></span>
+      Resumen Curricular
+    </h3>
+  </div>
+  <div class="panel-body">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+	  Tutorías
+	</h3>
+      </div>
+      <div class="panel-body">
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th></th><th style="text-align:right">Licenciatura</th><th style="text-align:right">Maestría</th><th style="text-align:right">Doctorado</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td>Cantidad de participaciones como tutor principal de estudiantes graduados </td>
+	      <td align="right">{{ U.academico.tesis_licenciatura|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.tesis_maestria|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.tesis_doctorado|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Cantidad de participaciones como tutor principal de estudiantes graduados los últimos 5 años</td>
+	      <td align="right">{{ U.academico.tesis_licenciatura_5|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.tesis_maestria_5|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.tesis_doctorado_5|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Cantidad de comités en los que participa como tutor principal en el Posgrado en Ciencias de la Sostenibilidad</td>
+	      <td></td>
+	      <td align="right">{{ U.academico.participacion_tutor_maestria|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.participacion_tutor_doctorado|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Cantidad de comités en los que participa en el Posgrado en Ciencias de la Sostenibilidad</td>
+	      <td></td>
+	      <td align="right">{{ U.academico.participacion_comite_maestria|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.participacion_comite_doctorado|default_if_none:"" }}</td>
+	    </tr>
+
+	    <tr>
+	      <td>Cantidad total de participaciones como miembro de comité tutor (no tutor principal) de estudiantes graduados en otros programas</td>
+	      <td></td>
+	      <td align="right">{{ U.academico.comite_maestria_otros|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.comite_doctorado_otros|default_if_none:"" }}</td>
+	    </tr>
+
+	  </tbody>
+	</table>
+
+	<hr>
+	<ul>
+	  <li>
+	    Otros programas en los que participa como <em>tutor principal</em>: {{ U.academico.tutor_principal_otros_programas|default:"" }}
+	  </li>
+	  <li>
+	    Otros programas en los que participa como miembro de comité tutor: {{ U.academico.tutor_otros_programas|default:"" }}
+	  </li>
+	</ul>
+	<hr />
+	Otras actividades: {{ U.academico.otras_actividades|default_if_none:""|markdown }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></span>
+	  Publicaciones
+	</h3>
+      </div>
+      <div class="panel-body">
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th></th><th style="text-align:right">Total</th><th style="text-align:right">Los últimos 5 años</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td>Cantidad de artículos publicados en revistas internacionales</td>
+	      <td align="right">{{ U.academico.articulos_internacionales|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.articulos_internacionales_5|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Cantidad de artículos publicados en revistas nacionales</td>
+	      <td align="right">{{ U.academico.articulos_nacionales|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.articulos_nacionales_5|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Libros publicados</td>
+	      <td align="right">{{ U.academico.libros|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.libros_5|default_if_none:"" }}</td>
+	    </tr>
+	    <tr>
+	      <td>Capítulos de libro publicados</td>
+	      <td align="right">{{ U.academico.capitulos|default_if_none:"" }}</td>
+	      <td align="right">{{ U.academico.capitulos_5|default_if_none:"" }}</td>
+	    </tr>
+	  </tbody>
+	</table>
+	Otras publicaciones: {{ U.academico.otras_publicaciones|default_if_none:""|markdown }}
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+	<span class="glyphicon glyphicon glyphicon-lamp" aria-hidden="true"></span>
+	Actividad profesional y de Investigación
+      </h3>
+    </div>
+    <div class="panel-body">
+      <!-- subtablas -->
+
+      <div class="panel panel-default">
+	<div class="panel-heading">
+	  <h3 class="panel-title">
+	    <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	    Temas de Interés
+	  </h3>
+	</div>
+	<div class="panel-body">
+	  {{ U.academico.lineas|markdown }}
+	</div>
+      </div>
+
+      <div class="panel panel-default">
+	<div class="panel-heading">
+	  <h3 class="panel-title">
+	    <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	    Palabras clave
+	  </h3>
+	</div>
+	<div class="panel-body">
+	  {{ U.academico.palabras_clave|markdown }}
+	</div>
+      </div>
+
+      <div class="panel panel-default">
+	<div class="panel-heading">
+	  <h3 class="panel-title">
+	    <span class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></span>
+	    Cinco publicaciones más destacadas en temas relacionados con las Ciencias de la Sostenibilidad
+	  </h3>
+	</div>
+	<div class="panel-body">
+	  {{ U.academico.top_5|markdown }}
+	</div>
+      </div>
+
+
+      <div class="panel panel-default">
+	<div class="panel-heading">
+	  <h3 class="panel-title">
+	    <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+	    Proyectos relacionados con Ciencias de la Sostenibilidad
+	  </h3>
+	</div>
+	<div class="panel-body">
+	  {{ U.academico.proyectos_sostenibilidad|markdown }}
+	</div>
+      </div>
+
+      <div class="panel panel-default">
+	<div class="panel-heading">
+	  <h3 class="panel-title">
+	    <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+	    Proyectos vigentes
+	  </h3>
+	</div>
+	<div class="panel-body">
+	  {{ U.academico.proyectos_vigentes|markdown }}
+	</div>
+      </div>
+
+
+      <div class="panel panel-default">
+	<div class="panel-heading">
+	  <h3 class="panel-title">
+	    <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	    Líneas de Investigación
+	  </h3>
+	</div>
+	<div class="panel-body">
+	  {% for l in U.academico.lineas_de_investigacion.all %}
+	  <li>{{ l }}</li>
+	  {% endfor %}
+	</div>
+      </div>
+
+
+      <div class="panel panel-default">
+	<div class="panel-heading">
+	  <h3 class="panel-title">
+	    <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	    Campos de Conocimiento
+	  </h3>
+	</div>
+	<div class="panel-body">
+	  {% for c in U.academico.campos_de_conocimiento.all %}
+	  <li>{{ c }}</li>
+	  {% endfor %}
+	</div>
+      </div>
+
+    </div>
+  </div>
+</div>
