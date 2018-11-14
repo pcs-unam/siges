@@ -167,10 +167,7 @@
 	</table>
 
 	<hr>
-	Otros programas en los que participa como <em>tutor principal</em>: {{ object.academico.tutor_principal_otros_programas|default:"" }} <br />
-
-	Otros programas en los que participa como miembro de comité tutor: {{ object.academico.tutor_otros_programas|default:"" }} <br />
-
+	Otros programas en los que participa: {{ object.academico.tutor_principal_otros_programas|default:"" }} <br />
 	<hr />
 	Otras actividades: {{ object.academico.otras_actividades|default_if_none:""|markdown }}
 

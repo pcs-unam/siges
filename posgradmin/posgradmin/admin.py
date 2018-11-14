@@ -61,7 +61,8 @@ class AcademicoAdmin(admin.ModelAdmin):
                      'nivel_SNI',
                      'CVU',
                      'anexo_CV',
-                     'anexo_solicitud'
+                     'anexo_solicitud',
+                     'ultimo_grado'
                      )}),
         ('Líneas de investigación, Campos de Conocimiento',
          {'fields': ('lineas_de_investigacion',

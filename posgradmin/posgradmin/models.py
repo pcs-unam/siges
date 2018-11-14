@@ -774,64 +774,94 @@ class Academico(models.Model):
 
     def verifica_resumen(self):
         if self.CVU == "":
+            print "falta CVU"
             return False
         if self.anexo_CV == "":
+            print "falta anexo_CV"
             return False
         if self.anexo_solicitud == "":
+            print "falta anexo_solicitud"
             return False
         if not self.ultimo_grado:
+            print "falta self.ultimo_grado"
             return False
         if self.tesis_licenciatura == "":
+            print "falta tesis_licenciatura"
             return False
         elif self.tesis_maestria == "":
+            print "falta tesis_maestria"
             return False
         elif self.tesis_doctorado == "":
+            print "falta tesis_doctorado"
             return False
         elif self.tesis_licenciatura_5 == "":
+            print "falta tesis_licenciatura_5"
             return False
         elif self.tesis_maestria_5 == "":
+            print "falta tesis_maestria_5"
             return False
         elif self.tesis_doctorado_5 == "":
+            print "falta tesis_doctorado_5"
             return False
         elif self.comite_doctorado_otros == "":
+            print "falta comite_doctorado_otros"
             return False
         elif self.comite_maestria_otros == "":
+            print "falta comite_maestria_otros"
             return False
         elif self.participacion_comite_maestria == "":
+            print "falta participacion_comite_maestria"
             return False
         elif self.participacion_tutor_maestria == "":
+            print "falta participacion_tutor_maestria"
             return False
         elif self.participacion_comite_doctorado == "":
+            print "falta participacion_comite_doctorado"
             return False
         elif self.participacion_tutor_doctorado == "":
+            print "falta participacion_tutor_doctorado"
             return False
         elif self.articulos_internacionales_5 == "":
+            print "falta articulos_internacionales_5"
             return False
         elif self.articulos_nacionales_5 == "":
+            print "falta articulos_nacionales_5"
             return False
         elif self.articulos_internacionales == "":
+            print "falta articulos_internacionales"
             return False
         elif self.articulos_nacionales == "":
+            print "falta articulos_nacionales"
             return False
         elif self.capitulos == "":
+            print "falta capitulos"
             return False
         elif self.capitulos_5 == "":
+            print "falta capitulos_5"
             return False
         elif self.libros == "":
+            print "falta libros"
             return False
         elif self.libros_5 == "":
+            print "falta libros_5"
             return False
         elif self.top_5 == "":
+            print "falta top_5"
             return False
         elif self.lineas == "":
+            print "falta lineas"
             return False
         elif self.palabras_clave == "":
+            print "falta palabras_clave"
             return False
         elif self.motivacion == "":
+            print "falta motivacion"
             return False
         elif self.campos_de_conocimiento.count() == 0:
+            print "falta campos_de_conocimiento.count()"
             return False
         elif self.lineas_de_investigacion.count() == 0:
+            print "falta lineas_de_investigacion.count()"
             return False
         else:
             return True
