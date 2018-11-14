@@ -207,6 +207,28 @@
     </div>
 
 
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+	  Expediente
+	</h3>
+      </div>
+      <div class="panel-body">
+	<ul class="list-group">
+	  {% for anexo in user.anexoexpediente_set.all %}
+	  <li class="list-group-item">
+	    <a href="{{ anexo.url }}">
+	      {{ anexo }}
+	    </a> anexado el {{ anexo.fecha }}
+	  </li>
+	  {% endfor %}
+	</ul>
+      </div>
+    </div>
+
+
   </div>
 </div>
 <!-- perfil -->

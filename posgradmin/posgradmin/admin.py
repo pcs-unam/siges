@@ -1,10 +1,15 @@
 # coding: utf-8
 from django.contrib import admin
+
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
+
+
 from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
     Solicitud, Proyecto, Dictamen, \
     Comite, Curso, Catedra, Sesion, Adscripcion, \
-    LineaInvestigacion
+    LineaInvestigacion, AnexoExpediente
 
 admin.site.site_header = \
                 "Administración de Posgrado en Ciencias de la Sostenibilidad"
@@ -106,7 +111,6 @@ class AcademicoAdmin(admin.ModelAdmin):
                      'disponible_tutor',)}),
     )
 
-
     def fullname(self, obj):
         name = obj.user.get_full_name()
         if name:
@@ -119,7 +123,6 @@ class AcademicoAdmin(admin.ModelAdmin):
 
     perfil_publico.allow_tags = True
     perfil_publico.short_description = u'Perfil Público'
-
 
     def perfil_comite(self, academico):
         return academico.perfil_comite_anchor()
@@ -218,10 +221,12 @@ class SolicitudAdmin(admin.ModelAdmin):
 
 admin.site.register(Solicitud, SolicitudAdmin)
 
+
 class AdscripcionInline(admin.TabularInline):
     model = Adscripcion
     fk_name = 'perfil'
     extra = 1
+
 
 class PerfilAdmin(admin.ModelAdmin):
     list_display = [
@@ -245,13 +250,11 @@ class PerfilAdmin(admin.ModelAdmin):
         else:
             return obj.user.username
 
-
     def perfil_publico(self, perfil):
         return perfil.perfil_publico_anchor()
 
     perfil_publico.allow_tags = True
     perfil_publico.short_description = u'Perfil Público'
-
 
     def perfil_comite(self, perfil):
         return perfil.perfil_comite_anchor()
@@ -263,8 +266,44 @@ class PerfilAdmin(admin.ModelAdmin):
 admin.site.register(Perfil, PerfilAdmin)
 
 
+class UserProfileInline(admin.StackedInline):
+    model = Perfil
+    max_num = 1
+    can_delete = False
+
+
+class AnexoExpedienteInline(admin.StackedInline):
+    model = AnexoExpediente
+
+
+class UserAdmin(AuthUserAdmin):
+    inlines = [UserProfileInline, AnexoExpedienteInline]
+
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
+
 admin.site.register(CampoConocimiento)
 admin.site.register(LineaInvestigacion)
 # admin.site.register(Comentario)
 admin.site.register(Proyecto)
 admin.site.register(Dictamen)
+
+
+class AnexoExpedienteAdmin(admin.ModelAdmin):
+    def fullname(self, obj):
+        name = obj.user.get_full_name()
+        if name:
+            return name
+        else:
+            return obj.user.username
+
+
+    list_display = ['fullname', 'fecha', 'archivo']
+    search_fields = ['user__username', 'user__first_name', 'user__last_name',
+                     'archivo',
+                     'fecha']
+    list_filter = ['fecha']
+
+
+admin.site.register(AnexoExpediente, AnexoExpedienteAdmin)

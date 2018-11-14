@@ -459,6 +459,32 @@ class Anexo(models.Model):
                                                    self.fecha)
 
 
+def anexo_expediente_path(instance, filename):
+    (root, ext) = os.path.splitext(filename)
+    return os.path.join(u'expediente/%s/%s' % (instance.user.get_username(),
+                                               slugify(root) + ext))
+
+
+class AnexoExpediente(models.Model):
+    user = models.ForeignKey(User)
+    fecha = models.DateTimeField(auto_now_add=True)
+    archivo = models.FileField(upload_to=anexo_expediente_path)
+
+    def url(self):
+        return u"%s/expediente/%s/%s" % (MEDIA_URL,
+                                         self.user.get_username(),
+                                         os.path.basename(self.archivo.path))
+
+    def basename(self):
+        return os.path.basename(self.archivo.file.name)
+
+    def __unicode__(self):
+        return self.basename()
+
+    class Meta:
+        verbose_name_plural = "Expedientes"
+
+
 class Acuerdo(models.Model):
     solicitud = models.ForeignKey(Solicitud)
     archivo = models.FileField()
@@ -738,7 +764,6 @@ class Academico(models.Model):
         else:
             return "Maestría"
 
-
     def verifica_perfil_personal(self):
         ok = False
         if hasattr(self.user, 'perfil'):
@@ -746,7 +771,6 @@ class Academico(models.Model):
                 if self.user.perfil.adscripcion_ok():
                     ok = True
         return ok
-
 
     def verifica_resumen(self):
         if self.CVU == "":
@@ -830,7 +854,6 @@ class Academico(models.Model):
         return u"""<a href='%sinicio/perfil/comite/%s'>%s</a>""" % (
             APP_PREFIX,
             self.user.get_username(), self.__unicode__())
-
 
     def nombre_completo(self):
         return self.__unicode__()
