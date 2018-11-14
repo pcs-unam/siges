@@ -40,8 +40,9 @@ class PerfilPublico(View):
 
         breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
                        (settings.APP_PREFIX + 'inicio/perfil/', 'Perfiles'),
-                       (settings.APP_PREFIX + 'inicio/perfil/%s' % user.get_username(), user.get_full_name()),
-                           )
+                       (settings.APP_PREFIX
+                        + 'inicio/perfil/%s' % user.get_username(),
+                        user.get_full_name()))
 
         return render(request,
                       self.template,
@@ -49,24 +50,31 @@ class PerfilPublico(View):
                        'title': user.get_full_name(),
                        'breadcrumbs': breadcrumbs})
 
+
 class PerfilPublicoIndice(View):
     pass
-
 
 
 class PerfilComite(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 
-    template = "posgradmin/perfil_comite.html"
-
     def test_func(self):
-        if hasattr(self.request.user, 'academico'):
-            if self.request.user.academico.comite_academico:
-                return True
+
+        if self.request.user.is_superuser:
+            return True
+
         elif self.request.user.is_staff:
             return True
+
+        elif hasattr(self.request.user, 'academico'):
+            if self.request.user.academico.comite_academico:
+                return True
+            else:
+                return False
         else:
             return False
+
+    template = "posgradmin/perfil_comite.html"
 
     def get(self, request, *args, **kwargs):
 
@@ -74,8 +82,9 @@ class PerfilComite(LoginRequiredMixin, UserPassesTestMixin, View):
 
         breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
                        (settings.APP_PREFIX + 'inicio/perfil/', 'Perfiles'),
-                       (settings.APP_PREFIX + 'inicio/perfil/%s' % user.get_username(), user.get_full_name()),
-                           )
+                       (settings.APP_PREFIX
+                        + 'inicio/perfil/%s' % user.get_username(),
+                        user.get_full_name()))
 
         return render(request,
                       self.template,
