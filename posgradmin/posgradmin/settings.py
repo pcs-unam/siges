@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'export_action',
+    'django_extensions'
 ]
 
 SITE_ID = 1
