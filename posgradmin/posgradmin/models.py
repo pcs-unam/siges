@@ -748,7 +748,8 @@ class Academico(models.Model):
     # epílogo
     observaciones = models.TextField(blank=True)
 
-    resumen_completo = models.BooleanField(default=False)
+    resumen_completo = models.BooleanField("perfil académico completo",
+                                           default=False)
 
     perfil_personal_completo = models.BooleanField(default=False)
 
