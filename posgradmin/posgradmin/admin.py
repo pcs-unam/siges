@@ -33,7 +33,7 @@ admin.site.register(Estudiante, EstudianteAdmin)
 
 
 class AcademicoAdmin(admin.ModelAdmin):
-    search_fields = ['user__first_name', 'user__last_name']
+    search_fields = ['user__first_name', 'user__last_name', 'user__username']
     list_display = ['fullname',
                     'acreditacion',
                     'perfil_personal_completo',
