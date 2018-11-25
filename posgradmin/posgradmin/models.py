@@ -9,8 +9,13 @@ from django.contrib.auth.models import User
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
     solicitudes_estados, MEDIA_URL, \
-    APP_PREFIX
+    APP_PREFIX, MEDIA_ROOT
 
+import pandas as pd
+from pandas.plotting import parallel_coordinates
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 class Institucion(models.Model):
     nombre = models.CharField("Institución u Organización", max_length=150)
@@ -1018,7 +1023,62 @@ class Academico(models.Model):
                 return "amarillo"
                         
         return "rojo"
-    
+
+
+    def resumen_academico_pc(self):
+        """ parallel coordinates del resumen academico """
+        df = pd.DataFrame({
+            'académico': [self.user.get_full_name(), ],
+            u"estudiantes graduados licenciatura": [self.tesis_licenciatura, ],
+            u"estudiantes graduados licenciatura últimos 5 años": [self.tesis_licenciatura_5, ],
+            u"estudiantes maestría": [self.tesis_maestria, ],
+            u"estudiantes maestría 5": [self.tesis_maestria_5, ],
+            u"estudiantes doctorado": [self.tesis_doctorado, ],
+            u"estudiantes doctorado 5": [self.tesis_doctorado_5, ],
+            u"comité doctorado otros programas": [self.comite_doctorado_otros, ],
+            u"comité maestría otros programas": [self.comite_maestria_otros, ],
+            u"participación comite maestría": [self.participacion_comite_maestria, ],
+            u"participación tutor maestría": [self.participacion_tutor_maestria, ],
+            u"participación comite doctorado": [self.participacion_comite_doctorado, ],
+            u"participación tutor doctorado ": [self.participacion_tutor_doctorado, ],
+            u"artículos internacionales últimos 5 años": [self.articulos_internacionales_5, ],
+            u"artículos nacionales últimos 5 años": [self.articulos_nacionales_5, ],
+            u"artículos internacionales": [self.articulos_internacionales, ],
+            u"artículos nacionales": [self.articulos_nacionales, ],
+            u"capítulos": [self.capitulos , ],
+            u"capítulos últimos 5 años": [self.capitulos_5 , ],
+            u"libros": [self.libros, ],
+            u"libros últimos 5 años": [self.libros_5, ],
+            }, columns=[
+                u'académico',
+                u"estudiantes graduados licenciatura",
+                u"estudiantes graduados licenciatura últimos 5 años",
+                u"estudiantes maestría",
+                u"estudiantes maestría 5",
+                u"estudiantes doctorado",
+                u"estudiantes doctorado 5",
+                u"comité doctorado otros programas",
+                u"comité maestría otros programas",
+                u"participación comite maestría",
+                u"participación tutor maestría",
+                u"participación comite doctorado",
+                u"participación tutor doctorado ",
+                u"artículos internacionales últimos 5 años",
+                u"artículos nacionales últimos 5 años",
+                u"artículos internacionales",
+                u"artículos nacionales",
+                u"capítulos",
+                u"capítulos últimos 5 años",
+                u"libros",
+                u"libros últimos 5 años",])
+        fig = plt.figure()
+        parallel_coordinates(df, u'académico')
+        plt.xticks(rotation=90)
+        fig.tight_layout()
+        # create directory tho
+        plt.savefig('%s/perfil-academico/%s/pc_resumen_academico.png' % (MEDIA_ROOT, self.id))
+        return df
+        
     
     class Meta:
         verbose_name_plural = "Académicos"
