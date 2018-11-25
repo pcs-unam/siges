@@ -786,76 +786,76 @@ class Academico(models.Model):
         if not self.ultimo_grado:
             print "falta self.ultimo_grado"
             return False
-        if self.tesis_licenciatura == "":
+        if self.tesis_licenciatura is None:
             print "falta tesis_licenciatura"
             return False
-        elif self.tesis_maestria == "":
+        elif self.tesis_maestria is None:
             print "falta tesis_maestria"
             return False
-        elif self.tesis_doctorado == "":
+        elif self.tesis_doctorado is None:
             print "falta tesis_doctorado"
             return False
-        elif self.tesis_licenciatura_5 == "":
+        elif self.tesis_licenciatura_5 is None:
             print "falta tesis_licenciatura_5"
             return False
-        elif self.tesis_maestria_5 == "":
+        elif self.tesis_maestria_5 is None:
             print "falta tesis_maestria_5"
             return False
-        elif self.tesis_doctorado_5 == "":
+        elif self.tesis_doctorado_5 is None:
             print "falta tesis_doctorado_5"
             return False
-        elif self.comite_doctorado_otros == "":
+        elif self.comite_doctorado_otros is None:
             print "falta comite_doctorado_otros"
             return False
-        elif self.comite_maestria_otros == "":
+        elif self.comite_maestria_otros is None:
             print "falta comite_maestria_otros"
             return False
-        elif self.participacion_comite_maestria == "":
+        elif self.participacion_comite_maestria is None:
             print "falta participacion_comite_maestria"
             return False
-        elif self.participacion_tutor_maestria == "":
+        elif self.participacion_tutor_maestria is None:
             print "falta participacion_tutor_maestria"
             return False
-        elif self.participacion_comite_doctorado == "":
+        elif self.participacion_comite_doctorado is None:
             print "falta participacion_comite_doctorado"
             return False
-        elif self.participacion_tutor_doctorado == "":
+        elif self.participacion_tutor_doctorado is None:
             print "falta participacion_tutor_doctorado"
             return False
-        elif self.articulos_internacionales_5 == "":
+        elif self.articulos_internacionales_5 is None:
             print "falta articulos_internacionales_5"
             return False
-        elif self.articulos_nacionales_5 == "":
+        elif self.articulos_nacionales_5 is None:
             print "falta articulos_nacionales_5"
             return False
-        elif self.articulos_internacionales == "":
+        elif self.articulos_internacionales is None:
             print "falta articulos_internacionales"
             return False
-        elif self.articulos_nacionales == "":
+        elif self.articulos_nacionales is None:
             print "falta articulos_nacionales"
             return False
-        elif self.capitulos == "":
+        elif self.capitulos is None:
             print "falta capitulos"
             return False
-        elif self.capitulos_5 == "":
+        elif self.capitulos_5 is None:
             print "falta capitulos_5"
             return False
-        elif self.libros == "":
+        elif self.libros is None:
             print "falta libros"
             return False
-        elif self.libros_5 == "":
+        elif self.libros_5 is None:
             print "falta libros_5"
             return False
-        elif self.top_5 == "":
+        elif self.top_5 == "" or self.top_5 is None:
             print "falta top_5"
             return False
-        elif self.lineas == "":
+        elif self.lineas == "" or self.lineas is None:
             print "falta lineas"
             return False
-        elif self.palabras_clave == "":
+        elif self.palabras_clave == "" or self.palabras_clave is None:
             print "falta palabras_clave"
             return False
-        elif self.motivacion == "":
+        elif self.motivacion == "" or self.motivacion is None:
             print "falta motivacion"
             return False
         elif self.campos_de_conocimiento.count() == 0:
@@ -968,6 +968,58 @@ class Academico(models.Model):
 
         return name
 
+    def publicaciones_5(self):
+        return sum((self.articulos_internacionales_5,
+                    self.articulos_nacionales_5,
+                    self.libros_5,
+                    self.capitulos_5))
+    
+    def semaforo_maestria(self):
+        if not self.resumen_completo:
+            return "rojo"
+        
+        if ((self.tesis_licenciatura_5 >= 1
+             or self.tesis_maestria_5 >= 1
+             or self.tesis_doctorado_5 >= 1) and self.publicaciones_5() >= 3
+            or
+            self.publicaciones_5() >= 5):
+            return "verde"
+
+        if ((self.tesis_licenciatura_5 < 1 and self.otras_actividades)
+            or
+            (self.publicaciones_5() < 3 and self.otras_publicaciones)):
+            return "amarillo"
+
+        return "rojo"
+
+    
+    def semaforo_doctorado(self):
+        if not self.resumen_completo:
+            return "rojo"
+        
+        if ((self.tesis_maestria_5 >= 2
+             or self.tesis_doctorado_5 >= 1) and self.publicaciones_5() >= 5
+            or
+            ((self.tesis_maestria_5 >= 1
+              or self.tesis_doctorado_5 >= 1)
+             and
+             self.publicaciones_5() >= 7)):
+            return "verde"
+
+        if self.tesis_maestria_5 >= 2 or self.tesis_doctorado_5 >= 1:
+            # alumnos bien
+            if self.publicaciones_5() < 5 and self.otras_publicaciones:
+                # publicaciones tal vez
+                return "amarillo"
+        else:
+            # alumnos mal            
+            if self.publicaciones_5() >= 7 and self.otras_actividades:
+                # tal vez otras actividades
+                return "amarillo"
+                        
+        return "rojo"
+    
+    
     class Meta:
         verbose_name_plural = "Académicos"
 

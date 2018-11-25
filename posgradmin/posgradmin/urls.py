@@ -72,7 +72,7 @@ urlpatterns = [
 
     url(r'^inicio/perfil/comite/(?P<username>.+)$',
         PerfilComite.as_view(),
-        name="perfilpublico"),
+        name="perfilcomite"),
 
     url(r'^inicio/perfil/publico/(?P<username>.+)$',
         PerfilPublico.as_view(),

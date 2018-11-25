@@ -7,7 +7,7 @@
     </h3>
   </div>
   <div class="panel-body">
-
+    
     <ul class="list-group">
 
       {% if U.academico.anexo_CV %}
@@ -75,6 +75,20 @@
     </h3>
   </div>
   <div class="panel-body">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></span>
+	  Elegibilidad
+	</h3>
+      </div>
+      <div class="panel-body">
+	<img src="/media/m_{{ U.academico.semaforo_maestria }}.png">
+	<img src="/media/d_{{ U.academico.semaforo_doctorado }}.png">
+      </div>
+    </div>
+    
     <div class="panel panel-default">
       <div class="panel-heading">
 	<h3 class="panel-title">
