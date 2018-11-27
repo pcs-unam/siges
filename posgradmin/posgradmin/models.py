@@ -1,5 +1,8 @@
 # coding: utf-8
 import os
+import pandas as pd
+from pandas.plotting import parallel_coordinates
+
 from django.template.defaultfilters import slugify
 from django.db import models
 from django.db.models import Q
@@ -11,11 +14,11 @@ from settings import solicitudes_profesoriles,\
     solicitudes_estados, MEDIA_URL, \
     APP_PREFIX, MEDIA_ROOT
 
-import pandas as pd
-from pandas.plotting import parallel_coordinates
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
 
 class Institucion(models.Model):
     nombre = models.CharField("Institución u Organización", max_length=150)
@@ -974,34 +977,38 @@ class Academico(models.Model):
         return name
 
     def publicaciones_5(self):
-        return sum((self.articulos_internacionales_5,
-                    self.articulos_nacionales_5,
-                    self.libros_5,
-                    self.capitulos_5))
-    
+        try:
+            return sum((self.articulos_internacionales_5,
+                        self.articulos_nacionales_5,
+                        self.libros_5,
+                        self.capitulos_5))
+        except TypeError:
+            return 0
+
     def semaforo_maestria(self):
         if not self.resumen_completo:
             return "rojo"
-        
-        if ((self.tesis_licenciatura_5 >= 1
-             or self.tesis_maestria_5 >= 1
-             or self.tesis_doctorado_5 >= 1) and self.publicaciones_5() >= 3
-            or
-            self.publicaciones_5() >= 5):
+
+        if (
+                (self.tesis_licenciatura_5 >= 1
+                 or self.tesis_maestria_5 >= 1
+                 or self.tesis_doctorado_5 >= 1)
+                and self.publicaciones_5() >= 3
+                or self.publicaciones_5() >= 5):
             return "verde"
 
-        if ((self.tesis_licenciatura_5 < 1 and self.otras_actividades)
-            or
-            (self.publicaciones_5() < 3 and self.otras_publicaciones)):
+        if (
+                (self.tesis_licenciatura_5 < 1 and self.otras_actividades)
+                or
+                (self.publicaciones_5() < 3 and self.otras_publicaciones)):
             return "amarillo"
 
         return "rojo"
 
-    
     def semaforo_doctorado(self):
         if not self.resumen_completo:
             return "rojo"
-        
+
         if ((self.tesis_maestria_5 >= 2
              or self.tesis_doctorado_5 >= 1) and self.publicaciones_5() >= 5
             or
@@ -1017,46 +1024,77 @@ class Academico(models.Model):
                 # publicaciones tal vez
                 return "amarillo"
         else:
-            # alumnos mal            
+            # alumnos mal
             if self.publicaciones_5() >= 7 and self.otras_actividades:
                 # tal vez otras actividades
                 return "amarillo"
-                        
+
         return "rojo"
 
-
-    def resumen_academico_pc(self):
+    def pc_resumen_academico(self):
         """ parallel coordinates del resumen academico """
+
+        escala_sni = {'sin SNI': 0,
+                      'I': 1,
+                      'II': 2,
+                      'III': 3,
+                      'C': 4,
+                      'E': 5}
+        escala_estimulo = {
+            'ninguno': 0,
+            'Equivalencia': 1,
+            'PEPASIG': 2,
+            'PEI': 3,
+            'PEDMETI': 4,
+            'PRIDE A': 5,
+            'PRIDE B': 6,
+            'PRIDE C': 7,
+            'PRIDE D': 8}
+
         df = pd.DataFrame({
-            'académico': [self.user.get_full_name(), ],
-            u"estudiantes graduados licenciatura": [self.tesis_licenciatura, ],
-            u"estudiantes graduados licenciatura últimos 5 años": [self.tesis_licenciatura_5, ],
-            u"estudiantes maestría": [self.tesis_maestria, ],
-            u"estudiantes maestría 5": [self.tesis_maestria_5, ],
-            u"estudiantes doctorado": [self.tesis_doctorado, ],
-            u"estudiantes doctorado 5": [self.tesis_doctorado_5, ],
-            u"comité doctorado otros programas": [self.comite_doctorado_otros, ],
+            u'académico': [self.user.get_full_name(), ],
+            u'SNI': escala_sni.get(self.nivel_SNI, 0),
+            u'estímulo UNAM': escala_estimulo.get(self.estimulo_UNAM, 0),
+            u"licenciatura": [self.tesis_licenciatura, ],
+            u"licenciatura últimos 5 años": [
+                self.tesis_licenciatura_5, ],
+            u"maestría": [self.tesis_maestria, ],
+            u"maestría 5": [self.tesis_maestria_5, ],
+            u"doctorado": [self.tesis_doctorado, ],
+            u"doctorado 5": [self.tesis_doctorado_5, ],
+            u"comité doctorado otros programas": [
+                self.comite_doctorado_otros, ],
             u"comité maestría otros programas": [self.comite_maestria_otros, ],
-            u"participación comite maestría": [self.participacion_comite_maestria, ],
-            u"participación tutor maestría": [self.participacion_tutor_maestria, ],
-            u"participación comite doctorado": [self.participacion_comite_doctorado, ],
-            u"participación tutor doctorado ": [self.participacion_tutor_doctorado, ],
-            u"artículos internacionales últimos 5 años": [self.articulos_internacionales_5, ],
-            u"artículos nacionales últimos 5 años": [self.articulos_nacionales_5, ],
+            u"participación comite maestría": [
+                self.participacion_comite_maestria, ],
+            u"participación tutor maestría": [
+                self.participacion_tutor_maestria, ],
+            u"participación comite doctorado": [
+                self.participacion_comite_doctorado, ],
+            u"participación tutor doctorado ": [
+                self.participacion_tutor_doctorado, ],
+            u"artículos internacionales últimos 5 años": [
+                self.articulos_internacionales_5, ],
+            u"artículos nacionales últimos 5 años": [
+                self.articulos_nacionales_5, ],
             u"artículos internacionales": [self.articulos_internacionales, ],
             u"artículos nacionales": [self.articulos_nacionales, ],
-            u"capítulos": [self.capitulos , ],
-            u"capítulos últimos 5 años": [self.capitulos_5 , ],
+            u"capítulos": [self.capitulos, ],
+            u"capítulos últimos 5 años": [self.capitulos_5, ],
             u"libros": [self.libros, ],
             u"libros últimos 5 años": [self.libros_5, ],
+            u'grados académicos': [self.user.gradoacademico_set.count(), ],
             }, columns=[
                 u'académico',
-                u"estudiantes graduados licenciatura",
-                u"estudiantes graduados licenciatura últimos 5 años",
-                u"estudiantes maestría",
-                u"estudiantes maestría 5",
-                u"estudiantes doctorado",
-                u"estudiantes doctorado 5",
+                u'SNI',
+                u'estímulo UNAM',
+                u'grados académicos',
+                u"licenciatura últimos 5 años",
+                u"licenciatura",
+                u"maestría 5",
+                u"maestría",
+                u"doctorado 5",
+                u"doctorado",
                 u"comité doctorado otros programas",
                 u"comité maestría otros programas",
                 u"participación comite maestría",
@@ -1064,22 +1102,56 @@ class Academico(models.Model):
                 u"participación comite doctorado",
                 u"participación tutor doctorado ",
                 u"artículos internacionales últimos 5 años",
-                u"artículos nacionales últimos 5 años",
                 u"artículos internacionales",
+                u"artículos nacionales últimos 5 años",
                 u"artículos nacionales",
-                u"capítulos",
                 u"capítulos últimos 5 años",
+                u"capítulos",
+                u"libros últimos 5 años",
                 u"libros",
-                u"libros últimos 5 años",])
-        fig = plt.figure()
-        parallel_coordinates(df, u'académico')
+            ])
+        fig, ax = plt.subplots()
+        # rectangulo estudiantes
+        max_grad = max([
+            df[u"licenciatura"].max(),
+            df[u"maestría"].max(),
+            df[u"doctorado"].max()
+            ])
+        ax.add_patch(
+            patches.Rectangle(
+                (3, 0), 8, max_grad,
+                color='orchid', alpha=0.25, linewidth=0))
+
+        # rectangulo para publicaciones
+        max_pub = max([
+            df[u'capítulos'].max(),
+            df[u'libros'].max(),
+            df[u"artículos nacionales"].max(),
+            df[u"artículos internacionales"].max()
+        ])
+        ax.add_patch(
+            patches.Rectangle(
+                (15, 0), 7, max_pub,
+                color='deepskyblue', alpha=0.25, linewidth=0))
+
+        parallel_coordinates(df, u'académico', color=['deeppink', ])
+
+        legend = ax.legend()
+        legend.remove()
+
         plt.xticks(rotation=90)
+
+        # plt.ylim(0, 150)
+
         fig.tight_layout()
-        # create directory tho
-        plt.savefig('%s/perfil-academico/%s/pc_resumen_academico.png' % (MEDIA_ROOT, self.id))
+        pc_path = '%s/perfil-academico/%s/' % (MEDIA_ROOT, self.id)
+        if not os.path.isdir(pc_path):
+            os.makedirs(pc_path)
+        plt.savefig(
+            '%s/perfil-academico/%s/pc_resumen_academico.png'
+            % (MEDIA_ROOT, self.id))
         return df
-        
-    
+
     class Meta:
         verbose_name_plural = "Académicos"
 

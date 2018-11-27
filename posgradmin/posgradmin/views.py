@@ -80,6 +80,8 @@ class PerfilComite(LoginRequiredMixin, UserPassesTestMixin, View):
 
         user = models.User.objects.get(username=kwargs['username'])
 
+        user.academico.pc_resumen_academico()
+
         breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
                        (settings.APP_PREFIX + 'inicio/perfil/', 'Perfiles'),
                        (settings.APP_PREFIX
@@ -91,7 +93,6 @@ class PerfilComite(LoginRequiredMixin, UserPassesTestMixin, View):
                       {'U': user,
                        'title': user.get_full_name(),
                        'breadcrumbs': breadcrumbs})
-
 
 
 class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
