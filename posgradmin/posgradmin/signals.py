@@ -1,9 +1,7 @@
 # coding: utf-8
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from django.conf import settings
-from posgradmin.models import Perfil, Academico
-import os.path
+from posgradmin.models import Academico
 
 
 @receiver(pre_save, sender=Academico)
