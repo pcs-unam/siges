@@ -7,3 +7,5 @@ django-export-action
 Pillow
 six
 django-extensions
+pandas
+matplotlib

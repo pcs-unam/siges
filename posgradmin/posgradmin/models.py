@@ -14,6 +14,7 @@ from settings import solicitudes_profesoriles,\
     solicitudes_estados, MEDIA_URL, \
     APP_PREFIX, MEDIA_ROOT
 
+import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -1051,39 +1052,92 @@ class Academico(models.Model):
             'PRIDE C': 7,
             'PRIDE D': 8}
 
+
+        avg_SNI = np.mean([escala_sni.get(a.nivel_SNI, 0)
+                           for a in Academico.objects.all()])
+        avg_estimulo_UNAM = np.mean([escala_estimulo.get(a.estimulo_UNAM, 0)
+                                     for a in Academico.objects.all()])
+        avg_licenciatura = np.mean([a.tesis_licenciatura
+                                    for a in Academico.objects.filter(tesis_licenciatura__gt=0)])
+        avg_licenciatura_5 = np.mean([a.tesis_licenciatura_5
+                                      for a in Academico.objects.filter(tesis_licenciatura_5__gt=0)])
+        avg_maestria = np.mean([a.tesis_maestria
+                                for a in Academico.objects.filter(tesis_maestria__gt=0)])
+
+        avg_maestria_5 = np.mean([a.tesis_maestria_5
+                                  for a in Academico.objects.filter(tesis_maestria_5__gt=0)])
+        avg_doctorado = np.mean([a.tesis_doctorado
+                                 for a in Academico.objects.filter(tesis_doctorado__gt=0)])
+        avg_doctorado_5 = np.mean([a.tesis_doctorado_5
+                                   for a in Academico.objects.filter(tesis_doctorado_5__gt=0)])
+        avg_comite_doctorado_otros = np.mean([a.comite_doctorado_otros
+                                              for a in Academico.objects.filter(comite_doctorado_otros__gt=0)])
+        avg_comite_maestria_otros = np.mean([a.comite_maestria_otros
+                                             for a in Academico.objects.filter(comite_maestria_otros__gt=0)])
+        avg_participacion_comite_maestria = np.mean([a.participacion_comite_maestria
+                                                 for a in Academico.objects.filter(participacion_comite_maestria__gt=0)])
+        avg_participacion_tutor_maestria = np.mean([a.participacion_tutor_maestria
+                                                    for a in Academico.objects.filter(participacion_tutor_maestria__gt=0)])
+        avg_participacion_comite_doctorado = np.mean([a.participacion_comite_doctorado
+                                                      for a in Academico.objects.filter(participacion_comite_doctorado__gt=0)])
+
+        avg_participacion_tutor_doctorado = np.mean([a.participacion_tutor_doctorado
+                                                     for a in Academico.objects.filter(participacion_tutor_doctorado__gt=0)])
+        avg_articulos_internacionales_5 = np.mean([a.articulos_internacionales_5
+                                                   for a in Academico.objects.filter(articulos_internacionales_5__gt=0)])
+        avg_articulos_nacionales_5 = np.mean([a.articulos_nacionales_5
+                                              for a in Academico.objects.filter(articulos_nacionales_5__gt=0)])
+
+        avg_articulos_internacionales = np.mean([a.articulos_internacionales
+                                                 for a in Academico.objects.filter(articulos_internacionales__gt=0)])
+        avg_articulos_nacionales = np.mean([a.articulos_nacionales
+                                            for a in Academico.objects.filter(articulos_nacionales__gt=0)])
+        avg_capitulos = np.mean([a.capitulos
+                                 for a in Academico.objects.filter(capitulos__gt=0)])
+        avg_capitulos_5 = np.mean([a.capitulos_5
+                                   for a in Academico.objects.filter(capitulos_5__gt=0)])
+        avg_libros = np.mean([a.libros
+                              for a in Academico.objects.filter(libros__gt=0)])
+        avg_libros_5 = np.mean([a.libros_5
+                                for a in Academico.objects.filter(libros_5__gt=0)])
+        avg_gradoacademico = np.mean([a.user.gradoacademico_set.count()
+                                      for a in Academico.objects.all()])
+
+
         df = pd.DataFrame({
-            u'académico': [self.user.get_full_name(), ],
-            u'SNI': escala_sni.get(self.nivel_SNI, 0),
-            u'estímulo UNAM': escala_estimulo.get(self.estimulo_UNAM, 0),
-            u"licenciatura": [self.tesis_licenciatura, ],
+            u'académico': [self.user.get_full_name(), 'avg'],
+            u'SNI': [escala_sni.get(self.nivel_SNI, 0), avg_SNI, ],
+            u'estímulo UNAM': [escala_estimulo.get(self.estimulo_UNAM, 0), avg_estimulo_UNAM],
+            u"licenciatura": [self.tesis_licenciatura, avg_licenciatura],
             u"licenciatura últimos 5 años": [
-                self.tesis_licenciatura_5, ],
-            u"maestría": [self.tesis_maestria, ],
-            u"maestría 5": [self.tesis_maestria_5, ],
-            u"doctorado": [self.tesis_doctorado, ],
-            u"doctorado 5": [self.tesis_doctorado_5, ],
+                self.tesis_licenciatura_5, avg_licenciatura_5],
+            u"maestría": [self.tesis_maestria, avg_maestria],
+            u"maestría 5": [self.tesis_maestria_5, avg_maestria_5],
+            u"doctorado": [self.tesis_doctorado, avg_doctorado],
+            u"doctorado 5": [self.tesis_doctorado_5, avg_doctorado_5],
             u"comité doctorado otros programas": [
-                self.comite_doctorado_otros, ],
-            u"comité maestría otros programas": [self.comite_maestria_otros, ],
+                self.comite_doctorado_otros, avg_comite_doctorado_otros],
+            u"comité maestría otros programas": [
+                self.comite_maestria_otros, avg_comite_maestria_otros],
             u"participación comite maestría": [
-                self.participacion_comite_maestria, ],
+                self.participacion_comite_maestria, avg_participacion_comite_maestria],
             u"participación tutor maestría": [
-                self.participacion_tutor_maestria, ],
+                self.participacion_tutor_maestria, avg_participacion_tutor_maestria],
             u"participación comite doctorado": [
-                self.participacion_comite_doctorado, ],
+                self.participacion_comite_doctorado, avg_participacion_comite_doctorado],
             u"participación tutor doctorado ": [
-                self.participacion_tutor_doctorado, ],
+                self.participacion_tutor_doctorado, avg_participacion_tutor_doctorado],
             u"artículos internacionales últimos 5 años": [
-                self.articulos_internacionales_5, ],
+                self.articulos_internacionales_5, avg_articulos_internacionales_5],
             u"artículos nacionales últimos 5 años": [
-                self.articulos_nacionales_5, ],
-            u"artículos internacionales": [self.articulos_internacionales, ],
-            u"artículos nacionales": [self.articulos_nacionales, ],
-            u"capítulos": [self.capitulos, ],
-            u"capítulos últimos 5 años": [self.capitulos_5, ],
-            u"libros": [self.libros, ],
-            u"libros últimos 5 años": [self.libros_5, ],
-            u'grados académicos': [self.user.gradoacademico_set.count(), ],
+                self.articulos_nacionales_5, avg_articulos_nacionales_5],
+            u"artículos internacionales": [self.articulos_internacionales, avg_articulos_internacionales],
+            u"artículos nacionales": [self.articulos_nacionales, avg_articulos_nacionales],
+            u"capítulos": [self.capitulos, avg_capitulos],
+            u"capítulos últimos 5 años": [self.capitulos_5, avg_capitulos_5],
+            u"libros": [self.libros, avg_libros],
+            u"libros últimos 5 años": [self.libros_5, avg_libros_5],
+            u'grados académicos': [self.user.gradoacademico_set.count(), avg_gradoacademico],
             }, columns=[
                 u'académico',
                 u'SNI',
@@ -1113,28 +1167,28 @@ class Academico(models.Model):
         fig, ax = plt.subplots()
         # rectangulo estudiantes
         max_grad = max([
-            df[u"licenciatura"].max(),
-            df[u"maestría"].max(),
-            df[u"doctorado"].max()
+            df[u"licenciatura"][0],
+            df[u"maestría"][0],
+            df[u"doctorado"][0],
             ])
         ax.add_patch(
             patches.Rectangle(
-                (3, 0), 8, max_grad,
+                (3, 0), 5, max_grad,
                 color='orchid', alpha=0.25, linewidth=0))
 
         # rectangulo para publicaciones
         max_pub = max([
-            df[u'capítulos'].max(),
-            df[u'libros'].max(),
-            df[u"artículos nacionales"].max(),
-            df[u"artículos internacionales"].max()
+            df[u'capítulos'][0],
+            df[u'libros'][0],
+            df[u"artículos nacionales"][0],
+            df[u"artículos internacionales"][0],
         ])
         ax.add_patch(
             patches.Rectangle(
                 (15, 0), 7, max_pub,
                 color='deepskyblue', alpha=0.25, linewidth=0))
 
-        parallel_coordinates(df, u'académico', color=['deeppink', ])
+        parallel_coordinates(df, u'académico', color=['deeppink', 'grey'])
 
         legend = ax.legend()
         legend.remove()
