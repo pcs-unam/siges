@@ -81,6 +81,7 @@ class PerfilComite(LoginRequiredMixin, UserPassesTestMixin, View):
         user = models.User.objects.get(username=kwargs['username'])
 
         user.academico.pc_resumen_academico()
+        user.academico.wc_resumen_academico()
 
         breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
                        (settings.APP_PREFIX + 'inicio/perfil/', 'Perfiles'),

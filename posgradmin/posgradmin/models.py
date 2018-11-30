@@ -12,7 +12,9 @@ from django.contrib.auth.models import User
 from settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
     solicitudes_estados, MEDIA_URL, \
-    APP_PREFIX, MEDIA_ROOT
+    APP_PREFIX, MEDIA_ROOT, BASE_DIR
+
+from wordcloud import WordCloud
 
 import numpy as np
 import matplotlib
@@ -1032,6 +1034,44 @@ class Academico(models.Model):
 
         return "rojo"
 
+    def wc_resumen_academico(self):
+        """ word cloud """
+
+        wordcloud = WordCloud()
+
+        wordcloud.background_color = 'white'
+
+        with open(BASE_DIR + '/posgradmin/stopwords-es.txt', 'r') as f:
+            for w in f.readlines():
+                wordcloud.stopwords.add(w.strip())
+
+        for w in self.user.get_full_name().split(' '):
+            wordcloud.stopwords.add(w)
+
+        wordcloud.stopwords.add('doi')
+        wordcloud.stopwords.add('None')
+        wordcloud.stopwords.add('http')
+        wordcloud.stopwords.add('https')
+
+        text = " ".join((unicode(self.top_5), unicode(self.motivacion), unicode(self.otras_actividades)
+               , unicode(self.otras_publicaciones), unicode(self.lineas), unicode(self.palabras_clave)
+               , unicode(self.proyectos_vigentes), unicode(self.proyectos_sostenibilidad)))
+
+        wordcloud.generate(text)
+
+        fig = plt.figure(figsize=(8, 6), dpi=150)
+        plt.imshow(wordcloud, interpolation='bilinear')
+        plt.axis('off')
+
+        pc_path = '%s/perfil-academico/%s/' % (MEDIA_ROOT, self.id)
+        if not os.path.isdir(pc_path):
+            os.makedirs(pc_path)
+
+        fig.tight_layout()
+        plt.savefig(
+            '%s/perfil-academico/%s/wordcloud.png'
+            % (MEDIA_ROOT, self.id))
+
     def pc_resumen_academico(self):
         """ parallel coordinates del resumen academico """
 
@@ -1204,7 +1244,7 @@ class Academico(models.Model):
         plt.savefig(
             '%s/perfil-academico/%s/pc_resumen_academico.png'
             % (MEDIA_ROOT, self.id))
-        return df
+
 
     class Meta:
         verbose_name_plural = "Académicos"
