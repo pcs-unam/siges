@@ -993,15 +993,17 @@ class Academico(models.Model):
             return "rojo"
 
         if (
-                (self.tesis_licenciatura_5 >= 1
-                 or self.tesis_maestria_5 >= 1
-                 or self.tesis_doctorado_5 >= 1)
+                (self.tesis_licenciatura >= 1
+                 or self.tesis_maestria >= 1
+                 or self.tesis_doctorado >= 1)
                 and self.publicaciones_5() >= 3
                 or self.publicaciones_5() >= 5):
             return "verde"
 
         if (
-                (self.tesis_licenciatura_5 < 1 and self.otras_actividades)
+                (self.tesis_licenciatura < 1
+                 or self.tesis_maestria < 1
+                 or self.tesis_doctorado < 1) and self.otras_actividades)
                 or
                 (self.publicaciones_5() < 3 and self.otras_publicaciones)):
             return "amarillo"
@@ -1012,24 +1014,19 @@ class Academico(models.Model):
         if not self.resumen_completo:
             return "rojo"
 
-        if ((self.tesis_maestria_5 >= 2
-             or self.tesis_doctorado_5 >= 1) and self.publicaciones_5() >= 5
+        if ((self.tesis_maestria >= 2
+             or self.tesis_doctorado >= 1) and self.publicaciones_5() >= 5
             or
-            ((self.tesis_maestria_5 >= 1
-              or self.tesis_doctorado_5 >= 1)
+            ((self.tesis_maestria >= 1
+              or self.tesis_doctorado >= 1)
              and
              self.publicaciones_5() >= 7)):
             return "verde"
 
-        if self.tesis_maestria_5 >= 2 or self.tesis_doctorado_5 >= 1:
+        if self.tesis_maestria >= 2 or self.tesis_doctorado >= 1:
             # alumnos bien
             if self.publicaciones_5() < 5 and self.otras_publicaciones:
                 # publicaciones tal vez
-                return "amarillo"
-        else:
-            # alumnos mal
-            if self.publicaciones_5() >= 7 and self.otras_actividades:
-                # tal vez otras actividades
                 return "amarillo"
 
         return "rojo"
