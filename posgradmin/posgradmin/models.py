@@ -1003,7 +1003,7 @@ class Academico(models.Model):
         if (
                 (self.tesis_licenciatura < 1
                  or self.tesis_maestria < 1
-                 or self.tesis_doctorado < 1) and self.otras_actividades)
+                 or self.tesis_doctorado < 1) and self.otras_actividades
                 or
                 (self.publicaciones_5() < 3 and self.otras_publicaciones)):
             return "amarillo"
