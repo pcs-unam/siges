@@ -764,6 +764,21 @@ class Academico(models.Model):
 
     perfil_personal_completo = models.BooleanField(default=False)
 
+
+    semaforo_maestria = models.CharField(
+        max_length=10, default="rojo",
+        choices=(
+            ('verde', 'verde'),
+            ('amarillo', 'amarillo'),
+            ('rojo', 'rojo')))
+
+    semaforo_doctorado = models.CharField(
+        max_length=10, default="rojo",
+        choices=(
+            ('verde', 'verde'),
+            ('amarillo', 'amarillo'),
+            ('rojo', 'rojo')))
+    
     def show_acreditacion(self):
         if self.acreditacion == 'no acreditado':
             return 'no acreditado'
@@ -988,7 +1003,7 @@ class Academico(models.Model):
         except TypeError:
             return 0
 
-    def semaforo_maestria(self):
+    def verifica_semaforo_maestria(self):
         if not self.resumen_completo:
             return "rojo"
 
@@ -1010,7 +1025,7 @@ class Academico(models.Model):
 
         return "rojo"
 
-    def semaforo_doctorado(self):
+    def verifica_semaforo_doctorado(self):
         if not self.resumen_completo:
             return "rojo"
 

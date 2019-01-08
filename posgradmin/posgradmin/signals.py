@@ -13,4 +13,6 @@ def academico_verifica_resumen_perfil(sender, **kwargs):
     a.resumen_completo = a.verifica_resumen()
     a.perfil_personal_completo = a.verifica_perfil_personal()
 
-    print a.verifica_perfil_personal()
+    a.semaforo_maestria = a.verifica_semaforo_maestria()
+    a.semaforo_doctorado = a.verifica_semaforo_doctorado()
+    
