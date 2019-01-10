@@ -723,7 +723,6 @@ class Academico(models.Model):
         null=True, blank=True
     )
 
-
     # Actividad profesional y de Investigación
     lineas = models.TextField(
         "Temas de interés y/o experiencia en ciencias de la sostenibilidad, "
@@ -764,7 +763,6 @@ class Academico(models.Model):
 
     perfil_personal_completo = models.BooleanField(default=False)
 
-
     semaforo_maestria = models.CharField(
         max_length=10, default="rojo",
         choices=(
@@ -778,7 +776,7 @@ class Academico(models.Model):
             ('verde', 'verde'),
             ('amarillo', 'amarillo'),
             ('rojo', 'rojo')))
-    
+
     def show_acreditacion(self):
         if self.acreditacion == 'no acreditado':
             return 'no acreditado'
