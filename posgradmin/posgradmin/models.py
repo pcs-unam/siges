@@ -898,7 +898,6 @@ class Academico(models.Model):
         if self.lineas_de_investigacion.count() == 0:
             carencias += u" - " + unicode(self._meta.get_field('lineas_de_investigacion.count()').verbose_name) + u"\n"
 
-        print carencias
         return carencias
 
     def as_a(self):
