@@ -537,20 +537,20 @@ def grado_path(instance, filename):
 class Academico(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    anexo_CV = models.FileField("CV en extenso",
+    anexo_CV = models.FileField(u"CV en extenso",
                                 upload_to=anexo_academico_CV_path,
                                 blank=True, null=True)
 
-    ultimo_grado = models.FileField("Copia de último grado académico",
+    ultimo_grado = models.FileField(u"Copia de último grado académico",
                                     upload_to=grado_path,
                                     blank=True, null=True)
 
     anexo_solicitud = models.FileField(
-        "Carta de solicitud de acreditación como tutor",
+        u"Carta de solicitud de acreditación como tutor",
         upload_to=anexo_academico_solicitud_path,
         blank=True, null=True)
 
-    estimulo_UNAM = models.CharField("Estímulo UNAM",
+    estimulo_UNAM = models.CharField(u"Estímulo UNAM",
                                      max_length=15,
                                      default='ninguno',
                                      choices=(('ninguno', 'ninguno'),
@@ -562,16 +562,18 @@ class Academico(models.Model):
                                               ('PRIDE B', 'PRIDE B'),
                                               ('PRIDE C', 'PRIDE C'),
                                               ('PRIDE D', 'PRIDE D')))
-    nivel_SNI = models.CharField(max_length=15,
+    nivel_SNI = models.CharField(u"Nivel SNI",
+                                 max_length=15,
                                  choices=(('sin SNI', 'sin SNI'),
                                           ('I', 'I'),
                                           ('II', 'II'),
                                           ('III', 'III'),
                                           ('C', 'C'),
                                           ('E', 'E')))
-    CVU = models.CharField(max_length=100, blank=True, null=True)
+    CVU = models.CharField(u"Número de CVU",
+                           max_length=100, blank=True, null=True)
 
-    numero_trabajador_unam = models.CharField("Número de trabajador (UNAM)",
+    numero_trabajador_unam = models.CharField(u"Número de trabajador (UNAM)",
                                               max_length=100,
                                               blank=True, null=True)
 
@@ -605,117 +607,117 @@ class Academico(models.Model):
 
     # formacion de estudiantes
     tesis_doctorado = models.PositiveSmallIntegerField(
-        """Cantidad total de participaciones como tutor principal de
+        u"""Cantidad total de participaciones como tutor principal de
         estudiantes graduados de nivel Doctorado""",
         null=True, blank=True)
     tesis_doctorado_5 = models.PositiveSmallIntegerField(
-        """Cantidad de participaciones como tutor principal de
+        u"""Cantidad de participaciones como tutor principal de
         estudiantes graduados de nivel Doctorado en los últimos 5 años""",
         null=True, blank=True)
 
     tesis_maestria = models.PositiveSmallIntegerField(
-        """Cantidad total participaciones como tutor principal de estudiantes
+        u"""Cantidad total participaciones como tutor principal de estudiantes
         graduados de nivel Maestría""",
         null=True, blank=True)
     tesis_maestria_5 = models.PositiveSmallIntegerField(
-        """Cantidad de participaciones como tutor principal de estudiantes
+        u"""Cantidad de participaciones como tutor principal de estudiantes
            graduados de nivel Maestría en los últimos 5 años""",
         null=True, blank=True)
 
     tesis_licenciatura = models.PositiveSmallIntegerField(
-        """Cantidad total de participaciones como tutor principal de
+        u"""Cantidad total de participaciones como tutor principal de
         estudiantes graduados de nivel Licenciatura""",
         null=True, blank=True)
     tesis_licenciatura_5 = models.PositiveSmallIntegerField(
-        """Cantidad de participaciones como tutor principal de
+        u"""Cantidad de participaciones como tutor principal de
         estudiantes " graduados a nivel Licenciatura en los últimos 5
         años""", null=True, blank=True)
 
     tutor_principal_otros_programas = models.TextField(
-        """Nombres de los otros programas de posgrado en los que participa""",
+        u"""Nombres de los otros programas de posgrado en los que participa""",
         blank=True)
 
     comite_doctorado_otros = models.PositiveSmallIntegerField(
-        """Cantidad total de participaciones como miembro de comité
+        u"""Cantidad total de participaciones como miembro de comité
         tutor (no tutor principal) de estudiantes graduados de nivel
         doctorado.""", null=True, blank=True)
 
     comite_maestria_otros = models.PositiveSmallIntegerField(
-        """Cantidad total de participaciones como miembro de comité
+        u"""Cantidad total de participaciones como miembro de comité
         tutor (no tutor principal) de estudiantes graduados de nivel
         maestría en otros programas.""", null=True, blank=True)
 
     # en el PCS
     participacion_tutor_doctorado = models.PositiveSmallIntegerField(
-        """Cantidad de participaciones como tutor principal en el Posgrado en
+        u"""Cantidad de participaciones como tutor principal en el Posgrado en
            Ciencias de la Sostenibilidad a nivel doctorado""",
         null=True, blank=True)
 
     participacion_tutor_maestria = models.PositiveSmallIntegerField(
-        """Cantidad de participaciones como tutor principal en el
+        u"""Cantidad de participaciones como tutor principal en el
         Posgrado en Ciencias de la Sostenibilidad a nivel maestría""",
         null=True, blank=True)
 
     participacion_comite_doctorado = models.PositiveSmallIntegerField(
-        """Cantidad de participaciones como miembro de comité tutor (no tutor
+        u"""Cantidad de participaciones como miembro de comité tutor (no tutor
         principal) en el Posgrado en Ciencias de la Sostenibilidad a
         nivel doctorado""",
         null=True, blank=True)
 
     participacion_comite_maestria = models.PositiveSmallIntegerField(
-        """Cantidad de participaciones como miembro de comité tutor (no tutor
+        u"""Cantidad de participaciones como miembro de comité tutor (no tutor
          principal) en el Posgrado en Ciencias de la Sostenibilidad a
          nivel maestría""",
         null=True, blank=True)
 
     otras_actividades = models.TextField(
-        """Si no cuenta con estudiantes graduados, indique si cuenta con
+        u"""Si no cuenta con estudiantes graduados, indique si cuenta con
         otras actividades académicas como estancias de investigación,
         seminarios de titulación, etc.""", blank=True, null=True)
 
     # publicaciones
     articulos_internacionales = models.PositiveSmallIntegerField(
-        "Cantidad total de artículos publicados en revistas internacionales",
+        u"Cantidad total de artículos publicados en revistas internacionales",
         null=True, blank=True)
 
     articulos_internacionales_5 = models.PositiveSmallIntegerField(
-        "Cantidad de artículos publicados en revistas internacionales "
-        + "durante los últimos 5 años",
+        u"Cantidad de artículos publicados en revistas internacionales "
+        + u"durante los últimos 5 años",
         null=True, blank=True)
 
     articulos_nacionales = models.PositiveSmallIntegerField(
-        "Cantidad total de artículos publicados en revistas nacionales",
+        u"Cantidad total de artículos publicados en revistas nacionales",
         null=True, blank=True)
 
     articulos_nacionales_5 = models.PositiveSmallIntegerField(
-        "Cantidad de artículos publicados en revistas nacionales "
-        + "durante los últimos 5 años",
+        u"Cantidad de artículos publicados en revistas nacionales "
+        + u"durante los últimos 5 años",
         null=True, blank=True)
 
     libros = models.PositiveSmallIntegerField(
-        "Cantidad total de libros publicados",
+        u"Cantidad total de libros publicados",
         null=True, blank=True)
 
     libros_5 = models.PositiveSmallIntegerField(
-        "Cantidad de libros publicados durante los últimos 5 años",
+        u"Cantidad de libros publicados durante los últimos 5 años",
         null=True, blank=True)
 
     capitulos = models.PositiveSmallIntegerField(
-        "Cantidad total de capítulos de libro publicados",
+        u"Cantidad total de capítulos de libro publicados",
         null=True, blank=True)
 
     capitulos_5 = models.PositiveSmallIntegerField(
-        "Cantidad de capítulos de libro publicados durante los últimos 5 años",
+        u"Cantidad de capítulos de libro publicados durante los últimos 5 años",
         null=True, blank=True)
 
     top_5 = models.TextField(
-        """Cinco publicaciones más destacadas en temas relacionados con las
+        u"""Cinco publicaciones más destacadas en temas relacionados con las
         Ciencias de la Sostenibilidad.  De ser posible incluir ligas
         para acceder a las publicaciones.""",
         blank=True)
 
     otras_publicaciones = models.TextField(
-        """Si su productividad académica no se ve reflejada en las
+        u"""Si su productividad académica no se ve reflejada en las
         publicaciones anteriores, indique si cuenta con otros
         productos como por ejemplo informes técnicos, memorias
         técnicas, desarrollo de proyectos hasta nivel ejecutivo,
@@ -725,40 +727,40 @@ class Academico(models.Model):
 
     # Actividad profesional y de Investigación
     lineas = models.TextField(
-        "Temas de interés y/o experiencia en ciencias de la sostenibilidad, "
-        + "máximo 10, uno por renglón",
+        u"Temas de interés y/o experiencia en ciencias de la sostenibilidad, "
+        + u"máximo 10, uno por renglón",
         blank=True)
 
     palabras_clave = models.TextField(
-        "Palabras clave de temas de interés y/o experiencia"
-        + "en ciencias de la sostenibilidad, máximo 10, una por renglón",
+        u"Palabras clave de temas de interés y/o experiencia"
+        + u"en ciencias de la sostenibilidad, máximo 10, una por renglón",
         blank=True)
     motivacion = models.TextField(
-        "Motivación para participar en el Programa, máximo 200 palabras",
+        u"Motivación para participar en el Programa, máximo 200 palabras",
         blank=True)
     proyectos_sostenibilidad = models.TextField(
-        "Principales proyectos relacionados con "
-        + "ciencias de la sostenibilidad durante los últimos cinco años, "
-        + "especificar si se es responsable o colaborador.",
+        u"Principales proyectos relacionados con "
+        + u"ciencias de la sostenibilidad durante los últimos cinco años, "
+        + u"especificar si se es responsable o colaborador.",
         blank=True)
     proyectos_vigentes = models.TextField(
-        "Proyectos vigentes en los que pueden "
-        + "participar alumnos del PCS. Incluya fechas de terminación.",
+        u"Proyectos vigentes en los que pueden "
+        + u"participar alumnos del PCS. Incluya fechas de terminación.",
         blank=True)
 
     # disponibilidad
     disponible_tutor = models.BooleanField(
-        "Disponible como tutor principal (dirección de alumnos)",
+        u"Disponible como tutor principal (dirección de alumnos)",
         default=False)
 
     disponible_miembro = models.BooleanField(
-        "Disponible como miembro de comité tutor (asesoría de alumnos)",
+        u"Disponible como miembro de comité tutor (asesoría de alumnos)",
         default=False)
 
     # epílogo
     observaciones = models.TextField(blank=True)
 
-    resumen_completo = models.BooleanField("perfil académico completo",
+    resumen_completo = models.BooleanField(u"perfil académico completo",
                                            default=False)
 
     perfil_personal_completo = models.BooleanField(default=False)
@@ -798,98 +800,106 @@ class Academico(models.Model):
         return ok
 
     def verifica_resumen(self):
-        if self.CVU == "":
-            print "falta CVU"
-            return False
-        if self.anexo_CV == "":
-            print "falta anexo_CV"
-            return False
-        if self.anexo_solicitud == "":
-            print "falta anexo_solicitud"
-            return False
-        if not self.ultimo_grado:
-            print "falta self.ultimo_grado"
-            return False
-        if self.tesis_licenciatura is None:
-            print "falta tesis_licenciatura"
-            return False
-        elif self.tesis_maestria is None:
-            print "falta tesis_maestria"
-            return False
-        elif self.tesis_doctorado is None:
-            print "falta tesis_doctorado"
-            return False
-        elif self.tesis_licenciatura_5 is None:
-            print "falta tesis_licenciatura_5"
-            return False
-        elif self.tesis_maestria_5 is None:
-            print "falta tesis_maestria_5"
-            return False
-        elif self.tesis_doctorado_5 is None:
-            print "falta tesis_doctorado_5"
-            return False
-        elif self.comite_doctorado_otros is None:
-            print "falta comite_doctorado_otros"
-            return False
-        elif self.comite_maestria_otros is None:
-            print "falta comite_maestria_otros"
-            return False
-        elif self.participacion_comite_maestria is None:
-            print "falta participacion_comite_maestria"
-            return False
-        elif self.participacion_tutor_maestria is None:
-            print "falta participacion_tutor_maestria"
-            return False
-        elif self.participacion_comite_doctorado is None:
-            print "falta participacion_comite_doctorado"
-            return False
-        elif self.participacion_tutor_doctorado is None:
-            print "falta participacion_tutor_doctorado"
-            return False
-        elif self.articulos_internacionales_5 is None:
-            print "falta articulos_internacionales_5"
-            return False
-        elif self.articulos_nacionales_5 is None:
-            print "falta articulos_nacionales_5"
-            return False
-        elif self.articulos_internacionales is None:
-            print "falta articulos_internacionales"
-            return False
-        elif self.articulos_nacionales is None:
-            print "falta articulos_nacionales"
-            return False
-        elif self.capitulos is None:
-            print "falta capitulos"
-            return False
-        elif self.capitulos_5 is None:
-            print "falta capitulos_5"
-            return False
-        elif self.libros is None:
-            print "falta libros"
-            return False
-        elif self.libros_5 is None:
-            print "falta libros_5"
-            return False
-        elif self.top_5 == "" or self.top_5 is None:
-            print "falta top_5"
-            return False
-        elif self.lineas == "" or self.lineas is None:
-            print "falta lineas"
-            return False
-        elif self.palabras_clave == "" or self.palabras_clave is None:
-            print "falta palabras_clave"
-            return False
-        elif self.motivacion == "" or self.motivacion is None:
-            print "falta motivacion"
-            return False
-        elif self.campos_de_conocimiento.count() == 0:
-            print "falta campos_de_conocimiento.count()"
-            return False
-        elif self.lineas_de_investigacion.count() == 0:
-            print "falta lineas_de_investigacion.count()"
-            return False
-        else:
+        if self.carencias() == u"":
             return True
+        else:
+            return False
+
+    def carencias(self):
+        carencias = u""
+
+        if self.CVU == "":
+            carencias += u" - " + unicode(self._meta.get_field('CVU').verbose_name) + u"\n"
+
+        if self.anexo_CV == "":
+            carencias += u" - " + unicode(self._meta.get_field('anexo_CV').verbose_name) + u"\n"
+
+        if self.anexo_solicitud == "":
+            carencias += u" - " + unicode(self._meta.get_field('anexo_solicitud').verbose_name) + u"\n"
+
+        if not self.ultimo_grado:
+            carencias += u" - " + unicode(self._meta.get_field('ultimo_grado').verbose_name) + u"\n"
+
+        if self.tesis_licenciatura is None:
+            carencias += u" - " + unicode(self._meta.get_field('tesis_licenciatura').verbose_name) + u"\n"
+
+        if self.tesis_maestria is None:
+            carencias += u" - " + unicode(self._meta.get_field('tesis_maestria').verbose_name) + u"\n"
+
+        if self.tesis_doctorado is None:
+            carencias += u" - " + unicode(self._meta.get_field('tesis_doctorado').verbose_name) + u"\n"
+
+        if self.tesis_licenciatura_5 is None:
+            carencias += u" - " + unicode(self._meta.get_field('tesis_licenciatura_5').verbose_name) + u"\n"
+
+        if self.tesis_maestria_5 is None:
+            carencias += u" - " + unicode(self._meta.get_field('tesis_maestria_5').verbose_name) + u"\n"
+
+        if self.tesis_doctorado_5 is None:
+            carencias += u" - " + unicode(self._meta.get_field('tesis_doctorado_5').verbose_name) + u"\n"
+
+        if self.comite_doctorado_otros is None:
+            carencias += u" - " + unicode(self._meta.get_field('comite_doctorado_otros').verbose_name) + u"\n"
+
+        if self.comite_maestria_otros is None:
+            carencias += u" - " + unicode(self._meta.get_field('comite_maestria_otros').verbose_name) + u"\n"
+
+        if self.participacion_comite_maestria is None:
+            carencias += u" - " + unicode(self._meta.get_field('participacion_comite_maestria').verbose_name) + u"\n"
+
+        if self.participacion_tutor_maestria is None:
+            carencias += u" - " + unicode(self._meta.get_field('participacion_tutor_maestria').verbose_name) + u"\n"
+
+        if self.participacion_comite_doctorado is None:
+            carencias += u" - " + unicode(self._meta.get_field('participacion_comite_doctorado').verbose_name) + u"\n"
+
+        if self.participacion_tutor_doctorado is None:
+            carencias += u" - " + unicode(self._meta.get_field('participacion_tutor_doctorado').verbose_name) + u"\n"
+
+        if self.articulos_internacionales_5 is None:
+            carencias += u" - " + unicode(self._meta.get_field('articulos_internacionales_5').verbose_name) + u"\n"
+
+        if self.articulos_nacionales_5 is None:
+            carencias += u" - " + unicode(self._meta.get_field('articulos_nacionales_5').verbose_name) + u"\n"
+
+        if self.articulos_internacionales is None:
+            carencias += u" - " + unicode(self._meta.get_field('articulos_internacionales').verbose_name) + u"\n"
+
+        if self.articulos_nacionales is None:
+            carencias += u" - " + unicode(self._meta.get_field('articulos_nacionales').verbose_name) + u"\n"
+
+        if self.capitulos is None:
+            carencias += u" - " + unicode(self._meta.get_field('capitulos').verbose_name) + u"\n"
+
+        if self.capitulos_5 is None:
+            carencias += u" - " + unicode(self._meta.get_field('capitulos_5').verbose_name) + u"\n"
+
+        if self.libros is None:
+            carencias += u" - " + unicode(self._meta.get_field('libros').verbose_name) + u"\n"
+
+        if self.libros_5 is None:
+            carencias += u" - " + unicode(self._meta.get_field('libros_5').verbose_name) + u"\n"
+
+        if self.top_5 == "" or self.top_5 is None:
+            carencias += u" - " + unicode(self._meta.get_field('top_5').verbose_name) + u"\n"
+
+        if self.lineas == "" or self.lineas is None:
+            carencias += u" - " + unicode(self._meta.get_field('lineas').verbose_name) + u"\n"
+
+        if self.palabras_clave == "" or self.palabras_clave is None:
+            carencias += u" - " + unicode(self._meta.get_field('palabras_clave').verbose_name) + u"\n"
+
+        if self.motivacion == "" or self.motivacion is None:
+            carencias += u" - " + unicode(self._meta.get_field('motivacion').verbose_name) + u"\n"
+
+        if self.campos_de_conocimiento.count() == 0:
+            carencias += u" - " + unicode(self._meta.get_field('campos_de_conocimiento.count()').verbose_name) + u"\n"
+
+        if self.lineas_de_investigacion.count() == 0:
+            carencias += u" - " + unicode(self._meta.get_field('lineas_de_investigacion.count()').verbose_name) + u"\n"
+
+        print carencias
+        return carencias
 
     def as_a(self):
         icon = """<span class='glyphicon glyphicon-{icon}'
