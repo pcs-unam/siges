@@ -82,6 +82,11 @@ class PerfilComite(LoginRequiredMixin, UserPassesTestMixin, View):
 
         user.academico.pc_resumen_academico()
         user.academico.wc_resumen_academico()
+        a = user.academico
+        a.semaforo_maestria = a.verifica_semaforo_maestria()
+        a.semaforo_doctorado = a.verifica_semaforo_doctorado()
+        a.save()
+
 
         breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
                        (settings.APP_PREFIX + 'inicio/perfil/', 'Perfiles'),
@@ -425,6 +430,10 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             else:
                 a.disponible_tutor = False
 
+
+            a.semaforo_maestria = a.verifica_semaforo_maestria()
+            a.semaforo_doctorado = a.verifica_semaforo_doctorado()
+                
             a.save()
 
             return HttpResponseRedirect(reverse('perfil_academico'))
