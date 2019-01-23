@@ -36,6 +36,8 @@
 {% if not U.academico.resumen_completo %}
 <div class="alert alert-danger" role="alert">
   <strong>Perfil académico incompleto.</strong>
+  <hr />
+  {{ U.academico.carencias|markdown }}  
 </div>
 {% endif %}
 
