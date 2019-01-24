@@ -892,11 +892,11 @@ class Academico(models.Model):
         if self.motivacion == "" or self.motivacion is None:
             carencias += u" - " + unicode(self._meta.get_field('motivacion').verbose_name) + u"\n"
 
-        if self.campos_de_conocimiento.count() == 0:
-            carencias += u" - " + unicode(self._meta.get_field('campos_de_conocimiento').verbose_name) + u"\n"
+        # if self.campos_de_conocimiento.count() == 0:
+        #     carencias += u" - " + unicode(self._meta.get_field('campos_de_conocimiento').verbose_name) + u"\n"
 
-        if self.lineas_de_investigacion.count() == 0:
-            carencias += u" - " + unicode(self._meta.get_field('lineas_de_investigacion').verbose_name) + u"\n"
+        # if self.lineas_de_investigacion.count() == 0:
+        #     carencias += u" - " + unicode(self._meta.get_field('lineas_de_investigacion').verbose_name) + u"\n"
 
         return carencias
 
