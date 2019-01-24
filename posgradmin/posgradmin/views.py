@@ -431,8 +431,8 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.disponible_tutor = False
 
 
-            a.semaforo_maestria = a.verifica_semaforo_maestria()
-            a.semaforo_doctorado = a.verifica_semaforo_doctorado()
+            # a.semaforo_maestria = a.verifica_semaforo_maestria()
+            # a.semaforo_doctorado = a.verifica_semaforo_doctorado()
                 
             a.save()
 
