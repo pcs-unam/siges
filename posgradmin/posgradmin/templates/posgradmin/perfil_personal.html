@@ -11,7 +11,7 @@
 
 {% block content %}
 
-    {% if not user.academico.resumen_completo %}
+    {% if user.academico and not user.academico.resumen_completo %}
     <div class="alert alert-danger" role="alert">
       <strong>Perfil académico incompleto.</strong>
       <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>
