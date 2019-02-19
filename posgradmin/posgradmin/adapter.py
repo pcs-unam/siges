@@ -8,7 +8,8 @@ class AccountAdapter(DefaultAccountAdapter):
 
     def get_login_redirect_url(self, request):
 
-        if not hasattr(request.user, 'academico'):
+        if not hasattr(request.user, 'academico') \
+          and not hasattr(request.user, 'estudiante'):
             a = models.Academico(user=request.user,
                                  acreditacion='candidato')
             a.save()
