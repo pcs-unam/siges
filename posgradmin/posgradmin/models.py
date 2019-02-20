@@ -304,7 +304,7 @@ class Estudiante(models.Model):
             APP_PREFIX,
             self.user.get_username(), self.__unicode__())
 
-    
+
     def as_a(self):
         return "<a href='%sinicio/usuario/%s/'>%s</a>" % (
             APP_PREFIX,
@@ -651,7 +651,7 @@ class Academico(models.Model):
     comite_maestria_otros = models.PositiveSmallIntegerField(
         u"""Cantidad total de participaciones como miembro de comité
         tutor (no tutor principal) de estudiantes graduados de nivel
-        maestría en otros programas.""", null=True, blank=True)
+        maestría.""", null=True, blank=True)
 
     # en el PCS
     participacion_tutor_doctorado = models.PositiveSmallIntegerField(
@@ -1078,9 +1078,14 @@ class Academico(models.Model):
         wordcloud.stopwords.add('http')
         wordcloud.stopwords.add('https')
 
-        text = " ".join((unicode(self.top_5), unicode(self.motivacion), unicode(self.otras_actividades)
-               , unicode(self.otras_publicaciones), unicode(self.lineas), unicode(self.palabras_clave)
-               , unicode(self.proyectos_vigentes), unicode(self.proyectos_sostenibilidad)))
+        text = "nil ".join((unicode(self.top_5),
+                            unicode(self.motivacion),
+                            unicode(self.otras_actividades),
+                            unicode(self.otras_publicaciones),
+                            unicode(self.lineas),
+                            unicode(self.palabras_clave),
+                            unicode(self.proyectos_vigentes),
+                            unicode(self.proyectos_sostenibilidad)))
 
         wordcloud.generate(text)
 

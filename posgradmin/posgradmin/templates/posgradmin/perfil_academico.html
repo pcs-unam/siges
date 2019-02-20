@@ -144,26 +144,29 @@
 	      <td align="right">{{ object.academico.tesis_doctorado|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
-	      <td>Cantidad de participaciones como tutor principal de estudiantes graduados los últimos 5 años</td>
+	      <td>Cantidad de participaciones como tutor principal de estudiantes graduados en los últimos 5 años</td>
 	      <td align="right">{{ object.academico.tesis_licenciatura_5|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.tesis_maestria_5|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.tesis_doctorado_5|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
-	      <td>Cantidad de comités en los que participa como tutor principal en el Posgrado en Ciencias de la Sostenibilidad</td>
+	      <td>
+		Cantidad de participaciones como tutor principal en el <b>Posgrado en Ciencias de la Sostenibilidad</b></td>
 	      <td></td>
 	      <td align="right">{{ object.academico.participacion_tutor_maestria|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.participacion_tutor_doctorado|default_if_none:"" }}</td>
 	    </tr>
 	    <tr>
-	      <td>Cantidad de comités en los que participa en el Posgrado en Ciencias de la Sostenibilidad</td>
+	      <td>Cantidad de participaciones como miembro de comité tutor (no tutor
+		principal) en el <b>Posgrado en Ciencias de la Sostenibilidad</b></td>
 	      <td></td>
 	      <td align="right">{{ object.academico.participacion_comite_maestria|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.participacion_comite_doctorado|default_if_none:"" }}</td>
 	    </tr>
 
 	    <tr>
-	      <td>Cantidad total de participaciones como miembro de comité tutor (no tutor principal) de estudiantes graduados en otros programas</td>
+	      <td>Cantidad total de participaciones como miembro de comité
+		tutor (no tutor principal) de estudiantes graduados</td>
 	      <td></td>
 	      <td align="right">{{ object.academico.comite_maestria_otros|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.comite_doctorado_otros|default_if_none:"" }}</td>
@@ -175,7 +178,8 @@
 	<hr>
 	Otros programas en los que participa: {{ object.academico.tutor_principal_otros_programas|default:"" }} <br />
 	<hr />
-	Otras actividades: {{ object.academico.otras_actividades|default_if_none:""|markdown }}
+	Otras actividades académicas como estancias de investigación,
+	seminarios de titulación, etc.: {{ object.academico.otras_actividades|default_if_none:""|markdown }}
 
       </div>
     </div>
@@ -291,8 +295,7 @@
       <div class="panel-heading">
 	<h3 class="panel-title">
 	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
-	  Proyectos relacionados con Ciencias de la Sostenibilidad
-	</h3>
+	  Principales proyectos relacionados con Ciencias de la Sostenibilidad durante los últimos cinco años</h3>
       </div>
       <div class="panel-body">
 	{{ object.academico.proyectos_sostenibilidad|markdown }}
@@ -303,7 +306,7 @@
       <div class="panel-heading">
 	<h3 class="panel-title">
 	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
-	  Proyectos vigentes
+	  Proyectos vigentes en los que pueden participar alumnos del PCS.
 	</h3>
       </div>
       <div class="panel-body">
