@@ -57,6 +57,11 @@
       {% if user.academico %}
       <a href="{% url 'perfil_academico' %}" class="list-group-item">Perfil Académico</a>
       {% endif %}
+
+      {% if user.estudiante %}
+      <a href="{% url 'perfil_estudiante' %}" class="list-group-item">Perfil de Estudiante</a>
+      {% endif %}
+      
     </div>
 
     {# if user.perfil #}

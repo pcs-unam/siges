@@ -1,12 +1,16 @@
-<!--
- ######   ####    #####  #    #  #####      #      ##    #    #   #####  ######
- #       #          #    #    #  #    #     #     #  #   ##   #     #    #
- #####    ####      #    #    #  #    #     #    #    #  # #  #     #    #####
- #            #     #    #    #  #    #     #    ######  #  # #     #    #
- #       #    #     #    #    #  #    #     #    #    #  #   ##     #    #
- ######   ####      #     ####   #####      #    #    #  #    #     #    ######
--->
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load md2 %}
 
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; <a href="{% url 'perfil_estudiante' %}">{{ object.get_full_name }} (perfil de estudiante)</a>
+</div>
+{% endblock %}
+
+
+{% block content %}
 <div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">
@@ -15,6 +19,7 @@
     </h3>
   </div>
   <div class="panel-body">
+    <h1>{{ object.estudiante.user.get_full_name }}</h1>
     <ul class="list-group">
       <li class="list-group-item">
 	Cuenta: {{ object.estudiante.cuenta|default:'' }}
@@ -24,8 +29,6 @@
       </li>
       <li class="list-group-item">
 	plan: {{ object.estudiante.plan|default:'' }}</li>
-      <li class="list-group-item">
-	entidad: {{ object.estudiante.institucion|default:'' }}</li>
       <li class="list-group-item">
 	ingreso: {{ object.estudiante.ingreso|default:'' }}</li>
       <li class="list-group-item">
@@ -64,7 +67,7 @@
       <div class="panel-body">
 	{% if object.estudiante.get_proyecto is None %}
 	<div class="alert alert-danger" role="alert">
-	  <strong>No ha registrado proyecto</strong>
+	  <strong>No hay proyectos registrados.</strong>
 	</div>
 	{% else %}
 	<h4>{{ object.estudiante.get_proyecto.nombre }}</h4>
@@ -98,3 +101,4 @@
 </div>
 
 <!-- estudiante -->
+{% endblock %}

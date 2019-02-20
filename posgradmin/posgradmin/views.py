@@ -278,6 +278,39 @@ class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin,
         return self.request.user
 
 
+
+
+class PerfilEstudianteDetail(LoginRequiredMixin, UserPassesTestMixin,
+                             DetailView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+    template_name = "posgradmin/perfil_estudiante.html"
+
+    def test_func(self):
+        
+        return True
+
+    def get_context_data(self, **kwargs):
+        context = super(PerfilEstudianteDetail, self).get_context_data(**kwargs)
+        context['user'] = self.request.user
+
+        # may see intimacies?
+        u = context['object']
+
+        if (  # by authority
+                self.request.user == u  # 'tis mine
+                or self.request.user.is_staff):  # we ait'
+            see_private = True
+        else:
+            see_private = False
+
+        context['see_private'] = see_private
+
+        return context
+
+    def get_object(self):
+        return self.request.user
+    
+
 class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 

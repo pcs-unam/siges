@@ -9,7 +9,8 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
     AdscripcionEliminar, AdscripcionAgregar, AsociacionAgregar, \
     EstudianteSortableView, AcademicoSortableView, CatedraSortableView, \
-    UserDetail, PerfilPublico, PerfilPublicoIndice, PerfilComite
+    UserDetail, PerfilPublico, PerfilPublicoIndice, PerfilComite, \
+    PerfilEstudianteDetail
 
 from posgradmin.views_academico import MisCatedrasView, \
     MisComitesView, MisEstudiantesView
@@ -81,6 +82,10 @@ urlpatterns = [
     url(r'^inicio/perfil/$',
         PerfilDetail.as_view(),
         name='perfil'),
+
+    url(r'^inicio/perfil-estudiante/$',
+        PerfilEstudianteDetail.as_view(),
+        name='perfil_estudiante'),
 
     url(r'^inicio/perfil-academico/$',
         PerfilAcademicoDetail.as_view(),
