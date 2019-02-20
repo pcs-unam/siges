@@ -299,6 +299,12 @@ class Estudiante(models.Model):
                 return p
         return None
 
+    def perfil_publico_anchor(self):
+        return u"""<a href='%sinicio/perfil/publico/%s'>%s</a>""" % (
+            APP_PREFIX,
+            self.user.get_username(), self.__unicode__())
+
+    
     def as_a(self):
         return "<a href='%sinicio/usuario/%s/'>%s</a>" % (
             APP_PREFIX,

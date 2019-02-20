@@ -1,0 +1,50 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+      Estudiante
+    </h3>
+  </div>
+  <div class="panel-body">
+    <h1>{{ object.estudiante.user.get_full_name }}</h1>
+    <ul class="list-group">
+      <li class="list-group-item">
+	plan: {{ U.estudiante.plan|default:'' }}</li>
+      <li class="list-group-item">
+	ingreso: {{ U.estudiante.ingreso|default:'' }}</li>
+      <li class="list-group-item">
+	Campo de Conocimiento: {{ U.estudiante.proyecto_set.last.campo_conocimiento }}</li>
+    </ul>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
+	  Comité Tutor
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ U.estudiante.comite_tutoral.as_ul|safe }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+	  Proyecto
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% if object.estudiante.get_proyecto is None %}
+	<div class="alert alert-danger" role="alert">
+	  <strong>No hay proyectos registrados.</strong>
+	</div>
+	{% else %}
+	<h4>{{ U.estudiante.get_proyecto.nombre }}</h4>
+	{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+

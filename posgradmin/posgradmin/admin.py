@@ -18,13 +18,24 @@ admin.site.site_url = "/"
 
 
 class EstudianteAdmin(admin.ModelAdmin):
-    search_fields = ['cuenta', 'user__first_name', 'user__last_name']
+    search_fields = ['cuenta',
+                     'user__first_name',
+                     'user__last_name',
+                     'user__email', ]
     list_display = ['user', 'cuenta',
-                    'plan', 'ingreso', 'unificado']
+                    'plan', 'ingreso', 'perfil_publico', ]
+
+    list_filter = ['plan',
+                   'ingreso', ]
 
     def unificado(self, estudiante):
         return estudiante.as_a()
 
+    def perfil_publico(self, estudiante):
+        return estudiante.perfil_publico_anchor()
+    perfil_publico.allow_tags = True
+    perfil_publico.short_description = u'Perfil Público'
+    
     unificado.allow_tags = True
     unificado.short_description = 'Vista unificada'
 
