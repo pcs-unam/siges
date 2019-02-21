@@ -35,11 +35,11 @@
       <li class="list-group-item">
 	Acreditación: {{ U.academico.show_acreditacion }}
 
-	{% if object.academico.fecha_acreditacion %}
+	{% if U.academico.fecha_acreditacion %}
 	<p>Acreditado el {{ object.academico.fecha_acreditacion }}</p>
 	{% endif %}
 
-	{% if object.academico.ultima_reacreditacion %}
+	{% if U.academico.ultima_reacreditacion %}
 	<p>Última reacreditación el {{ object.academico.ultima_reacreditacion }}</p>
 	{% endif %}
 
