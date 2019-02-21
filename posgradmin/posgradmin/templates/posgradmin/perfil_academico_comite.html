@@ -188,6 +188,11 @@
 	      <td align="right">{{ U.academico.capitulos|default_if_none:"" }}</td>
 	      <td align="right">{{ U.academico.capitulos_5|default_if_none:"" }}</td>
 	    </tr>
+	    <tr>
+	      <td>&nbsp;</td>
+	      <td>&nbsp;</td>	      
+	      <td align="right">total de publicaciones durante los últimos 5 años: <h3>{{ U.academico.publicaciones_5 }}</h3></td>
+	    </tr>
 	  </tbody>
 	</table>
 	Otras publicaciones: {{ U.academico.otras_publicaciones|default_if_none:""|markdown }}
