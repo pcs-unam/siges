@@ -73,7 +73,16 @@
 	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
 
       <li class="list-group-item">
-	Acreditación: {{ object.academico.show_acreditacion }}</li>
+	Acreditación: {{ object.academico.show_acreditacion }}
+
+	{% if object.academico.fecha_acreditacion %}
+	<p>Acreditado el {{ object.academico.fecha_acreditacion }}</p>
+	{% endif %}
+
+	{% if object.academico.ultima_reacreditacion %}
+	<p>Última reacreditación el {{ object.academico.ultima_reacreditacion }}</p>
+	{% endif %}
+      </li>
       <li class="list-group-item">
 	CVU: {{ object.academico.CVU|default:'!' }}</li>
 

@@ -238,7 +238,9 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
     class Meta:
         model = Academico
         exclude = ['user', 'tutor',
-                   'fecha_acreditacion', 'acreditacion', 'semaforo_maestria',
+                   'ultima_reacreditacion', 'fecha_acreditacion',
+                   'acreditacion',
+                   'semaforo_maestria',
                    'semaforo_doctorado',
                    'solicitud', 'comite_academico', 'observaciones']
 

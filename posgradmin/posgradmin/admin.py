@@ -35,7 +35,7 @@ class EstudianteAdmin(admin.ModelAdmin):
         return estudiante.perfil_publico_anchor()
     perfil_publico.allow_tags = True
     perfil_publico.short_description = u'Perfil Público'
-    
+
     unificado.allow_tags = True
     unificado.short_description = 'Vista unificada'
 
@@ -67,6 +67,7 @@ class AcademicoAdmin(admin.ModelAdmin):
          {'fields': ('tutor',
                      'comite_academico',
                      'fecha_acreditacion',
+                     'ultima_reacreditacion',
                      'acreditacion',
                      'estimulo_UNAM',
                      'nivel_SNI',
@@ -144,17 +145,17 @@ class AcademicoAdmin(admin.ModelAdmin):
 
 
     actions = ['actualiza_semaforos']
-    
+
     def actualiza_semaforos(self, request, queryset):
         for a in queryset:
             a.semaforo_doctorado = a.verifica_semaforo_doctorado()
             a.semaforo_maestria = a.verifica_semaforo_maestria()
             a.save()
-            
+
     actualiza_semaforos.\
         short_description = "actualiza semáforos de académicos"
 
-    
+
 
 admin.site.register(Academico, AcademicoAdmin)
 

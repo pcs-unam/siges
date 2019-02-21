@@ -33,7 +33,17 @@
 	Nivel SNI: {{ U.academico.nivel_SNI|default:'' }}</li>
 
       <li class="list-group-item">
-	Acreditación: {{ U.academico.show_acreditacion }}</li>
+	Acreditación: {{ U.academico.show_acreditacion }}
+
+	{% if object.academico.fecha_acreditacion %}
+	<p>Acreditado el {{ object.academico.fecha_acreditacion }}</p>
+	{% endif %}
+
+	{% if object.academico.ultima_reacreditacion %}
+	<p>Última reacreditación el {{ object.academico.ultima_reacreditacion }}</p>
+	{% endif %}
+
+      </li>
       <li class="list-group-item">
 	CVU: {{ U.academico.CVU|default:'!' }}</li>
 
@@ -190,7 +200,7 @@
 	    </tr>
 	    <tr>
 	      <td>&nbsp;</td>
-	      <td>&nbsp;</td>	      
+	      <td>&nbsp;</td>
 	      <td align="right">total de publicaciones durante los últimos 5 años: <h3>{{ U.academico.publicaciones_5 }}</h3></td>
 	    </tr>
 	  </tbody>

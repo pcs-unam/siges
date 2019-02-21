@@ -588,6 +588,7 @@ class Academico(models.Model):
     comite_academico = models.BooleanField(default=False)
 
     fecha_acreditacion = models.DateField(blank=True, null=True)
+    ultima_reacreditacion = models.DateField(blank=True, null=True)
 
     acreditacion = models.CharField(
         max_length=15,
