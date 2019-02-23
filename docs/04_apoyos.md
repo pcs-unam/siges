@@ -2,6 +2,7 @@
 layout: page
 title: Apoyos y becas
 permalink: /apoyos/
+pleca: /assets/plecas/p04.jpg
 menu: true
 ---
 

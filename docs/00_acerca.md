@@ -2,6 +2,7 @@
 layout: page
 title: Acerca del posgrado
 permalink: /posgrado/
+pleca: /assets/plecas/p00.jpg
 menu: true
 ---
 

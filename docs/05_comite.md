@@ -2,6 +2,7 @@
 layout: page
 title: "Comité Académico"
 permalink: /comite/
+pleca: /assets/plecas/p05.jpg
 menu: true
 ---
 
