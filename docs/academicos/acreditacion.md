@@ -1,6 +1,7 @@
 ---
+title: Acreditación de tutores
 layout: page
 permalink: academicos/acreditacion
 ---
 
-# Acreditación de tutores
+
