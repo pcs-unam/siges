@@ -3,4 +3,4 @@ layout: page
 permalink: doctorado/plan
 ---
 
-# doctorado/plan
+# Plan de estudios

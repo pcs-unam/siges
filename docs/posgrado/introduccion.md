@@ -3,4 +3,4 @@ layout: page
 permalink: posgrado/introduccion
 ---
 
-# posgrado/introduccion
+# Acerca del posgrado

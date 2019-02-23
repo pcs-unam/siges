@@ -3,4 +3,4 @@ layout: page
 permalink: comite/calendario
 ---
 
-# comite/calendario
+# Calendario de sesiones

@@ -4,4 +4,4 @@ permalink: /maestria/plan
 exclude: true
 ---
 
-# Plan de estudios de Maestría
+# Plan de estudios

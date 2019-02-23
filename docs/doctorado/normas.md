@@ -3,4 +3,4 @@ layout: page
 permalink: doctorado/normas
 ---
 
-# doctorado/normas
+# Normas operativas

@@ -3,4 +3,4 @@ layout: page
 permalink: academicos/acreditacion
 ---
 
-# academicos/acreditacion
+# Acreditación de tutores

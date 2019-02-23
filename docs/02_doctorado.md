@@ -5,7 +5,6 @@ permalink: /doctorado
 menu: true
 ---
 
-
  - [Plan de estudios](/doctorado/plan)
  - [Normas operativas](/doctorado/normas)
  - [Líneas de investigación](/doctorado/lineas)

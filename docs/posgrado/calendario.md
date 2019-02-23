@@ -3,4 +3,4 @@ layout: page
 permalink: posgrado/calendario
 ---
 
-# posgrado/calendario
+# Calendario de actividades
