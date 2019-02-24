@@ -2,7 +2,7 @@
 title: Candidatura
 layout: page
 permalink: doctorado/candidatura
-pleca: /assets/plecas/p017.jpg
+pleca: /assets/plecas/p17.jpg
 ---
 
 # Lineamientos para la candidatura al grado de doctor en Ciencias de la Sostenibilidad

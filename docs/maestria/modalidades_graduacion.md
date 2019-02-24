@@ -2,6 +2,7 @@
 title: Modalidades para la graduación
 layout: page
 permalink: maestria/modalidades_graduacion
+pleca: /assets/plecas/p16.jpg
 ---
 
 La Maestría en Ciencias de la Sostenibilidad cuenta con las siguientes
