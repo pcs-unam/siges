@@ -16,7 +16,9 @@
 title: "Posgrado en Ciencias de la Sostenibilidad"
 email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Posgrado en Ciencias de la Sostenibilidad, Unidad de Posgrado Ciudad Universitaria Edificio D primer piso, Cd. de México
+  Posgrado en Ciencias de la Sostenibilidad, Unidad de Posgrado Edificio D primer piso
+  Ciudad Universitaria
+  CDMX
   Teléfono 5623-7012. Atención de lunes a viernes de 9:00 a 13:00 hrs.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
