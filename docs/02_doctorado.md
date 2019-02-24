@@ -2,7 +2,7 @@
 layout: page
 title: Doctorado
 permalink: /doctorado
-pleca: /assets/plecas/p03.jpg
+pleca: assets/plecas/p03.jpg
 menu: true
 ---
 

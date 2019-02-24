@@ -2,7 +2,7 @@
 layout: page
 title: Maestría
 permalink: /maestria
-pleca: /assets/plecas/p01.jpg
+pleca: assets/plecas/p01.jpg
 menu: true
 ---
 

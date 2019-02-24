@@ -2,7 +2,7 @@
 layout: page
 title: Académicos
 permalink: /academicos/
-pleca: /assets/plecas/p12.jpg
+pleca: assets/plecas/p12.jpg
 menu: true
 ---
 
