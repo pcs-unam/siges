@@ -3,7 +3,8 @@ from django.core.management.base import BaseCommand
 from posgradmin.models import Academico
 from django.template.loader import render_to_string
 from os import path
-
+from django.db.models import Q
+from datetime import datetime
 
 class Command(BaseCommand):
     help = 'Exporta académicos a formato markdown para la página'
@@ -17,7 +18,13 @@ class Command(BaseCommand):
 
 
 def export(outdir):
-    academicos = Academico.objects.filter(acreditacion__in=['D', 'M'])
+    last_year = datetime.now().year - 1
+    academicos = Academico.objects.filter(
+        Q(acreditacion__in=['D', 'M']),
+        Q(fecha_acreditacion__year__gte=last_year)
+        | Q(ultima_reacreditacion__year__gte=last_year)
+    ).order_by('user__last_name').order_by('-acreditacion')
+
     index_md = path.join(outdir, 'index_academicos.md')
     with open(index_md, 'w') as f:
         f.write(render_to_string('posgradmin/index_academicos.md',

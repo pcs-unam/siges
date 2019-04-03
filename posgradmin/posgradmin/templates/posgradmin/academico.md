@@ -1,17 +1,16 @@
 ---
 title: {{ a }}
 layout: page
-permalink: tutores/{{ a.user.username }}
+permalink: tutores/{{ a.user.username }}/
 ---
 
-
-![wordcloud](https://sostenibilidad.posgrado.unam.mx/media/perfil-academico/{{ a.id }}/wordcloud.png)
+Acreditación: **{{ a.show_acreditacion }}**
 
 {% if a.disponible_tutor %}
  - Disponible como tutor principal (dirección de alumnos).
 {% endif %}
 {% if a.disponible_miembro %}
- - Disponible como miembro de comité tutor (asesoría de alumnos)</li>
+ - Disponible como miembro de comité tutor (asesoría de alumnos)
 {% endif %}
 
 
@@ -34,8 +33,7 @@ permalink: tutores/{{ a.user.username }}
 # Grados académicos
 
 {% for grado in a.user.gradoacademico_set.all %}
- **{{ grado.grado_obtenido }}** {{ grado.institucion }}
- nivel {{ grado.nivel }} obtenido el {{ grado.fecha_obtencion }}
+ - **{{ grado.grado_obtenido }}**, {{ grado.institucion }}, nivel {{ grado.nivel }} obtenido el {{ grado.fecha_obtencion }}
 {% endfor %}
 
 ## Perfil académico
@@ -72,3 +70,6 @@ permalink: tutores/{{ a.user.username }}
 {% for c in a.campos_de_conocimiento.all %}
  - {{ c }}
 {% endfor %}
+
+
+![wordcloud](https://sostenibilidad.posgrado.unam.mx/media/perfil-academico/{{ a.id }}/wordcloud.png)

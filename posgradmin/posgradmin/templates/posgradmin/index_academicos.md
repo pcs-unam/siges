@@ -4,5 +4,5 @@ layout: page
 permalink: /tutores/index
 ---
 
-{% for a in academicos %}| [{{ a }}](tutores/{{ a.user.username }}) | {{ a.show_acreditacion }} |
+{% for a in academicos %}| [{{ a }}]({{ a.user.username }}/) | {{ a.show_acreditacion }} |
 {% endfor %}
