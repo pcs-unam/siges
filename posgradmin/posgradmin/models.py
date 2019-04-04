@@ -1079,14 +1079,14 @@ class Academico(models.Model):
         wordcloud.stopwords.add('http')
         wordcloud.stopwords.add('https')
 
-        text = "nil ".join((unicode(self.top_5),
-                            unicode(self.motivacion),
-                            unicode(self.otras_actividades),
-                            unicode(self.otras_publicaciones),
-                            unicode(self.lineas),
-                            unicode(self.palabras_clave),
-                            unicode(self.proyectos_vigentes),
-                            unicode(self.proyectos_sostenibilidad)))
+        text = " ".join((unicode(self.top_5),
+                         unicode(self.motivacion),
+                         unicode(self.otras_actividades),
+                         unicode(self.otras_publicaciones),
+                         unicode(self.lineas),
+                         unicode(self.palabras_clave),
+                         unicode(self.proyectos_vigentes),
+                         unicode(self.proyectos_sostenibilidad)))
 
         wordcloud.generate(text)
 

@@ -6,6 +6,7 @@ from os import path
 from django.db.models import Q
 from datetime import datetime
 
+
 class Command(BaseCommand):
     help = 'Exporta académicos a formato markdown para la página'
 
@@ -19,17 +20,28 @@ class Command(BaseCommand):
 
 def export(outdir):
     last_year = datetime.now().year - 1
-    academicos = Academico.objects.filter(
-        Q(acreditacion__in=['D', 'M']),
+    doctorado = Academico.objects.filter(
+        Q(acreditacion='D'),
+        Q(disponible_tutor=True) | Q(disponible_miembro=True),
         Q(fecha_acreditacion__year__gte=last_year)
         | Q(ultima_reacreditacion__year__gte=last_year)
-    ).order_by('user__last_name').order_by('-acreditacion')
+    ).order_by('user__last_name')
+
+    maestria = Academico.objects.filter(
+        Q(acreditacion='M'),
+        Q(disponible_tutor=True) | Q(disponible_miembro=True),
+        Q(fecha_acreditacion__year__gte=last_year)
+        | Q(ultima_reacreditacion__year__gte=last_year)
+    ).order_by('user__last_name')
 
     index_md = path.join(outdir, 'index_academicos.md')
+
     with open(index_md, 'w') as f:
         f.write(render_to_string('posgradmin/index_academicos.md',
-                                 {'academicos': academicos}).encode('utf-8'))
+                                 {'doctorado': doctorado,
+                                  'maestria': maestria}).encode('utf-8'))
 
+    academicos = [a for a in doctorado] + [a for a in maestria]
     for a in academicos:
         a_md = path.join(outdir,
                          'tutores',

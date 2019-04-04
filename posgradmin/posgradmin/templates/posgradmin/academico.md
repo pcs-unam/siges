@@ -14,13 +14,17 @@ Acreditación: **{{ a.show_acreditacion }}**
 {% endif %}
 
 
+
+
 # Información de contacto
 
  - <{{ a.user.email }}>
 
 {% if a.user.perfil.website %}
- - <{{ a.user.perfil.website }}>
+ - {{ a.user.perfil.website|urlize }}
 {% endif %}
+
+
 
 # Adscripción
 
@@ -30,17 +34,24 @@ Acreditación: **{{ a.show_acreditacion }}**
 {% endfor %}
 
 
+
+
+## Perfil académico
+
+
 # Grados académicos
 
 {% for grado in a.user.gradoacademico_set.all %}
  - **{{ grado.grado_obtenido }}**, {{ grado.institucion }}, nivel {{ grado.nivel }} obtenido el {{ grado.fecha_obtencion }}
 {% endfor %}
 
-## Perfil académico
+
 
 # Temas de Interés
 
 {{ a.lineas }}
+
+
 
 # Palabras clave
 
@@ -48,23 +59,37 @@ Acreditación: **{{ a.show_acreditacion }}**
  - {{ p }}
 {% endfor %}
 
+
+
 # Cinco publicaciones más destacadas en temas relacionados con las Ciencias de la Sostenibilidad
 
-{{ a.top_5 }}
+{{ a.top_5|linebreaksbr }}
+
+
+
 
 # Principales proyectos relacionados con Ciencias de la Sostenibilidad durante los últimos cinco años
 
-{{ a.proyectos_sostenibilidad }}
+{{ a.proyectos_sostenibilidad|linebreaksbr }}
+
+
+
 
 # Proyectos vigentes en los que pueden participar alumnos del PCS.
 
-{{ a.proyectos_vigentes }}
+{{ a.proyectos_vigentes|linebreaksbr }}
+
+
+
 
 # Líneas de Investigación
 
 {% for l in a.lineas_de_investigacion.all %}
  - {{ l }}
 {% endfor %}
+
+
+
 
 # Campos de Conocimiento
 {% for c in a.campos_de_conocimiento.all %}
