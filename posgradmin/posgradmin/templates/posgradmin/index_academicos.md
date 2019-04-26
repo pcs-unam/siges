@@ -1,5 +1,5 @@
 ---
-title: Tutores acreditados
+title: Tutores
 layout: page
 permalink: /tutores/
 pleca: /assets/plecas/p{{ pleca|stringformat:"02d" }}.jpg
