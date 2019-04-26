@@ -5,7 +5,8 @@ from django.template.loader import render_to_string
 from os import path
 from django.db.models import Q
 from datetime import datetime
-
+import random
+from sh import mkdir
 
 class Command(BaseCommand):
     help = 'Exporta académicos a formato markdown para la página'
@@ -34,17 +35,23 @@ def export(outdir):
         | Q(ultima_reacreditacion__year__gte=last_year)
     ).order_by('user__last_name')
 
-    index_md = path.join(outdir, 'index_academicos.md')
+    mkdir('-p', outdir)
+    index_md = path.join(outdir, 'indice.md')
 
+    # escribir el indice
     with open(index_md, 'w') as f:
         f.write(render_to_string('posgradmin/index_academicos.md',
                                  {'doctorado': doctorado,
-                                  'maestria': maestria}).encode('utf-8'))
+                                  'maestria': maestria,
+                                  'pleca': random.randint(0, 19)
+                                  }).encode('utf-8'))
 
+    # escribir los perfiles
+    mkdir('-p', path.join(outdir, 'perfiles'))
     academicos = [a for a in doctorado] + [a for a in maestria]
     for a in academicos:
         a_md = path.join(outdir,
-                         'tutores',
+                         'perfiles',
                          '%s.md' % a.user.username)
 
         palabras_clave = a.palabras_clave.split("\n")
@@ -52,4 +59,7 @@ def export(outdir):
         with open(a_md, 'w') as f:
             f.write(render_to_string(
                 'posgradmin/academico.md',
-                {'a': a, 'palabras_clave': palabras_clave}).encode('utf8'))
+                {'a': a,
+                 'palabras_clave': palabras_clave,
+                 'pleca': random.randint(0, 19)
+                 }).encode('utf8'))

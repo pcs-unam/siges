@@ -1,7 +1,9 @@
 ---
 title: Tutores acreditados
 layout: page
-permalink: /tutores/index
+permalink: /tutores/
+pleca: /assets/plecas/p{{ pleca|stringformat:"02d" }}.jpg
+menu: true
 ---
 
 ## Maestría

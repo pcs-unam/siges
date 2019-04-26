@@ -10,3 +10,4 @@ django-extensions
 pandas
 matplotlib
 wordcloud
+sh

@@ -1,7 +1,8 @@
 ---
 title: {{ a }}
 layout: page
-permalink: tutores/{{ a.user.username }}/
+pleca: /assets/plecas/p{{ pleca|stringformat:"02d" }}.jpg
+permalink: /tutores/{{ a.user.username }}/
 ---
 
 Acreditación: **{{ a.show_acreditacion }}**
