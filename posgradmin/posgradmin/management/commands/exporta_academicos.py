@@ -9,7 +9,7 @@ import random
 from sh import mkdir
 
 class Command(BaseCommand):
-    help = 'Exporta académicos a formato markdown para la página'
+    help = u'Exporta académicos a formato markdown para la página'
 
     def add_arguments(self, parser):
         parser.add_argument('outdir',

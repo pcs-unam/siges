@@ -121,6 +121,9 @@ class Perfil(models.Model):
                 return True
         return False
 
+    def adscripcion(self):
+        return self.adscripcion_set.filter(asociacion_PCS=False)        
+    
     def adscripcion_ok(self):
         """
         si tiene adscripciones virtuales, debe tener una real tambien
