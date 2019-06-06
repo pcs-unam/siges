@@ -1,4 +1,3 @@
-{% load md2 %}
 ---
 title: Tutores
 layout: page
@@ -7,38 +6,24 @@ pleca: /assets/plecas/p{{ pleca|stringformat:"02d" }}.jpg
 menu: true
 ---
 
-## Maestría
+## Tutores por Campo de Conocimiento
 
-<table>
-<thead>
-<tr><th>Tutor</th><th>Adscripción</th><th>Campos de Conocimiento</th><th>Palabras clave</th><th>Dirección de alumnos</th><th>Asesoría de alumnos</th></tr>
-</thead>
-<tbody>
-{% for a in maestria %}<tr>
-<td>[{{ a|title }}]({{ a.user.username }}/)</td>
-<td><ul>{% for ad in a.user.perfil.adscripcion %}<li>{{ ad }}</li>{% endfor %}</ul></td>
-<td><ul>{% for c in a.campos_de_conocimiento.all %}<li>{{ c }}</li>{% endfor %}</ul></td>
-<td>{{ a.palabras_clave|markdown }}</td>
-<td>{% if a.disponible_tutor %}&#10004;{% endif %}</td>
-<td>{% if a.disponible_miembro %}&#10004;{% endif %}</td></tr>{% endfor %}
-</tbody>
-</table>
+ - [Contextos Urbanos](indice_contextos-urbanos.md)
+ - [Manejo de sistemas acuáticos](indice_manejo-de-sistemas-acuaticos.md)
+ - [Política, gobernanza e instituciones](indice_politica-gobernanza-e-instituciones.md)
+ - [Restauración ambiental](indice_restauracion-ambiental.md)
+ - [Sistemas energéticos](indice_sistemas-energeticos.md)
+ - [Vulnerabilidad y respuesta al cambio global](indice_vulnerabilidad-y-respuesta-al-cambio-global.md)
+
+## Tutores por Línea de Investigación
+
+ - [Cambio global, vulnerabilidad y resiliencia](indice_cambio-global-vulnerabilidad-y-resiliencia.md)
+ - [Sistemas socioambientales, complejidad y adaptación](indice_sistemas-socioambientales-complejidad-y-adaptacion.md)
+ - [Gobernanza, planeación colaborativa y aprendizaje social](indice_gobernanza-planeacion-colaborativa-y-aprendizaje-social.md)
+ - [Límites, trayectorias y transición a la sostenibilidad](indice_limites-trayectorias-y-transicion-a-la-sostenibilidad.md)
+ - [Monitoreo y evaluación de sistemas socioambientales](indice_monitoreo-y-evaluacion-de-sistemas-socioambientales.md)
+ - [Urbanismo e infraestructura sostenible](indice_urbanismo-e-infraestructura-sostenible.md)
+ - [Diseño de sistemas sociotecnológicos](indice_diseno-de-sistemas-sociotecnologicos.md)
 
 
-## Doctorado
-
-<table>
-<thead>
-<tr><th>Tutor</th><th>Adscripción</th><th>Líneas de Investigación</th><th>Palabras clave</th><th>Dirección de alumnos</th><th>Asesoría de alumnos</th></tr>
-</thead>
-<tbody>
-{% for a in doctorado %}<tr>
-<td>[{{ a|title }}]({{ a.user.username }}/)</td>
-<td><ul>{% for ad in a.user.perfil.adscripcion %}<li>{{ ad }}</li>{% endfor %}</ul></td>
-<td><ul>{% for c in a.lineas_de_investigacion.all %}<li>{{ c }}</li>{% endfor %}</ul></td>
-<td>{{ a.palabras_clave|markdown }}</td>
-<td>{% if a.disponible_tutor %}&#10004;{% endif %}</td>
-<td>{% if a.disponible_miembro %}&#10004;{% endif %}</td></tr>{% endfor %}
-</tbody>
-</table>
 
