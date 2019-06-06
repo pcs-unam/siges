@@ -52,7 +52,7 @@ def export(outdir):
     for linea in LineaInvestigacion.objects.all():
 
         academicos = linea.academico_set.filter(
-            Q(acreditacion='M'),
+            Q(acreditacion='D'),
             Q(disponible_tutor=True) | Q(disponible_miembro=True),
             Q(fecha_acreditacion__year__gte=last_year)
             | Q(ultima_reacreditacion__year__gte=last_year)
