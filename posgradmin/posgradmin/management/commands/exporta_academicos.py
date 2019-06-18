@@ -72,7 +72,7 @@ def export(outdir):
     for campo in CampoConocimiento.objects.all():
 
         academicos = campo.academico_set.filter(
-            Q(acreditacion='M'),
+            Q(acreditacion='M') | Q(acreditacion='D'),
             Q(disponible_tutor=True) | Q(disponible_miembro=True),
             Q(fecha_acreditacion__year__gte=last_year)
             | Q(ultima_reacreditacion__year__gte=last_year)
@@ -83,7 +83,7 @@ def export(outdir):
             f.write(render_to_string('posgradmin/index_academicos_campo.md',
                                      {'academicos': academicos,
                                       'campo': campo,
-                                      'link': slugify(campo.nombre),                                      
+                                      'link': slugify(campo.nombre),
                                       'pleca': random.randint(0, 19)
                                      }).encode('utf-8'))
 
@@ -106,7 +106,7 @@ def export(outdir):
     #                 palabras[pc] = set([a, ])
     # from pprint import pprint
     # pprint(palabras)
-            
+
     # escribir los perfiles
     mkdir('-p', path.join(outdir, 'perfiles'))
     academicos = [a for a in doctorado] + [a for a in maestria]
