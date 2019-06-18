@@ -6,6 +6,10 @@ pleca: /assets/plecas/p{{ pleca|stringformat:"02d" }}.jpg
 menu: true
 ---
 
+
+<iframe src="https://duckduckgo.com/search.html?width=300&site=sostenibilidad.posgrado.unam.mx&prefill=buscar en este sitio" style="overflow:hidden;margin:0;padding:0;width:358px;height:40px;" frameborder="0"></iframe>
+
+
 ## Tutores por Campo de Conocimiento
 
  - [Contextos Urbanos](indice_contextos-urbanos.md)
