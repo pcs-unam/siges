@@ -8,19 +8,18 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     AcademicoRegistroView, InicioView, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
     AdscripcionEliminar, AdscripcionAgregar, AsociacionAgregar, \
-    EstudianteSortableView, AcademicoSortableView, CatedraSortableView, \
+    EstudianteSortableView, AcademicoSortableView, \
     UserDetail, PerfilPublico, PerfilPublicoIndice, PerfilComite, \
     PerfilEstudianteDetail
 
-from posgradmin.views_academico import MisCatedrasView, \
+from posgradmin.views_academico import \
     MisComitesView, MisEstudiantesView
 
 from posgradmin.views_estudiante import ComiteTutoralElegirView, \
     JuradoCandidaturaElegirView, \
     JuradoGradoElegirView, CambiarProyectoView
 
-from posgradmin.views_asistente import SesionesListView, SesionDetail, \
-    CatedraRegistrar, EstudianteCargar
+from posgradmin.views_asistente import SesionesListView, SesionDetail, EstudianteCargar
 
 from posgradmin.views_solicitud import SolicitudCambiarEstado, \
     SolicitudNuevaView, SolicitudDetail, SolicitudDictaminar, \
@@ -107,9 +106,9 @@ urlpatterns = [
         AcademicoSortableView.as_view(),
         name="lista_academicos"),
 
-    url(r'^inicio/catedras/$',
-        CatedraSortableView.as_view(),
-        name="lista_catedras"),
+    # url(r'^inicio/catedras/$',
+    #     CatedraSortableView.as_view(),
+    #     name="lista_catedras"),
 
     url(r'^inicio/solicitudes/$',
         SolicitudSortableView.as_view(),
@@ -163,17 +162,17 @@ urlpatterns = [
         InicioView.as_view(),
         name="inicio"),
 
-    url(r'^inicio/catedras/mis$',
-        MisCatedrasView.as_view(),
-        name="mis_catedras"),
+    # url(r'^inicio/catedras/mis$',
+    #     MisCatedrasView.as_view(),
+    #     name="mis_catedras"),
 
     url(r'^inicio/comites/mis$',
         MisComitesView.as_view(),
         name="mis_comites"),
 
-    url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/registrar-catedra$',
-        CatedraRegistrar.as_view(),
-        name="registrar_catedra"),
+    # url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/registrar-catedra$',
+    #     CatedraRegistrar.as_view(),
+    #     name="registrar_catedra"),
 
     url(r'^inicio/sesiones/(?P<pk>[0-9]+)/$',
         SesionDetail.as_view(),

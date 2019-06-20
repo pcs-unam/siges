@@ -6,19 +6,19 @@ import posgradmin.models as models
 import authorization as auth
 from django.conf import settings
 
-class MisCatedrasView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    login_url = settings.APP_PREFIX + 'accounts/login/'
+# class MisCatedrasView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+#     login_url = settings.APP_PREFIX + 'accounts/login/'
 
-    def test_func(self):
-        return auth.is_academico(self.request.user)
+#     def test_func(self):
+#         return auth.is_academico(self.request.user)
 
-    model = models.Catedra
+#     model = models.Catedra
 
-    def get_queryset(self):
-        new_context = models.Catedra.objects.filter(
-            profesor=self.request.user.academico
-        )
-        return new_context
+#     def get_queryset(self):
+#         new_context = models.Catedra.objects.filter(
+#             profesor=self.request.user.academico
+#         )
+#         return new_context
 
 
 class MisComitesView(LoginRequiredMixin, UserPassesTestMixin, ListView):

@@ -8,7 +8,7 @@ from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
     Solicitud, Proyecto, Dictamen, \
-    Comite, Curso, Catedra, Sesion, Adscripcion, \
+    Comite, Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente
 
 admin.site.site_header = \
@@ -182,19 +182,18 @@ class ComiteAdmin(admin.ModelAdmin):
 admin.site.register(Comite, ComiteAdmin)
 
 
+class AsignaturaAdmin(admin.ModelAdmin):
+    list_display = ['asignatura', 'clave', 'creditos', 'tipo', ]
+
+
+admin.site.register(Asignatura, AsignaturaAdmin)
+
+
 class CursoAdmin(admin.ModelAdmin):
-    list_display = ['clave', 'asignatura',
-                    'tipo', 'creditos', 'horas_semestre']
+    list_display = ['asignatura', 'profesores', 'year', 'semestre', 'sede', 'grupo', 'activo']
 
 
 admin.site.register(Curso, CursoAdmin)
-
-
-class CatedraAdmin(admin.ModelAdmin):
-    list_display = ['curso', 'profesor', 'semestre', 'year']
-
-
-admin.site.register(Catedra, CatedraAdmin)
 
 
 class GradoAcademicoAdmin(admin.ModelAdmin):

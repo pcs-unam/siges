@@ -1425,22 +1425,28 @@ def curso_path(instance, filename):
             slugify(root) + ext))
 
 
-class Curso(models.Model):
-    asignatura = models.CharField(max_length=100)
-    clave = models.CharField(max_length=100, blank=True, null=True)
-
+class Asignatura(models.Model):
+    asignatura = models.CharField(max_length=200)
+    
+    clave = models.CharField(max_length=20, blank=True, null=True)    
+    
     creditos = models.PositiveSmallIntegerField()
-    horas_semestre = models.PositiveSmallIntegerField("Horas por semestre")
+
+    campos_de_conocimiento = models.ManyToManyField(
+        CampoConocimiento,
+        blank=True)
+    
     tipo = models.CharField(max_length=40,
-                            choices=(("Obligatoria", "Obligatoria"),
-                                     (u"Obligatorias de elección",
-                                      u"Obligatorias de elección"),
-                                     ("Optativa", "Optativa"),
-                                     ("Optativa, intersemestral",
-                                      "Optativa, intersemestral")))
+                            choices=((u"Obligatoria",
+                                      "Obligatoria"),
+                                     (u"Obligatorias por campo",
+                                      u"Obligatorias por campo"),
+                                     (u"Optativa",
+                                      u"Optativa")))
 
     programa = models.FileField("Documento con descripción extensa.",
-                                upload_to=curso_path)
+                                upload_to=curso_path,
+                                blank=True, null=True)
 
     def programa_url(self):
         return "%s/cursos/%s/%s" % (MEDIA_URL,
@@ -1448,28 +1454,41 @@ class Curso(models.Model):
                                     os.path.basename(self.programa.path))
 
     def __unicode__(self):
-        return u'%s: %s' % (self.clave,
-                            self.asignatura)
+        return u'%s (%s)' % (self.asignatura,
+                                self.tipo)
 
 
-class Catedra(models.Model):
-    curso = models.ForeignKey(Curso)
+class Curso(models.Model):
+    asignatura = models.ForeignKey(Asignatura)
+    grupo = models.CharField(max_length=20, blank=True, null=True)    
+    year = models.PositiveSmallIntegerField("Año")
     semestre = models.PositiveSmallIntegerField(
         choices=((1, 1), (2, 2)))
-    year = models.PositiveSmallIntegerField("Año")
-    profesor = models.ForeignKey(Academico, blank=True, null=True)
-    sede = models.CharField(max_length=80, blank=True)
+    entidad = models.CharField(max_length=20,
+                               blank=True, null=True,
+                               choices=(('3', '3'),
+                                        ('600', '600'),
+                                        ('700', '700')))
+    sede = models.CharField(max_length=80,
+                            blank=True, null=True,
+                            choices=(('CDMX', 'CDMX'),
+                                     ('Morelia', 'Morelia'),
+                                     (u'León', u'León')))
+    
+    profesores = models.TextField("Profesores", blank=True, null=True)
+    contacto = models.TextField("Contacto", blank=True, null=True)
+    aula = models.CharField(max_length=80, blank=True, null=True)    
+    horario = models.CharField(max_length=80, blank=True, null=True)
 
-    solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE)
-
+    activo = models.BooleanField(default=False)
+    
     class Meta:
-        verbose_name_plural = "Cátedras"
+        verbose_name_plural = "Cursos"
 
     def __unicode__(self):
-        return u'%s, %s %s, por %s' % (self.curso,
-                                       self.semestre,
+        return u'%s, %s-%s' % (self.asignatura,
                                        self.year,
-                                       self.profesor)
+                                       self.semestre)
 
 
 class Acta(models.Model):

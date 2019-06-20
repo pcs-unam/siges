@@ -40,55 +40,55 @@ class SesionDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = models.Sesion
 
 
-class CatedraRegistrar(LoginRequiredMixin, UserPassesTestMixin, View):
+# class CatedraRegistrar(LoginRequiredMixin, UserPassesTestMixin, View):
 
-    login_url = settings.APP_PREFIX + 'accounts/login/'
+#     login_url = settings.APP_PREFIX + 'accounts/login/'
 
-    def test_func(self):
-        return True
+#     def test_func(self):
+#         return True
 
-    form_class = forms.CatedraModelForm
+#     form_class = forms.CatedraModelForm
 
-    def get_breadcrumbs(self, pk):
-        return [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
-                (settings.APP_PREFIX + 'inicio/solicitudes/', 'Solicitudes'),
-                (settings.APP_PREFIX + 'inicio/solicitudes/%s/' % pk,
-                 '#%s' % pk),
-                (settings.APP_PREFIX
-                 + 'inicio/solicitudes/%s/registrar-catedra'
-                 % pk, 'Registrar Cátedra')]
+#     def get_breadcrumbs(self, pk):
+#         return [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+#                 (settings.APP_PREFIX + 'inicio/solicitudes/', 'Solicitudes'),
+#                 (settings.APP_PREFIX + 'inicio/solicitudes/%s/' % pk,
+#                  '#%s' % pk),
+#                 (settings.APP_PREFIX
+#                  + 'inicio/solicitudes/%s/registrar-catedra'
+#                  % pk, 'Registrar Cátedra')]
 
-    template_name = 'posgradmin/try.html'
+#     template_name = 'posgradmin/try.html'
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        return render(request,
-                      self.template_name,
-                      {'title': 'Registrar Cátedra',
-                       'form': form,
-                       'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
+#     def get(self, request, *args, **kwargs):
+#         form = self.form_class()
+#         return render(request,
+#                       self.template_name,
+#                       {'title': 'Registrar Cátedra',
+#                        'form': form,
+#                        'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
 
-    def post(self, request, *args, **kwargs):
-        sid = int(kwargs['pk'])
-        s = models.Solicitud.objects.get(id=sid)
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            curso = models.Curso.objects.get(
-                id=int(request.POST['curso']))
-            c = models.Catedra(curso=curso,
-                               year=request.POST['year'],
-                               semestre=request.POST['semestre'],
-                               solicitud=s)
-            c.save()
+#     def post(self, request, *args, **kwargs):
+#         sid = int(kwargs['pk'])
+#         s = models.Solicitud.objects.get(id=sid)
+#         form = self.form_class(request.POST, request.FILES)
+#         if form.is_valid():
+#             curso = models.Curso.objects.get(
+#                 id=int(request.POST['curso']))
+#             c = models.Catedra(curso=curso,
+#                                year=request.POST['year'],
+#                                semestre=request.POST['semestre'],
+#                                solicitud=s)
+#             c.save()
 
-            return HttpResponseRedirect(reverse('solicitud_detail',
-                                                args=(s.id,)))
-        else:
-            return render(request,
-                          self.template_name,
-                          {'title': 'Registrar Curso',
-                           'form': form,
-                           'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
+#             return HttpResponseRedirect(reverse('solicitud_detail',
+#                                                 args=(s.id,)))
+#         else:
+#             return render(request,
+#                           self.template_name,
+#                           {'title': 'Registrar Curso',
+#                            'form': form,
+#                            'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
 
 
 class EstudianteCargar(LoginRequiredMixin, UserPassesTestMixin, View):

@@ -747,28 +747,28 @@ class AcademicoSortableView(LoginRequiredMixin,
     model = models.Academico
 
 
-class CatedraSortableView(LoginRequiredMixin,
-                          UserPassesTestMixin,
-                          SortableListView):
-    login_url = settings.APP_PREFIX + 'accounts/login/'
+# class CatedraSortableView(LoginRequiredMixin,
+#                           UserPassesTestMixin,
+#                           SortableListView):
+#     login_url = settings.APP_PREFIX + 'accounts/login/'
 
-    def test_func(self):
-        return True
+#     def test_func(self):
+#         return True
 
-    def get_queryset(self):
-        sorted = super(CatedraSortableView, self).get_queryset()
-        return sorted
+#     def get_queryset(self):
+#         sorted = super(CatedraSortableView, self).get_queryset()
+#         return sorted
 
-    allowed_sort_fields = {'profesor': {'default_direction': '',
-                                        'verbose_name': 'profesor'},
-                           'curso': {'default_direction': '-',
-                                     'verbose_name': 'curso'},
-                           'semestre': {'default_direction': '-',
-                                        'verbose_name': 'semestre'},
-                           'year': {'default_direction': '-',
-                                    'verbose_name': 'año'}}
-    default_sort_field = 'curso'
+#     allowed_sort_fields = {'profesor': {'default_direction': '',
+#                                         'verbose_name': 'profesor'},
+#                            'curso': {'default_direction': '-',
+#                                      'verbose_name': 'curso'},
+#                            'semestre': {'default_direction': '-',
+#                                         'verbose_name': 'semestre'},
+#                            'year': {'default_direction': '-',
+#                                     'verbose_name': 'año'}}
+#     default_sort_field = 'curso'
 
-    paginate_by = 15
+#     paginate_by = 15
 
-    model = models.Catedra
+#     model = models.Catedra
