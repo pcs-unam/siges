@@ -1449,9 +1449,12 @@ class Asignatura(models.Model):
                                 blank=True, null=True)
 
     def programa_url(self):
-        return "%s/cursos/%s/%s" % (MEDIA_URL,
-                                    self.id,
-                                    os.path.basename(self.programa.path))
+        if self.programa:
+            return "%s/cursos/%s/%s" % (MEDIA_URL,
+                                        self.id,
+                                        os.path.basename(self.programa.path))
+        else:
+            return None
 
     def __unicode__(self):
         return u'%s (%s)' % (self.asignatura,
