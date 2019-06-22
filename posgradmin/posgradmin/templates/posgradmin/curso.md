@@ -17,4 +17,4 @@ permalink: /cursos/{{ curso_slug }}/
 | Horario | {{ curso.horario|default:"" }} |
 | Profesores | {{ curso.profesores|linebreaksbr|default:"" }} |
 | Contacto | {{ curso.contacto|linebreaksbr|default:"" }} |
-{% if curso.asignatura.programa_url %}| Descargables |  [Programa]({{ curso.asignatura.programa_url }}) |{% endif %}
+{% if curso.asignatura.programa_url %}| Descargables |  [Programa]({{ curso.asignatura.programa.url }}) |{% endif %}
