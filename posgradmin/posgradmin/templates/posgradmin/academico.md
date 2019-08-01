@@ -83,12 +83,14 @@ Acreditación: **{{ a.show_acreditacion }}**
 
 
 
+{% if a.acreditacion=='D' %}
 # Líneas de Investigación
 
 {% for l in a.lineas_de_investigacion.all %}
  - {{ l }}
 {% endfor %}
 
+{% endif %}
 
 
 
