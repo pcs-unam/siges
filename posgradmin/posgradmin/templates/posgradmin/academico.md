@@ -76,7 +76,7 @@ Acreditación: **{{ a.show_acreditacion }}**
 
 
 
-# Proyectos vigentes en los que pueden participar alumnos del PCS.
+# Proyectos vigentes en los que pueden participar alumnos del PCS
 
 {{ a.proyectos_vigentes|linebreaksbr }}
 
