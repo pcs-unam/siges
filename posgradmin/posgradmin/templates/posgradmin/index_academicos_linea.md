@@ -5,8 +5,6 @@ permalink: /tutores/{{ link }}/
 pleca: /assets/plecas/p{{ pleca|stringformat:"02d" }}.jpg
 ---
 
-## Tutores de Doctorado y Maestría
-
 
 | Tutor | Adscripción |Disponible como tutor principal (dirección de alumnos) | Disponible como miembro de comité tutor (asesoría de alumnos) |
 |-------|-------------|-------------------------------------------|---------------------------------------------------------------|
