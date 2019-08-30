@@ -7,24 +7,27 @@ import tempfile
 
 
 def exporta_resumen_academicos(modeladmin, request, queryset):
-    rows = "titulo|nombre|grado|acreditacion|tesis_licenciatura|tesis_licenciatura_5|tesis_maestria|tesis_maestria_5|tesis_doctorado|tesis_doctorado_5|comite_doctorado_otros|comite_maestria_otros|participacion_comite_maestria|participacion_tutor_maestria|participacion_comite_doctorado|participacion_tutor_doctorado|articulos_internacionales_5|articulos_nacionales_5|articulos_internacionales|articulos_nacionales|capitulos|capitulos_5|libros|libros_5|palabras_clave|lineas|campos|asociada|participante|faltantes\n".replace("|", ",")
+    rows = "titulo|nombre|grado|acreditacion|tesis_licenciatura|tesis_licenciatura_5|tesis_maestria|tesis_maestria_5|tesis_doctorado|tesis_doctorado_5|comite_doctorado_otros|comite_maestria_otros|participacion_comite_maestria|participacion_tutor_maestria|participacion_comite_doctorado|participacion_tutor_doctorado|articulos_internacionales_5|articulos_nacionales_5|articulos_internacionales|articulos_nacionales|capitulos|capitulos_5|libros|libros_5|palabras_clave|lineas|campos|adscripcion|asociacion|faltantes\n".replace("|", ",")
     for a in queryset:
         if a.perfil_personal_completo:
             titulo = a.user.perfil.titulo
-            adscripcion = a.user.perfil.adscripcion()
-            if len(adscripcion) == 0:
-                participante = ""
-                asociada = ""
-            else:
-                participante = adscripcion[0]
-                if participante.institucion.entidad_PCS:
-                    asociada = participante
-                else:
-                    participante = a.user.perfil.adscripcion_set.filter(asociacion_PCS=True).first()
+                
+            if a.user.perfil.adscripcion_set.filter(asociacion_PCS=True).count > 0:
+                asociacion = a.user.perfil.adscripcion_set.filter(asociacion_PCS=True).first()
+                adscripcion = a.user.perfil.adscripcion_set.filter(asociacion_PCS=False).first()
+                
+            elif a.user.perfil.adscripcion_set.filter(institucion__entidad_PCS=True,
+                                                    asociacion_PCS=False).count > 0:
+                adscripcion = a.user.perfil.adscripcion_set.filter(institucion__entidad_PCS=True,
+                                                                   asociacion_PCS=False).first()
+                asociacion = ""
+
+                
+                
         else:
             titulo = ""
-            participante = ""
-            asociada = ""
+            adscripcion = ""
+            asociacion = ""
 
         grado = a.user.gradoacademico_set.last()
         if grado is not None:
@@ -60,8 +63,8 @@ def exporta_resumen_academicos(modeladmin, request, queryset):
             a.palabras_clave.replace(u'\r\n', u';'),
             ";".join([str(l).decode('utf-8') for l in a.lineas_de_investigacion.all()]),
             ";".join([str(c).decode('utf-8') for c in a.campos_de_conocimiento.all()]),
-            asociada,
-            participante,
+            adscripcion,
+            asociacion,
             unicode(a.carencias()).replace(u"\n", u";"),
         ]
         strrow = u",".join([unicode(cell).replace(',', ';') for cell in row]) + u"\n"
@@ -71,7 +74,7 @@ def exporta_resumen_academicos(modeladmin, request, queryset):
         
     response = HttpResponse(
         rows,
-        content_type="application/csv")
+        content_type="application/csv; charset=utf-8")
     
     response['Content-Disposition'] \
         = 'attachment; filename="academicos_resumen.csv"'
