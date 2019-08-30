@@ -71,7 +71,7 @@ def exporta_resumen_academicos(modeladmin, request, queryset):
         
     response = HttpResponse(
         rows,
-        content_type="application/xml")
+        content_type="application/csv")
     
     response['Content-Disposition'] \
         = 'attachment; filename="academicos_resumen.csv"'
