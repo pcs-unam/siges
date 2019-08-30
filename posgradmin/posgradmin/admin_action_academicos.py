@@ -7,7 +7,7 @@ import tempfile
 
 
 def exporta_resumen_academicos(modeladmin, request, queryset):
-    rows = "titulo|nombre|grado|acreditacion|tesis_licenciatura|tesis_licenciatura_5|tesis_maestria|tesis_maestria_5|tesis_doctorado|tesis_doctorado_5|comite_doctorado_otros|comite_maestria_otros|participacion_comite_maestria|participacion_tutor_maestria|participacion_comite_doctorado|participacion_tutor_doctorado|articulos_internacionales_5|articulos_nacionales_5|articulos_internacionales|articulos_nacionales|capitulos|capitulos_5|libros|libros_5|palabras_clave|lineas|campos|asociada|participante|faltantes\n".replace("|", "\t")
+    rows = "titulo|nombre|grado|acreditacion|tesis_licenciatura|tesis_licenciatura_5|tesis_maestria|tesis_maestria_5|tesis_doctorado|tesis_doctorado_5|comite_doctorado_otros|comite_maestria_otros|participacion_comite_maestria|participacion_tutor_maestria|participacion_comite_doctorado|participacion_tutor_doctorado|articulos_internacionales_5|articulos_nacionales_5|articulos_internacionales|articulos_nacionales|capitulos|capitulos_5|libros|libros_5|palabras_clave|lineas|campos|asociada|participante|faltantes\n".replace("|", ",")
     for a in queryset:
         if a.perfil_personal_completo:
             titulo = a.user.perfil.titulo
@@ -64,7 +64,7 @@ def exporta_resumen_academicos(modeladmin, request, queryset):
             participante,
             unicode(a.carencias()).replace(u"\n", u";"),
         ]
-        strrow = u"\t".join([unicode(cell).replace('\t', ' ') for cell in row]) + u"\n"
+        strrow = u",".join([unicode(cell).replace(',', ';') for cell in row]) + u"\n"
         strrow = strrow.replace('None', '')
         rows += strrow
 
