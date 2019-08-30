@@ -11,6 +11,8 @@ from .models import Perfil, Academico, Estudiante, \
     Comite, Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente
 
+from .admin_action_academicos import exporta_resumen_academicos
+
 admin.site.site_header = \
                 "Administración de Posgrado en Ciencias de la Sostenibilidad"
 admin.site.site_title = "Posgrado en Ciencias de la Sostenibilidad"
@@ -144,7 +146,9 @@ class AcademicoAdmin(admin.ModelAdmin):
     perfil_comite.short_description = u'Perfil para el Comité Académico'
 
 
-    actions = ['actualiza_semaforos']
+    actions = ['actualiza_semaforos',
+               exporta_resumen_academicos
+    ]
 
     def actualiza_semaforos(self, request, queryset):
         for a in queryset:
