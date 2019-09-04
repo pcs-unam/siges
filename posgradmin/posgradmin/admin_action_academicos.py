@@ -1,31 +1,44 @@
+# coding: utf-8
+
 from .models import Perfil, Academico, \
     GradoAcademico, Institucion, CampoConocimiento, \
     Adscripcion, LineaInvestigacion
 from django.http import HttpResponse
 import csv
-import tempfile
+
+from openpyxl import Workbook
+
 
 
 def exporta_resumen_academicos(modeladmin, request, queryset):
-    rows = "titulo|nombre|grado|acreditacion|tesis_licenciatura|tesis_licenciatura_5|tesis_maestria|tesis_maestria_5|tesis_doctorado|tesis_doctorado_5|comite_doctorado_otros|comite_maestria_otros|participacion_comite_maestria|participacion_tutor_maestria|participacion_comite_doctorado|participacion_tutor_doctorado|articulos_internacionales_5|articulos_nacionales_5|articulos_internacionales|articulos_nacionales|capitulos|capitulos_5|libros|libros_5|palabras_clave|lineas|campos|adscripcion|asociacion|faltantes\n".replace("|", ",")
+
+    response = HttpResponse(content_type='application/vnd.ms-excel', charset='utf-8')
+    response['Content-Disposition'] = 'attachment; filename="academicos_resumen.xlsx"'
+
+    wb = Workbook()
+    ws = wb.active
+
+    row = u"nombre|grado|acreditacion|adscripcion|asociacion|tesis_licenciatura|tesis_licenciatura_5|tesis_maestria|tesis_maestria_5|tesis_doctorado|tesis_doctorado_5|comite_doctorado_otros|comite_maestria_otros|participacion_comite_maestria|participacion_tutor_maestria|participacion_comite_doctorado|participacion_tutor_doctorado|articulos_internacionales_5|articulos_nacionales_5|articulos_internacionales|articulos_nacionales|capitulos|capitulos_5|libros|libros_5|palabras_clave|lineas|campos|faltantes".split("|")
+
+    ws.append(row)
+
+
     for a in queryset:
         if a.perfil_personal_completo:
-            titulo = a.user.perfil.titulo
-                
+
             if a.user.perfil.adscripcion_set.filter(asociacion_PCS=True).count > 0:
                 asociacion = a.user.perfil.adscripcion_set.filter(asociacion_PCS=True).first()
                 adscripcion = a.user.perfil.adscripcion_set.filter(asociacion_PCS=False).first()
-                
+
             elif a.user.perfil.adscripcion_set.filter(institucion__entidad_PCS=True,
                                                     asociacion_PCS=False).count > 0:
                 adscripcion = a.user.perfil.adscripcion_set.filter(institucion__entidad_PCS=True,
                                                                    asociacion_PCS=False).first()
                 asociacion = ""
 
-                
-                
+
+
         else:
-            titulo = ""
             adscripcion = ""
             asociacion = ""
 
@@ -34,12 +47,13 @@ def exporta_resumen_academicos(modeladmin, request, queryset):
             grado = grado.grado_obtenido
         else:
             grado = ""
-            
+
         row = [
-            titulo,
             a.user.get_full_name(),
             grado,
             a.acreditacion,
+            str(adscripcion),
+            str(asociacion).replace('None', ''),
             a.tesis_licenciatura,
             a.tesis_licenciatura_5,
             a.tesis_maestria,
@@ -61,24 +75,12 @@ def exporta_resumen_academicos(modeladmin, request, queryset):
             a.libros,
             a.libros_5,
             a.palabras_clave.replace(u'\r\n', u';'),
-            ";".join([str(l).decode('utf-8') for l in a.lineas_de_investigacion.all()]),
-            ";".join([str(c).decode('utf-8') for c in a.campos_de_conocimiento.all()]),
-            adscripcion,
-            asociacion,
-            unicode(a.carencias()).replace(u"\n", u";"),
+            u";".join([l.nombre for l in a.lineas_de_investigacion.all()]),
+            u";".join([c.nombre for c in a.campos_de_conocimiento.all()]),
+            a.carencias().replace(u"\n", u";"),
         ]
-        strrow = u",".join([unicode(cell).replace(',', ';') for cell in row]) + u"\n"
-        strrow = strrow.replace('None', '')
-        rows += strrow
+        ws.append(row)
 
-        
-    response = HttpResponse(
-        rows,
-        content_type="application/csv; charset=utf-8")
-    
-    response['Content-Disposition'] \
-        = 'attachment; filename="academicos_resumen.csv"'
-    
+    wb.save(response)
+
     return response
-
-
