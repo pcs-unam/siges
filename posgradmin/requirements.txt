@@ -11,3 +11,4 @@ pandas
 matplotlib
 wordcloud
 sh
+openpyxl==2.5.11
