@@ -1025,19 +1025,19 @@ class Academico(models.Model):
             return "rojo"
 
         if (
-                (self.tesis_licenciatura >= 1
-                 or self.tesis_maestria >= 1
-                 or self.tesis_doctorado >= 1)
-                and self.publicaciones_5() >= 3
+                ((self.tesis_licenciatura
+                 + self.tesis_maestria
+                 + self.tesis_doctorado) >= 1
+                and self.publicaciones_5() >= 3)
+                or
+                ((self.comite_doctorado_otros
+                  + self.comite_maestria_otros) >= 1
+                 and self.publicaciones_5 >= 3)
                 or self.publicaciones_5() >= 5):
             return "verde"
 
-        if (
-                (self.tesis_licenciatura < 1
-                 or self.tesis_maestria < 1
-                 or self.tesis_doctorado < 1) and self.otras_actividades
-                or
-                (self.publicaciones_5() < 3 and self.otras_publicaciones)):
+        if (self.otras_actividades
+            or self.otras_publicaciones):
             return "amarillo"
 
         return "rojo"
