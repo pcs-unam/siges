@@ -488,7 +488,12 @@ class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
             a.top_5 = request.POST['top_5']
             if request.POST['otras_publicaciones'] != "":
                 a.otras_publicaciones = request.POST['otras_publicaciones']
-                
+
+            a.semaforo_maestria = a.verifica_semaforo_maestria()
+            a.semaforo_doctorado = a.verifica_semaforo_doctorado()
+
+            print a.semaforo_maestria, a.semaforo_doctorado
+            
             a.save()
 
             return HttpResponseRedirect(reverse('perfil_academico'))
@@ -575,6 +580,10 @@ class AcademicoActividadView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.disponible_tutor = True
             else:
                 a.disponible_tutor = False
+
+
+            a.semaforo_maestria = a.verifica_semaforo_maestria()
+            a.semaforo_doctorado = a.verifica_semaforo_doctorado()
                 
             a.save()
 
