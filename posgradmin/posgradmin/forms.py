@@ -121,10 +121,10 @@ class EstudianteModelForm(forms.ModelForm):
         exclude = ['user', ]
 
 
-class AcademicoModelForm(forms.ModelForm):
 
+class AcademicoPerfilModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(AcademicoModelForm, self).__init__(*args, **kwargs)
+        super(AcademicoPerfilModelForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
             Div(Div(HTML("<h1 class='panel-title'>"
@@ -136,7 +136,6 @@ class AcademicoModelForm(forms.ModelForm):
                         HTML('<hr />'),
                         'anexo_solicitud',
                         HTML(u"""
-
 Instrucciones: anexar carta solicitud en papel membreteado y firmada.
 <ul>
 <li>
@@ -153,86 +152,19 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
                         'estimulo_UNAM',
                         'nivel_SNI',
                         'CVU',),
-                    Class="panel-body"),
-                Div(HTML(u"<h1 class='panel-title'>Resumen Curricular</h1>"
-                         + "En los campos siguientes, si no tiene cantidades "
-                         + u"que reportar, por favor llene con ceros."),
-                    Class="panel-heading"),
-                Div(Column(
-                    HTML(u"<h4>Formación de estudiantes</h4>"),
-                    'tesis_doctorado',
-                    'tesis_doctorado_5',
-                    'tesis_maestria',
-                    'tesis_maestria_5',
-                    'tesis_licenciatura',
-                    'tesis_licenciatura_5',
-                    'tutor_principal_otros_programas',
-
-                    'comite_doctorado_otros',
-                    'comite_maestria_otros',
-
-                    'otras_actividades',
-                    HTML(u"""<h4>En el Posgrado en
-                        Ciencias de la Sostenibilidad</h4>
-                    Esta sección sólo deberá completarse en caso de reacreditación.
-                    """),
-                    'participacion_tutor_doctorado',
-                    'participacion_comite_doctorado',
-                    'participacion_tutor_maestria',
-                    'participacion_comite_maestria',
-                    HTML("<h3>Publicaciones</h3>"),
-                    'articulos_internacionales',
-                    'articulos_internacionales_5',
-                    'articulos_nacionales',
-                    'articulos_nacionales_5',
-                    'libros',
-                    'libros_5',
-                    'capitulos',
-                    'capitulos_5',
-                    'top_5',
-                    'otras_publicaciones'
-                ),
-                    Class="panel-body"),
-                Div(HTML("<h1 class='panel-title'>"
-                         + u"Actividad profesional y de Investigación</h1>"),
-                    Class="panel-heading"),
-                Div(Column(
-                    "lineas",
-                    'palabras_clave',
-                    'motivacion',
-                    'proyectos_sostenibilidad',
-                    'proyectos_vigentes',
-                    HTML(u"""
-                         Marque los campos de conocimiento y líneas de
-                         investigación relacionados con los temas de
-                         su interés y/o experiencia para facilitar la
-                         búsqueda por parte de los aspirantes y
-                         alumnos (para elegir más de uno use
-                         Ctrl+Click en Windows, Cmd+Click en
-                         Mac). Para más información acerca de los
-                         Campos de Conocimiento y las Líneas de
-                         Investigación consulte <a
-                         href='https://github.com/sostenibilidad-unam/posgrado/files/2233071/Campos.y.lineas.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>este
-                         documento</a>."""),
-                    "lineas_de_investigacion",
-                    'campos_de_conocimiento',
-                    ),
-                    Class="panel-body"),
-                Div(HTML(u"""
-                     <h1 class='panel-title'>
-                     Disponibilidad
+                    Class="panel-body")),
+            Div(HTML(u"""<h1 class='panel-title'>
+                      Disponibilidad
                      </h1>
                          ¿Estaría usted interesado en formar parte de
                          la plantilla pública de tutores del Posgrado
                          para que los aspirantes y alumnos puedan
                          contactarlo y solicitar su asesoría? En ese
                          caso favor de especificar su disponibilidad:
-                         """),
-                    Class="panel-heading"),
-                Div(Column('disponible_tutor', "disponible_miembro"),
-                    Class="panel-body"),
-                Submit('guardar', 'guardar'),
-                Class="panel panel-default"),
+                         """)),
+             Div(Column('disponible_tutor', "disponible_miembro"),                
+                 Class="panel panel-default"),
+             Submit('guardar', 'guardar'),             
         )
 
     class Meta:
@@ -243,7 +175,100 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
                    'semaforo_maestria',
                    'semaforo_doctorado',
                    'solicitud', 'comite_academico', 'observaciones']
+    
 
+
+
+class AcademicoResumenCVModelForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AcademicoResumenCVModelForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Div(HTML(
+                     u"En los campos siguientes, si no tiene cantidades "
+                     + u"que reportar, por favor llene con ceros."),
+                Class="panel-heading"),
+            Div(HTML(u"<h4>Formación de estudiantes</h4>"),
+                'tesis_doctorado',
+                'tesis_doctorado_5',
+                'tesis_maestria',
+                'tesis_maestria_5',
+                'tesis_licenciatura',
+                'tesis_licenciatura_5',
+                'tutor_principal_otros_programas',
+                'comite_doctorado_otros',
+                'comite_maestria_otros',
+                'otras_actividades',
+                HTML("<h3>Publicaciones</h3>"),
+                'articulos_internacionales',
+                'articulos_internacionales_5',
+                'articulos_nacionales',
+                'articulos_nacionales_5',
+                'libros',
+                'libros_5',
+                'capitulos',
+                'capitulos_5',
+                'top_5',
+                'otras_publicaciones',
+                Class="panel-body"),
+            Submit('guardar', 'guardar'),
+        )
+
+    class Meta:
+        model = Academico
+        exclude = ['user', 'tutor', 'nivel_SNI', 'estimulo_UNAM', 
+                   'ultima_reacreditacion', 'fecha_acreditacion',
+                   'acreditacion',
+                   'semaforo_maestria',
+                   'semaforo_doctorado',
+                   'solicitud', 'comite_academico', 'observaciones']
+
+
+
+
+class AcademicoActividadModelForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AcademicoActividadModelForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Div(HTML("<h1 class='panel-title'>"
+                     + u"Actividad profesional y de Investigación</h1>"),
+                Class="panel-heading"),
+            Div(Column(
+                "lineas",
+                'palabras_clave',
+                'motivacion',
+                'proyectos_sostenibilidad',
+                'proyectos_vigentes',
+                HTML(u"""
+                Marque los campos de conocimiento y líneas de
+                investigación relacionados con los temas de
+                su interés y/o experiencia para facilitar la
+                búsqueda por parte de los aspirantes y
+                alumnos (para elegir más de uno use
+                Ctrl+Click en Windows, Cmd+Click en
+                Mac). Para más información acerca de los
+                Campos de Conocimiento y las Líneas de
+                Investigación consulte <a
+                href='https://github.com/sostenibilidad-unam/posgrado/files/2233071/Campos.y.lineas.Posgrado.Ciencias.de.la.Sostenibilidad.pdf'>este
+                documento</a>."""),
+                "lineas_de_investigacion",
+                'campos_de_conocimiento',
+            ),
+                Class="panel-body"),
+            Submit('guardar', 'guardar'))
+
+    class Meta:
+        model = Academico
+        exclude = ['user', 'tutor', 'nivel_SNI', 'estimulo_UNAM', 
+                   'ultima_reacreditacion', 'fecha_acreditacion',
+                   'acreditacion',
+                   'semaforo_maestria',
+                   'semaforo_doctorado',
+                   'solicitud', 'comite_academico', 'observaciones']
+        
 
 class SolicitudCommentForm(forms.Form):
 

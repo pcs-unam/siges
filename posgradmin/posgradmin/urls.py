@@ -5,7 +5,8 @@ from django.contrib import admin
 
 from posgradmin.views import PerfilEditar, PerfilDetail, \
     PerfilAcademicoDetail, \
-    AcademicoRegistroView, InicioView, \
+    AcademicoActividadView, AcademicoResumenCVView, AcademicoPerfilView, \
+    InicioView, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
     AdscripcionEliminar, AdscripcionAgregar, AsociacionAgregar, \
     EstudianteSortableView, AcademicoSortableView, \
@@ -42,10 +43,18 @@ urlpatterns = [
         InstitucionAgregarView.as_view(),
         name="agregar_institucion"),
 
-    url(r'^inicio/academico/registro',
-        AcademicoRegistroView.as_view(),
-        name="registrar_academico"),
-
+    url(r'^inicio/academico/perfil',
+        AcademicoPerfilView.as_view(),
+        name="academico_perfil"),
+    
+    url(r'^inicio/academico/resumen',
+        AcademicoResumenCVView.as_view(),
+        name="academico_resumen"),
+    
+    url(r'^inicio/academico/actividad',
+        AcademicoActividadView.as_view(),
+        name="academico_actividad"),
+    
     url(r'^inicio/perfil/editar$',
         PerfilEditar.as_view(),
         name="editar_perfil"),

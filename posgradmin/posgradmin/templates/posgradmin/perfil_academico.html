@@ -21,7 +21,6 @@
     {% if not user.academico.resumen_completo %}
     <div class="alert alert-danger" role="alert">
       <strong>Perfil académico incompleto.</strong>
-      <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>
       <hr />
       Recuerde llenar con ceros cuando no tenga cantidades qué reportar. Atención a los siguientes reactivos:
       {{ object.academico.carencias|markdown }}
@@ -40,12 +39,16 @@
 
     <h1>{{ object.get_full_name }}</h1>
     <hr />
-    {% if user == object %}
-    <a class="btn btn-default" role="button" href="{% url 'registrar_academico' %}">editar perfil académico</a>
 
-    {% elif user.is_staff %}
+    {% if user.is_staff %}
     <a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar perfil académico</a><br /><br />
     {% endif %}
+
+    {% if user == object %}
+    <a class="btn btn-default" role="button" href="{% url 'academico_perfil' %}">editar esta sección</a>
+    <hr />
+    {% endif %}
+    
     <br />  <br />
 
     <ul class="list-group">
@@ -120,7 +123,11 @@
     </h3>
   </div>
   <div class="panel-body">
-
+    {% if user == object %}
+    <a class="btn btn-default" role="button" href="{% url 'academico_resumen' %}">editar esta sección</a>
+    <hr />
+    {% endif %}
+    
     <img src="/media/perfil-academico/{{ object.academico.id }}/pc_resumen_academico.png">
     <img src="/media/perfil-academico/{{ object.academico.id }}/wordcloud.png" width="640px">
 
@@ -254,6 +261,10 @@
     </h3>
   </div>
   <div class="panel-body">
+    {% if user == object %}
+    <a class="btn btn-default" role="button" href="{% url 'academico_actividad' %}">editar esta sección</a>
+    <hr />
+    {% endif %}
     <!-- subtablas -->
 
     <div class="panel panel-default">

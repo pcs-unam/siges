@@ -311,20 +311,20 @@ class PerfilEstudianteDetail(LoginRequiredMixin, UserPassesTestMixin,
         return self.request.user
     
 
-class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
+class AcademicoPerfilView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         return True
 
-    form_class = forms.AcademicoModelForm
+    form_class = forms.AcademicoPerfilModelForm
 
     breadcrumbs = ((settings.APP_PREFIX + 'inicio/',
                     'Inicio'),
                    (settings.APP_PREFIX + 'inicio/perfil-academico/',
                     'Perfil Académico'),
-                   (settings.APP_PREFIX + 'inicio/academico/registro',
-                    'Editar'))
+                   (settings.APP_PREFIX + 'inicio/academico/perfil',
+                    'Editar perfil general'))
 
     template_name = 'posgradmin/try.html'
 
@@ -349,7 +349,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
         if form.is_valid():
 
             a = request.user.academico
-            a.lineas = request.POST[u'lineas']
+
             a.CVU = request.POST[u'CVU']
             a.nivel_SNI = request.POST[u'nivel_SNI']
             a.estimulo_UNAM = request.POST[u'estimulo_UNAM']
@@ -368,6 +368,80 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.ultimo_grado = request.FILES['ultimo_grado']
             elif 'ultimo_grado-clear' in request.POST and a.ultimo_grado.name != '':
                 a.ultimo_grado.delete()
+
+
+            # if request.POST['participacion_tutor_doctorado'] != "":
+            #     a.participacion_tutor_doctorado = request.POST['participacion_tutor_doctorado']
+            # if request.POST['participacion_comite_doctorado'] != "":
+            #     a.participacion_comite_doctorado = request.POST['participacion_comite_doctorado']
+
+            # if request.POST['participacion_tutor_maestria'] != "":
+            #     a.participacion_tutor_maestria = request.POST['participacion_tutor_maestria']
+            # if request.POST['participacion_comite_maestria'] != "":
+            #     a.participacion_comite_maestria = request.POST['participacion_comite_maestria']
+
+            if 'disponible_miembro' in request.POST:
+                a.disponible_miembro = True
+            else:
+                a.disponible_miembro = False
+
+            if 'disponible_tutor' in request.POST:
+                a.disponible_tutor = True
+            else:
+                a.disponible_tutor = False
+
+
+
+            
+            a.save()
+
+            return HttpResponseRedirect(reverse('perfil_academico'))
+        else:
+            return render(request,
+                          self.template_name,
+                          {'form': form,
+                           'title': 'Editar Perfil Académico',
+                           'breadcrumbs': self.breadcrumbs})
+
+
+class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
+    def test_func(self):
+        return True
+
+    form_class = forms.AcademicoResumenCVModelForm
+
+    breadcrumbs = ((settings.APP_PREFIX + 'inicio/',
+                    'Inicio'),
+                   (settings.APP_PREFIX + 'inicio/perfil-academico/',
+                    'Perfil Académico'),
+                   (settings.APP_PREFIX + 'inicio/academico/resumen',
+                    'Editar resumen curricular'))
+
+    template_name = 'posgradmin/try.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        if hasattr(request.user, 'academico'):
+            a = request.user.academico
+            data = model_to_dict(a)
+            form = self.form_class(data=data, instance=a)
+        else:
+            form = self.form_class()
+
+        return render(request,
+                      self.template_name,
+                      {'form': form,
+                       'title': 'Editar resumen curricular',
+                       'breadcrumbs': self.breadcrumbs})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            a = request.user.academico
 
             if request.POST['tesis_doctorado'] != "":
                 a.tesis_doctorado = request.POST['tesis_doctorado']
@@ -395,17 +469,6 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             if request.POST['otras_actividades'] != "":
                 a.otras_actividades = request.POST['otras_actividades']
 
-            if request.POST['participacion_tutor_doctorado'] != "":
-                a.participacion_tutor_doctorado = request.POST['participacion_tutor_doctorado']
-            if request.POST['participacion_comite_doctorado'] != "":
-                a.participacion_comite_doctorado = request.POST['participacion_comite_doctorado']
-
-            if request.POST['participacion_tutor_maestria'] != "":
-                a.participacion_tutor_maestria = request.POST['participacion_tutor_maestria']
-            if request.POST['participacion_comite_maestria'] != "":
-                a.participacion_comite_maestria = request.POST['participacion_comite_maestria']
-
-
             if request.POST['articulos_internacionales_5'] != "":
                 a.articulos_internacionales_5 = request.POST['articulos_internacionales_5']
             if request.POST['articulos_nacionales_5'] != "":
@@ -425,7 +488,57 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
             a.top_5 = request.POST['top_5']
             if request.POST['otras_publicaciones'] != "":
                 a.otras_publicaciones = request.POST['otras_publicaciones']
+                
+            a.save()
 
+            return HttpResponseRedirect(reverse('perfil_academico'))
+        else:
+            return render(request,
+                          self.template_name,
+                          {'form': form,
+                           'title': 'Editar Resumen Curricular',
+                           'breadcrumbs': self.breadcrumbs})
+
+        
+
+class AcademicoActividadView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
+    def test_func(self):
+        return True
+
+    form_class = forms.AcademicoActividadModelForm
+
+    breadcrumbs = ((settings.APP_PREFIX + 'inicio/',
+                    'Inicio'),
+                   (settings.APP_PREFIX + 'inicio/perfil-academico/',
+                    'Perfil Académico'),
+                   (settings.APP_PREFIX + 'inicio/academico/actividad',
+                    'Editar actividad profesional y de investigación'))
+
+    template_name = 'posgradmin/try.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        if hasattr(request.user, 'academico'):
+            a = request.user.academico
+            data = model_to_dict(a)
+            form = self.form_class(data=data, instance=a)
+        else:
+            form = self.form_class()
+
+        return render(request,
+                      self.template_name,
+                      {'form': form,
+                       'title': 'Editar Actividad Profesional',
+                       'breadcrumbs': self.breadcrumbs})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+
+            a = request.user.academico
 
             a.lineas = request.POST['lineas']
 
@@ -462,10 +575,6 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.disponible_tutor = True
             else:
                 a.disponible_tutor = False
-
-
-            # a.semaforo_maestria = a.verifica_semaforo_maestria()
-            # a.semaforo_doctorado = a.verifica_semaforo_doctorado()
                 
             a.save()
 
@@ -476,7 +585,7 @@ class AcademicoRegistroView(LoginRequiredMixin, UserPassesTestMixin, View):
                           {'form': form,
                            'title': 'Editar Perfil Académico',
                            'breadcrumbs': self.breadcrumbs})
-
+        
 
 class GradoAcademicoAgregar(LoginRequiredMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
