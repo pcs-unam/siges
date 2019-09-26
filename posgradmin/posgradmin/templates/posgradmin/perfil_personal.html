@@ -14,7 +14,7 @@
     {% if user.academico and not user.academico.resumen_completo %}
     <div class="alert alert-danger" role="alert">
       <strong>Perfil académico incompleto.</strong>
-      <a href="{% url 'registrar_academico' %}">Editar perfil académico.</a>
+      <a href="{% url 'academico_resumen' %}">Editar perfil académico.</a>
     </div>
     {% endif %}
     {% if not user.perfil.adscripcion_ok %}
