@@ -19,6 +19,11 @@
     {% endif %}
 
 
+    <h1>{{ object.get_full_name }}</h1>
+    <hr />
+    {% if user.is_staff %}
+    <a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar perfil académico</a><br /><br />
+    {% endif %}
 
 
 
@@ -108,9 +113,12 @@
 	<hr>
 	Otros programas en los que participa: {{ object.academico.tutor_principal_otros_programas|default:"" }} <br />
 	<hr />
-	Otras actividades académicas como estancias de investigación,
-	seminarios de titulación, etc.: {{ object.academico.otras_actividades|default_if_none:""|markdown }}
 
+	{% if object.academico.otras_actividades %}
+	<h3>Otras actividades académicas</h3>
+	Como estancias de investigación, seminarios de titulación, etc.: {{ object.academico.otras_actividades|default_if_none:""|markdown }}
+	{% endif %}
+	
       </div>
     </div>
 
@@ -151,7 +159,11 @@
 	    </tr>
 	  </tbody>
 	</table>
-	Otras publicaciones: {{ object.academico.otras_publicaciones|default_if_none:""|markdown }}
+	{% if object.academico.otras_publicaciones %}
+	<h3>Otras publicaciones</h3>
+	{{ object.academico.otras_publicaciones|default_if_none:""|markdown }}
+	{% endif %}
+	
       </div>
     </div>
 
