@@ -1123,11 +1123,6 @@ class Academico(models.Model):
         return name
 
     def publicaciones_5(self):
-        print (self.articulos_internacionales_5,
-               self.articulos_nacionales_5,
-               self.libros_5,
-               self.capitulos_5)
-        
         try:
             return sum((self.articulos_internacionales_5,
                         self.articulos_nacionales_5,
@@ -1139,24 +1134,26 @@ class Academico(models.Model):
     def verifica_semaforo_maestria(self):
         # if not self.resumen_completo:
         #     return "rojo"
+        try:
+            if (
+                    ((self.tesis_licenciatura
+                      + self.tesis_maestria
+                      + self.tesis_doctorado) >= 1
+                     and self.publicaciones_5() >= 3)
+                    or
+                    ((self.comite_doctorado_otros
+                      + self.comite_maestria_otros) >= 1
+                     and self.publicaciones_5 >= 3)
+                    or self.publicaciones_5() >= 5):
+                return "verde"
 
-        if (
-                ((self.tesis_licenciatura
-                 + self.tesis_maestria
-                 + self.tesis_doctorado) >= 1
-                and self.publicaciones_5() >= 3)
-                or
-                ((self.comite_doctorado_otros
-                  + self.comite_maestria_otros) >= 1
-                 and self.publicaciones_5 >= 3)
-                or self.publicaciones_5() >= 5):
-            return "verde"
+            if (self.otras_actividades
+                or self.otras_publicaciones):
+                return "amarillo"
 
-        if (self.otras_actividades
-            or self.otras_publicaciones):
-            return "amarillo"
-
-        return "rojo"
+            return "rojo"
+        except TypeError:
+            return "rojo"
 
     def verifica_semaforo_doctorado(self):
         # if not self.resumen_completo:
