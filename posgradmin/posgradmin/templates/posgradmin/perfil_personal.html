@@ -11,12 +11,6 @@
 
 {% block content %}
 
-    {% if user.academico and not user.academico.resumen_completo %}
-    <div class="alert alert-danger" role="alert">
-      <strong>Perfil académico incompleto.</strong>
-      <a href="{% url 'academico_resumen' %}">Editar perfil académico.</a>
-    </div>
-    {% endif %}
     {% if not user.perfil.adscripcion_ok %}
     <div class="alert alert-danger" role="alert">
       <strong>No ha agregado su adscripción</strong>

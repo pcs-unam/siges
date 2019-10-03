@@ -9,12 +9,14 @@
   </div>
   <div class="panel-body">
 
+    {% if object.academico.carencias_actividad %}
     <div class="alert alert-danger" role="alert">
       <strong>Sección incompleta.</strong>
       <hr />
       Atención a los siguientes reactivos: <br />
       {{ object.academico.carencias_actividad|markdown }}
     </div>
+    {% endif %}
 
     
     {% if user == object %}
