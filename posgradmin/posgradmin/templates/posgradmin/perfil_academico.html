@@ -18,101 +18,10 @@
     </div>
     {% endif %}
 
-    {% if not user.academico.resumen_completo %}
-    <div class="alert alert-danger" role="alert">
-      <strong>Perfil académico incompleto.</strong>
-      <hr />
-      Recuerde llenar con ceros cuando no tenga cantidades qué reportar. Atención a los siguientes reactivos:
-      {{ object.academico.carencias|markdown }}
-    </div>
-    {% endif %}
 
 
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>
-      Perfil Académico
-    </h3>
-  </div>
-  <div class="panel-body">
 
-    <h1>{{ object.get_full_name }}</h1>
-    <hr />
 
-    {% if user.is_staff %}
-    <a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar perfil académico</a><br /><br />
-    {% endif %}
-
-    {% if user == object %}
-    <a class="btn btn-default" role="button" href="{% url 'academico_perfil' %}">editar esta sección</a>
-    <hr />
-    {% endif %}
-    
-    <br />  <br />
-
-    <ul class="list-group">
-
-      {% if object.academico.anexo_CV %}
-      <li class="list-group-item">
-	<a href="{{ object.academico.anexo_CV.url }}">CV extenso</a></li>
-      {% endif %}
-
-      {% if object.academico.anexo_solicitud %}
-      <li class="list-group-item">
-	<a href="{{ object.academico.anexo_solicitud.url }}">Solicitud de Acreditación como Tutor</a></li>
-      {% endif %}
-
-      {% if object.academico.ultimo_grado %}
-      <li class="list-group-item">
-	<a href="{{ object.academico.ultimo_grado.url }}">Último grado académico</a>
-      </li>
-      {% endif %}
-
-      <li class="list-group-item">
-	Estímulo UNAM: {{ object.academico.estimulo_UNAM|default:'' }}
-      </li>
-      <li class="list-group-item">
-	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
-
-      <li class="list-group-item">
-	Acreditación: {{ object.academico.show_acreditacion }}
-
-	{% if object.academico.fecha_acreditacion %}
-	<p>Acreditado el {{ object.academico.fecha_acreditacion }}</p>
-	{% endif %}
-
-	{% if object.academico.ultima_reacreditacion %}
-	<p>Última reacreditación el {{ object.academico.ultima_reacreditacion }}</p>
-	{% endif %}
-      </li>
-      <li class="list-group-item">
-	CVU: {{ object.academico.CVU|default:'!' }}</li>
-
-      {% if object.academico.DGEE %}
-      <li class="list-group-item">
-	DGEE: {{ object.academico.DGEE|default:'' }}</li>
-      {% endif %}
-
-      {% if object.academico.numero_trabajador_unam %}
-      <li class="list-group-item">
-	Número de trabajador UNAM: {{ object.academico.numero_trabajador_unam|default:'' }}</li>
-      {% endif %}
-
-      {% if object.academico.disponible_tutor %}
-      <li class="list-group-item">
-	Disponible como tutor principal (dirección de alumnos).
-      </li>
-      {% endif %}
-
-      {% if object.academico.disponible_miembro %}
-      <li class="list-group-item">
-	Disponible como miembro de comité tutor (asesoría de alumnos)</li>
-      {% endif %}
-
-    </ul>
-  </div>
-</div>
 
 <div class="panel panel-primary">
 
@@ -123,6 +32,17 @@
     </h3>
   </div>
   <div class="panel-body">
+
+
+    {% if object.academico.carencias_resumen %}
+    <div class="alert alert-danger" role="alert">
+      <strong>Resumen curricular incompleto.</strong>
+      <hr />
+      Recuerde llenar con ceros cuando no tenga cantidades qué reportar. Atención a los siguientes reactivos: <br />
+      {{ object.academico.carencias_resumen|markdown }}
+    </div>
+    {% endif %}
+    
     {% if user == object %}
     <a class="btn btn-default" role="button" href="{% url 'academico_resumen' %}">editar esta sección</a>
     <hr />
@@ -158,6 +78,7 @@
 	      <td align="right">{{ object.academico.tesis_maestria_5|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.tesis_doctorado_5|default_if_none:"" }}</td>
 	    </tr>
+	    {% if object.academico.acreditacion == 'M' or object.academico.acreditacion == 'D' or object.academico.acreditacion == 'E' %}
 	    <tr>
 	      <td>
 		Cantidad de participaciones como tutor principal en el <b>Posgrado en Ciencias de la Sostenibilidad</b></td>
@@ -172,7 +93,7 @@
 	      <td align="right">{{ object.academico.participacion_comite_maestria|default_if_none:"" }}</td>
 	      <td align="right">{{ object.academico.participacion_comite_doctorado|default_if_none:"" }}</td>
 	    </tr>
-
+	    {% endif %}
 	    <tr>
 	      <td>Cantidad total de participaciones como miembro de comité
 		tutor (no tutor principal) de estudiantes graduados</td>
@@ -253,114 +174,12 @@
 
 
 
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon glyphicon-lamp" aria-hidden="true"></span>
-      Actividad profesional y de Investigación
-    </h3>
-  </div>
-  <div class="panel-body">
-    {% if user == object %}
-    <a class="btn btn-default" role="button" href="{% url 'academico_actividad' %}">editar esta sección</a>
-    <hr />
-    {% endif %}
-    <!-- subtablas -->
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
-	  Temas de Interés
-	</h3>
-      </div>
-      <div class="panel-body">
-	{{ object.academico.lineas|markdown }}
-      </div>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
-	  Palabras clave
-	</h3>
-      </div>
-      <div class="panel-body">
-	{{ object.academico.palabras_clave|markdown }}
-      </div>
-    </div>
+{% if object.academico.semaforo_maestria != "rojo" %}
+{% include "posgradmin/perfil_academico_seccion_general.html" %}
+{% include "posgradmin/perfil_academico_seccion_actividad.html" %}
+{% endif %}
 
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-fire" aria-hidden="true"></span>
-	  Motivación para participar en el Programa
-	</h3>
-      </div>
-      <div class="panel-body">
-	{{ object.academico.motivacion|markdown }}
-      </div>
-    </div>
-
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
-	  Principales proyectos relacionados con Ciencias de la Sostenibilidad durante los últimos cinco años</h3>
-      </div>
-      <div class="panel-body">
-	{{ object.academico.proyectos_sostenibilidad|markdown }}
-      </div>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
-	  Proyectos vigentes en los que pueden participar alumnos del PCS.
-	</h3>
-      </div>
-      <div class="panel-body">
-	{{ object.academico.proyectos_vigentes|markdown }}
-      </div>
-    </div>
-
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
-	  Líneas de Investigación
-	</h3>
-      </div>
-      <div class="panel-body">
-	{% for l in object.academico.lineas_de_investigacion.all %}
-	<li>{{ l }}</li>
-	{% endfor %}
-      </div>
-    </div>
-
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
-	  Campos de Conocimiento
-	</h3>
-      </div>
-      <div class="panel-body">
-	{% for c in object.academico.campos_de_conocimiento.all %}
-	<li>{{ c }}</li>
-	{% endfor %}
-      </div>
-    </div>
-
-
-  </div>
-</div>
 
 
 <!-- academico -->

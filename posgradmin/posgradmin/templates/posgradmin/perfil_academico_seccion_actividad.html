@@ -1,0 +1,122 @@
+{% load md2 %}
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span class="glyphicon glyphicon glyphicon-lamp" aria-hidden="true"></span>
+      Actividad profesional y de Investigación
+    </h3>
+  </div>
+  <div class="panel-body">
+
+    <div class="alert alert-danger" role="alert">
+      <strong>Sección incompleta.</strong>
+      <hr />
+      Atención a los siguientes reactivos: <br />
+      {{ object.academico.carencias_actividad|markdown }}
+    </div>
+
+    
+    {% if user == object %}
+    {% if object.academico.semaforo_maestria != "rojo" %}
+    <a class="btn btn-default" role="button" href="{% url 'academico_actividad' %}">editar esta sección</a>
+    <hr />
+    {% endif %}
+    {% endif %}
+    <!-- subtablas -->
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Temas de Interés
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.lineas|markdown }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Palabras clave
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.palabras_clave|markdown }}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-fire" aria-hidden="true"></span>
+	  Motivación para participar en el Programa
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.motivacion|markdown }}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+	  Principales proyectos relacionados con Ciencias de la Sostenibilidad durante los últimos cinco años</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.proyectos_sostenibilidad|markdown }}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+	  Proyectos vigentes en los que pueden participar alumnos del PCS.
+	</h3>
+      </div>
+      <div class="panel-body">
+	{{ object.academico.proyectos_vigentes|markdown }}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Líneas de Investigación
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% for l in object.academico.lineas_de_investigacion.all %}
+	<li>{{ l }}</li>
+	{% endfor %}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
+	  Campos de Conocimiento
+	</h3>
+      </div>
+      <div class="panel-body">
+	{% for c in object.academico.campos_de_conocimiento.all %}
+	<li>{{ c }}</li>
+	{% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+  
+</div>

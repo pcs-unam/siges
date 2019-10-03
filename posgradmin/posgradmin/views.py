@@ -444,58 +444,59 @@ class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
             a = request.user.academico
 
             if request.POST['tesis_doctorado'] != "":
-                a.tesis_doctorado = request.POST['tesis_doctorado']
+                a.tesis_doctorado = int(request.POST['tesis_doctorado'])
             if request.POST['tesis_doctorado_5'] != "":
-                a.tesis_doctorado_5 = request.POST['tesis_doctorado_5']
+                a.tesis_doctorado_5 = int(request.POST['tesis_doctorado_5'])
 
             if request.POST['tesis_maestria'] != "":
-                a.tesis_maestria = request.POST['tesis_maestria']
+                a.tesis_maestria = int(request.POST['tesis_maestria'])
             if request.POST['tesis_maestria_5'] != "":
-                a.tesis_maestria_5 = request.POST['tesis_maestria_5']
+                a.tesis_maestria_5 = int(request.POST['tesis_maestria_5'])
 
             if request.POST['tesis_licenciatura'] != "":
-                a.tesis_licenciatura = request.POST['tesis_licenciatura']
+                a.tesis_licenciatura = int(request.POST['tesis_licenciatura'])
             if request.POST['tesis_licenciatura_5'] != "":
-                a.tesis_licenciatura_5 = request.POST['tesis_licenciatura_5']
+                a.tesis_licenciatura_5 = int(request.POST['tesis_licenciatura_5'])
 
             if request.POST['tutor_principal_otros_programas']:
-                a.tutor_principal_otros_programas = request.POST['tutor_principal_otros_programas']
+                a.tutor_principal_otros_programas = int(request.POST['tutor_principal_otros_programas'])
 
             if request.POST['comite_doctorado_otros'] != "":
-                a.comite_doctorado_otros = request.POST['comite_doctorado_otros']
+                a.comite_doctorado_otros = int(request.POST['comite_doctorado_otros'])
             if request.POST['comite_maestria_otros'] != "":
-                a.comite_maestria_otros = request.POST['comite_maestria_otros']
+                a.comite_maestria_otros = int(request.POST['comite_maestria_otros'])
 
-            if request.POST['otras_actividades'] != "":
-                a.otras_actividades = request.POST['otras_actividades']
+            a.otras_actividades = request.POST['otras_actividades']
 
             if request.POST['articulos_internacionales_5'] != "":
-                a.articulos_internacionales_5 = request.POST['articulos_internacionales_5']
+                a.articulos_internacionales_5 = int(request.POST['articulos_internacionales_5'])
             if request.POST['articulos_nacionales_5'] != "":
-                a.articulos_nacionales_5 = request.POST['articulos_nacionales_5']
+                a.articulos_nacionales_5 = int(request.POST['articulos_nacionales_5'])
             if request.POST['articulos_internacionales'] != "":
-                a.articulos_internacionales = request.POST['articulos_internacionales']
+                a.articulos_internacionales = int(request.POST['articulos_internacionales'])
             if request.POST['articulos_nacionales'] != "":
-                a.articulos_nacionales = request.POST['articulos_nacionales']
+                a.articulos_nacionales = int(request.POST['articulos_nacionales'])
             if request.POST['capitulos'] != "":
-                a.capitulos = request.POST['capitulos']
+                a.capitulos = int(request.POST['capitulos'])
             if request.POST['capitulos_5'] != "":
-                a.capitulos_5 = request.POST['capitulos_5']
+                a.capitulos_5 = int(request.POST['capitulos_5'])
             if request.POST['libros'] != "":
-                a.libros = request.POST['libros']
+                a.libros = int(request.POST['libros'])
             if request.POST['libros_5'] != "":
-                a.libros_5 = request.POST['libros_5']
+                a.libros_5 = int(request.POST['libros_5'])
             a.top_5 = request.POST['top_5']
-            if request.POST['otras_publicaciones'] != "":
-                a.otras_publicaciones = request.POST['otras_publicaciones']
+
+            a.otras_publicaciones = request.POST['otras_publicaciones']
 
             a.semaforo_maestria = a.verifica_semaforo_maestria()
             a.semaforo_doctorado = a.verifica_semaforo_doctorado()
+
 
             print a.semaforo_maestria, a.semaforo_doctorado
             
             a.save()
 
+            print a.publicaciones_5()
             return HttpResponseRedirect(reverse('perfil_academico'))
         else:
             return render(request,
