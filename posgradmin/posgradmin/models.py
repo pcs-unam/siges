@@ -810,105 +810,10 @@ class Academico(models.Model):
         return ok
 
     def verifica_resumen(self):
-        if self.carencias() == u"":
+        if self.carencias_resumen == u"":
             return True
         else:
             return False
-
-    def carencias(self):
-        carencias = u""
-
-        if self.CVU == "":
-            carencias += u" - " + unicode(self._meta.get_field('CVU').verbose_name) + u"\n"
-
-        if self.anexo_CV == "":
-            carencias += u" - " + unicode(self._meta.get_field('anexo_CV').verbose_name) + u"\n"
-
-        if self.anexo_solicitud == "":
-            carencias += u" - " + unicode(self._meta.get_field('anexo_solicitud').verbose_name) + u"\n"
-
-        if not self.ultimo_grado:
-            carencias += u" - " + unicode(self._meta.get_field('ultimo_grado').verbose_name) + u"\n"
-
-        if self.tesis_licenciatura is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_licenciatura').verbose_name) + u"\n"
-
-        if self.tesis_maestria is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_maestria').verbose_name) + u"\n"
-
-        if self.tesis_doctorado is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_doctorado').verbose_name) + u"\n"
-
-        if self.tesis_licenciatura_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_licenciatura_5').verbose_name) + u"\n"
-
-        if self.tesis_maestria_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_maestria_5').verbose_name) + u"\n"
-
-        if self.tesis_doctorado_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_doctorado_5').verbose_name) + u"\n"
-
-        if self.comite_doctorado_otros is None:
-            carencias += u" - " + unicode(self._meta.get_field('comite_doctorado_otros').verbose_name) + u"\n"
-
-        if self.comite_maestria_otros is None:
-            carencias += u" - " + unicode(self._meta.get_field('comite_maestria_otros').verbose_name) + u"\n"
-
-        if self.acreditacion in ('D', 'M', 'E') and self.participacion_comite_maestria is None:
-            carencias += u" - " + unicode(self._meta.get_field('participacion_comite_maestria').verbose_name) + u"\n"
-
-        if self.acreditacion in ('D', 'M', 'E') and self.participacion_tutor_maestria is None:
-            carencias += u" - " + unicode(self._meta.get_field('participacion_tutor_maestria').verbose_name) + u"\n"
-
-        if self.acreditacion in ('D', 'M', 'E') and self.participacion_comite_doctorado is None:
-            carencias += u" - " + unicode(self._meta.get_field('participacion_comite_doctorado').verbose_name) + u"\n"
-
-        if self.acreditacion in ('D', 'M', 'E') and self.participacion_tutor_doctorado is None:
-            carencias += u" - " + unicode(self._meta.get_field('participacion_tutor_doctorado').verbose_name) + u"\n"
-
-        if self.articulos_internacionales_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('articulos_internacionales_5').verbose_name) + u"\n"
-
-        if self.articulos_nacionales_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('articulos_nacionales_5').verbose_name) + u"\n"
-
-        if self.articulos_internacionales is None:
-            carencias += u" - " + unicode(self._meta.get_field('articulos_internacionales').verbose_name) + u"\n"
-
-        if self.articulos_nacionales is None:
-            carencias += u" - " + unicode(self._meta.get_field('articulos_nacionales').verbose_name) + u"\n"
-
-        if self.capitulos is None:
-            carencias += u" - " + unicode(self._meta.get_field('capitulos').verbose_name) + u"\n"
-
-        if self.capitulos_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('capitulos_5').verbose_name) + u"\n"
-
-        if self.libros is None:
-            carencias += u" - " + unicode(self._meta.get_field('libros').verbose_name) + u"\n"
-
-        if self.libros_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('libros_5').verbose_name) + u"\n"
-
-        if self.top_5 == "" or self.top_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('top_5').verbose_name) + u"\n"
-
-        if self.lineas == "" or self.lineas is None:
-            carencias += u" - " + unicode(self._meta.get_field('lineas').verbose_name) + u"\n"
-
-        if self.palabras_clave == "" or self.palabras_clave is None:
-            carencias += u" - " + unicode(self._meta.get_field('palabras_clave').verbose_name) + u"\n"
-
-        if self.motivacion == "" or self.motivacion is None:
-            carencias += u" - " + unicode(self._meta.get_field('motivacion').verbose_name) + u"\n"
-
-        # if self.campos_de_conocimiento.count() == 0:
-        #     carencias += u" - " + unicode(self._meta.get_field('campos_de_conocimiento').verbose_name) + u"\n"
-
-        # if self.lineas_de_investigacion.count() == 0:
-        #     carencias += u" - " + unicode(self._meta.get_field('lineas_de_investigacion').verbose_name) + u"\n"
-
-        return carencias
 
 
     def carencias_general(self):
