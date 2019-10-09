@@ -15,3 +15,6 @@ class AccountAdapter(DefaultAccountAdapter):
             a.save()
 
         return resolve_url(settings.APP_PREFIX + '/inicio/')
+
+    def is_open_for_signup(self, request):
+        return False
