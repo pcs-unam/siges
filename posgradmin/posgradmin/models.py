@@ -122,8 +122,8 @@ class Perfil(models.Model):
         return False
 
     def adscripcion(self):
-        return self.adscripcion_set.filter(asociacion_PCS=False)        
-    
+        return self.adscripcion_set.filter(asociacion_PCS=False)
+
     def adscripcion_ok(self):
         """
         si tiene adscripciones virtuales, debe tener una real tambien
@@ -809,8 +809,11 @@ class Academico(models.Model):
                     ok = True
         return ok
 
+
     def verifica_resumen(self):
-        if self.carencias_resumen == u"":
+        if (self.carencias_general() == u""
+            and self.carencias_resumen() == u""
+            and self.carencias_actividad() == u""):
             return True
         else:
             return False
@@ -833,7 +836,7 @@ class Academico(models.Model):
 
         return carencias
 
-    
+
 
     def carencias_resumen(self):
         carencias = u""
@@ -925,7 +928,7 @@ class Academico(models.Model):
 
         return carencias
 
-    
+
     def as_a(self):
         icon = """<span class='glyphicon glyphicon-{icon}'
                         aria-hidden=true></span>"""
@@ -1110,7 +1113,7 @@ class Academico(models.Model):
                          unicode(self.proyectos_sostenibilidad)))
         if not text.strip():
             return
-        
+
         wordcloud.generate(text)
 
         fig = plt.figure(figsize=(8, 6), dpi=150)
@@ -1447,15 +1450,15 @@ def curso_path(instance, filename):
 
 class Asignatura(models.Model):
     asignatura = models.CharField(max_length=200)
-    
-    clave = models.CharField(max_length=20, blank=True, null=True)    
-    
+
+    clave = models.CharField(max_length=20, blank=True, null=True)
+
     creditos = models.PositiveSmallIntegerField()
 
     campos_de_conocimiento = models.ManyToManyField(
         CampoConocimiento,
         blank=True)
-    
+
     tipo = models.CharField(max_length=40,
                             choices=((u"Obligatoria",
                                       "Obligatoria"),
@@ -1483,7 +1486,7 @@ class Asignatura(models.Model):
 
 class Curso(models.Model):
     asignatura = models.ForeignKey(Asignatura)
-    grupo = models.CharField(max_length=20, blank=True, null=True)    
+    grupo = models.CharField(max_length=20, blank=True, null=True)
     year = models.PositiveSmallIntegerField("Año")
     semestre = models.PositiveSmallIntegerField(
         choices=((1, 1), (2, 2)))
@@ -1497,14 +1500,14 @@ class Curso(models.Model):
                             choices=(('CDMX', 'CDMX'),
                                      ('Morelia', 'Morelia'),
                                      (u'León', u'León')))
-    
+
     profesores = models.TextField("Profesores", blank=True, null=True)
     contacto = models.TextField("Contacto", blank=True, null=True)
-    aula = models.CharField(max_length=80, blank=True, null=True)    
+    aula = models.CharField(max_length=80, blank=True, null=True)
     horario = models.CharField(max_length=80, blank=True, null=True)
 
     activo = models.BooleanField(default=False)
-    
+
     class Meta:
         verbose_name_plural = "Cursos"
 
