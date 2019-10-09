@@ -798,6 +798,16 @@ class Academico(models.Model):
         else:
             return False
 
+
+    def is_msc(self):
+        niveles = [deg.nivel
+                   for deg in self.user.gradoacademico_set.all()]
+        niveles = set(niveles)
+        if 'maestria' in niveles:
+            return True
+        else:
+            return False
+        
     
     def show_acreditacion(self):
         if self.acreditacion == 'no acreditado':
@@ -1065,7 +1075,10 @@ class Academico(models.Model):
                       + self.comite_maestria_otros) >= 1
                      and self.publicaciones_5 >= 3)
                     or self.publicaciones_5() >= 5):
-                return "verde"
+                if self.is_msc() or self.is_phd():
+                    return "verde"
+                else:
+                    return "amarillo"
 
             if (self.otras_actividades
                 or self.otras_publicaciones):
