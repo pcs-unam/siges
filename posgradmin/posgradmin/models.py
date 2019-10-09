@@ -798,8 +798,10 @@ class Academico(models.Model):
               or self.acreditacion == 'PD'
               or self.acreditacion == 'NPD'):
             return "Doctorado"
-        else:
+        elif self.acreditacion == "M":
             return "Maestría"
+        else:
+            return self.acreditacion
 
     def verifica_perfil_personal(self):
         ok = False

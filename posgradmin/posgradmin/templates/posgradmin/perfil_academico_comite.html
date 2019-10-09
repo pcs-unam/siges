@@ -57,10 +57,6 @@
 	Número de trabajador UNAM: {{ U.academico.numero_trabajador_unam|default:'' }}</li>
       {% endif %}
 
-
-      <li class="list-group-item">
-	Acreditación: {{ U.academico.show_acreditacion }}</li>
-
       {% if U.academico.disponible_tutor %}
       <li class="list-group-item">
 	Disponible como tutor principal (dirección de alumnos).
