@@ -1229,6 +1229,7 @@ class Academico(models.Model):
                                       for a in Academico.objects.all()])
 
 
+        
         df = pd.DataFrame({
             u'académico': [self.user.get_full_name(), 'avg'],
             u'SNI': [escala_sni.get(self.nivel_SNI, 0), avg_SNI, ],
@@ -1250,8 +1251,8 @@ class Academico(models.Model):
                 self.participacion_tutor_maestria, avg_participacion_tutor_maestria],
             u"participación comite doctorado": [
                 self.participacion_comite_doctorado, avg_participacion_comite_doctorado],
-            u"participación tutor doctorado ": [
-                self.participacion_tutor_doctorado, avg_participacion_tutor_doctorado],
+            u"participación tutor doctorado": [
+                int(self.participacion_tutor_doctorado), avg_participacion_tutor_doctorado],
             u"artículos internacionales últimos 5 años": [
                 self.articulos_internacionales_5, avg_articulos_internacionales_5],
             u"artículos nacionales últimos 5 años": [
@@ -1263,32 +1264,33 @@ class Academico(models.Model):
             u"libros": [self.libros, avg_libros],
             u"libros últimos 5 años": [self.libros_5, avg_libros_5],
             u'grados académicos': [self.user.gradoacademico_set.count(), avg_gradoacademico],
-            }, columns=[
-                u'académico',
-                u'SNI',
-                u'estímulo UNAM',
-                u'grados académicos',
-                u"licenciatura últimos 5 años",
-                u"licenciatura",
-                u"maestría 5",
-                u"maestría",
-                u"doctorado 5",
-                u"doctorado",
-                u"comité doctorado otros programas",
-                u"comité maestría otros programas",
-                u"participación comite maestría",
-                u"participación tutor maestría",
-                u"participación comite doctorado",
-                u"participación tutor doctorado",
-                u"artículos internacionales últimos 5 años *",
-                u"artículos internacionales",
-                u"artículos nacionales últimos 5 años *",
-                u"artículos nacionales",
-                u"capítulos últimos 5 años *",
-                u"capítulos",
-                u"libros últimos 5 años *",
-                u"libros",
-            ])
+            },
+            columns=[u'académico',
+                     u'SNI',
+                     u'estímulo UNAM',
+                     u"licenciatura",
+                     u"licenciatura últimos 5 años",
+                     u"maestría",
+                     u"maestría 5",
+                     u"doctorado",
+                     u"doctorado 5",
+                     u"comité doctorado otros programas",
+                     u"comité maestría otros programas",
+                     u"participación comite maestría",
+                     u"participación tutor maestría",
+                     u"participación comite doctorado",
+                     u"participación tutor doctorado",
+                     u"artículos internacionales últimos 5 años",
+                     u"artículos nacionales últimos 5 años",
+                     u"artículos internacionales",
+                     u"artículos nacionales",
+                     u"capítulos",
+                     u"capítulos últimos 5 años",
+                     u"libros",
+                     u"libros últimos 5 años",
+                     u'grados académicos']
+        )
+        
         fig, ax = plt.subplots()
         # rectangulo estudiantes
         max_grad = max([
