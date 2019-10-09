@@ -789,6 +789,16 @@ class Academico(models.Model):
             ('amarillo', 'amarillo'),
             ('rojo', 'rojo')))
 
+    def is_phd(self):
+        niveles = [deg.nivel
+                   for deg in self.user.gradoacademico_set.all()]
+        niveles = set(niveles)
+        if 'doctorado' in niveles:
+            return True
+        else:
+            return False
+
+    
     def show_acreditacion(self):
         if self.acreditacion == 'no acreditado':
             return 'no acreditado'
@@ -1076,7 +1086,10 @@ class Academico(models.Model):
               or self.tesis_doctorado >= 1)
              and
              self.publicaciones_5() >= 7)):
-            return "verde"
+            if self.is_phd():
+                return "verde"
+            else:
+                return "amarillo"
 
         if self.tesis_maestria >= 2 or self.tesis_doctorado >= 1:
             # alumnos bien
