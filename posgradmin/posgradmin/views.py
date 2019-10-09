@@ -459,7 +459,7 @@ class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
                 a.tesis_licenciatura_5 = int(request.POST['tesis_licenciatura_5'])
 
             if request.POST['tutor_principal_otros_programas']:
-                a.tutor_principal_otros_programas = int(request.POST['tutor_principal_otros_programas'])
+                a.tutor_principal_otros_programas = request.POST['tutor_principal_otros_programas']
 
             if request.POST['comite_doctorado_otros'] != "":
                 a.comite_doctorado_otros = int(request.POST['comite_doctorado_otros'])
