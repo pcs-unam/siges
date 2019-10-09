@@ -1115,6 +1115,9 @@ class Academico(models.Model):
     def wc_resumen_academico(self):
         """ word cloud """
 
+        if not self.verifica_resumen():
+            return None
+        
         wordcloud = WordCloud()
 
         wordcloud.background_color = 'white'
@@ -1160,6 +1163,9 @@ class Academico(models.Model):
     def pc_resumen_academico(self):
         """ parallel coordinates del resumen academico """
 
+        if not self.verifica_resumen():
+            return None
+        
         escala_sni = {'sin SNI': 0,
                       'I': 1,
                       'II': 2,
@@ -1252,7 +1258,8 @@ class Academico(models.Model):
             u"participación comite doctorado": [
                 self.participacion_comite_doctorado, avg_participacion_comite_doctorado],
             u"participación tutor doctorado": [
-                int(self.participacion_tutor_doctorado), avg_participacion_tutor_doctorado],
+                int(self.participacion_tutor_doctorado) if self.participacion_tutor_doctorado is not None else 0,
+                avg_participacion_tutor_doctorado],
             u"artículos internacionales últimos 5 años": [
                 self.articulos_internacionales_5, avg_articulos_internacionales_5],
             u"artículos nacionales últimos 5 años": [
