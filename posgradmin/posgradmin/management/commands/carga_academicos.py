@@ -14,7 +14,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--csv', type=argparse.FileType('r'),
                             required=True,
-                            help='archivo CSV con cursos')
+                            help='archivo CSV con académicos')
 
     def handle(self, *args, **options):
         load(options['csv'])
