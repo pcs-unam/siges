@@ -5,7 +5,7 @@
 
 {% block content %}
    {% crispy form %}
-
+<div id='form-errors'>{{ form_errors }}</div>
 <script>
 $(document).ready(function() {
     $('.dateinput').datepicker({ dateFormat: 'yy-mm-dd'});

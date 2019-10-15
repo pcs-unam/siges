@@ -307,7 +307,7 @@ class AnexoExpedienteInline(admin.StackedInline):
 
 class UserAdmin(AuthUserAdmin):
     inlines = [UserProfileInline, AnexoExpedienteInline]
-
+    ordering = ('-date_joined', 'username')
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

@@ -2,6 +2,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q
+from django.db import IntegrityError
 from django.views import View
 from django.views.generic import DetailView
 from sortable_listview import SortableListView
@@ -11,10 +12,13 @@ from django.conf import settings
 import datetime
 from django.forms.models import model_to_dict
 import posgradmin.forms as forms
-
+from openpyxl import load_workbook
 import posgradmin.models as models
 
-from pprint import pprint
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+
+from pprint import pprint, pformat
 
 
 class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -42,7 +46,55 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            pprint(request.FILES['lista'].readlines())
+            wb = load_workbook(request.FILES['lista'])
+            ws = wb.active
+            i = 1
+
+            rows = []
+            while True:
+                nombre = ws["A%s" % i].value
+                apellidos = ws["B%s" % i].value
+                email = ws["C%s" % i].value
+
+                i += 1
+                if (nombre is None
+                        and apellidos is None
+                        and email is None):
+                    break
+                elif (nombre == 'nombre'
+                          and apellidos == 'apellidos'
+                          and email == 'email'):
+                    continue
+                else:
+                    rows.append([nombre, apellidos, email])
+            
+            errores = []
+            for row in rows:
+                [nombre, apellidos, email] = row
+                try:
+                    u = models.User()
+                    u.first_name = nombre
+                    u.last_name = apellidos
+                    validate_email(email)                    
+                    u.email = email
+                    u.username = email.split('@')[0]
+                    u.save()
+
+                    a = models.Academico()
+                    a.acreditacion = 'candidato'
+                    a.user = u
+                    a.save()
+                except IntegrityError as E:
+                    errores.append([E.message, row])
+                except ValidationError as E:
+                    errores.append(["bad email, details: %s" % E, row])
+                    
+            return render(request,
+                          self.template_name,
+                          {'form': form,
+                            'title': 'Crear candidatos',
+                            'form_errors': pformat(errores)
+                          })            
             # u = request.user
             # u.first_name = request.POST['nombre']
             # u.last_name = request.POST['apellidos']
@@ -62,7 +114,7 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
             # return HttpResponseRedirect(reverse('perfil'))
         else:
             return render(request,
-                          self.template,
+                          self.template_name,
                           {'form': form,
                            'title': 'Crear candidatos',
                            })
