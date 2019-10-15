@@ -11,7 +11,7 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     AdscripcionEliminar, AdscripcionAgregar, AsociacionAgregar, \
     EstudianteSortableView, AcademicoSortableView, \
     UserDetail, PerfilPublico, PerfilPublicoIndice, PerfilComite, \
-    PerfilEstudianteDetail
+    PerfilEstudianteDetail, AcademicoInvitar
 
 from posgradmin.views_academico import \
     MisComitesView, MisEstudiantesView
@@ -32,6 +32,9 @@ from django.conf.urls.static import static
 from posgradmin.settings import MEDIA_ROOT, MEDIA_URL
 
 urlpatterns = [
+    url(r'^admin/posgradmin/academico/invitar/', AcademicoInvitar.as_view(),
+        name="academico_invitar"),
+
     url(r'^admin/', admin.site.urls),
 
     url('^accounts/', include('allauth.urls')),
@@ -46,15 +49,15 @@ urlpatterns = [
     url(r'^inicio/academico/perfil',
         AcademicoPerfilView.as_view(),
         name="academico_perfil"),
-    
+
     url(r'^inicio/academico/resumen',
         AcademicoResumenCVView.as_view(),
         name="academico_resumen"),
-    
+
     url(r'^inicio/academico/actividad',
         AcademicoActividadView.as_view(),
         name="academico_actividad"),
-    
+
     url(r'^inicio/perfil/editar$',
         PerfilEditar.as_view(),
         name="editar_perfil"),

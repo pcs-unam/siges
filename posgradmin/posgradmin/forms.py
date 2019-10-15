@@ -14,6 +14,18 @@ from django.conf import settings
 
 from pprint import pprint
 
+
+class AcademicoInvitarForm(forms.Form):
+    lista = forms.FileField(required=True)
+    helper = FormHelper()
+    helper.layout = Layout(
+        Field('lista'),
+        FormActions(
+            Submit('subir', 'Crear candidatos', css_class="btn-primary")
+        )
+    )
+
+
 class SolicitudForm(forms.Form):
 
     tipo = forms.ChoiceField(
@@ -162,9 +174,9 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
                          contactarlo y solicitar su asesoría? En ese
                          caso favor de especificar su disponibilidad:
                          """)),
-             Div(Column('disponible_tutor', "disponible_miembro"),                
+             Div(Column('disponible_tutor', "disponible_miembro"),
                  Class="panel panel-default"),
-             Submit('guardar', 'guardar'),             
+             Submit('guardar', 'guardar'),
         )
 
     class Meta:
@@ -175,7 +187,7 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
                    'semaforo_maestria',
                    'semaforo_doctorado',
                    'solicitud', 'comite_academico', 'observaciones']
-    
+
 
 
 
@@ -199,7 +211,7 @@ class AcademicoResumenCVModelForm(forms.ModelForm):
                 'tutor_principal_otros_programas',
                 'comite_doctorado_otros',
                 'comite_maestria_otros',
-                HTML("<h4>Otras actividades</h4>"),                
+                HTML("<h4>Otras actividades</h4>"),
                 'otras_actividades',
                 HTML("<hr /><h3>Publicaciones</h3>"),
                 'articulos_internacionales',
@@ -219,7 +231,7 @@ class AcademicoResumenCVModelForm(forms.ModelForm):
 
     class Meta:
         model = Academico
-        exclude = ['user', 'tutor', 'nivel_SNI', 'estimulo_UNAM', 
+        exclude = ['user', 'tutor', 'nivel_SNI', 'estimulo_UNAM',
                    'ultima_reacreditacion', 'fecha_acreditacion',
                    'acreditacion',
                    'semaforo_maestria',
@@ -264,13 +276,13 @@ class AcademicoActividadModelForm(forms.ModelForm):
 
     class Meta:
         model = Academico
-        exclude = ['user', 'tutor', 'nivel_SNI', 'estimulo_UNAM', 
+        exclude = ['user', 'tutor', 'nivel_SNI', 'estimulo_UNAM',
                    'ultima_reacreditacion', 'fecha_acreditacion',
                    'acreditacion',
                    'semaforo_maestria',
                    'semaforo_doctorado',
                    'solicitud', 'comite_academico', 'observaciones']
-        
+
 
 class SolicitudCommentForm(forms.Form):
 

@@ -17,6 +17,58 @@ import posgradmin.models as models
 from pprint import pprint
 
 
+class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
+    def test_func(self):
+        if self.request.user.is_superuser:
+            return True
+
+        elif self.request.user.is_staff:
+            return True
+
+    template_name = 'posgradmin/try.html'
+
+    form_class = forms.AcademicoInvitarForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request,
+                      self.template_name,
+                      {'form': form,
+                       'title': 'Crear candidatos',
+                       })
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            pprint(request.FILES['lista'].readlines())
+            # u = request.user
+            # u.first_name = request.POST['nombre']
+            # u.last_name = request.POST['apellidos']
+            # u.save()
+            # try:
+            #     p = request.user.perfil
+            # except:
+            #     p = models.Perfil()
+
+            # p.user = request.user
+
+            # if 'headshot' in request.FILES:
+            #     p.headshot = request.FILES['headshot']
+
+            # p.save()
+
+            # return HttpResponseRedirect(reverse('perfil'))
+        else:
+            return render(request,
+                          self.template,
+                          {'form': form,
+                           'title': 'Crear candidatos',
+                           })
+
+
+
 class InicioView(LoginRequiredMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
     breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),)
@@ -286,7 +338,7 @@ class PerfilEstudianteDetail(LoginRequiredMixin, UserPassesTestMixin,
     template_name = "posgradmin/perfil_estudiante.html"
 
     def test_func(self):
-        
+
         return True
 
     def get_context_data(self, **kwargs):
@@ -309,7 +361,7 @@ class PerfilEstudianteDetail(LoginRequiredMixin, UserPassesTestMixin,
 
     def get_object(self):
         return self.request.user
-    
+
 
 class AcademicoPerfilView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
@@ -392,7 +444,7 @@ class AcademicoPerfilView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 
-            
+
             a.save()
 
             return HttpResponseRedirect(reverse('perfil_academico'))
@@ -493,7 +545,7 @@ class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
             print a.semaforo_maestria, a.semaforo_doctorado
-            
+
             a.save()
 
             print a.publicaciones_5()
@@ -505,7 +557,7 @@ class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
                            'title': 'Editar Resumen Curricular',
                            'breadcrumbs': self.breadcrumbs})
 
-        
+
 
 class AcademicoActividadView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
@@ -585,7 +637,7 @@ class AcademicoActividadView(LoginRequiredMixin, UserPassesTestMixin, View):
 
             a.semaforo_maestria = a.verifica_semaforo_maestria()
             a.semaforo_doctorado = a.verifica_semaforo_doctorado()
-                
+
             a.save()
 
             return HttpResponseRedirect(reverse('perfil_academico'))
@@ -595,7 +647,7 @@ class AcademicoActividadView(LoginRequiredMixin, UserPassesTestMixin, View):
                           {'form': form,
                            'title': 'Editar Perfil Académico',
                            'breadcrumbs': self.breadcrumbs})
-        
+
 
 class GradoAcademicoAgregar(LoginRequiredMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
