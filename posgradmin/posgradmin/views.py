@@ -776,13 +776,16 @@ class AdscripcionAgregar(LoginRequiredMixin, View):
             else:
                 catedra_conacyt = False
 
-            a = models.Adscripcion(
-                perfil=request.user.perfil,
-                nombramiento=request.POST['nombramiento'],
-                anno_nombramiento=request.POST['anno_nombramiento'],
-                catedra_conacyt=catedra_conacyt,
-                institucion=ins)
-            a.save()
+            if hasattr(request.user, 'perfil'):
+                a = models.Adscripcion(
+                    perfil=request.user.perfil,
+                    nombramiento=request.POST['nombramiento'],
+                    anno_nombramiento=request.POST['anno_nombramiento'],
+                    catedra_conacyt=catedra_conacyt,
+                    institucion=ins)
+                a.save()
+            else:
+                return HttpResponseRedirect(reverse('editar_perfil'))
 
             if ins.entidad_PCS or request.user.perfil.asociado_PCS():
                 return HttpResponseRedirect(reverse('perfil'))
