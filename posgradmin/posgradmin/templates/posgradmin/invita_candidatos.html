@@ -1,0 +1,41 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+   {% crispy form %}
+
+<div id='form-success' class="alert alert-success" role="alert">
+  <table class="table table-striped">
+    {% for row in aciertos %}
+    <tr>
+      {% for cell in row %}
+      <td>{{ cell }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+
+<div id='form-errors' class="alert alert-danger" role="alert">
+  <table class="table table-striped">
+    {% for row in form_errors %}
+    <tr>
+      {% for cell in row %}
+      <td>{{ cell }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+
+<script>
+$(document).ready(function() {
+    $('.dateinput').datepicker({ dateFormat: 'yy-mm-dd'});
+}); 
+</script>
+{% endblock %}
+

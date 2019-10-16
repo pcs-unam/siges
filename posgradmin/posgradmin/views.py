@@ -31,7 +31,7 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
         elif self.request.user.is_staff:
             return True
 
-    template_name = 'posgradmin/try.html'
+    template_name = 'posgradmin/invita_candidatos.html'
 
     form_class = forms.AcademicoInvitarForm
 
@@ -48,8 +48,8 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
         if form.is_valid():
             wb = load_workbook(request.FILES['lista'])
             ws = wb.active
-            i = 1
 
+            i = 1
             rows = []
             while True:
                 nombre = ws["A%s" % i].value
@@ -69,7 +69,10 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                     rows.append([nombre, apellidos, email])
             
             errores = []
+            aciertos = []
+            i = 0
             for row in rows:
+                i += 1
                 [nombre, apellidos, email] = row
                 try:
                     u = models.User()
@@ -84,34 +87,18 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                     a.acreditacion = 'candidato'
                     a.user = u
                     a.save()
-                except IntegrityError as E:
-                    errores.append([E.message, row])
-                except ValidationError as E:
-                    errores.append(["bad email, details: %s" % E, row])
+                    aciertos.append([i, ] + row)
+                except (IntegrityError, ValidationError) as E:
+                    errores.append([E.message, i] + [str(cell)
+                                                    for cell in row])
                     
             return render(request,
                           self.template_name,
                           {'form': form,
                             'title': 'Crear candidatos',
-                            'form_errors': pformat(errores)
-                          })            
-            # u = request.user
-            # u.first_name = request.POST['nombre']
-            # u.last_name = request.POST['apellidos']
-            # u.save()
-            # try:
-            #     p = request.user.perfil
-            # except:
-            #     p = models.Perfil()
-
-            # p.user = request.user
-
-            # if 'headshot' in request.FILES:
-            #     p.headshot = request.FILES['headshot']
-
-            # p.save()
-
-            # return HttpResponseRedirect(reverse('perfil'))
+                            'form_errors': errores,
+                            'aciertos': aciertos
+                          })
         else:
             return render(request,
                           self.template_name,
