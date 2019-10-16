@@ -11,7 +11,7 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     AdscripcionEliminar, AdscripcionAgregar, AsociacionAgregar, \
     EstudianteSortableView, AcademicoSortableView, \
     UserDetail, PerfilPublico, PerfilPublicoIndice, PerfilComite, \
-    PerfilEstudianteDetail, AcademicoInvitar
+    PerfilEstudianteDetail, AcademicoInvitar, AcademicoSearch
 
 from posgradmin.views_academico import \
     MisComitesView, MisEstudiantesView
@@ -117,6 +117,10 @@ urlpatterns = [
     url(r'^inicio/academicos/$',
         AcademicoSortableView.as_view(),
         name="lista_academicos"),
+
+    url(r'^inicio/academicos/search/$',
+        AcademicoSearch.as_view(),
+        name="academicos_search"),
 
     # url(r'^inicio/catedras/$',
     #     CatedraSortableView.as_view(),

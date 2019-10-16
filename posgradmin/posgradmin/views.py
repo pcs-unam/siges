@@ -7,6 +7,7 @@ from django.views import View
 from django.views.generic import DetailView
 from sortable_listview import SortableListView
 from django.shortcuts import render, HttpResponseRedirect
+from django.http import JsonResponse
 from django.urls import reverse
 from django.conf import settings
 import datetime
@@ -18,7 +19,12 @@ import posgradmin.models as models
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 
-from pprint import pprint, pformat
+# from pprint import pprint, pformat
+
+
+class AcademicoSearch(View):
+    def get(self, request, *args, **kwargs):
+        return JsonResponse({'foo': 'bar'})
 
 
 class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -62,12 +68,12 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                         and email is None):
                     break
                 elif (nombre == 'nombre'
-                          and apellidos == 'apellidos'
-                          and email == 'email'):
+                      and apellidos == 'apellidos'
+                      and email == 'email'):
                     continue
                 else:
                     rows.append([nombre, apellidos, email])
-            
+
             errores = []
             aciertos = []
             i = 0
@@ -78,7 +84,7 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                     u = models.User()
                     u.first_name = nombre
                     u.last_name = apellidos
-                    validate_email(email)                    
+                    validate_email(email)
                     u.email = email
                     u.username = email.split('@')[0]
                     u.save()
@@ -90,22 +96,21 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                     aciertos.append([i, ] + row)
                 except (IntegrityError, ValidationError) as E:
                     errores.append([E.message, i] + [str(cell)
-                                                    for cell in row])
-                    
+                                                     for cell in row])
+
             return render(request,
                           self.template_name,
                           {'form': form,
-                            'title': 'Crear candidatos',
-                            'form_errors': errores,
-                            'aciertos': aciertos
-                          })
+                           'title': 'Crear candidatos',
+                           'form_errors': errores,
+                           'aciertos': aciertos
+                           })
         else:
             return render(request,
                           self.template_name,
                           {'form': form,
                            'title': 'Crear candidatos',
                            })
-
 
 
 class InicioView(LoginRequiredMixin, View):
