@@ -15,16 +15,32 @@ from django.forms.models import model_to_dict
 import posgradmin.forms as forms
 from openpyxl import load_workbook
 import posgradmin.models as models
-
+from simple_search import search_filter
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 
-# from pprint import pprint, pformat
+from pprint import pprint, pformat
 
 
 class AcademicoSearch(View):
     def get(self, request, *args, **kwargs):
-        return JsonResponse({'foo': 'bar'})
+        qs = request.GET.get('qs', default=None)
+        if qs is not None:
+            search_fields = ['top_5',
+                             'otras_publicaciones',
+                             'lineas',
+                             'palabras_clave',
+                             'proyectos_sostenibilidad',
+                             'proyectos_vigentes',
+                             ]
+            f = search_filter(search_fields, qs)
+            results = models.Academico.objects.filter(f)
+
+            return JsonResponse({a.user.username: {'nombre': a.user.get_full_name(),
+                                                   'palabras_clave': a.palabras_clave.split('\n')}
+                                 for a in results})
+        else:
+            return JsonResponse({})
 
 
 class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
