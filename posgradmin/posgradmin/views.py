@@ -115,7 +115,7 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                     a.save()
                     aciertos.append([i, ] + row)
                 except (IntegrityError, ValidationError) as E:
-                    errores.append([E.message, i] + [str(cell)
+                    errores.append([E.message, i] + [str(cell).decode('utf-8')
                                                      for cell in row])
 
             return render(request,
