@@ -36,11 +36,15 @@ class AcademicoSearch(View):
             f = search_filter(search_fields, qs)
             results = models.Academico.objects.filter(f)
 
-            return JsonResponse({a.user.username: {'nombre': a.user.get_full_name(),
-                                                   'palabras_clave': a.palabras_clave.split('\n')}
-                                 for a in results})
+            response = JsonResponse({a.user.username: {'nombre': a.user.get_full_name(),
+                                                    'palabras_clave': a.palabras_clave.split('\n')}
+                                    for a in results})
+            response["Access-Control-Allow-Origin"] = "*"
+            return response
         else:
-            return JsonResponse({})
+            response = JsonResponse({'aguas': 'wey'})
+            response["Access-Control-Allow-Origin"] = "*"
+            return response
 
 
 class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
