@@ -12,3 +12,4 @@ matplotlib
 wordcloud
 sh
 openpyxl==2.5.11
+django-simple-search
