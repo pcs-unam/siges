@@ -7,7 +7,9 @@ menu: true
 ---
 
 
-<iframe src="https://duckduckgo.com/search.html?width=300&site=sostenibilidad.posgrado.unam.mx&prefill=buscar en este sitio" style="overflow:hidden;margin:0;padding:0;width:358px;height:40px;" frameborder="0"></iframe>
+<div id="search"></div>
+
+
 
 
 ## Tutores por Campo de Conocimiento
@@ -31,3 +33,9 @@ menu: true
 
 
 
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+
+<script src="/assets/busca_academico.js" type="text/babel"></script>
