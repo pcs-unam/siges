@@ -26,19 +26,30 @@ class AcademicoSearch(View):
     def get(self, request, *args, **kwargs):
         qs = request.GET.get('qs', default=None)
         if qs is not None:
-            search_fields = ['top_5',
-                             'otras_publicaciones',
+            search_fields = ['user__last_name',
+                             'user__first_name', 
                              'lineas',
                              'palabras_clave',
-                             'proyectos_sostenibilidad',
-                             'proyectos_vigentes',
                              ]
             f = search_filter(search_fields, qs)
             results = models.Academico.objects.filter(f)
 
-            response = JsonResponse({a.user.username: {'nombre': a.user.get_full_name(),
-                                                    'palabras_clave': a.palabras_clave.split('\n')}
-                                    for a in results})
+            last_year = datetime.datetime.now().year - 1
+            results = results.filter(
+                Q(acreditacion='M') | Q(acreditacion='D'),
+                Q(fecha_acreditacion__year__gte=last_year)
+                 | Q(ultima_reacreditacion__year__gte=last_year)
+            ).order_by('user__last_name')
+
+            response = JsonResponse({
+                'result': [
+                    {'username': a.user.username,
+                     'nombre': a.user.get_full_name(),
+                     'disponible_tutor': a.disponible_tutor,
+                     'disponible_miembro': a.disponible_miembro,
+                     'palabras_clave': a.palabras_clave.split('\n')}
+                    for a in results]})
+                    
             response["Access-Control-Allow-Origin"] = "*"
             return response
         else:
