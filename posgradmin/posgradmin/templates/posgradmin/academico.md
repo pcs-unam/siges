@@ -13,7 +13,9 @@ Acreditación: **{{ a.show_acreditacion }}**
 {% if a.disponible_miembro %}
  - Disponible como miembro de comité tutor (asesoría de alumnos)
 {% endif %}
-
+{% if not a.disponible_tutor and not a.disponible_miembro %}
+ - Sin disponibilidad para estudiantes.
+{% endif %}
 
 
 
