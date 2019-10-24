@@ -72,9 +72,6 @@ def headshot_path(instance, filename):
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    titulo = models.CharField("Grado académico (e.g. Dr., Lic.)",
-                              max_length=15, blank=True)
-
     curp = models.CharField("CURP. Si usted es extranjero(a) y no cuenta con "
                             + "este dato, ingresar la palabra extranjero(a)",
                             max_length=100)
@@ -91,8 +88,6 @@ class Perfil(models.Model):
     codigo_postal = models.PositiveSmallIntegerField(default=0)
 
     website = models.CharField(max_length=200, blank=True)
-    pasaporte = models.CharField(max_length=200, blank=True)
-    estado_civil = models.CharField(max_length=200, blank=True)
 
     genero = models.CharField(max_length=1, choices=(('M', 'masculino'),
                                                      ('F', 'femenino')))
