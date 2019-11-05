@@ -33,11 +33,11 @@
 
 {% if U.academico %}
 
-{% if not U.academico.resumen_completo %}
+{% if U.academico.carencias_resumen %}
 <div class="alert alert-danger" role="alert">
   <strong>Perfil académico incompleto.</strong>
   <hr />
-  {{ U.academico.carencias|markdown }}  
+  {{ U.academico.carencias_resumen|markdown }}
 </div>
 {% endif %}
 

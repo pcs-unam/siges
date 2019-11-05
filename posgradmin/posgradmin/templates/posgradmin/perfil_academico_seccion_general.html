@@ -13,12 +13,12 @@
     <div class="alert alert-danger" role="alert">
       <strong>Perfil académico incompleto.</strong>
       <hr />
-      Recuerde llenar con ceros cuando no tenga cantidades qué reportar. Atención a los siguientes reactivos:<br />
+      Atención a los siguientes reactivos:<br />
       {{ object.academico.carencias_general|markdown }}
     </div>
     {% endif %}
 
-   
+
     {% if user == object %}
     <a class="btn btn-default" role="button" href="{% url 'academico_perfil' %}">editar esta sección</a>
     <hr />
