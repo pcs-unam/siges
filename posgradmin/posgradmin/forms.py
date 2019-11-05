@@ -189,6 +189,58 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
                    'solicitud', 'comite_academico', 'observaciones']
 
 
+class AcademicoResumenCV_reacreditacion_ModelForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AcademicoResumenCV_reacreditacion_ModelForm,
+              self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Div(HTML(
+                     u"En los campos siguientes, si no tiene cantidades "
+                     + u"que reportar, por favor llene con ceros."),
+                Class="panel-heading"),
+            Div(HTML(u"<h3>Formación de estudiantes</h3>"),
+                'tesis_doctorado',
+                'tesis_doctorado_5',
+                'tesis_maestria',
+                'tesis_maestria_5',
+                'tesis_licenciatura',
+                'tesis_licenciatura_5',
+                'tutor_principal_otros_programas',
+                'comite_doctorado_otros',
+                'comite_maestria_otros',
+                HTML(u"<h3>Formación de estudiantes en el PCS</h3>"),
+                'participacion_tutor_doctorado',
+                'participacion_comite_doctorado',
+                'participacion_tutor_maestria',
+                'participacion_comite_maestria',
+                HTML("<h3>Otras actividades</h3>"),
+                'otras_actividades',
+                HTML("<hr /><h3>Publicaciones</h3>"),
+                'articulos_internacionales',
+                'articulos_internacionales_5',
+                'articulos_nacionales',
+                'articulos_nacionales_5',
+                'libros',
+                'libros_5',
+                'capitulos',
+                'capitulos_5',
+                'top_5',
+                HTML("<h4>Otras publicaciones</h4>"),
+                'otras_publicaciones',
+                Class="panel-body"),
+            Submit('guardar', 'guardar'),
+        )
+
+    class Meta:
+        model = Academico
+        exclude = ['user', 'tutor', 'nivel_SNI', 'estimulo_UNAM',
+                   'ultima_reacreditacion', 'fecha_acreditacion',
+                   'acreditacion',
+                   'semaforo_maestria',
+                   'semaforo_doctorado',
+                   'solicitud', 'comite_academico', 'observaciones']
 
 
 class AcademicoResumenCVModelForm(forms.ModelForm):
@@ -237,8 +289,6 @@ class AcademicoResumenCVModelForm(forms.ModelForm):
                    'semaforo_maestria',
                    'semaforo_doctorado',
                    'solicitud', 'comite_academico', 'observaciones']
-
-
 
 
 class AcademicoActividadModelForm(forms.ModelForm):

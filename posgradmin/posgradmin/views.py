@@ -19,15 +19,13 @@ from simple_search import search_filter
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 
-from pprint import pprint, pformat
-
 
 class AcademicoSearch(View):
     def get(self, request, *args, **kwargs):
         qs = request.GET.get('qs', default=None)
         if qs is not None:
             search_fields = ['user__last_name',
-                             'user__first_name', 
+                             'user__first_name',
                              'lineas',
                              'palabras_clave',
                              ]
@@ -38,7 +36,7 @@ class AcademicoSearch(View):
             results = results.filter(
                 Q(acreditacion='M') | Q(acreditacion='D'),
                 Q(fecha_acreditacion__year__gte=last_year)
-                 | Q(ultima_reacreditacion__year__gte=last_year)
+                | Q(ultima_reacreditacion__year__gte=last_year)
             ).order_by('user__last_name')
 
             response = JsonResponse({
@@ -49,7 +47,7 @@ class AcademicoSearch(View):
                      'disponible_miembro': a.disponible_miembro,
                      'palabras_clave': a.palabras_clave.split('\n')}
                     for a in results]})
-                    
+
             response["Access-Control-Allow-Origin"] = "*"
             return response
         else:
@@ -213,7 +211,6 @@ class PerfilComite(LoginRequiredMixin, UserPassesTestMixin, View):
         a.semaforo_maestria = a.verifica_semaforo_maestria()
         a.semaforo_doctorado = a.verifica_semaforo_doctorado()
         a.save()
-
 
         breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
                        (settings.APP_PREFIX + 'inicio/perfil/', 'Perfiles'),
@@ -405,8 +402,6 @@ class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin,
         return self.request.user
 
 
-
-
 class PerfilEstudianteDetail(LoginRequiredMixin, UserPassesTestMixin,
                              DetailView):
     login_url = settings.APP_PREFIX + 'accounts/login/'
@@ -531,11 +526,8 @@ class AcademicoPerfilView(LoginRequiredMixin, UserPassesTestMixin, View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
+class AcademicoResumenCVView(LoginRequiredMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
-
-    def test_func(self):
-        return True
 
     form_class = forms.AcademicoResumenCVModelForm
 
@@ -549,11 +541,17 @@ class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
     template_name = 'posgradmin/try.html'
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class()
+
         if hasattr(request.user, 'academico'):
             a = request.user.academico
             data = model_to_dict(a)
-            form = self.form_class(data=data, instance=a)
+
+            if a.acreditacion in ('D', 'M', 'E'):
+                form = forms.AcademicoResumenCV_reacreditacion_ModelForm(
+                    data=data, instance=a)
+            else:
+                form = self.form_class(data=data, instance=a)
+
         else:
             form = self.form_class()
 
@@ -564,7 +562,15 @@ class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
                        'breadcrumbs': self.breadcrumbs})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
+        if hasattr(request.user, 'academico'):
+            a = request.user.academico
+            if a.acreditacion in ('D', 'M', 'E'):
+                form = forms.AcademicoResumenCV_reacreditacion_ModelForm(
+                    request.POST, request.FILES)
+                reacreditacion = True
+            else:
+                form = self.form_class(request.POST, request.FILES)
+                reacreditacion = False
 
         if form.is_valid():
 
@@ -593,6 +599,19 @@ class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
             if request.POST['comite_maestria_otros'] != "":
                 a.comite_maestria_otros = int(request.POST['comite_maestria_otros'])
 
+            if reacreditacion:
+                if request.POST['participacion_tutor_doctorado'] != "":
+                    a.participacion_tutor_doctorado = int(request.POST['participacion_tutor_doctorado'])
+
+                if request.POST['participacion_comite_doctorado'] != "":
+                    a.participacion_comite_doctorado = int(request.POST['participacion_comite_doctorado'])
+
+                if request.POST['participacion_tutor_maestria'] != "":
+                    a.participacion_tutor_maestria = int(request.POST['participacion_tutor_maestria'])
+
+                if request.POST['participacion_comite_maestria'] != "":
+                    a.participacion_comite_maestria = int(request.POST['participacion_comite_maestria'])
+
             a.otras_actividades = request.POST['otras_actividades']
 
             if request.POST['articulos_internacionales_5'] != "":
@@ -618,12 +637,8 @@ class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
             a.semaforo_maestria = a.verifica_semaforo_maestria()
             a.semaforo_doctorado = a.verifica_semaforo_doctorado()
 
-
-            print a.semaforo_maestria, a.semaforo_doctorado
-
             a.save()
 
-            print a.publicaciones_5()
             return HttpResponseRedirect(reverse('perfil_academico'))
         else:
             return render(request,
@@ -631,7 +646,6 @@ class AcademicoResumenCVView(LoginRequiredMixin, UserPassesTestMixin, View):
                           {'form': form,
                            'title': 'Editar Resumen Curricular',
                            'breadcrumbs': self.breadcrumbs})
-
 
 
 class AcademicoActividadView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -874,7 +888,6 @@ class AsociacionAgregar(LoginRequiredMixin, View):
             return HttpResponseRedirect(reverse('perfil'))
 
         else:
-            print "aga"
             return render(request,
                           self.template_name,
                           {'title': 'Agregar Asociación al PCS',
@@ -946,7 +959,6 @@ class EstudianteSortableView(LoginRequiredMixin,
 
     def get_queryset(self):
 
-        print self.request.encoding
         self.request.GET.encoding = 'utf-8'
         search = self.request.GET.get('search', None)
         qs = super(EstudianteSortableView, self).get_queryset()
