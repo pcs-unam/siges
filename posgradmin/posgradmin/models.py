@@ -1504,6 +1504,13 @@ class Asignatura(models.Model):
                                      (u"Optativa",
                                       u"Optativa")))
 
+    estado = models.CharField(max_length=40,
+                              default='nueva',
+                              choices=((u"nueva",
+                                        "nueva"),
+                                       (u"aceptada",
+                                        u"aceptada")))
+    
     programa = models.FileField("Documento con descripción extensa.",
                                 upload_to=curso_path,
                                 blank=True, null=True)
@@ -1564,3 +1571,39 @@ class Acta(models.Model):
     sesion = models.ForeignKey(Sesion)
 
 
+class Profesor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    anexo_CV = models.FileField(u"CV en extenso",
+                                upload_to=anexo_academico_CV_path,
+                                blank=True, null=True)
+
+    acreditacion = models.CharField(
+        max_length=15,
+        choices=(
+            ('candidato', 'candidato'),
+            ('no acreditado', 'no acreditado'),
+            ('baja', 'baja')))
+    
+    fecha_acreditacion = models.DateField(blank=True, null=True)
+    ultima_reacreditacion = models.DateField(blank=True, null=True)
+
+    campos_de_conocimiento = models.ManyToManyField(
+        CampoConocimiento,
+        blank=True)
+    lineas_de_investigacion = models.ManyToManyField(
+        LineaInvestigacion,
+        blank=True)
+
+    def __unicode__(self):
+        name = self.user.get_full_name()
+        if name:
+            return name
+        else:
+            return self.user.username
+
+        return name
+        
+    class Meta:
+        verbose_name_plural = "Profesores"
+        ordering = ['user__first_name', 'user__last_name', ]
