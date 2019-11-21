@@ -42,6 +42,7 @@ class Institucion(models.Model):
     class Meta:
         verbose_name_plural = "instituciones"
         unique_together = ('nombre', 'suborganizacion')
+        ordering = ['nombre', 'suborganizacion', ]
 
 
 class CampoConocimiento(models.Model):
@@ -109,7 +110,8 @@ class Perfil(models.Model):
 
     class Meta:
         verbose_name_plural = "Perfiles Personales"
-
+        ordering = ['user__first_name', 'user__last_name', ]
+        
     def asociado_PCS(self):
         for a in self.adscripcion_set.all():
             if a.institucion.entidad_PCS or a.asociacion_PCS:
@@ -234,6 +236,9 @@ class Estudiante(models.Model):
 
     observaciones = models.TextField(blank=True)
 
+    class Meta:
+        ordering = ['user__first_name', 'user__last_name', ]
+    
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
             return True
@@ -1337,7 +1342,7 @@ class Academico(models.Model):
 
     class Meta:
         verbose_name_plural = "Académicos"
-
+        ordering = ['user__first_name', 'user__last_name', ]
 
 class Adscripcion(models.Model):
     perfil = models.ForeignKey(Perfil)
@@ -1503,6 +1508,10 @@ class Asignatura(models.Model):
                                 upload_to=curso_path,
                                 blank=True, null=True)
 
+
+    class Meta:
+        ordering = ['asignatura', 'clave', ]
+    
     def programa_url(self):
         if self.programa:
             return "%s/cursos/%s/%s" % (MEDIA_URL,
@@ -1542,7 +1551,8 @@ class Curso(models.Model):
 
     class Meta:
         verbose_name_plural = "Cursos"
-
+        ordering = ['asignatura', ]
+        
     def __unicode__(self):
         return u'%s, %s-%s' % (self.asignatura,
                                        self.year,
@@ -1552,3 +1562,5 @@ class Curso(models.Model):
 class Acta(models.Model):
     acuerdos = models.TextField(blank=True)
     sesion = models.ForeignKey(Sesion)
+
+
