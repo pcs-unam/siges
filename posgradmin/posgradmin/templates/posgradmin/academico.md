@@ -32,8 +32,9 @@ Acreditación: **{{ a.show_acreditacion }}**
 # Adscripción
 
 {% for ad in a.user.perfil.adscripcion_set.all %}
- - {{ ad }} {% if ad.catedra_conacyt %}Cátedra CONACYT{% endif %} {% if not ad.asociacion_PCS %} {{ ad.nombramiento }} desde {{ ad.anno_nombramiento }}
- {% endif %}
+{% if not ad.asociacion_PCS %}
+ - {{ ad }} {% if ad.catedra_conacyt %}Cátedra CONACYT{% endif %}
+{% endif %}
 {% endfor %}
 
 
