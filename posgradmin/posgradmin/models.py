@@ -1518,7 +1518,8 @@ class Asignatura(models.Model):
                                 upload_to=curso_path,
                                 blank=True, null=True)
 
-
+    intersemestral = models.BooleanField(default=False)
+    
     class Meta:
         ordering = ['asignatura', 'clave', ]
     

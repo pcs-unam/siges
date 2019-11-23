@@ -187,7 +187,7 @@ admin.site.register(Comite, ComiteAdmin)
 
 
 class AsignaturaAdmin(admin.ModelAdmin):
-    list_display = ['asignatura', 'clave', 'creditos', 'tipo', 'estado', ]
+    list_display = ['asignatura', 'clave', 'tipo', 'intersemestral', 'estado', ]
 
 
 admin.site.register(Asignatura, AsignaturaAdmin)
