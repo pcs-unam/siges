@@ -11,7 +11,8 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     AdscripcionEliminar, AdscripcionAgregar, AsociacionAgregar, \
     EstudianteSortableView, AcademicoSortableView, \
     UserDetail, PerfilPublico, PerfilPublicoIndice, PerfilComite, \
-    PerfilEstudianteDetail, AcademicoInvitar, AcademicoSearch
+    PerfilEstudianteDetail, AcademicoInvitar, AcademicoSearch, \
+    TogglePerfilEditar
 
 from posgradmin.views_academico import \
     MisComitesView, MisEstudiantesView
@@ -32,6 +33,9 @@ from django.conf.urls.static import static
 from posgradmin.settings import MEDIA_ROOT, MEDIA_URL
 
 urlpatterns = [
+    url(r'^admin/posgradmin/toggle_perfil_editar/', TogglePerfilEditar.as_view(),
+        name="toggle_perfil_editar"),
+
     url(r'^admin/posgradmin/academico/invitar/', AcademicoInvitar.as_view(),
         name="academico_invitar"),
 

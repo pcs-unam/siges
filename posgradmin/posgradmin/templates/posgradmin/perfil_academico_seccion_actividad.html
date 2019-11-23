@@ -20,7 +20,7 @@
 
     
     {% if user == object %}
-    {% if object.academico.semaforo_maestria != "rojo" %}
+    {% if object.academico.semaforo_maestria != "rojo" and editable == True %}
     <a class="btn btn-default" role="button" href="{% url 'academico_actividad' %}">editar esta sección</a>
     <hr />
     {% endif %}

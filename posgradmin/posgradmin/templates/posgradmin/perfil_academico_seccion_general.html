@@ -19,7 +19,7 @@
     {% endif %}
 
 
-    {% if user == object %}
+    {% if user == object and editable == True %}
     <a class="btn btn-default" role="button" href="{% url 'academico_perfil' %}">editar esta sección</a>
     <hr />
     {% endif %}

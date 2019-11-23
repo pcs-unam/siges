@@ -44,7 +44,7 @@
 
     <h1>{{ object.get_full_name }}</h1>
     <hr>
-    {% if user == object %}
+    {% if user == object and editable %}
     <a class="btn btn-default" role="button" href="{% url 'editar_perfil' %}">editar perfil personal</a>
     {% elif user.is_staff %}
     <a href="{% url 'admin:auth_user_change' object.id %}">editar usuario</a><br />

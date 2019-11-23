@@ -18,7 +18,61 @@ import posgradmin.models as models
 from simple_search import search_filter
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+import pickle
+from settings import BASE_DIR
+from os import path
 
+
+
+
+def get_perfiles_editables():
+    try:
+        with open(path.join(BASE_DIR, 'toggle_perfiles.pickle')) as f:
+            editables = pickle.load(f)
+    except IOError:
+        editables = True
+        with open(path.join(BASE_DIR, 'toggle_perfiles.pickle'), 'w') as f:
+            pickle.dump(editables, f)
+    return editables
+
+
+class TogglePerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+    template = 'posgradmin/try.html'
+
+    form_class = forms.TogglePerfilEditarForm
+    
+    def test_func(self):
+
+        if self.request.user.is_superuser:
+            return True
+        else:
+            return False
+
+
+    def get(self, request, *args, **kwargs):
+
+        editables = get_perfiles_editables()
+        
+        form = self.form_class(initial={'toggle': editables})
+        return render(request,
+                      self.template,
+                      {'form': form,
+                       'title': 'Perfil Personal',
+                       })
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            if 'toggle' in request.POST and request.POST['toggle']:
+                editables = True
+            else:
+                editables = False
+            with open(path.join(BASE_DIR, 'toggle_perfiles.pickle'), 'w') as f:
+                pickle.dump(editables, f)            
+            return HttpResponseRedirect(reverse('toggle_perfil_editar'))
+
+        
 
 class AcademicoSearch(View):
     def get(self, request, *args, **kwargs):
@@ -255,7 +309,8 @@ class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
             see_private = False
 
         context['see_private'] = see_private
-
+        context['editable'] = get_perfiles_editables()
+        
         return context
 
 
@@ -282,7 +337,8 @@ class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
             see_private = False
 
         context['see_private'] = see_private
-
+        context['editable'] = get_perfiles_editables()
+        
         return context
 
     def get_object(self):
@@ -330,7 +386,7 @@ class PerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
+        if form.is_valid() and get_perfiles_editables():
             u = request.user
             u.first_name = request.POST['nombre']
             u.last_name = request.POST['apellidos']
@@ -395,7 +451,8 @@ class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin,
             see_private = False
 
         context['see_private'] = see_private
-
+        context['editable'] = get_perfiles_editables()
+        
         return context
 
     def get_object(self):
@@ -468,7 +525,7 @@ class AcademicoPerfilView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
 
-        if form.is_valid():
+        if form.is_valid() and get_perfiles_editables():
 
             a = request.user.academico
 
@@ -572,7 +629,7 @@ class AcademicoResumenCVView(LoginRequiredMixin, View):
                 form = self.form_class(request.POST, request.FILES)
                 reacreditacion = False
 
-        if form.is_valid():
+        if form.is_valid() and get_perfiles_editables():
 
             a = request.user.academico
 
@@ -683,7 +740,7 @@ class AcademicoActividadView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
 
-        if form.is_valid():
+        if form.is_valid() and get_perfiles_editables():
 
             a = request.user.academico
 
@@ -761,7 +818,7 @@ class GradoAcademicoAgregar(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
+        if form.is_valid() and get_perfiles_editables():
             ins = models.Institucion.objects.get(
                 id=int(request.POST['institucion']))
             g = models.GradoAcademico(
@@ -790,7 +847,7 @@ class GradoAcademicoEliminar(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         g = models.GradoAcademico.objects.get(id=int(kwargs['pk']))
 
-        if request.user == g.user:
+        if request.user == g.user and get_perfiles_editables():
             g.delete()
 
         return HttpResponseRedirect(reverse('perfil'))
@@ -818,7 +875,7 @@ class AdscripcionAgregar(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-        if form.is_valid():
+        if form.is_valid() and get_perfiles_editables():
             ins = models.Institucion.objects.get(
                 id=int(request.POST['institucion']))
             if 'catedra_conacyt' in request.POST:
@@ -872,7 +929,7 @@ class AsociacionAgregar(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-        if form.is_valid():
+        if form.is_valid() and get_perfiles_editables():
             ins = models.Institucion.objects.get(
                 id=int(request.POST['institucion']))
 
@@ -900,7 +957,7 @@ class AdscripcionEliminar(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         a = models.Adscripcion.objects.get(id=int(kwargs['pk']))
-        if request.user == a.perfil.user:
+        if request.user == a.perfil.user and get_perfiles_editables():
             a.delete()
         return HttpResponseRedirect(reverse('perfil'))
 

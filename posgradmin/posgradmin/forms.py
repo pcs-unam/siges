@@ -15,6 +15,18 @@ from django.conf import settings
 from pprint import pprint
 
 
+class TogglePerfilEditarForm(forms.Form):
+    toggle = forms.BooleanField(required=False)
+    helper = FormHelper()
+    helper.layout = Layout(
+        Field('toggle'),
+        FormActions(
+            Submit('OK', 'OK', css_class="btn-primary")
+        )
+    )
+
+
+
 class AcademicoInvitarForm(forms.Form):
     lista = forms.FileField(required=True)
     helper = FormHelper()
