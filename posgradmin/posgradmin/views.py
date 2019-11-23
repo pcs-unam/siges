@@ -58,7 +58,7 @@ class TogglePerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
         return render(request,
                       self.template,
                       {'form': form,
-                       'title': 'Perfil Personal',
+                       'title': 'Formularios de perfiles',
                        })
 
     def post(self, request, *args, **kwargs):
@@ -70,7 +70,7 @@ class TogglePerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
                 editables = False
             with open(path.join(BASE_DIR, 'toggle_perfiles.pickle'), 'w') as f:
                 pickle.dump(editables, f)            
-            return HttpResponseRedirect(reverse('toggle_perfil_editar'))
+            return HttpResponseRedirect(reverse('inicio'))
 
         
 

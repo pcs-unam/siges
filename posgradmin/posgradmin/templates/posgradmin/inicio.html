@@ -130,7 +130,6 @@
 {% if user.is_staff or user.asistente %}
 <div class="row">
   <div class="col-sm-4">
-
     <div class="panel panel-warning">
       <div class="panel-heading">
 	<h3 class="panel-title">
@@ -145,6 +144,23 @@
       </div>
     </div>
   </div>
+
+
+  <div class="col-sm-4">
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+	<h3 class="panel-title">
+	  <span class="glyphicon glyphicon-king" aria-hidden="true"></span>
+	  Acciones especiales
+	</h3>
+      </div>
+      <div class="panel-body">
+	<p><a href="{% url 'toggle_perfil_editar' %}">Activar o desactivar formularios de edición de perfiles</a></p>
+	<p><a href="{% url 'academico_invitar' %}">Crear académicos desde hoja de cálculo</a></p>
+      </div>
+    </div>
+  </div>
+  
 </div>
 {% endif %}
 

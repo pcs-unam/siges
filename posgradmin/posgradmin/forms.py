@@ -16,10 +16,12 @@ from pprint import pprint
 
 
 class TogglePerfilEditarForm(forms.Form):
-    toggle = forms.BooleanField(required=False)
+    toggle = forms.BooleanField(required=False,
+                                label='Perfiles editables')
     helper = FormHelper()
     helper.layout = Layout(
-        Field('toggle'),
+        HTML(u"<p>Activar o desactivar los formularios de edición de perfiles.</p>"),
+        Field('toggle', 'perfiles editables'),
         FormActions(
             Submit('OK', 'OK', css_class="btn-primary")
         )
