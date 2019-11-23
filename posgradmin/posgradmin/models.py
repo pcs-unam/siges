@@ -1502,7 +1502,10 @@ class Asignatura(models.Model):
                                      (u"Obligatorias por campo",
                                       u"Obligatorias por campo"),
                                      (u"Optativa",
-                                      u"Optativa")))
+                                      u"Optativa"),
+                                     (u"Seminario de Doctorado",
+                                      u"Seminario de Doctorado")
+                            ))
 
     estado = models.CharField(max_length=40,
                               default='nueva',
@@ -1583,16 +1586,15 @@ class Profesor(models.Model):
         choices=(
             ('candidato', 'candidato'),
             ('no acreditado', 'no acreditado'),
-            ('baja', 'baja')))
+            ('baja', 'baja'),
+            ('profesor', 'profesor')
+        ))
     
-    fecha_acreditacion = models.DateField(blank=True, null=True)
-    ultima_reacreditacion = models.DateField(blank=True, null=True)
+    fecha_alta = models.DateField("fecha de alta",
+                                  blank=True, null=True)
 
     campos_de_conocimiento = models.ManyToManyField(
         CampoConocimiento,
-        blank=True)
-    lineas_de_investigacion = models.ManyToManyField(
-        LineaInvestigacion,
         blank=True)
 
     def __unicode__(self):

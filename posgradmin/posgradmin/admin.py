@@ -329,7 +329,7 @@ class ProfesorAdmin(admin.ModelAdmin):
             return obj.user.username
 
 
-    list_display = ['fullname', 'fecha_acreditacion', 'acreditacion']
+    list_display = ['fullname', 'fecha_alta', 'acreditacion']
     search_fields = ['user__username', 'user__first_name', 'user__last_name', ]
     
 admin.site.register(Profesor, ProfesorAdmin)
