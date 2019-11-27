@@ -82,6 +82,7 @@
   </div>
   <div class="panel-body">
 
+
     <div class="panel panel-default">
       <div class="panel-heading">
 	<h3 class="panel-title">
@@ -90,13 +91,22 @@
 	</h3>
       </div>
       <div class="panel-body">
-	<img src="/media/m_{{ U.academico.semaforo_maestria }}.png">
-	<img src="/media/d_{{ U.academico.semaforo_doctorado }}.png">
+	<img src="/media/m_{{ U.academico.semaforo_maestria }}.png" alt="">
+	<img src="/media/d_{{ U.academico.semaforo_doctorado }}.png" alt="">
 	<hr />
 	<img src="/media/perfil-academico/{{ U.academico.id }}/pc_resumen_academico.png" alt="">
 	<img src="/media/perfil-academico/{{ U.academico.id }}/wordcloud.png" width="640px" alt="">
       </div>
     </div>
+
+    {% if U.academico.carencias_resumen %}
+    <div class="alert alert-danger" role="alert">
+      <strong>Resumen curricular incompleto.</strong>
+      <hr />
+      {{ U.academico.carencias_resumen|markdown }}
+    </div>
+    {% endif %}
+
 
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -218,6 +228,15 @@
     </div>
     <div class="panel-body">
       <!-- subtablas -->
+
+    {% if U.academico.carencias_actividad %}
+    <div class="alert alert-danger" role="alert">
+      <strong>Sección incompleta.</strong>
+      <hr />
+      Atención a los siguientes reactivos: <br />
+      {{ U.academico.carencias_actividad|markdown }}
+    </div>
+    {% endif %}
 
 
       <div class="panel panel-default">

@@ -33,14 +33,6 @@
 
 {% if U.academico %}
 
-{% if U.academico.carencias_resumen %}
-<div class="alert alert-danger" role="alert">
-  <strong>Perfil académico incompleto.</strong>
-  <hr />
-  {{ U.academico.carencias_resumen|markdown }}
-</div>
-{% endif %}
-
 {% include "posgradmin/perfil_academico_comite.html" %}
 
 {% endif %}
