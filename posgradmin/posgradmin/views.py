@@ -41,7 +41,7 @@ class TogglePerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
     template = 'posgradmin/try.html'
 
     form_class = forms.TogglePerfilEditarForm
-    
+
     def test_func(self):
 
         if self.request.user.is_superuser:
@@ -53,7 +53,7 @@ class TogglePerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request, *args, **kwargs):
 
         editables = get_perfiles_editables()
-        
+
         form = self.form_class(initial={'toggle': editables})
         return render(request,
                       self.template,
@@ -69,10 +69,10 @@ class TogglePerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
             else:
                 editables = False
             with open(path.join(BASE_DIR, 'toggle_perfiles.pickle'), 'w') as f:
-                pickle.dump(editables, f)            
+                pickle.dump(editables, f)
             return HttpResponseRedirect(reverse('inicio'))
 
-        
+
 
 class AcademicoSearch(View):
     def get(self, request, *args, **kwargs):
@@ -275,6 +275,7 @@ class PerfilComite(LoginRequiredMixin, UserPassesTestMixin, View):
         return render(request,
                       self.template,
                       {'U': user,
+                       'object': user,
                        'title': user.get_full_name(),
                        'breadcrumbs': breadcrumbs})
 
@@ -310,7 +311,7 @@ class UserDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
         context['see_private'] = see_private
         context['editable'] = get_perfiles_editables()
-        
+
         return context
 
 
@@ -338,7 +339,7 @@ class PerfilDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
         context['see_private'] = see_private
         context['editable'] = get_perfiles_editables()
-        
+
         return context
 
     def get_object(self):
@@ -452,7 +453,7 @@ class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin,
 
         context['see_private'] = see_private
         context['editable'] = get_perfiles_editables()
-        
+
         return context
 
     def get_object(self):
