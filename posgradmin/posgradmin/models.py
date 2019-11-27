@@ -111,7 +111,7 @@ class Perfil(models.Model):
     class Meta:
         verbose_name_plural = "Perfiles Personales"
         ordering = ['user__first_name', 'user__last_name', ]
-        
+
     def asociado_PCS(self):
         for a in self.adscripcion_set.all():
             if a.institucion.entidad_PCS or a.asociacion_PCS:
@@ -238,7 +238,7 @@ class Estudiante(models.Model):
 
     class Meta:
         ordering = ['user__first_name', 'user__last_name', ]
-    
+
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
             return True
@@ -594,10 +594,15 @@ class Academico(models.Model):
     ultima_reacreditacion = models.DateField(blank=True, null=True)
 
     acreditacion = models.CharField(
-        max_length=15,
+        max_length=25,
         choices=(
             ('candidato', 'candidato'),
             ('no acreditado', 'no acreditado'),
+            (u'información incompleta', u'información incompleta'),
+            (u'descalificado', u'descalificado'),
+            ('por reacreditar D', 'por reacreditar D'),
+            ('por reacreditar M', 'por reacreditar M'),
+            ('por reacreditar E', 'por reacreditar E'),
             ('baja', 'baja'),
             ('D', 'D'),
             ('M', 'M'),
@@ -798,7 +803,6 @@ class Academico(models.Model):
         else:
             return False
 
-
     def is_msc(self):
         niveles = [deg.nivel
                    for deg in self.user.gradoacademico_set.all()]
@@ -807,8 +811,7 @@ class Academico(models.Model):
             return True
         else:
             return False
-        
-    
+
     def show_acreditacion(self):
         if self.acreditacion == 'no acreditado':
             return 'no acreditado'
@@ -1117,7 +1120,7 @@ class Academico(models.Model):
 
         if not self.verifica_resumen():
             return None
-        
+
         wordcloud = WordCloud()
 
         wordcloud.background_color = 'white'
@@ -1165,7 +1168,7 @@ class Academico(models.Model):
 
         if not self.verifica_resumen():
             return None
-        
+
         escala_sni = {'sin SNI': 0,
                       'I': 1,
                       'II': 2,
@@ -1235,7 +1238,7 @@ class Academico(models.Model):
                                       for a in Academico.objects.all()])
 
 
-        
+
         df = pd.DataFrame({
             u'académico': [self.user.get_full_name(), 'avg'],
             u'SNI': [escala_sni.get(self.nivel_SNI, 0), avg_SNI, ],
@@ -1297,7 +1300,7 @@ class Academico(models.Model):
                      u"libros últimos 5 años",
                      u'grados académicos']
         )
-        
+
         fig, ax = plt.subplots()
         # rectangulo estudiantes
         max_grad = max([
@@ -1513,16 +1516,16 @@ class Asignatura(models.Model):
                                         "nueva"),
                                        (u"aceptada",
                                         u"aceptada")))
-    
+
     programa = models.FileField("Documento con descripción extensa.",
                                 upload_to=curso_path,
                                 blank=True, null=True)
 
     intersemestral = models.BooleanField(default=False)
-    
+
     class Meta:
         ordering = ['asignatura', 'clave', ]
-    
+
     def programa_url(self):
         if self.programa:
             return "%s/cursos/%s/%s" % (MEDIA_URL,
@@ -1563,7 +1566,7 @@ class Curso(models.Model):
     class Meta:
         verbose_name_plural = "Cursos"
         ordering = ['asignatura', ]
-        
+
     def __unicode__(self):
         return u'%s, %s-%s' % (self.asignatura,
                                        self.year,
@@ -1590,7 +1593,7 @@ class Profesor(models.Model):
             ('baja', 'baja'),
             ('profesor', 'profesor')
         ))
-    
+
     fecha_alta = models.DateField("fecha de alta",
                                   blank=True, null=True)
 
@@ -1606,7 +1609,7 @@ class Profesor(models.Model):
             return self.user.username
 
         return name
-        
+
     class Meta:
         verbose_name_plural = "Profesores"
         ordering = ['user__first_name', 'user__last_name', ]
