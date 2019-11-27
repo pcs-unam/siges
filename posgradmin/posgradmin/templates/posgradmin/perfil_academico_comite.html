@@ -8,6 +8,16 @@
   </div>
   <div class="panel-body">
 
+    {% if U.academico.carencias_general %}
+    <div class="alert alert-danger" role="alert">
+      <strong>Perfil académico incompleto.</strong>
+      <hr />
+      Atención a los siguientes reactivos:<br />
+      {{ U.academico.carencias_general|markdown }}
+    </div>
+    {% endif %}
+
+
     <ul class="list-group">
 
       {% if U.academico.anexo_CV %}
