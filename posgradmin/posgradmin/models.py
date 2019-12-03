@@ -599,7 +599,6 @@ class Academico(models.Model):
             ('candidato', 'candidato'),
             ('no acreditado', 'no acreditado'),
             (u'información incompleta', u'información incompleta'),
-            (u'descalificado', u'descalificado'),
             ('por reacreditar D', 'por reacreditar D'),
             ('por reacreditar M', 'por reacreditar M'),
             ('por reacreditar E', 'por reacreditar E'),
