@@ -187,14 +187,15 @@ admin.site.register(Comite, ComiteAdmin)
 
 
 class AsignaturaAdmin(admin.ModelAdmin):
-    list_display = ['asignatura', 'clave', 'tipo', 'intersemestral', 'estado', ]
+    list_display = ['asignatura', 'clave', 'tipo', 'estado', ]
 
 
 admin.site.register(Asignatura, AsignaturaAdmin)
 
 
 class CursoAdmin(admin.ModelAdmin):
-    list_display = ['asignatura', 'profesores', 'year', 'semestre', 'sede', 'grupo', 'activo']
+    list_display = ['asignatura', 'profesores',
+                    'year', 'semestre', 'intersemestral', 'sede', 'activo']
 
 
 admin.site.register(Curso, CursoAdmin)
@@ -308,7 +309,7 @@ class AnexoExpedienteInline(admin.StackedInline):
 class UserAdmin(AuthUserAdmin):
     inlines = [UserProfileInline, AnexoExpedienteInline]
     ordering = ('username', 'first_name', 'last_name', '-date_joined')
-    
+
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
@@ -331,7 +332,7 @@ class ProfesorAdmin(admin.ModelAdmin):
 
     list_display = ['fullname', 'fecha_alta', 'acreditacion']
     search_fields = ['user__username', 'user__first_name', 'user__last_name', ]
-    
+
 admin.site.register(Profesor, ProfesorAdmin)
 
 class AnexoExpedienteAdmin(admin.ModelAdmin):
