@@ -1484,7 +1484,7 @@ class Dictamen(models.Model):
 def curso_path(instance, filename):
     (root, ext) = os.path.splitext(filename)
     return os.path.join(u'cursos/%s/%s' % (instance.id,
-            slugify(root) + ext))
+                                           slugify(root) + ext))
 
 
 class Asignatura(models.Model):
@@ -1506,21 +1506,20 @@ class Asignatura(models.Model):
                                      (u"Optativa",
                                       u"Optativa"),
                                      (u"Seminario de Doctorado",
-                                      u"Seminario de Doctorado")
-                            ))
+                                      u"Seminario de Doctorado")))
 
     estado = models.CharField(max_length=40,
-                              default='nueva',
-                              choices=((u"nueva",
-                                        "nueva"),
+                              default='propuesta',
+                              choices=((u"propuesta",
+                                        u"propuesta"),
+                                       (u"rechazada",
+                                        u"rechazada"),
                                        (u"aceptada",
                                         u"aceptada")))
 
     programa = models.FileField("Documento con descripción extensa.",
                                 upload_to=curso_path,
                                 blank=True, null=True)
-
-    intersemestral = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['asignatura', 'clave', ]
@@ -1560,6 +1559,8 @@ class Curso(models.Model):
     aula = models.CharField(max_length=80, blank=True, null=True)
     horario = models.CharField(max_length=80, blank=True, null=True)
 
+    intersemestral = models.BooleanField(default=False)
+
     activo = models.BooleanField(default=False)
 
     class Meta:
@@ -1568,8 +1569,8 @@ class Curso(models.Model):
 
     def __unicode__(self):
         return u'%s, %s-%s' % (self.asignatura,
-                                       self.year,
-                                       self.semestre)
+                               self.year,
+                               self.semestre)
 
 
 class Acta(models.Model):
