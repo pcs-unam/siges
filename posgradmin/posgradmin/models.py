@@ -1075,7 +1075,7 @@ class Academico(models.Model):
                     or
                     ((self.comite_doctorado_otros
                       + self.comite_maestria_otros) >= 1
-                     and self.publicaciones_5 >= 3)
+                     and self.publicaciones_5() >= 3)
                     or self.publicaciones_5() >= 5):
                 if self.is_msc() or self.is_phd():
                     return "verde"
