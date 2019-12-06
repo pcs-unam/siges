@@ -31,7 +31,9 @@ def export(cursos, outdir):
     mkdir('-p', outdir)
     tipos=[(u"Cursos obligatorios", 'Obligatoria'),
            (u"Cursos obligatorios por campo", 'Obligatorias por campo'),
-           (u"Cursos optativos", 'Optativa')]
+           (u"Cursos optativos", 'Optativa'),
+           (u"Seminarios de Doctorado", u"Seminario de Doctorado")
+    ]
     sedes=['CDMX',
            'Morelia',
            u'León',]
