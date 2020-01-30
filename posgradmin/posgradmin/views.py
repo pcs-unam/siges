@@ -88,9 +88,7 @@ class AcademicoSearch(View):
 
             last_year = datetime.datetime.now().year - 1
             results = results.filter(
-                Q(acreditacion='M') | Q(acreditacion='D'),
-                Q(fecha_acreditacion__year__gte=last_year)
-                | Q(ultima_reacreditacion__year__gte=last_year)
+                Q(acreditacion='M') | Q(acreditacion='D')
             ).order_by('user__last_name')
 
             response = JsonResponse({
