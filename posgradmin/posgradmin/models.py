@@ -101,7 +101,7 @@ class Perfil(models.Model):
     headshot = models.ImageField("fotografía",
                                  upload_to=headshot_path,
                                  blank=True, null=True)
-
+    
     def __unicode__(self):
         return u"%s" % self.user.get_full_name()
 
@@ -112,6 +112,7 @@ class Perfil(models.Model):
         verbose_name_plural = "Perfiles Personales"
         ordering = ['user__first_name', 'user__last_name', ]
 
+        
     def asociado_PCS(self):
         for a in self.adscripcion_set.all():
             if a.institucion.entidad_PCS or a.asociacion_PCS:
@@ -793,6 +794,31 @@ class Academico(models.Model):
             ('amarillo', 'amarillo'),
             ('rojo', 'rojo')))
 
+    titulo_honorifico = models.CharField(u'Título honorífico (Dra., Mtro, Lic)',
+        max_length=12, default='Lic.',
+        choices=(
+            (u'Lic.',  u'Lic.'),
+            (u'Mtro.', u'Mtro.'),
+            (u'Mtra.', u'Mtra.'),            
+            (u'Dr.',   u'Dr.'),
+            (u'Dra.',  u'Dra.')))
+
+    def verifica_titulo_honorifico(self):
+        if self.is_phd():
+            if self.user.perfil.genero == 'M':
+                self.titulo_honorifico = 'Dr.'
+            else:
+                self.titulo_honorifico = 'Dra.'
+                
+        elif self.is_msc():
+            if self.user.perfil.genero == 'M':            
+                self.titulo_honorifico = u'Mtro.'
+            else:
+                self.titulo_honorifico = u'Mtra.'
+        else:
+            self.titulo_honorifico = u'Lic.'
+    
+    
     def is_phd(self):
         niveles = [deg.nivel
                    for deg in self.user.gradoacademico_set.all()]

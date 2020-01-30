@@ -146,18 +146,19 @@ class AcademicoAdmin(admin.ModelAdmin):
     perfil_comite.short_description = u'Perfil para el Comité Académico'
 
 
-    actions = ['actualiza_semaforos',
+    actions = ['actualiza_campos',
                exporta_resumen_academicos
     ]
 
-    def actualiza_semaforos(self, request, queryset):
+    def actualiza_campos(self, request, queryset):
         for a in queryset:
             a.semaforo_doctorado = a.verifica_semaforo_doctorado()
             a.semaforo_maestria = a.verifica_semaforo_maestria()
+            a.verifica_titulo_honorifico()
             a.save()
 
-    actualiza_semaforos.\
-        short_description = "actualiza semáforos de académicos"
+    actualiza_campos.\
+        short_description = "actualiza semáforos y otros campos computados"
 
 
 
