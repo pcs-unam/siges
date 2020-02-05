@@ -199,6 +199,7 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
                    'ultima_reacreditacion', 'fecha_acreditacion',
                    'acreditacion',
                    'semaforo_maestria',
+                   'titulo_honorifico',
                    'semaforo_doctorado',
                    'solicitud', 'comite_academico', 'observaciones']
 
@@ -254,6 +255,7 @@ class AcademicoResumenCV_reacreditacion_ModelForm(forms.ModelForm):
                    'acreditacion',
                    'semaforo_maestria',
                    'semaforo_doctorado',
+                   'titulo_honorifico',
                    'solicitud', 'comite_academico', 'observaciones']
 
 
@@ -302,6 +304,7 @@ class AcademicoResumenCVModelForm(forms.ModelForm):
                    'acreditacion',
                    'semaforo_maestria',
                    'semaforo_doctorado',
+                   'titulo_honorifico',
                    'solicitud', 'comite_academico', 'observaciones']
 
 
@@ -345,6 +348,7 @@ class AcademicoActividadModelForm(forms.ModelForm):
                    'acreditacion',
                    'semaforo_maestria',
                    'semaforo_doctorado',
+                   'titulo_honorifico',
                    'solicitud', 'comite_academico', 'observaciones']
 
 

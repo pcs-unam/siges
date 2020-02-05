@@ -796,6 +796,7 @@ class Academico(models.Model):
 
     titulo_honorifico = models.CharField(u'Título honorífico (Dra., Mtro, Lic)',
         max_length=12, default='Lic.',
+        null=True, blank=True,                                         
         choices=(
             (u'Lic.',  u'Lic.'),
             (u'Mtro.', u'Mtro.'),
