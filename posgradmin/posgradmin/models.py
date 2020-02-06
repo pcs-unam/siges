@@ -598,12 +598,13 @@ class Academico(models.Model):
         max_length=25,
         choices=(
             ('candidato', 'candidato'),
+            ('candidato profesor', 'candidato profesor'),
             ('no acreditado', 'no acreditado'),
             (u'información incompleta', u'información incompleta'),
             ('por reacreditar D', 'por reacreditar D'),
             ('por reacreditar M', 'por reacreditar M'),
-            ('por reacreditar E', 'por reacreditar E'),
             ('baja', 'baja'),
+            ('P', 'P'),            
             ('D', 'D'),
             ('M', 'M'),
             ('E', 'E')))
@@ -1373,6 +1374,30 @@ class Academico(models.Model):
         verbose_name_plural = "Académicos"
         ordering = ['user__first_name', 'user__last_name', ]
 
+
+
+class Acreditacion(models.Model):
+    academico = models.ForeignKey(Academico, related_name="acreditaciones")
+    fecha = models.DateTimeField(auto_now_add=True)
+    comentario = models.CharField(max_length=400,
+                                  null=True, blank=True)                                  
+    acreditacion = models.CharField(
+        max_length=25,
+        default='candidato',
+        choices=(
+            ('candidato', 'candidato'),
+            ('candidato profesor', 'candidato profesor'),
+            ('no acreditado', 'no acreditado'),
+            (u'información incompleta', u'información incompleta'),
+            ('por reacreditar D', 'por reacreditar D'),
+            ('por reacreditar M', 'por reacreditar M'),
+            ('baja', 'baja'),
+            ('P', 'P'),            
+            ('D', 'D'),
+            ('M', 'M'),
+            ('E', 'E')))
+    
+        
 class Adscripcion(models.Model):
     perfil = models.ForeignKey(Perfil)
     institucion = models.ForeignKey(Institucion)
@@ -1604,39 +1629,3 @@ class Acta(models.Model):
     acuerdos = models.TextField(blank=True)
     sesion = models.ForeignKey(Sesion)
 
-
-class Profesor(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    anexo_CV = models.FileField(u"CV en extenso",
-                                upload_to=anexo_academico_CV_path,
-                                blank=True, null=True)
-
-    acreditacion = models.CharField(
-        max_length=15,
-        choices=(
-            ('candidato', 'candidato'),
-            ('no acreditado', 'no acreditado'),
-            ('baja', 'baja'),
-            ('profesor', 'profesor')
-        ))
-
-    fecha_alta = models.DateField("fecha de alta",
-                                  blank=True, null=True)
-
-    campos_de_conocimiento = models.ManyToManyField(
-        CampoConocimiento,
-        blank=True)
-
-    def __unicode__(self):
-        name = self.user.get_full_name()
-        if name:
-            return name
-        else:
-            return self.user.username
-
-        return name
-
-    class Meta:
-        verbose_name_plural = "Profesores"
-        ordering = ['user__first_name', 'user__last_name', ]

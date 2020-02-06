@@ -9,7 +9,7 @@ from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
     Solicitud, Proyecto, Dictamen, \
     Comite, Curso, Asignatura, Sesion, Adscripcion, \
-    LineaInvestigacion, AnexoExpediente, Profesor
+    LineaInvestigacion, AnexoExpediente
 
 from .admin_action_academicos import exporta_resumen_academicos
 
@@ -321,20 +321,6 @@ admin.site.register(LineaInvestigacion)
 admin.site.register(Proyecto)
 admin.site.register(Dictamen)
 
-
-class ProfesorAdmin(admin.ModelAdmin):
-    def fullname(self, obj):
-        name = obj.user.get_full_name()
-        if name:
-            return name
-        else:
-            return obj.user.username
-
-
-    list_display = ['fullname', 'fecha_alta', 'acreditacion']
-    search_fields = ['user__username', 'user__first_name', 'user__last_name', ]
-
-admin.site.register(Profesor, ProfesorAdmin)
 
 class AnexoExpedienteAdmin(admin.ModelAdmin):
     def fullname(self, obj):
