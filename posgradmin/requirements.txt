@@ -1,4 +1,4 @@
-django==1.11.13
+django==1.11.28
 django-allauth
 django-crispy-forms
 django-sortable-listview
