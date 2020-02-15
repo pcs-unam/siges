@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.conf import settings
 import posgradmin.models as models
 import posgradmin.forms as forms
-import authorization as auth
+from posgradmin import authorization as auth
 from django.conf import settings
 
 class ComiteElegirView(View):

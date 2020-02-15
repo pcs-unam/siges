@@ -13,8 +13,8 @@ import posgradmin.models as models
 import posgradmin.forms as forms
 from posgradmin import workflows
 
-from settings import solicitudes_profesoriles,\
-    solicitudes_tutoriles, solicitudes_estudiantiles, solicitud_otro
+#from settings import settings.solicitudes_profesoriles,\
+#    settings.solicitudes_tutoriles, settings.solicitudes_estudiantiles, settings.solicitud_otro
 
 
 class SolicitudCambiarEstado(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -70,9 +70,9 @@ class SolicitudNuevaView(LoginRequiredMixin, UserPassesTestMixin, View):
         try:
             a = request.user.academico
             if a.tutor:
-                choices += solicitudes_tutoriles
+                choices += settings.solicitudes_tutoriles
             elif a.acreditado():
-                choices += solicitudes_profesoriles
+                choices += settings.solicitudes_profesoriles
                 choices += (("solicitar_registro_como_tutor",
                              "Solicitar Registro como Tutor"),)
 
@@ -81,11 +81,11 @@ class SolicitudNuevaView(LoginRequiredMixin, UserPassesTestMixin, View):
         # opciones de estudiante
         try:
             request.user.estudiante
-            choices += solicitudes_estudiantiles
+            choices += settings.solicitudes_estudiantiles
         except ObjectDoesNotExist:
             pass
 
-        choices += solicitud_otro
+        choices += settings.solicitud_otro
 
         self.form_class.base_fields['tipo'].choices = choices
 

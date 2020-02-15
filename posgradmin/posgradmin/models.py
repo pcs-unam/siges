@@ -9,7 +9,7 @@ from django.db.models import Q
 
 from django.contrib.auth.models import User
 
-from settings import solicitudes_profesoriles,\
+from .settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
     solicitudes_estados, MEDIA_URL, \
     APP_PREFIX, MEDIA_ROOT, BASE_DIR
@@ -156,7 +156,7 @@ class Perfil(models.Model):
 
 
 class GradoAcademico(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     nivel = models.CharField(max_length=15,
                              choices=(('licenciatura', 'licenciatura'),
@@ -165,7 +165,7 @@ class GradoAcademico(models.Model):
 
     grado_obtenido = models.CharField(max_length=100)
 
-    institucion = models.ForeignKey(Institucion)
+    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
 
     fecha_obtencion = models.DateField("Fecha de obtención de grado")
 
@@ -187,7 +187,7 @@ class Estudiante(models.Model):
                  (2, 2)),
         blank=True, null=True)
 
-    institucion = models.ForeignKey(Institucion,
+    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE,
                                     help_text=u"Institución de Inscripción",
                                     limit_choices_to={'entidad_PCS': True},
                                     blank=True, null=True)
@@ -317,7 +317,7 @@ class Estudiante(models.Model):
 
 
 class Beca(models.Model):
-    estudiante = models.ForeignKey(Estudiante)
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
 
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
@@ -352,9 +352,9 @@ class Solicitud(models.Model):
     tipo = models.CharField(max_length=100,
                             choices=solicitudes_profesoriles +
                             solicitudes_tutoriles + solicitud_otro)
-    solicitante = models.ForeignKey(User)
+    solicitante = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    sesion = models.ForeignKey(Sesion, blank=True, null=True)
+    sesion = models.ForeignKey(Sesion, blank=True, null=True, on_delete=models.CASCADE)
     descripcion = models.TextField(blank=True)
 
     estado = models.CharField(max_length=30, default="nueva",
@@ -431,10 +431,10 @@ class Solicitud(models.Model):
 
 
 class Proyecto(models.Model):
-    campo_conocimiento = models.ForeignKey(CampoConocimiento)
+    campo_conocimiento = models.ForeignKey(CampoConocimiento, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=200)
-    estudiante = models.ForeignKey(Estudiante)
-    solicitud = models.ForeignKey(Solicitud, blank=True, null=True)
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+    solicitud = models.ForeignKey(Solicitud, blank=True, null=True, on_delete=models.CASCADE)
     aprobado = models.BooleanField(default=False)
 
     def update_status(self):
@@ -460,8 +460,8 @@ def anexo_path(instance, filename):
 
 
 class Anexo(models.Model):
-    solicitud = models.ForeignKey(Solicitud)
-    autor = models.ForeignKey(User)
+    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
+    autor = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
     archivo = models.FileField(upload_to=anexo_path)
 
@@ -487,7 +487,7 @@ def anexo_expediente_path(instance, filename):
 
 
 class AnexoExpediente(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
     archivo = models.FileField(upload_to=anexo_expediente_path)
 
@@ -507,15 +507,15 @@ class AnexoExpediente(models.Model):
 
 
 class Acuerdo(models.Model):
-    solicitud = models.ForeignKey(Solicitud)
+    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
     archivo = models.FileField()
     fecha = models.DateTimeField(auto_now_add=True)
     # id asamblea
 
 
 class Comentario(models.Model):
-    solicitud = models.ForeignKey(Solicitud)
-    autor = models.ForeignKey(User)
+    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
+    autor = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
     comentario = models.CharField(max_length=300)
     # anexo?
@@ -1377,7 +1377,7 @@ class Academico(models.Model):
 
 
 class Acreditacion(models.Model):
-    academico = models.ForeignKey(Academico, related_name="acreditaciones")
+    academico = models.ForeignKey(Academico, related_name="acreditaciones", on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
     comentario = models.CharField(max_length=400,
                                   null=True, blank=True)                                  
@@ -1399,8 +1399,8 @@ class Acreditacion(models.Model):
     
         
 class Adscripcion(models.Model):
-    perfil = models.ForeignKey(Perfil)
-    institucion = models.ForeignKey(Institucion)
+    perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
+    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
 
     catedra_conacyt = models.BooleanField(default=False)
     nombramiento = models.CharField(max_length=50)
@@ -1423,22 +1423,22 @@ class Adscripcion(models.Model):
 
 
 class Comite(models.Model):
-    miembro1 = models.ForeignKey(Academico,
+    miembro1 = models.ForeignKey(Academico, on_delete=models.CASCADE,
                                  related_name="miembro1_comites")
-    miembro2 = models.ForeignKey(Academico,
+    miembro2 = models.ForeignKey(Academico, on_delete=models.CASCADE,
                                  related_name="miembro2_comites")
-    miembro3 = models.ForeignKey(Academico,
+    miembro3 = models.ForeignKey(Academico, on_delete=models.CASCADE,
                                  related_name="miembro3_comites",
                                  null=True, blank=True)
-    miembro4 = models.ForeignKey(Academico,
+    miembro4 = models.ForeignKey(Academico, on_delete=models.CASCADE,
                                  related_name="miembro4_comites",
                                  null=True, blank=True)
-    miembro5 = models.ForeignKey(Academico,
+    miembro5 = models.ForeignKey(Academico, on_delete=models.CASCADE,
                                  related_name="miembro5_comites",
                                  null=True, blank=True)
 
-    solicitud = models.ForeignKey(Solicitud, null=True, blank=True)
-    estudiante = models.ForeignKey(Estudiante)
+    solicitud = models.ForeignKey(Solicitud, null=True, blank=True, on_delete=models.CASCADE)
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=15,
                             choices=(('tutoral', 'tutoral'),
                                      ('candidatura', 'candidatura'),
@@ -1519,8 +1519,8 @@ class Dictamen(models.Model):
     resolucion = models.CharField(max_length=15,
                                   choices=(('concedida', 'concedida'),
                                            ('denegada', 'denegada')))
-    solicitud = models.ForeignKey(Solicitud)
-    autor = models.ForeignKey(User, null=True, blank=True)
+    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
+    autor = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -1590,7 +1590,7 @@ class Asignatura(models.Model):
 
 
 class Curso(models.Model):
-    asignatura = models.ForeignKey(Asignatura)
+    asignatura = models.ForeignKey(Asignatura, on_delete=models.CASCADE)
     grupo = models.CharField(max_length=20, blank=True, null=True)
     year = models.PositiveSmallIntegerField("Año")
     semestre = models.PositiveSmallIntegerField(
@@ -1627,5 +1627,5 @@ class Curso(models.Model):
 
 class Acta(models.Model):
     acuerdos = models.TextField(blank=True)
-    sesion = models.ForeignKey(Sesion)
+    sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE)
 

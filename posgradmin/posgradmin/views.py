@@ -19,7 +19,6 @@ from simple_search import search_filter
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 import pickle
-from settings import BASE_DIR
 from os import path
 
 
@@ -27,11 +26,11 @@ from os import path
 
 def get_perfiles_editables():
     try:
-        with open(path.join(BASE_DIR, 'toggle_perfiles.pickle')) as f:
+        with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle')) as f:
             editables = pickle.load(f)
     except IOError:
         editables = True
-        with open(path.join(BASE_DIR, 'toggle_perfiles.pickle'), 'w') as f:
+        with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle'), 'w') as f:
             pickle.dump(editables, f)
     return editables
 
@@ -68,7 +67,7 @@ class TogglePerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
                 editables = True
             else:
                 editables = False
-            with open(path.join(BASE_DIR, 'toggle_perfiles.pickle'), 'w') as f:
+            with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle'), 'w') as f:
                 pickle.dump(editables, f)
             return HttpResponseRedirect(reverse('inicio'))
 

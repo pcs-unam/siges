@@ -21,7 +21,7 @@ from posgradmin.views_estudiante import ComiteTutoralElegirView, \
     JuradoCandidaturaElegirView, \
     JuradoGradoElegirView, CambiarProyectoView
 
-from posgradmin.views_asistente import SesionesListView, SesionDetail, EstudianteCargar
+from posgradmin.views_asistente import SesionesListView, SesionDetail # EstudianteCargar
 
 from posgradmin.views_solicitud import SolicitudCambiarEstado, \
     SolicitudNuevaView, SolicitudDetail, SolicitudDictaminar, \
@@ -43,8 +43,8 @@ urlpatterns = [
 
     url('^accounts/', include('allauth.urls')),
 
-    url(r'^export_action/', include("export_action.urls",
-                                    namespace="export_action")),
+    # url(r'^export_action/', include("export_action.urls",
+    #                                 namespace="export_action")),
 
     url(r'^institucion/agregar/(?P<devolver>[\w-]+)/',
         InstitucionAgregarView.as_view(),
@@ -110,9 +110,9 @@ urlpatterns = [
         MisEstudiantesView.as_view(),
         name="mis_estudiantes"),
 
-    url(r'^inicio/estudiantes/cargar$',
-        EstudianteCargar.as_view(),
-        name="cargar_estudiantes"),
+    # url(r'^inicio/estudiantes/cargar$',
+    #     EstudianteCargar.as_view(),
+    #     name="cargar_estudiantes"),
 
     url(r'^inicio/estudiantes/$',
         EstudianteSortableView.as_view(),

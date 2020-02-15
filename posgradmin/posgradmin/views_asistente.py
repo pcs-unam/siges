@@ -11,7 +11,7 @@ import posgradmin.models as models
 import posgradmin.forms as forms
 from django.conf import settings
 
-import etl
+# import etl
 
 
 class SesionesListView(LoginRequiredMixin,
@@ -91,52 +91,52 @@ class SesionDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 #                            'breadcrumbs': self.get_breadcrumbs(kwargs['pk'])})
 
 
-class EstudianteCargar(LoginRequiredMixin, UserPassesTestMixin, View):
+# class EstudianteCargar(LoginRequiredMixin, UserPassesTestMixin, View):
 
-    login_url = settings.APP_PREFIX + 'accounts/login/'
+#     login_url = settings.APP_PREFIX + 'accounts/login/'
 
-    def test_func(self):
-        if hasattr(self.request.user, 'asistente') \
-           or self.request.user.is_staff:
-            return True
-        else:
-            return False
+#     def test_func(self):
+#         if hasattr(self.request.user, 'asistente') \
+#            or self.request.user.is_staff:
+#             return True
+#         else:
+#             return False
 
-    form_class = forms.EstudianteCargarForm
+#     form_class = forms.EstudianteCargarForm
 
-    breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
-                   (settings.APP_PREFIX
-                    + 'inicio/estudiantes/', 'Estudiantes')]
+#     breadcrumbs = [(settings.APP_PREFIX + 'inicio/', 'Inicio'),
+#                    (settings.APP_PREFIX
+#                     + 'inicio/estudiantes/', 'Estudiantes')]
 
-    template_name = 'posgradmin/cargar_lote.html'
+#     template_name = 'posgradmin/cargar_lote.html'
 
-    def get(self, request, *args, **kwargs):
+#     def get(self, request, *args, **kwargs):
 
-        form = self.form_class()
+#         form = self.form_class()
 
-        # envia todo a la plantilla etc
-        return render(request,
-                      self.template_name,
-                      {'form': form,
-                       'title': 'Cargar lote de estudiantes',
-                       'breadcrumbs': self.breadcrumbs})
+#         # envia todo a la plantilla etc
+#         return render(request,
+#                       self.template_name,
+#                       {'form': form,
+#                        'title': 'Cargar lote de estudiantes',
+#                        'breadcrumbs': self.breadcrumbs})
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            errores = etl.load(request.FILES['lista'],
-                               request.POST['ingreso'],
-                               request.POST['semestre'])
-            if errores:
-                return render(request,
-                              self.template_name,
-                              {'errores': errores,
-                               'form': form,
-                               'breadcrumbs': self.breadcrumbs})
-            else:
-                return HttpResponseRedirect(reverse('lista_estudiantes'))
-        else:
-            return render(request,
-                          self.template_name,
-                          {'form': form,
-                           'breadcrumbs': self.breadcrumbs})
+#     def post(self, request, *args, **kwargs):
+#         form = self.form_class(request.POST, request.FILES)
+#         if form.is_valid():
+#             errores = etl.load(request.FILES['lista'],
+#                                request.POST['ingreso'],
+#                                request.POST['semestre'])
+#             if errores:
+#                 return render(request,
+#                               self.template_name,
+#                               {'errores': errores,
+#                                'form': form,
+#                                'breadcrumbs': self.breadcrumbs})
+#             else:
+#                 return HttpResponseRedirect(reverse('lista_estudiantes'))
+#         else:
+#             return render(request,
+#                           self.template_name,
+#                           {'form': form,
+#                            'breadcrumbs': self.breadcrumbs})

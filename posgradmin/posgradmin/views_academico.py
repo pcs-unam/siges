@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import ListView
 import posgradmin.models as models
-import authorization as auth
+from posgradmin import authorization as auth
 from django.conf import settings
 
 # class MisCatedrasView(LoginRequiredMixin, UserPassesTestMixin, ListView):

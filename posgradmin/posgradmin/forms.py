@@ -2,7 +2,7 @@
 from datetime import datetime
 from django import forms
 from django.forms.widgets import FileInput
-from django.forms import extras
+#from django.forms import extras
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, Column
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
@@ -80,7 +80,7 @@ class PerfilModelForm(forms.ModelForm):
     apellidos = forms.CharField()
 
     fecha_nacimiento = forms.DateField(
-        widget=extras.SelectDateWidget(years=range(1940, 2000)))
+        widget=forms.SelectDateWidget(years=range(1940, 2000)))
 
     def __init__(self, *args, **kwargs):
 
@@ -421,7 +421,7 @@ class SolicitudAnexoForm(forms.Form):
 class GradoAcademicoModelForm(forms.ModelForm):
 
     fecha_obtencion = forms.DateField(
-        widget=extras.SelectDateWidget(
+        widget=forms.SelectDateWidget(
             years=range(1960, datetime.now().year + 1)))
 
     class Meta:
