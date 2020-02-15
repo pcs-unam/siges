@@ -26,7 +26,7 @@ from os import path
 
 def get_perfiles_editables():
     try:
-        with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle')) as f:
+        with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle'), 'rb') as f:
             editables = pickle.load(f)
     except IOError:
         editables = True

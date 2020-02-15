@@ -54,12 +54,11 @@ class AcademicoAdmin(admin.ModelAdmin):
     inlines = [AcreditacionInline, ]
 
     list_display = ['fullname',
-                    'acreditacion',
                     'perfil_personal_completo',
                     'resumen_completo',
                     'perfil_comite',
     ]
-    list_filter = ['acreditacion',
+    list_filter = [
                    'disponible_tutor',
                    'disponible_miembro',
                    'resumen_completo',
@@ -73,9 +72,6 @@ class AcademicoAdmin(admin.ModelAdmin):
         ('Participación en el Programa',
          {'fields': ('tutor',
                      'comite_academico',
-                     'fecha_acreditacion',
-                     'ultima_reacreditacion',
-                     'acreditacion',
                      'estimulo_UNAM',
                      'nivel_SNI',
                      'CVU',

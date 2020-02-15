@@ -34,7 +34,7 @@ class Institucion(models.Model):
     dependencia_UNAM = models.BooleanField(default=False)
     entidad_PCS = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.entidad_PCS:
             pcs = "(entidad del PCS)"
         else:
@@ -50,7 +50,7 @@ class Institucion(models.Model):
 class CampoConocimiento(models.Model):
     nombre = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s" % self.nombre
 
     class Meta:
@@ -60,7 +60,7 @@ class CampoConocimiento(models.Model):
 class LineaInvestigacion(models.Model):
     nombre = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s" % self.nombre
 
     class Meta:
@@ -97,18 +97,18 @@ class Perfil(models.Model):
 
     nacionalidad = models.CharField(max_length=100)
 
-    fecha_nacimiento = models.DateField('fecha de nacimiento',
+    fecha_nacimiento = models.DateField('fecha de nacimiento', 
                                         blank=True, null=True)
 
     headshot = models.ImageField("fotografía",
                                  upload_to=headshot_path,
                                  blank=True, null=True)
     
-    def __unicode__(self):
+    def __str__(self):
         return u"%s" % self.user.get_full_name()
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
     class Meta:
         verbose_name_plural = "Perfiles Personales"
@@ -149,12 +149,12 @@ class Perfil(models.Model):
     def perfil_publico_anchor(self):
         return u"""<a href='%sinicio/perfil/publico/%s'>%s</a>""" % (
             APP_PREFIX,
-            self.user.get_username(), self.__unicode__())
+            self.user.get_username(), self.__str__())
 
     def perfil_comite_anchor(self):
         return u"""<a href='%sinicio/perfil/comite/%s'>%s</a>""" % (
             APP_PREFIX,
-            self.user.get_username(), self.__unicode__())
+            self.user.get_username(), self.__str__())
 
 
 class GradoAcademico(models.Model):
@@ -171,7 +171,7 @@ class GradoAcademico(models.Model):
 
     fecha_obtencion = models.DateField("Fecha de obtención de grado")
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s @ %s" % (self.grado_obtenido, self.institucion)
 
     class Meta:
@@ -266,7 +266,7 @@ class Estudiante(models.Model):
 
         return solicitudes
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s [%s]" % (self.user.get_full_name(),
                              self.cuenta)
 
@@ -308,7 +308,7 @@ class Estudiante(models.Model):
     def perfil_publico_anchor(self):
         return u"""<a href='%sinicio/perfil/publico/%s'>%s</a>""" % (
             APP_PREFIX,
-            self.user.get_username(), self.__unicode__())
+            self.user.get_username(), self.__str__())
 
 
     def as_a(self):
@@ -325,7 +325,7 @@ class Beca(models.Model):
     fecha_fin = models.DateField()
     tipo = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s %s" % (self.estudiante, self.tipo)
 
 
@@ -341,7 +341,7 @@ class Sesion(models.Model):
             APP_PREFIX,
             self.id, self.fecha, self.descripcion)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s, %s' % (self.fecha,
                             self.descripcion)
 
@@ -355,7 +355,7 @@ class Solicitud(models.Model):
                             choices=solicitudes_profesoriles +
                             solicitudes_tutoriles + solicitud_otro)
     solicitante = models.ForeignKey(User, on_delete=models.CASCADE)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_creacion = models.DateField(auto_now_add=True)
     sesion = models.ForeignKey(Sesion, blank=True, null=True, on_delete=models.CASCADE)
     descripcion = models.TextField(blank=True)
 
@@ -401,7 +401,7 @@ class Solicitud(models.Model):
         else:
             return False
 
-    def __unicode__(self):
+    def __str__(self):
         return u"#%s %s [%s]" % (self.id, self.resumen, self.solicitante)
 
     def as_a(self):
@@ -445,7 +445,7 @@ class Proyecto(models.Model):
                 self.aprobado = True
                 self.save()
 
-    def __unicode__(self):
+    def __str__(self):
         if self.aprobado:
             estado = 'aprobado'
         else:
@@ -475,7 +475,7 @@ class Anexo(models.Model):
     def basename(self):
         return os.path.basename(self.archivo.file.name)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"[%s anexo a #%s por %s el %s]" % (self.basename(),
                                                    self.solicitud.id,
                                                    self.autor,
@@ -501,7 +501,7 @@ class AnexoExpediente(models.Model):
     def basename(self):
         return os.path.basename(self.archivo.file.name)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.basename()
 
     class Meta:
@@ -522,7 +522,7 @@ class Comentario(models.Model):
     comentario = models.CharField(max_length=300)
     # anexo?
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s por %s: "%s"' % (self.fecha, self.autor, self.comentario)
 
 
@@ -593,8 +593,8 @@ class Academico(models.Model):
 
     comite_academico = models.BooleanField(default=False)
 
-    fecha_acreditacion = models.DateField(blank=True, null=True)
-    ultima_reacreditacion = models.DateField(blank=True, null=True)
+    fecha_acreditacion = models.DateField(blank=True, null=True, default=datetime.date.today)
+    ultima_reacreditacion = models.DateField(blank=True, null=True, default=datetime.date.today)
 
     acreditacion = models.CharField(
         max_length=25,
@@ -858,7 +858,7 @@ class Academico(models.Model):
     def verifica_perfil_personal(self):
         ok = False
         if hasattr(self.user, 'perfil'):
-            if self.user.gradoacademico_set.count > 0:
+            if self.user.gradoacademico_set.count() > 0:
                 if self.user.perfil.adscripcion_ok():
                     ok = True
         return ok
@@ -877,16 +877,16 @@ class Academico(models.Model):
         carencias = u""
 
         if self.CVU == "":
-            carencias += u" - " + unicode(self._meta.get_field('CVU').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('CVU').verbose_name) + u"\n"
 
         if self.anexo_CV == "":
-            carencias += u" - " + unicode(self._meta.get_field('anexo_CV').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('anexo_CV').verbose_name) + u"\n"
 
         if self.anexo_solicitud == "":
-            carencias += u" - " + unicode(self._meta.get_field('anexo_solicitud').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('anexo_solicitud').verbose_name) + u"\n"
 
         if not self.ultimo_grado:
-            carencias += u" - " + unicode(self._meta.get_field('ultimo_grado').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('ultimo_grado').verbose_name) + u"\n"
 
         return carencias
 
@@ -896,67 +896,67 @@ class Academico(models.Model):
         carencias = u""
 
         if self.tesis_licenciatura is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_licenciatura').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('tesis_licenciatura').verbose_name) + u"\n"
 
         if self.tesis_maestria is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_maestria').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('tesis_maestria').verbose_name) + u"\n"
 
         if self.tesis_doctorado is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_doctorado').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('tesis_doctorado').verbose_name) + u"\n"
 
         if self.tesis_licenciatura_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_licenciatura_5').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('tesis_licenciatura_5').verbose_name) + u"\n"
 
         if self.tesis_maestria_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_maestria_5').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('tesis_maestria_5').verbose_name) + u"\n"
 
         if self.tesis_doctorado_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('tesis_doctorado_5').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('tesis_doctorado_5').verbose_name) + u"\n"
 
         if self.comite_doctorado_otros is None:
-            carencias += u" - " + unicode(self._meta.get_field('comite_doctorado_otros').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('comite_doctorado_otros').verbose_name) + u"\n"
 
         if self.comite_maestria_otros is None:
-            carencias += u" - " + unicode(self._meta.get_field('comite_maestria_otros').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('comite_maestria_otros').verbose_name) + u"\n"
 
         if self.acreditacion in ('D', 'M', 'E') and self.participacion_comite_maestria is None:
-            carencias += u" - " + unicode(self._meta.get_field('participacion_comite_maestria').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('participacion_comite_maestria').verbose_name) + u"\n"
 
         if self.acreditacion in ('D', 'M', 'E') and self.participacion_tutor_maestria is None:
-            carencias += u" - " + unicode(self._meta.get_field('participacion_tutor_maestria').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('participacion_tutor_maestria').verbose_name) + u"\n"
 
         if self.acreditacion in ('D', 'M', 'E') and self.participacion_comite_doctorado is None:
-            carencias += u" - " + unicode(self._meta.get_field('participacion_comite_doctorado').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('participacion_comite_doctorado').verbose_name) + u"\n"
 
         if self.acreditacion in ('D', 'M', 'E') and self.participacion_tutor_doctorado is None:
-            carencias += u" - " + unicode(self._meta.get_field('participacion_tutor_doctorado').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('participacion_tutor_doctorado').verbose_name) + u"\n"
 
         if self.articulos_internacionales_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('articulos_internacionales_5').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('articulos_internacionales_5').verbose_name) + u"\n"
 
         if self.articulos_nacionales_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('articulos_nacionales_5').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('articulos_nacionales_5').verbose_name) + u"\n"
 
         if self.articulos_internacionales is None:
-            carencias += u" - " + unicode(self._meta.get_field('articulos_internacionales').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('articulos_internacionales').verbose_name) + u"\n"
 
         if self.articulos_nacionales is None:
-            carencias += u" - " + unicode(self._meta.get_field('articulos_nacionales').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('articulos_nacionales').verbose_name) + u"\n"
 
         if self.capitulos is None:
-            carencias += u" - " + unicode(self._meta.get_field('capitulos').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('capitulos').verbose_name) + u"\n"
 
         if self.capitulos_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('capitulos_5').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('capitulos_5').verbose_name) + u"\n"
 
         if self.libros is None:
-            carencias += u" - " + unicode(self._meta.get_field('libros').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('libros').verbose_name) + u"\n"
 
         if self.libros_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('libros_5').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('libros_5').verbose_name) + u"\n"
 
         if self.top_5 == "" or self.top_5 is None:
-            carencias += u" - " + unicode(self._meta.get_field('top_5').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('top_5').verbose_name) + u"\n"
 
         return carencias
 
@@ -966,19 +966,19 @@ class Academico(models.Model):
         carencias = u""
 
         if self.lineas == "" or self.lineas is None:
-            carencias += u" - " + unicode(self._meta.get_field('lineas').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('lineas').verbose_name) + u"\n"
 
         if self.palabras_clave == "" or self.palabras_clave is None:
-            carencias += u" - " + unicode(self._meta.get_field('palabras_clave').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('palabras_clave').verbose_name) + u"\n"
 
         if self.motivacion == "" or self.motivacion is None:
-            carencias += u" - " + unicode(self._meta.get_field('motivacion').verbose_name) + u"\n"
+            carencias += u" - " + str(self._meta.get_field('motivacion').verbose_name) + u"\n"
 
         # if self.campos_de_conocimiento.count() == 0:
-        #     carencias += u" - " + unicode(self._meta.get_field('campos_de_conocimiento').verbose_name) + u"\n"
+        #     carencias += u" - " + str(self._meta.get_field('campos_de_conocimiento').verbose_name) + u"\n"
 
         # if self.lineas_de_investigacion.count() == 0:
-        #     carencias += u" - " + unicode(self._meta.get_field('lineas_de_investigacion').verbose_name) + u"\n"
+        #     carencias += u" - " + str(self._meta.get_field('lineas_de_investigacion').verbose_name) + u"\n"
 
         return carencias
 
@@ -990,20 +990,20 @@ class Academico(models.Model):
 
         return u"""<a href='%sinicio/usuario/%s/'>%s %s</a>""" % (
             APP_PREFIX,
-            self.user.id, icon, self.__unicode__())
+            self.user.id, icon, self.__str__())
 
     def perfil_publico_anchor(self):
         return u"""<a href='%sinicio/perfil/publico/%s'>%s</a>""" % (
             APP_PREFIX,
-            self.user.get_username(), self.__unicode__())
+            self.user.get_username(), self.__str__())
 
     def perfil_comite_anchor(self):
         return u"""<a href='%sinicio/perfil/comite/%s'>%s</a>""" % (
             APP_PREFIX,
-            self.user.get_username(), self.__unicode__())
+            self.user.get_username(), self.__str__())
 
     def nombre_completo(self):
-        return self.__unicode__()
+        return self.__str__()
 
     def acreditado(self):
         return self.tutor
@@ -1075,7 +1075,7 @@ class Academico(models.Model):
                     comites.append(c)
         return comites
 
-    def __unicode__(self):
+    def __str__(self):
         name = self.user.get_full_name()
         if name:
             return name
@@ -1166,14 +1166,14 @@ class Academico(models.Model):
         wordcloud.stopwords.add('http')
         wordcloud.stopwords.add('https')
 
-        text = " ".join((unicode(self.top_5),
-                         unicode(self.motivacion),
-                         unicode(self.otras_actividades),
-                         unicode(self.otras_publicaciones),
-                         unicode(self.lineas),
-                         unicode(self.palabras_clave),
-                         unicode(self.proyectos_vigentes),
-                         unicode(self.proyectos_sostenibilidad)))
+        text = " ".join((str(self.top_5),
+                         str(self.motivacion),
+                         str(self.otras_actividades),
+                         str(self.otras_publicaciones),
+                         str(self.lineas),
+                         str(self.palabras_clave),
+                         str(self.proyectos_vigentes),
+                         str(self.proyectos_sostenibilidad)))
         if not text.strip():
             return
 
@@ -1381,7 +1381,7 @@ class Academico(models.Model):
 class Acreditacion(models.Model):
 
     academico = models.ForeignKey(Academico, related_name="acreditaciones", on_delete=models.CASCADE)
-    fecha = models.DateTimeField(default=datetime.date.today)
+    fecha = models.DateField(default=datetime.date.today)
     comentario = models.CharField(max_length=400,
                                   null=True, blank=True)                                  
     acreditacion = models.CharField(
@@ -1423,7 +1423,7 @@ class Adscripcion(models.Model):
     class Meta:
         verbose_name_plural = "Adscripciones"
 
-    def __unicode__(self):
+    def __str__(self):
         if self.asociacion_PCS:
             asoc = u"(sólo para asociación con el Posgrado)"
         else:
@@ -1465,7 +1465,7 @@ class Comite(models.Model):
     class Meta:
         verbose_name_plural = "Comités"
 
-    def __unicode__(self):
+    def __str__(self):
         return u'[%s] %s, %s, %s' \
             % (self.tipo,
                self.miembro1,
@@ -1521,7 +1521,7 @@ class Asistente(models.Model):
     class Meta:
         verbose_name_plural = "Asistentes de Proceso"
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s (asistente de proceso)" % self.user
 
 
@@ -1531,12 +1531,12 @@ class Dictamen(models.Model):
                                            ('denegada', 'denegada')))
     solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
     autor = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "Dictámenes"
 
-    def __unicode__(self):
+    def __str__(self):
         return u'#%s %s por %s' \
             % (self.solicitud.id,
                self.resolucion,
@@ -1594,7 +1594,7 @@ class Asignatura(models.Model):
         else:
             return None
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s (%s)' % (self.asignatura,
                                 self.tipo)
 
@@ -1629,7 +1629,7 @@ class Curso(models.Model):
         verbose_name_plural = "Cursos"
         ordering = ['asignatura', ]
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s, %s-%s' % (self.asignatura,
                                self.year,
                                self.semestre)
