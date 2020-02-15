@@ -3,6 +3,8 @@ import os
 import pandas as pd
 from pandas.plotting import parallel_coordinates
 
+import datetime
+
 from django.template.defaultfilters import slugify
 from django.db import models
 from django.db.models import Q
@@ -1377,8 +1379,9 @@ class Academico(models.Model):
 
 
 class Acreditacion(models.Model):
+
     academico = models.ForeignKey(Academico, related_name="acreditaciones", on_delete=models.CASCADE)
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField(default=datetime.date.today)
     comentario = models.CharField(max_length=400,
                                   null=True, blank=True)                                  
     acreditacion = models.CharField(
@@ -1396,6 +1399,13 @@ class Acreditacion(models.Model):
             ('D', 'D'),
             ('M', 'M'),
             ('E', 'E')))
+
+    def __str__(self):
+        return self.acreditacion
+    
+    class Meta:
+        verbose_name_plural = "acreditaciones"
+        ordering = ['fecha', ]
     
         
 class Adscripcion(models.Model):

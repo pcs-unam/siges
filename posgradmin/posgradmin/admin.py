@@ -9,7 +9,7 @@ from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
     Solicitud, Proyecto, Dictamen, \
     Comite, Curso, Asignatura, Sesion, Adscripcion, \
-    LineaInvestigacion, AnexoExpediente
+    LineaInvestigacion, AnexoExpediente, Acreditacion
 
 from .admin_action_academicos import exporta_resumen_academicos
 
@@ -25,18 +25,13 @@ class EstudianteAdmin(admin.ModelAdmin):
                      'user__last_name',
                      'user__email', ]
     list_display = ['user', 'cuenta',
-                    'plan', 'ingreso', 'perfil_publico', ]
+                    'plan', 'ingreso', ]
 
     list_filter = ['plan',
                    'ingreso', ]
 
     def unificado(self, estudiante):
         return estudiante.as_a()
-
-    def perfil_publico(self, estudiante):
-        return estudiante.perfil_publico_anchor()
-    perfil_publico.allow_tags = True
-    perfil_publico.short_description = u'Perfil Público'
 
     unificado.allow_tags = True
     unificado.short_description = 'Vista unificada'
@@ -45,13 +40,23 @@ class EstudianteAdmin(admin.ModelAdmin):
 admin.site.register(Estudiante, EstudianteAdmin)
 
 
+class AcreditacionInline(admin.TabularInline):
+    model = Acreditacion
+    fk_name = 'academico'
+    extra = 0
+    classes = ('grp-collapse grp-closed',)
+    fields = ['fecha', 'acreditacion', 'comentario', ]
+
+
 class AcademicoAdmin(admin.ModelAdmin):
     search_fields = ['user__first_name', 'user__last_name', 'user__username']
+
+    inlines = [AcreditacionInline, ]
+
     list_display = ['fullname',
                     'acreditacion',
                     'perfil_personal_completo',
                     'resumen_completo',
-                    'perfil_publico',
                     'perfil_comite',
     ]
     list_filter = ['acreditacion',
@@ -132,12 +137,6 @@ class AcademicoAdmin(admin.ModelAdmin):
             return name
         else:
             return obj.user.username
-
-    def perfil_publico(self, academico):
-        return academico.perfil_publico_anchor()
-
-    perfil_publico.allow_tags = True
-    perfil_publico.short_description = u'Perfil Público'
 
     def perfil_comite(self, academico):
         return academico.perfil_comite_anchor()
@@ -264,7 +263,6 @@ class PerfilAdmin(admin.ModelAdmin):
         'fullname',
         'telefono',
         'email',
-        'perfil_publico',
         'perfil_comite',
        ]
     search_fields = ['user__first_name', 'user__last_name']
@@ -280,12 +278,6 @@ class PerfilAdmin(admin.ModelAdmin):
             return name
         else:
             return obj.user.username
-
-    def perfil_publico(self, perfil):
-        return perfil.perfil_publico_anchor()
-
-    perfil_publico.allow_tags = True
-    perfil_publico.short_description = u'Perfil Público'
 
     def perfil_comite(self, perfil):
         return perfil.perfil_comite_anchor()
@@ -339,3 +331,14 @@ class AnexoExpedienteAdmin(admin.ModelAdmin):
 
 
 admin.site.register(AnexoExpediente, AnexoExpedienteAdmin)
+
+
+
+class AcreditacionAdmin(admin.ModelAdmin):
+    list_display = ['acreditacion', 'academico', 'fecha']
+    search_fields = ['academico__user__username',
+                     'academico__user__first_name',
+                     'academico__user__last_name', ]
+    list_filter = ['acreditacion', ]
+
+admin.site.register(Acreditacion, AcreditacionAdmin)
