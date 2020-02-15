@@ -13,6 +13,9 @@ from .models import Perfil, Academico, Estudiante, \
 
 from .admin_action_academicos import exporta_resumen_academicos
 
+from django.utils.html import format_html
+
+
 admin.site.site_header = \
                 "Administración de Posgrado en Ciencias de la Sostenibilidad"
 admin.site.site_title = "Posgrado en Ciencias de la Sostenibilidad"
@@ -31,9 +34,8 @@ class EstudianteAdmin(admin.ModelAdmin):
                    'ingreso', ]
 
     def unificado(self, estudiante):
-        return estudiante.as_a()
+        return format_html(estudiante.as_a())
 
-    unificado.allow_tags = True
     unificado.short_description = 'Vista unificada'
 
 
@@ -135,9 +137,8 @@ class AcademicoAdmin(admin.ModelAdmin):
             return obj.user.username
 
     def perfil_comite(self, academico):
-        return academico.perfil_comite_anchor()
+        return format_html(academico.perfil_comite_anchor())
 
-    perfil_comite.allow_tags = True
     perfil_comite.short_description = u'Perfil para el Comité Académico'
 
 
@@ -219,9 +220,8 @@ class SesionAdmin(admin.ModelAdmin):
                     'unificado']
 
     def unificado(self, sesion):
-        return sesion.as_a()
+        return format_html(sesion.as_a())
 
-    unificado.allow_tags = True
     unificado.short_description = 'Ver'
 
 
@@ -239,9 +239,8 @@ class SolicitudAdmin(admin.ModelAdmin):
         return solicitud.as_a()
 
     def user(self, solicitud):
-        return solicitud.solicitante.perfil
+        return format_html(solicitud.solicitante.perfil)
 
-    unificado.allow_tags = True
     unificado.short_description = 'Ver'
 
 
@@ -276,9 +275,8 @@ class PerfilAdmin(admin.ModelAdmin):
             return obj.user.username
 
     def perfil_comite(self, perfil):
-        return perfil.perfil_comite_anchor()
+        return format_html(perfil.perfil_comite_anchor())
 
-    perfil_comite.allow_tags = True
     perfil_comite.short_description = u'Perfil para el Comité Académico'
 
 
