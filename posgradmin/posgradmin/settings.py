@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-#    'export_action',
+    'export_action',
     'django_extensions'
 ]
 

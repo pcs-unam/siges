@@ -43,8 +43,8 @@ urlpatterns = [
 
     url('^accounts/', include('allauth.urls')),
 
-    # url(r'^export_action/', include("export_action.urls",
-    #                                 namespace="export_action")),
+    url(r'^export_action/', include(("export_action.urls", 'export_action'),
+                                     namespace="export_action")),
 
     url(r'^institucion/agregar/(?P<devolver>[\w-]+)/',
         InstitucionAgregarView.as_view(),

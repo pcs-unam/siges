@@ -26,12 +26,12 @@ def exporta_resumen_academicos(modeladmin, request, queryset):
     for a in queryset:
         if a.perfil_personal_completo:
 
-            if a.user.perfil.adscripcion_set.filter(asociacion_PCS=True).count > 0:
+            if a.user.perfil.adscripcion_set.filter(asociacion_PCS=True).count() > 0:
                 asociacion = a.user.perfil.adscripcion_set.filter(asociacion_PCS=True).first()
                 adscripcion = a.user.perfil.adscripcion_set.filter(asociacion_PCS=False).first()
 
             elif a.user.perfil.adscripcion_set.filter(institucion__entidad_PCS=True,
-                                                    asociacion_PCS=False).count > 0:
+                                                    asociacion_PCS=False).count() > 0:
                 adscripcion = a.user.perfil.adscripcion_set.filter(institucion__entidad_PCS=True,
                                                                    asociacion_PCS=False).first()
                 asociacion = ""
@@ -77,7 +77,7 @@ def exporta_resumen_academicos(modeladmin, request, queryset):
             a.palabras_clave.replace(u'\r\n', u';'),
             u";".join([l.nombre for l in a.lineas_de_investigacion.all()]),
             u";".join([c.nombre for c in a.campos_de_conocimiento.all()]),
-            a.carencias().replace(u"\n", u";"),
+            a.carencias_actividad().replace(u"\n", u";"),
         ]
         ws.append(row)
 
