@@ -129,21 +129,6 @@
 
 {% if user.is_staff or user.asistente %}
 <div class="row">
-  <div class="col-sm-4">
-    <div class="panel panel-warning">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon-king" aria-hidden="true"></span>
-	  Coordinación
-	</h3>
-      </div>
-      <div class="panel-body">
-	<p><a href="{% url 'lista_estudiantes' %}">Estudiantes</a></p>
-	<p><a href="{% url 'lista_academicos' %}">Académicos</a></p>
-	<p><a href="{% url 'lista_sesiones' %}">Sesiones del Comité Académico</a></p>
-      </div>
-    </div>
-  </div>
 
 
   <div class="col-sm-4">
