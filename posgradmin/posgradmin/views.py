@@ -30,7 +30,7 @@ def get_perfiles_editables():
             editables = pickle.load(f)
     except IOError:
         editables = True
-        with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle'), 'w') as f:
+        with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle'), 'wb') as f:
             pickle.dump(editables, f)
     return editables
 
@@ -67,7 +67,7 @@ class TogglePerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
                 editables = True
             else:
                 editables = False
-            with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle'), 'w') as f:
+            with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle'), 'wb') as f:
                 pickle.dump(editables, f)
             return HttpResponseRedirect(reverse('inicio'))
 
