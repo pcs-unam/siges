@@ -1154,7 +1154,8 @@ class Academico(models.Model):
 
         wordcloud.background_color = 'white'
 
-        with open(BASE_DIR + '/posgradmin/stopwords-es.txt', 'r') as f:
+        with open(BASE_DIR + '/posgradmin/stopwords-es.txt', 'r',
+                  encoding="utf-8") as f:
             for w in f.readlines():
                 wordcloud.stopwords.add(w.strip())
 

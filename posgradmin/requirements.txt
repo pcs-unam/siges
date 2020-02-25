@@ -3,7 +3,6 @@ django-allauth
 django-crispy-forms
 django-sortable-listview
 django-markdown2
-django-export-action
 Pillow
 six
 django-extensions
