@@ -71,18 +71,28 @@
       <li class="list-group-item">
 	Número de trabajador UNAM: {{ object.academico.numero_trabajador_unam|default:'' }}</li>
       {% endif %}
-
-      {% if object.academico.disponible_tutor %}
-      <li class="list-group-item">
-	Disponible como tutor principal (dirección de alumnos).
-      </li>
-      {% endif %}
-
-      {% if object.academico.disponible_miembro %}
-      <li class="list-group-item">
-	Disponible como miembro de comité tutor (asesoría de alumnos)</li>
-      {% endif %}
-
     </ul>
+
+    <h3>Disponibilidad para estudiantes</h3>
+    <ul class="list-group">
+      <li class="list-group-item">
+	Como tutor principal (dirección de alumnos):
+	{% if object.academico.disponible_tutor %}
+	✔ disponible
+	{% else %}
+	✖ no disponible
+	{% endif %}
+      </li>
+
+      <li class="list-group-item">
+	Como miembro de comité tutor (asesoría de alumnos):
+	{% if object.academico.disponible_miembro %}
+	✔ disponible
+	{% else %}
+	✖ no disponible
+	{% endif %}
+      </li>
+
+
   </div>
 </div>
