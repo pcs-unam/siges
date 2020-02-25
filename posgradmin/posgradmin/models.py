@@ -576,6 +576,8 @@ class Academico(models.Model):
                                               ('PRIDE D', 'PRIDE D')))
     nivel_SNI = models.CharField(u"Nivel SNI",
                                  max_length=15,
+                                 default='sin SNI',
+                                 blank=True, null=True,
                                  choices=(('sin SNI', 'sin SNI'),
                                           ('I', 'I'),
                                           ('II', 'II'),
