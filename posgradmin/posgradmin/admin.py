@@ -61,18 +61,22 @@ class AcademicoAdmin(admin.ModelAdmin):
                     'perfil_comite',
     ]
     list_filter = [
-                   'disponible_tutor',
-                   'disponible_miembro',
+                   'acreditacion',
                    'resumen_completo',
                    'perfil_personal_completo',
                        ]
 
+    readonly_fields = ['fecha_acreditacion',
+                       'acreditacion',
+                       'ultima_reacreditacion']
+    
     fieldsets = (
         (None,
          {'fields': ('user',
                      'observaciones',)}),
         ('Participación en el Programa',
-         {'fields': ('tutor',
+         {'fields': ('acreditacion',
+                     'fecha_acreditacion',
                      'comite_academico',
                      'estimulo_UNAM',
                      'nivel_SNI',

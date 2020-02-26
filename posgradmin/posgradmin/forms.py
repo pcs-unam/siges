@@ -195,7 +195,7 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
 
     class Meta:
         model = Academico
-        exclude = ['user', 'tutor',
+        exclude = ['user',
                    'ultima_reacreditacion', 'fecha_acreditacion',
                    'acreditacion',
                    'semaforo_maestria',
@@ -250,8 +250,8 @@ class AcademicoResumenCV_reacreditacion_ModelForm(forms.ModelForm):
 
     class Meta:
         model = Academico
-        exclude = ['user', 'tutor', 'nivel_SNI', 'estimulo_UNAM',
-                   'ultima_reacreditacion', 'fecha_acreditacion',
+        exclude = ['user', 'nivel_SNI', 'estimulo_UNAM',
+                   'fecha_acreditacion',
                    'acreditacion',
                    'semaforo_maestria',
                    'semaforo_doctorado',
@@ -299,8 +299,8 @@ class AcademicoResumenCVModelForm(forms.ModelForm):
 
     class Meta:
         model = Academico
-        exclude = ['user', 'tutor', 'nivel_SNI', 'estimulo_UNAM',
-                   'ultima_reacreditacion', 'fecha_acreditacion',
+        exclude = ['user', 'nivel_SNI', 'estimulo_UNAM',
+                   'fecha_acreditacion',
                    'acreditacion',
                    'semaforo_maestria',
                    'semaforo_doctorado',
@@ -343,7 +343,7 @@ class AcademicoActividadModelForm(forms.ModelForm):
 
     class Meta:
         model = Academico
-        exclude = ['user', 'tutor', 'nivel_SNI', 'estimulo_UNAM',
+        exclude = ['user', 'nivel_SNI', 'estimulo_UNAM',
                    'ultima_reacreditacion', 'fecha_acreditacion',
                    'acreditacion',
                    'semaforo_maestria',
@@ -501,20 +501,20 @@ class InstitucionModelForm(forms.ModelForm):
 
 class ComiteTutoralModelForm(forms.ModelForm):
     tutor = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True))
+        queryset=Academico.objects.filter(acreditacion='D'))
 
     cotutor = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True))
+        queryset=Academico.objects.filter(acreditacion='D'))
 
     miembro1 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True))
+        queryset=Academico.objects.filter(acreditacion='D'))
 
     miembro2 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True),
+        queryset=Academico.objects.filter(acreditacion='D'),
         required=False)
 
     miembro3 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True),
+        queryset=Academico.objects.filter(acreditacion='D'),
         required=False)
 
     class Meta:
@@ -534,20 +534,20 @@ class ComiteTutoralModelForm(forms.ModelForm):
 
 class CandidaturaModelForm(forms.ModelForm):
     presidente = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True))
+        queryset=Academico.objects.filter(acreditacion='D'))
 
     secretario = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True))
+        queryset=Academico.objects.filter(acreditacion='D'))
 
     miembro1 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True))
+        queryset=Academico.objects.filter(acreditacion='D'))
 
     miembro2 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True),
+        queryset=Academico.objects.filter(acreditacion='D'),
         required=False)
 
     miembro3 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True),
+        queryset=Academico.objects.filter(acreditacion='D'),
         required=False)
 
     class Meta:
@@ -567,16 +567,16 @@ class CandidaturaModelForm(forms.ModelForm):
 
 class JuradoGradoModelForm(forms.ModelForm):
     presidente = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True))
+        queryset=Academico.objects.filter(acreditacion='D'))
 
     secretario = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True))
+        queryset=Academico.objects.filter(acreditacion='D'))
 
     vocal = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True))
+        queryset=Academico.objects.filter(acreditacion='D'))
 
     suplente = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(tutor=True))
+        queryset=Academico.objects.filter(acreditacion='D'))
 
     class Meta:
         model = Comite

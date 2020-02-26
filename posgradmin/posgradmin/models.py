@@ -374,8 +374,7 @@ class Solicitud(models.Model):
             if self.solicitante.id == user.id:
                 return False
 
-            if hasattr(user, 'asistente') or user.is_staff \
-               or user.academico.acreditado():
+            if hasattr(user, 'asistente') or user.is_staff:
                 return True
         else:
             return False
@@ -590,8 +589,6 @@ class Academico(models.Model):
     numero_trabajador_unam = models.CharField(u"Número de trabajador (UNAM)",
                                               max_length=100,
                                               blank=True, null=True)
-
-    tutor = models.BooleanField(default=False)
 
     comite_academico = models.BooleanField(default=False)
 
@@ -1007,15 +1004,6 @@ class Academico(models.Model):
     def nombre_completo(self):
         return self.__str__()
 
-    def acreditado(self):
-        return self.tutor
-        # if self.solicitud.dictamen_final() is None:
-        #     return False
-        # elif self.solicitud.dictamen_final().resolucion == 'concedida':
-        #     self.fecha_acreditacion = self.solicitud.dictamen_final().fecha
-        #     self.tutor = True
-        #     self.save()
-        #     return True
 
     def solicitudes(self, estado=None):
         solicitudes_de_estudiantes = set()
@@ -1123,8 +1111,8 @@ class Academico(models.Model):
             return "rojo"
 
     def verifica_semaforo_doctorado(self):
-        # if not self.resumen_completo:
-        #     return "rojo"
+        if not self.carencias_resumen() == u"":
+            return "rojo"
 
         if ((self.tesis_maestria >= 2
              or self.tesis_doctorado >= 1) and self.publicaciones_5() >= 5
