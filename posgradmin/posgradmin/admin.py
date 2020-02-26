@@ -67,8 +67,7 @@ class AcademicoAdmin(admin.ModelAdmin):
                        ]
 
     readonly_fields = ['fecha_acreditacion',
-                       'acreditacion',
-                       'ultima_reacreditacion']
+                       'acreditacion' ]
     
     fieldsets = (
         (None,

@@ -55,9 +55,6 @@
 	<p>Acreditado el {{ object.academico.fecha_acreditacion }}</p>
 	{% endif %}
 
-	{% if object.academico.ultima_reacreditacion %}
-	<p>Última reacreditación el {{ object.academico.ultima_reacreditacion }}</p>
-	{% endif %}
       </li>
       <li class="list-group-item">
 	CVU: {{ object.academico.CVU|default:'!' }}</li>

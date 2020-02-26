@@ -173,6 +173,15 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                     a.acreditacion = 'candidato'
                     a.user = u
                     a.save()
+
+
+                    ac = models.Acreditacion(
+                        academico=a,
+                        fecha=a.user.date_joined,
+                        comentario=u'invitado',
+                        acreditacion='candidato')
+                    ac.save()
+                    
                     aciertos.append([i, ] + row)
                 except (IntegrityError, ValidationError) as E:
                     errores.append([E.message, i] + [cell

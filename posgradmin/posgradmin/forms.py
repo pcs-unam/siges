@@ -196,7 +196,7 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
     class Meta:
         model = Academico
         exclude = ['user',
-                   'ultima_reacreditacion', 'fecha_acreditacion',
+                   'fecha_acreditacion',
                    'acreditacion',
                    'semaforo_maestria',
                    'titulo_honorifico',
@@ -344,7 +344,7 @@ class AcademicoActividadModelForm(forms.ModelForm):
     class Meta:
         model = Academico
         exclude = ['user', 'nivel_SNI', 'estimulo_UNAM',
-                   'ultima_reacreditacion', 'fecha_acreditacion',
+                   'fecha_acreditacion',
                    'acreditacion',
                    'semaforo_maestria',
                    'semaforo_doctorado',

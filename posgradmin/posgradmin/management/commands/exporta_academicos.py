@@ -25,13 +25,11 @@ def export(outdir):
     doctorado = Academico.objects.filter(
         Q(acreditacion='D'),
         Q(fecha_acreditacion__year__gte=last_year)
-        | Q(ultima_reacreditacion__year__gte=last_year)
     ).order_by('user__last_name')
 
     maestria = Academico.objects.filter(
         Q(acreditacion='M'),
         Q(fecha_acreditacion__year__gte=last_year)
-        | Q(ultima_reacreditacion__year__gte=last_year)
     ).order_by('user__last_name')
 
     mkdir('-p', outdir)
@@ -52,7 +50,6 @@ def export(outdir):
         academicos = linea.academico_set.filter(
             Q(acreditacion='D'),
             Q(fecha_acreditacion__year__gte=last_year)
-            | Q(ultima_reacreditacion__year__gte=last_year)
         ).order_by('user__last_name')
 
         index_md = path.join(outdir, 'indice_%s.md' % slugify(linea.nombre))
@@ -71,7 +68,6 @@ def export(outdir):
         academicos = campo.academico_set.filter(
             Q(acreditacion='M') | Q(acreditacion='D'),
             Q(fecha_acreditacion__year__gte=last_year)
-            | Q(ultima_reacreditacion__year__gte=last_year)
         ).order_by('user__last_name')
 
         index_md = path.join(outdir, 'indice_%s.md' % slugify(campo.nombre))
