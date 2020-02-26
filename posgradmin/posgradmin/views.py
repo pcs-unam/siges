@@ -132,6 +132,7 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
+            tipo_candidato = request.POST['tutor_o_profesor']
             wb = load_workbook(request.FILES['lista'])
             ws = wb.active
 
@@ -170,7 +171,7 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                     u.save()
 
                     a = models.Academico()
-                    a.acreditacion = 'candidato'
+                    a.acreditacion = tipo_candidato
                     a.user = u
                     a.save()
 
@@ -179,12 +180,12 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                         academico=a,
                         fecha=a.user.date_joined,
                         comentario=u'invitado',
-                        acreditacion='candidato')
+                        acreditacion=tipo_candidato)
                     ac.save()
                     
                     aciertos.append([i, ] + row)
                 except (IntegrityError, ValidationError) as E:
-                    errores.append([E.message, i] + [cell
+                    errores.append([str(E), i] + [cell
                                                      for cell in row])
 
             return render(request,

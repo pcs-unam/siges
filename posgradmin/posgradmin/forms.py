@@ -30,9 +30,16 @@ class TogglePerfilEditarForm(forms.Form):
 
 
 class AcademicoInvitarForm(forms.Form):
+
+    CHOICES=[('candidato','invitar tutores'),
+             ('candidato profesor','invitar profesores')]
+
     lista = forms.FileField(required=True)
+
+    tutor_o_profesor = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)    
     helper = FormHelper()
     helper.layout = Layout(
+        Field('tutor_o_profesor'),
         Field('lista'),
         FormActions(
             Submit('subir', 'Crear candidatos', css_class="btn-primary")
