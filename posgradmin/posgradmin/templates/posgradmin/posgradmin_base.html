@@ -2,53 +2,11 @@
 {% load admin_urls %}
 
 {% block title %}{% endblock %}
+
 {% block extrahead %}
-
-<script
-   src="https://code.jquery.com/jquery-3.2.1.min.js"
-   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-   crossorigin="anonymous"></script>
-
-<script
-			  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
-			  integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
-			  crossorigin="anonymous"></script>
-
-<link rel="stylesheet"
-      href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-      crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-      crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-	crossorigin="anonymous"></script>
-
 {% endblock %}
 
-{% block branding %}
 
-<style>
-  #header {height: 60px;
-  padding-top: 1.2em;
-  background: #404090;}
-</style>
-
-<div id="branding">
-  <h1 id="site-name"><a href="{{ APP_PREFIX }}">Posgrado en Ciencias de la Sostenibilidad</a></h1>
-</div>
-
-{% endblock %}
 
 {% block nav-global %}
 {% if user.is_staff %}
@@ -61,19 +19,8 @@
 
 {% block usertools %}
 
-<div id="user-tools">
-  {% if user.is_authenticated %}
-  <strong>{{ user.get_full_name}} ({{ user.get_username }})</strong> /
-  <a href="{{ APP_PREFIX }}accounts/password/change/">cambiar contraseña</a> /
-  <a href="{{ APP_PREFIX }}accounts/logout/">Terminar sesión</a>
-  {% else %}
-  <a href="{{ APP_PREFIX }}accounts/login/">Iniciar sesión</a>
-  {% endif %}
-</div>
 {% endblock %}
 
-
-{% block userlinks %}User link{% endblock %}
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">

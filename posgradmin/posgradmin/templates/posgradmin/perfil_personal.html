@@ -4,229 +4,158 @@
 {% block breadcrumbs %}
 <div class="breadcrumbs">
   &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
-  &rsaquo; {{ object.get_full_name }}
+  &rsaquo; Perfil personal
 </div>
 {% endblock %}
 
 
 {% block content %}
 
-    {% if not user.perfil.adscripcion_ok %}
-    <div class="alert alert-danger" role="alert">
-      <strong>No ha agregado su adscripción</strong>
-      <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
-    </div>
-    {% elif not user.perfil.asociado_PCS %}
-    <div class="alert alert-danger" role="alert">
-      <strong>No asociado a entidad del PCS</strong>
-      <a href="{% url 'agregar_asociacion' %}">Registrar asociación</a>.
-    </div>
-    {% endif %}
-
-    {% if not user.gradoacademico_set.all %}
-    <div class="alert alert-danger" role="alert">
-      <strong>No ha agregado grados académicos</strong>
-      <a href="{% url 'agregar_grado' %}">Agregar grados académicos</a>.
-    </div>
-    {% endif %}
-
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-      Perfil Personal
-    </h3>
-
-  </div>
-
-  <div class="panel panel-body">
-
-
-    <h1>{{ object.get_full_name }}</h1>
-    <hr>
-    {% if user == object and editable %}
-    <a class="btn btn-default" role="button" href="{% url 'editar_perfil' %}">editar perfil personal</a>
-    {% elif user.is_staff %}
-    <a href="{% url 'admin:auth_user_change' object.id %}">editar usuario</a><br />
-    {% if object.perfil %}
-    <a href="{% url 'admin:posgradmin_perfil_change' object.perfil.id %}">editar perfil personal</a>
-    {% endif %}
-    {% endif %}
-    <br />  <br />
-
-
-    {% if see_private %}
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-	  Datos Personales</h3>
-      </div>
-      <div class="panel-body">
-
-	<div class="media">
-	  <div class="media-left media-middle">
-	    {% if object.perfil.headshot %}
-	    <img class="media-object"
-		 width="150px"
-		 src="{{ object.perfil.headshot.url }}" />
-
-	    {% endif %}
-	  </div>
-	  <div class="media-body">
-
-	    <ul class="list-group">
-	      <li class="list-group-item"><strong>Fecha de Nacimiento</strong>
-		{{ object.perfil.fecha_nacimiento|default:"" }}</li>
-	      <li class="list-group-item"><strong>Genero</strong> {{ object.perfil.genero }}</li>
-	      <li class="list-group-item"><strong>Nacionalidad</strong> {{ object.perfil.nacionalidad }}</li>
-	      <li class="list-group-item"><strong>CURP</strong> {{ object.perfil.curp }}</li>
-	      <li class="list-group-item"><strong>RFC</strong> {{ object.perfil.rfc }}</li>
-	    </ul>
-	  </div>
-	</div>
-      </div>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
-	  Información de contacto
-	</h3>
-      </div>
-      <div class="panel-body">
-	<ul class="list-group">
-	  <li class="list-group-item"><strong>Teléfono</strong> {{ object.perfil.telefono }}</li>
-	  <li class="list-group-item"><strong>Teléfono Móvil</strong> {{ object.perfil.telefono_movil }}</li>
-	  <li class="list-group-item"><strong>email</strong> {{ object.email }}</li>
-	  <li class="list-group-item"><strong>Sitio Web</strong> {{ object.perfil.website }}</li>
-	  <li class="list-group-item"><strong>Dirección</Strong> {{ object.perfil.direccion1 }}</li>
-	  <li class="list-group-item"><strong>Código Postal</strong> {{ object.perfil.codigo_postal|default:"" }}</li>
-	</ul>
-      </div>
-    </div>
-
-    {% else %}
-    <div class="panel-body">
-      <div class="panel panel-default">
-	<div class="panel-heading">
-	  <h3 class="panel-title">
-	    <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
-	    Información de contacto
-	  </h3>
-	</div>
-	<div class="panel-body">
-	  <ul class="list-group">
-	    <li class="list-group-item"><strong>email</strong> {{ object.email }}</li>
-	    <li class="list-group-item"><strong>Sitio Web</strong> {{ object.perfil.website|default:'' }}</li>
-	  </ul>
-	</div>
-      </div>
-    </div>
-    {% endif %}
-
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
-	  Grados Académicos
-	</h3>
-      </div>
-      <div class="panel-body">
-	<ul class="list-group">
-	  {% for grado in object.gradoacademico_set.all %}
-	  <li class="list-group-item">
-	    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}
-	    <p class="list-group-item-text">
-	      nivel {{ grado.nivel }}
-	      obtenido el {{ grado.fecha_obtencion }}<br />
-	    </p>
-
-	  </li>
-	  {% empty %}
-	  <li class="list-group-item">
-	    <div class="alert alert-danger" role="alert">
-	      <strong>No ha agregado grados académicos</strong>
-	      <a href="{% url 'agregar_grado' %}">Agregar grados académicos</a>.
-	    </div>
-	  </li>
-	  {% endfor %}
-	</ul>
-	{% if user.is_staff %}
-	<a href="{{ APP_PREFIX }}admin/posgradmin/gradoacademico/?q={{ object.username }}">editar grados</a>
-	{% endif %}
-      </div>
-    </div>
-
-
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
-	  Adscripción
-	</h3>
-      </div>
-      <div class="panel-body">
-	<ul class="list-group">
-	  {% for ad in user.perfil.adscripcion_set.all %}
-	  <li class="list-group-item">
-	    {{ ad }}
-	    {% if ad.catedra_conacyt %}
-	    <br />
-	    Cátedra CONACYT
-	    {% endif %}
-	    <br />
-	    {% if not ad.asociacion_PCS %}
-	    {{ ad.nombramiento }} desde {{ ad.anno_nombramiento }}
-	    {% endif %}
-	  </li>
-	  {% endfor %}
-	</ul>
-
-	{% if not user.perfil.adscripcion_ok %}
-	<div class="alert alert-danger" role="alert">
-	  <strong>No ha agregado su adscripción</strong>
-	  <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
-	</div>
-	{% elif not user.perfil.asociado_PCS %}
-	<div class="alert alert-danger" role="alert">
-	  <strong>No asociado a entidad del PCS</strong>
-	  <a href="{% url 'agregar_asociacion' %}">Registrar asociación</a>.
-	</div>
-	{% endif %}
-      </div>
-    </div>
-
-
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-	  Expediente
-	</h3>
-      </div>
-      <div class="panel-body">
-	<ul class="list-group">
-	  {% for anexo in user.anexoexpediente_set.all %}
-	  <li class="list-group-item">
-	    <a href="{{ anexo.url }}">
-	      {{ anexo }}
-	    </a> anexado el {{ anexo.fecha }}
-	  </li>
-	  {% endfor %}
-	</ul>
-      </div>
-    </div>
-
-
-  </div>
+{% if not user.perfil.adscripcion_ok %}
+<div class="alert alert-danger" role="alert">
+  <strong>No ha agregado su adscripción</strong>
+  <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
 </div>
-<!-- perfil -->
+{% elif not user.perfil.asociado_PCS %}
+<div class="alert alert-danger" role="alert">
+  <strong>No asociado a entidad del PCS</strong>
+  <a href="{% url 'agregar_asociacion' %}">Registrar asociación</a>.
+</div>
+{% endif %}
 
+{% if not user.gradoacademico_set.all %}
+<div class="alert alert-danger" role="alert">
+  <strong>No ha agregado grados académicos</strong>
+  <a href="{% url 'agregar_grado' %}">Agregar grados académicos</a>.
+</div>
+{% endif %}
+
+
+
+
+
+<h1>{{ object.get_full_name }}</h1>
+
+<hr>
+
+{% if user == object and editable %}
+<a class="btn btn-default" role="button" href="{% url 'editar_perfil' %}">editar perfil personal</a>
+{% elif user.is_staff %}
+<a href="{% url 'admin:auth_user_change' object.id %}">editar usuario</a><br />
+{% if object.perfil %}
+<a href="{% url 'admin:posgradmin_perfil_change' object.perfil.id %}">editar perfil personal</a>
+{% endif %}
+{% endif %}
+<br />  <br />
+
+
+{% if see_private %}
+<h2>Datos Personales</h2>
+
+{% if object.perfil.headshot %}
+<img class="media-object"
+     width="150px"
+     src="{{ object.perfil.headshot.url }}" />
+{% endif %}
+
+<ul class="list-group">
+  <li class="list-group-item">Fecha de Nacimiento
+    {{ object.perfil.fecha_nacimiento|default:"" }}</li>
+  <li class="list-group-item">Genero: {{ object.perfil.genero }}</li>
+  <li class="list-group-item">Nacionalidad: {{ object.perfil.nacionalidad }}</li>
+  <li class="list-group-item">CURP: {{ object.perfil.curp }}</li>
+  <li class="list-group-item">RFC: {{ object.perfil.rfc }}</li>
+</ul>
+
+<h2>Información de contacto</h2>
+<ul class="list-group">
+  <li class="list-group-item">Teléfono {{ object.perfil.telefono }}</li>
+  <li class="list-group-item">Teléfono Móvil {{ object.perfil.telefono_movil }}</li>
+  <li class="list-group-item">email {{ object.email }}</li>
+  <li class="list-group-item">Sitio Web {{ object.perfil.website }}</li>
+  <li class="list-group-item">Dirección {{ object.perfil.direccion1 }}</li>
+  <li class="list-group-item">Código Postal {{ object.perfil.codigo_postal|default:"" }}</li>
+</ul>
+
+{% else %}
+
+<h2>Información de contacto</h2>
+<ul class="list-group">
+  <li class="list-group-item">email {{ object.email }}</li>
+  <li class="list-group-item">Sitio Web {{ object.perfil.website|default:'' }}</li>
+</ul>
+{% endif %}
+
+
+<h2>Grados Académicos</h2>
+
+<ul class="list-group">
+  {% for grado in object.gradoacademico_set.all %}
+  <li class="list-group-item">
+    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}
+    <p class="list-group-item-text">
+      nivel {{ grado.nivel }}
+      obtenido el {{ grado.fecha_obtencion }}<br />
+    </p>
+
+  </li>
+  {% empty %}
+  <li>
+    <strong>No ha agregado grados académicos</strong>
+    <a href="{% url 'agregar_grado' %}">Agregar grados académicos</a>.
+  </li>
+  {% endfor %}
+</ul>
+
+{% if user.is_staff %}
+<a href="{{ APP_PREFIX }}admin/posgradmin/gradoacademico/?q={{ object.username }}">editar grados</a>
+{% endif %}
+
+
+
+
+<h2>Adscripción</h2>
+
+<ul class="list-group">
+  {% for ad in user.perfil.adscripcion_set.all %}
+  <li class="list-group-item">
+    {{ ad }}
+    {% if ad.catedra_conacyt %}
+    <br />
+    Cátedra CONACYT
+    {% endif %}
+    <br />
+    {% if not ad.asociacion_PCS %}
+    {{ ad.nombramiento }} desde {{ ad.anno_nombramiento }}
+    {% endif %}
+  </li>
+  {% endfor %}
+  {% if not user.perfil.adscripcion_ok %}
+  <li>
+    <strong>No ha agregado su adscripción</strong>
+    <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
+  </li>
+  {% elif not user.perfil.asociado_PCS %}
+  <li>
+    <strong>No asociado a entidad del PCS</strong>
+  </li>
+  {% endif %}
+</ul>
+
+
+
+
+<h2>Expediente</h2>
+
+<ul class="list-group">
+  {% for anexo in user.anexoexpediente_set.all %}
+  <li class="list-group-item">
+    <a href="{{ anexo.url }}">
+      {{ anexo }}
+    </a> anexado el {{ anexo.fecha }}
+  </li>
+  {% endfor %}
+</ul>
 
 
 {% endblock %}

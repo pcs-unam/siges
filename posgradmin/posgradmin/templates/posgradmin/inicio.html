@@ -38,21 +38,34 @@
 
 
 
+    <div class="container">
+      <ul class="nav nav-pills">
+	{% if user.perfil %}
+	<li role="presentation">
+	  <a href="{% url 'perfil' %}" class="list-group-item">Perfil Personal</a>
+	</li>
+	{% endif %}
 
-    <div class="list-group">
-      {% if user.perfil %}
-      <a href="{% url 'perfil' %}" class="list-group-item">Perfil Personal</a>
-      {% endif %}
+	{% if user.academico %}
+	<li role="presentation">
+	  <a href="{% url 'perfil_academico' %}" class="list-group-item">Perfil Académico</a>
+	</li>
+	{% endif %}
 
-      {% if user.academico %}
-      <a href="{% url 'perfil_academico' %}" class="list-group-item">Perfil Académico</a>
-      {% endif %}
+	{% if user.estudiante %}
+	<a href="{% url 'perfil_estudiante' %}" class="list-group-item">Perfil de Estudiante</a>
+	{% endif %}
 
-      {% if user.estudiante %}
-      <a href="{% url 'perfil_estudiante' %}" class="list-group-item">Perfil de Estudiante</a>
-      {% endif %}
-      
+      </ul>
     </div>
+
+
+    <div class="jumbotron">
+      <h1>Convocatoria para la impartición de cursos</h1>
+      <p>¿Quieres dar un curso en al programa de posgrado?</p>
+      <p><a class="btn btn-primary btn-lg" href="#" role="button">Elige una asignatura</a></p>
+    </div>
+
 
     {# if user.perfil #}
     {# include 'posgradmin/inicio_perfil.html' #}
@@ -145,7 +158,7 @@
       </div>
     </div>
   </div>
-  
+
 </div>
 {% endif %}
 

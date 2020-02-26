@@ -1,95 +1,85 @@
 {% load md2 %}
 
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>
-      Perfil Académico
-    </h3>
-  </div>
-  <div class="panel-body">
-
-    {% if object.academico.carencias_general %}
-    <div class="alert alert-danger" role="alert">
-      <strong>Perfil académico incompleto.</strong>
-      <hr />
-      Atención a los siguientes reactivos:<br />
-      {{ object.academico.carencias_general|markdown }}
-    </div>
-    {% endif %}
+<br /><br />
+<h2>General</h2>
 
 
-    {% if user == object and editable == True %}
-    <a class="btn btn-default" role="button" href="{% url 'academico_perfil' %}">editar esta sección</a>
-    <hr />
-    {% endif %}
-
-    <ul class="list-group">
-
-      {% if object.academico.anexo_CV %}
-      <li class="list-group-item">
-	<a href="{{ object.academico.anexo_CV.url }}">CV extenso</a></li>
-      {% endif %}
-
-      {% if object.academico.anexo_solicitud %}
-      <li class="list-group-item">
-	<a href="{{ object.academico.anexo_solicitud.url }}">Solicitud de Acreditación como Tutor</a></li>
-      {% endif %}
-
-      {% if object.academico.ultimo_grado %}
-      <li class="list-group-item">
-	<a href="{{ object.academico.ultimo_grado.url }}">Último grado académico</a>
-      </li>
-      {% endif %}
-
-      <li class="list-group-item">
-	Estímulo UNAM: {{ object.academico.estimulo_UNAM|default:'' }}
-      </li>
-      <li class="list-group-item">
-	Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
-
-      <li class="list-group-item">
-	Acreditación: {{ object.academico.show_acreditacion }}
-
-	{% if object.academico.fecha_acreditacion %}
-	<p>Acreditado el {{ object.academico.fecha_acreditacion }}</p>
-	{% endif %}
-
-      </li>
-      <li class="list-group-item">
-	CVU: {{ object.academico.CVU|default:'!' }}</li>
-
-      {% if object.academico.DGEE %}
-      <li class="list-group-item">
-	DGEE: {{ object.academico.DGEE|default:'' }}</li>
-      {% endif %}
-
-      {% if object.academico.numero_trabajador_unam %}
-      <li class="list-group-item">
-	Número de trabajador UNAM: {{ object.academico.numero_trabajador_unam|default:'' }}</li>
-      {% endif %}
-    </ul>
-
-    <h3>Disponibilidad para estudiantes</h3>
-    <ul class="list-group">
-      <li class="list-group-item">
-	Como tutor principal (dirección de alumnos):
-	{% if object.academico.disponible_tutor %}
-	✔ disponible
-	{% else %}
-	✖ no disponible
-	{% endif %}
-      </li>
-
-      <li class="list-group-item">
-	Como miembro de comité tutor (asesoría de alumnos):
-	{% if object.academico.disponible_miembro %}
-	✔ disponible
-	{% else %}
-	✖ no disponible
-	{% endif %}
-      </li>
-
-
-  </div>
+{% if object.academico.carencias_general %}
+<div style="border-style: solid; border-width: 1px; border-color: red; padding: 1em;">
+<strong>Perfil académico incompleto.</strong>
+Atención a los siguientes reactivos:<br />
+{{ object.academico.carencias_general|markdown }}
 </div>
+{% endif %}
+
+
+{% if user == object and editable == True %}
+<a class="btn btn-default" role="button" href="{% url 'academico_perfil' %}">editar esta sección</a>
+{% endif %}
+
+<ul class="list-group">
+
+  {% if object.academico.anexo_CV %}
+  <li class="list-group-item">
+    <a href="{{ object.academico.anexo_CV.url }}">CV extenso</a></li>
+  {% endif %}
+
+  {% if object.academico.anexo_solicitud %}
+  <li class="list-group-item">
+    <a href="{{ object.academico.anexo_solicitud.url }}">Solicitud de Acreditación como Tutor</a></li>
+  {% endif %}
+
+  {% if object.academico.ultimo_grado %}
+  <li class="list-group-item">
+    <a href="{{ object.academico.ultimo_grado.url }}">Último grado académico</a>
+  </li>
+  {% endif %}
+
+  <li class="list-group-item">
+    Estímulo UNAM: {{ object.academico.estimulo_UNAM|default:'' }}
+  </li>
+  <li class="list-group-item">
+    Nivel SNI: {{ object.academico.nivel_SNI|default:'' }}</li>
+
+  <li class="list-group-item">
+    Acreditación: {{ object.academico.show_acreditacion }}
+
+    {% if object.academico.fecha_acreditacion %}
+    <p>Acreditado el {{ object.academico.fecha_acreditacion }}</p>
+    {% endif %}
+
+  </li>
+  <li class="list-group-item">
+    CVU: {{ object.academico.CVU|default:'!' }}</li>
+
+  {% if object.academico.DGEE %}
+  <li class="list-group-item">
+    DGEE: {{ object.academico.DGEE|default:'' }}</li>
+  {% endif %}
+
+  {% if object.academico.numero_trabajador_unam %}
+  <li class="list-group-item">
+    Número de trabajador UNAM: {{ object.academico.numero_trabajador_unam|default:'' }}</li>
+  {% endif %}
+</ul>
+
+<h3>Disponibilidad para estudiantes</h3>
+<ul class="list-group">
+  <li class="list-group-item">
+    Como tutor principal (dirección de alumnos):
+    {% if object.academico.disponible_tutor %}
+    ✔ disponible
+    {% else %}
+    ✖ no disponible
+    {% endif %}
+  </li>
+
+  <li class="list-group-item">
+    Como miembro de comité tutor (asesoría de alumnos):
+    {% if object.academico.disponible_miembro %}
+    ✔ disponible
+    {% else %}
+    ✖ no disponible
+    {% endif %}
+  </li>
+</ul>

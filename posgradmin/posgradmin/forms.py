@@ -36,7 +36,7 @@ class AcademicoInvitarForm(forms.Form):
 
     lista = forms.FileField(required=True)
 
-    tutor_o_profesor = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)    
+    tutor_o_profesor = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
     helper = FormHelper()
     helper.layout = Layout(
         Field('tutor_o_profesor'),
@@ -95,8 +95,9 @@ class PerfilModelForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
-            Div(Div(HTML("<h1 class='panel-title'>Datos Personales</h1>"),
-                    Class="panel-heading"),
+            Div(Div(
+                HTML("<h2>Datos Personales</h2>"),
+                    style="margin-top: 1em;"),
                 Div(Column('nombre',
                            'apellidos',
                            'fecha_nacimiento',
@@ -107,8 +108,8 @@ class PerfilModelForm(forms.ModelForm):
                            'headshot'),
                     Class="panel-body"),
 
-                Div(HTML(u"<h1 class='panel-title'>Información de contacto</h1>"),
-                    Class="panel-heading"),
+                Div(HTML(u"<h2>Información de contacto</h2>"),
+                    style="margin-top: 1em;"),
                 Div(Column('telefono',
                            'telefono_movil',
                            'website',

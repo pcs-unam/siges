@@ -5,192 +5,170 @@
 {% block breadcrumbs %}
 <div class="breadcrumbs">
   &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
-  &rsaquo; <a href="{% url 'perfil_academico' %}">{{ object.get_full_name }} (perfil académico)</a>
+  &rsaquo; Perfil Académico
 </div>
 {% endblock %}
 
 
 {% block content %}
-    {% if not user.perfil %}
-    <div class="alert alert-danger" role="alert">
-      <strong>No tiene perfil personal.</strong>
-      <a href="{% url 'editar_perfil' %}">Crear perfil personal.</a>.
-    </div>
-    {% endif %}
 
-
-    <h1>{{ object.get_full_name }}</h1>
-    <hr />
-    {% if user.is_staff %}
-    <a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar perfil académico</a><br /><br />
-    {% endif %}
-
-
-
-
-<div class="panel panel-primary">
-
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon glyphicon-road" aria-hidden="true"></span>
-      Resumen Curricular
-    </h3>
-  </div>
-  <div class="panel-body">
-
-
-    {% if object.academico.carencias_resumen %}
-    <div class="alert alert-danger" role="alert">
-      <strong>Resumen curricular incompleto.</strong>
-      <hr />
-      Recuerde llenar con ceros cuando no tenga cantidades qué reportar. Atención a los siguientes reactivos: <br />
-      {{ object.academico.carencias_resumen|markdown }}
-    </div>
-    {% endif %}
-    
-    {% if user == object and editable == True %}
-    <a class="btn btn-default" role="button" href="{% url 'academico_resumen' %}">editar esta sección</a>
-    <hr />
-    {% endif %}
-    
-    <img alt="" src="/media/perfil-academico/{{ object.academico.id }}/pc_resumen_academico.png">
-    <img alt="" src="/media/perfil-academico/{{ object.academico.id }}/wordcloud.png" width="640px">
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
-	  Tutorías
-	</h3>
-      </div>
-      <div class="panel-body">
-	<table class="table table-striped">
-	  <thead>
-	    <tr>
-	      <th></th><th style="text-align:right">Licenciatura</th><th style="text-align:right">Maestría</th><th style="text-align:right">Doctorado</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr>
-	      <td>Cantidad de participaciones como tutor principal de estudiantes graduados </td>
-	      <td align="right">{{ object.academico.tesis_licenciatura|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.tesis_maestria|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.tesis_doctorado|default_if_none:"" }}</td>
-	    </tr>
-	    <tr>
-	      <td>Cantidad de participaciones como tutor principal de estudiantes graduados en los últimos 5 años</td>
-	      <td align="right">{{ object.academico.tesis_licenciatura_5|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.tesis_maestria_5|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.tesis_doctorado_5|default_if_none:"" }}</td>
-	    </tr>
-	    {% if object.academico.acreditacion == 'M' or object.academico.acreditacion == 'D' or object.academico.acreditacion == 'E' %}
-	    <tr>
-	      <td>
-		Cantidad de participaciones como tutor principal en el <b>Posgrado en Ciencias de la Sostenibilidad</b></td>
-	      <td></td>
-	      <td align="right">{{ object.academico.participacion_tutor_maestria|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.participacion_tutor_doctorado|default_if_none:"" }}</td>
-	    </tr>
-	    <tr>
-	      <td>Cantidad de participaciones como miembro de comité tutor (no tutor
-		principal) en el <b>Posgrado en Ciencias de la Sostenibilidad</b></td>
-	      <td></td>
-	      <td align="right">{{ object.academico.participacion_comite_maestria|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.participacion_comite_doctorado|default_if_none:"" }}</td>
-	    </tr>
-	    {% endif %}
-	    <tr>
-	      <td>Cantidad total de participaciones como miembro de comité
-		tutor (no tutor principal) de estudiantes graduados</td>
-	      <td></td>
-	      <td align="right">{{ object.academico.comite_maestria_otros|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.comite_doctorado_otros|default_if_none:"" }}</td>
-	    </tr>
-
-	  </tbody>
-	</table>
-
-	<hr>
-	Otros programas en los que participa: {{ object.academico.tutor_principal_otros_programas|default:"" }} <br />
-	<hr />
-
-	{% if object.academico.otras_actividades %}
-	<h3>Otras actividades académicas</h3>
-	Como estancias de investigación, seminarios de titulación, etc.: {{ object.academico.otras_actividades|default_if_none:""|markdown }}
-	{% endif %}
-	
-      </div>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></span>
-	  Publicaciones
-	</h3>
-      </div>
-      <div class="panel-body">
-	<table class="table table-striped">
-	  <thead>
-	    <tr>
-	      <th></th><th style="text-align:right">Total</th><th style="text-align:right">Los últimos 5 años</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr>
-	      <td>Cantidad de artículos publicados en revistas internacionales</td>
-	      <td align="right">{{ object.academico.articulos_internacionales|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.articulos_internacionales_5|default_if_none:"" }}</td>
-	    </tr>
-	    <tr>
-	      <td>Cantidad de artículos publicados en revistas nacionales</td>
-	      <td align="right">{{ object.academico.articulos_nacionales|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.articulos_nacionales_5|default_if_none:"" }}</td>
-	    </tr>
-	    <tr>
-	      <td>Libros publicados</td>
-	      <td align="right">{{ object.academico.libros|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.libros_5|default_if_none:"" }}</td>
-	    </tr>
-	    <tr>
-	      <td>Capítulos de libro publicados</td>
-	      <td align="right">{{ object.academico.capitulos|default_if_none:"" }}</td>
-	      <td align="right">{{ object.academico.capitulos_5|default_if_none:"" }}</td>
-	    </tr>
-	  </tbody>
-	</table>
-	{% if object.academico.otras_publicaciones %}
-	<h3>Otras publicaciones</h3>
-	{{ object.academico.otras_publicaciones|default_if_none:""|markdown }}
-	{% endif %}
-	
-      </div>
-    </div>
-
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon glyphicon-book" aria-hidden="true"></span>
-	  Cinco publicaciones más destacadas en temas relacionados con las Ciencias de la Sostenibilidad
-	</h3>
-      </div>
-      <div class="panel-body">
-	{{ object.academico.top_5|markdown }}
-      </div>
-    </div>
-
-    <a href="https://github.com/sostenibilidad-unam/posgrado/files/2645942/Requisitos.acreditacion.pdf">Consultar los criterios de reacreditación.</a>
-  </div>
+{% if not user.perfil %}
+<div style="border-style: solid; border-width: 1px; border-color: red; padding: 1em;">
+<strong>No tiene perfil personal.</strong>
+<a href="{% url 'editar_perfil' %}">Crear perfil personal.</a>.
 </div>
+{% endif %}
+
+
+<h1>{{ object.get_full_name }}</h1>
+<hr />
+<a href="https://github.com/sostenibilidad-unam/posgrado/files/2645942/Requisitos.acreditacion.pdf">Consultar los criterios de reacreditación.</a>
+
+{% if user.is_staff %}
+<a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar perfil académico</a><br /><br />
+{% endif %}
 
 
 
 {% if object.academico.semaforo_maestria != "rojo" %}
 {% include "posgradmin/perfil_academico_seccion_general.html" %}
-{% include "posgradmin/perfil_academico_seccion_actividad.html" %}
 {% endif %}
 
+
+<br /><br />
+<h2>Resumen Curricular</h2>
+
+
+{% if object.academico.carencias_resumen %}
+<div style="border-style: solid; border-width: 1px; border-color: red; padding: 1em;">
+<strong>Resumen curricular incompleto.</strong>
+Recuerde llenar con ceros cuando no tenga cantidades qué reportar. Atención a los siguientes reactivos: <br />
+{{ object.academico.carencias_resumen|markdown }}
+</div>
+{% endif %}
+
+{% if user == object and editable == True %}
+<a class="btn btn-default" role="button" href="{% url 'academico_resumen' %}">editar esta sección</a>
+<hr />
+{% endif %}
+
+<img alt="" src="/media/perfil-academico/{{ object.academico.id }}/pc_resumen_academico.png">
+<img alt="" src="/media/perfil-academico/{{ object.academico.id }}/wordcloud.png" width="640px">
+
+<div style="margin-top: 1em;">
+  <h3>Tutorías</h3>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th></th><th style="text-align:right">Licenciatura</th><th style="text-align:right">Maestría</th><th style="text-align:right">Doctorado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+	<td>Cantidad de participaciones como tutor principal de estudiantes graduados </td>
+	<td align="right">{{ object.academico.tesis_licenciatura|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.tesis_maestria|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.tesis_doctorado|default_if_none:"" }}</td>
+      </tr>
+      <tr>
+	<td>Cantidad de participaciones como tutor principal de estudiantes graduados en los últimos 5 años</td>
+	<td align="right">{{ object.academico.tesis_licenciatura_5|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.tesis_maestria_5|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.tesis_doctorado_5|default_if_none:"" }}</td>
+      </tr>
+      {% if object.academico.acreditacion == 'M' or object.academico.acreditacion == 'D' or object.academico.acreditacion == 'E' %}
+      <tr>
+	<td>
+	  Cantidad de participaciones como tutor principal en el <b>Posgrado en Ciencias de la Sostenibilidad</b></td>
+	<td></td>
+	<td align="right">{{ object.academico.participacion_tutor_maestria|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.participacion_tutor_doctorado|default_if_none:"" }}</td>
+      </tr>
+      <tr>
+	<td>Cantidad de participaciones como miembro de comité tutor (no tutor
+	  principal) en el <b>Posgrado en Ciencias de la Sostenibilidad</b></td>
+	<td></td>
+	<td align="right">{{ object.academico.participacion_comite_maestria|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.participacion_comite_doctorado|default_if_none:"" }}</td>
+      </tr>
+      {% endif %}
+      <tr>
+	<td>Cantidad total de participaciones como miembro de comité
+	  tutor (no tutor principal) de estudiantes graduados</td>
+	<td></td>
+	<td align="right">{{ object.academico.comite_maestria_otros|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.comite_doctorado_otros|default_if_none:"" }}</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <h3>Otros programas en los que participa</h3>
+  {{ object.academico.tutor_principal_otros_programas|default:"" }}
+
+</div>
+
+
+<div style="margin-top: 1.5em;">
+  {% if object.academico.otras_actividades %}
+  <h3>Otras actividades académicas</h3>
+  Como estancias de investigación, seminarios de titulación, etc.: {{ object.academico.otras_actividades|default_if_none:""|markdown }}
+  {% endif %}
+</div>
+
+
+<div style="margin-top: 1.5em;">
+  <h3>Publicaciones</h3>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th></th><th style="text-align:right">Total</th><th style="text-align:right">Los últimos 5 años</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+	<td>Cantidad de artículos publicados en revistas internacionales</td>
+	<td align="right">{{ object.academico.articulos_internacionales|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.articulos_internacionales_5|default_if_none:"" }}</td>
+      </tr>
+      <tr>
+	<td>Cantidad de artículos publicados en revistas nacionales</td>
+	<td align="right">{{ object.academico.articulos_nacionales|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.articulos_nacionales_5|default_if_none:"" }}</td>
+      </tr>
+      <tr>
+	<td>Libros publicados</td>
+	<td align="right">{{ object.academico.libros|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.libros_5|default_if_none:"" }}</td>
+      </tr>
+      <tr>
+	<td>Capítulos de libro publicados</td>
+	<td align="right">{{ object.academico.capitulos|default_if_none:"" }}</td>
+	<td align="right">{{ object.academico.capitulos_5|default_if_none:"" }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="margin-top: 1.5em;">
+  {% if object.academico.otras_publicaciones %}
+  <h3>Otras publicaciones</h3>
+  {{ object.academico.otras_publicaciones|default_if_none:""|markdown }}
+  {% endif %}
+</div>
+
+<div style="margin-top: 1.5em;">
+  <h3>Cinco publicaciones más destacadas en temas relacionados con las Ciencias de la Sostenibilidad</h3>
+  {{ object.academico.top_5|markdown }}
+</div>
+
+
+
+{% if object.academico.semaforo_maestria != "rojo" %}
+{% include "posgradmin/perfil_academico_seccion_actividad.html" %}
+{% endif %}
 
 
 

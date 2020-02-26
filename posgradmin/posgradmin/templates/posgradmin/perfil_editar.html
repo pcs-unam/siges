@@ -13,67 +13,64 @@
 
 {% block content %}
 
+<h1>{{ object.user.get_full_name }}</h1>
+
+<hr>
+
+
 {% crispy form %}
 
-<hr />
+
 
 {% if object %}
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
-      Grados Académicos
-    </h3>
-  </div>
-  <div class="panel-body">
-    <a href="{% url 'agregar_grado' %}"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> agregar grado académico</a><br /><br />
-    <ul class="list-group">
-      {% for grado in object.user.gradoacademico_set.all %}
-      <li class="list-group-item">
-	<div style="float: right">
-	  <button type="button" class="btn btn-danger btn-xs"
-		  onClick="if (confirm('¿eliminar {{ grado.grado_obtenido}}?')) window.location='{% url 'eliminar_grado' grado.id %}'">
-	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>
-	<strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
-	<p class="list-group-item-text">
-	  nivel {{ grado.nivel }}
-	  obtenido el {{ grado.fecha_obtencion }}
-	</p>
-      </li>
-      {% endfor %}
-  </div>
+<div style="margin-top: 1em;">
+<h2>Grados Académicos</h2>
+
+<a href="{% url 'agregar_grado' %}">
+  agregar grado académico</a><br /><br />
+
+<ul class="list-group">
+  {% for grado in object.user.gradoacademico_set.all %}
+  <li class="list-group-item">
+    <div style="float: right">
+      <button type="button"
+	      onClick="if (confirm('¿eliminar {{ grado.grado_obtenido}}?')) window.location='{% url 'eliminar_grado' grado.id %}'">
+	eliminar grado
+      </button>
+    </div>
+    <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}, {{ grado.facultad }}
+    <p class="list-group-item-text">
+      nivel {{ grado.nivel }}
+      obtenido el {{ grado.fecha_obtencion }}
+    </p>
+  </li>
+  {% endfor %}
 </div>
 
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon glyphicon-leaf" aria-hidden="true"></span>
-      Adscripciones
-    </h3>
-  </div>
-  <div class="panel-body">
-    <a href="{% url 'agregar_adscripcion' %}"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-      agregar adscripción</a><br /><br />
-    <ul class="list-group">
-      {% for ad in object.adscripcion_set.all %}
-      <li class="list-group-item">
-	<div style="float: right">
-	  <button type="button" class="btn btn-danger btn-xs"
-		  onClick="if (confirm('¿eliminar adscripción a {{ ad.institucion }}?'))
-			      window.location='{% url 'eliminar_adscripcion' ad.id%}'">
-	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>
-	{{ ad }}
-	{% if ad.catedra_conacyt %}
-	<br />
-	Cátedra CONACYT
-	{% endif %}
-	<br />
-	{{ ad.nombramiento }} desde {{ ad.anno_nombramiento }}
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
+<div style="margin-top: 1em;">
+<h2>Adscripciones</h2>
+<a href="{% url 'agregar_adscripcion' %}">
+  agregar adscripción</a><br /><br />
+<ul class="list-group">
+  {% for ad in object.adscripcion_set.all %}
+  <li class="list-group-item">
+    <div style="float: right">
+      <button type="button" class="btn btn-danger btn-xs"
+	      onClick="if (confirm('¿eliminar adscripción a {{ ad.institucion }}?'))
+		       window.location='{% url 'eliminar_adscripcion' ad.id%}'">
+	eliminar adscripción
+      </button>
+    </div>
+    {{ ad }}
+    {% if ad.catedra_conacyt %}
+    <br />
+    Cátedra CONACYT
+    {% endif %}
+    <br />
+    {{ ad.nombramiento }} desde {{ ad.anno_nombramiento }}
+  </li>
+  {% endfor %}
+</ul>
 </div>
 {% endif %}
 

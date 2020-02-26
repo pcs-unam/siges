@@ -3,77 +3,96 @@
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
 <title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
-{% block extrastyle %}{% endblock %}
-{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
-{% block extrahead %}{% endblock %}
-{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+
+
+<link rel="stylesheet" href="https://sostenibilidad.posgrado.unam.mx/assets/main.css">
+
 </head>
-{% load i18n %}
 
-<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
-  data-admin-utc-offset="{% now "Z" %}">
 
-<!-- Container -->
-<div id="container">
+<body>
+  <header class="site-header" role="banner"
+	style="background-image: url(https://sostenibilidad.posgrado.unam.mx/assets/plecas/p20.jpg); background-size: cover;">
 
-    {% if not is_popup %}
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-        {% block branding %}{% endblock %}
-        </div>
-        {% block usertools %}
-        {% if has_permission %}
-        <div id="user-tools">
-            {% block welcome-msg %}
-                {% trans 'Welcome,' %}
-                <strong>{% firstof user.get_short_name user.get_username %}</strong>.
-            {% endblock %}
-            {% block userlinks %}
-                {% if user.has_usable_password %}
-                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
-                {% endif %}
-                <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
-            {% endblock %}
-        </div>
-        {% endif %}
-        {% endblock %}
-        {% block nav-global %}{% endblock %}
-    </div>
-    <!-- END Header -->
-    {% block breadcrumbs %}
-    <div class="breadcrumbs">
-    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-    {% if title %} &rsaquo; {{ title }}{% endif %}
-    </div>
-    {% endblock %}
-    {% endif %}
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Posgrado en Ciencias de la Sostenibilidad</a><nav class="site-nav">
 
-    {% block messages %}
-        {% if messages %}
-        <ul class="messagelist">{% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}</ul>
-        {% endif %}
-    {% endblock messages %}
+	<div class="trigger">
 
-    <!-- Content -->
-    <div id="content" class="{% block coltype %}colM{% endblock %}">
-        {% block pretitle %}{% endblock %}
-        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
-        {% block content %}
-        {% block object-tools %}{% endblock %}
-        {{ content }}
-        {% endblock %}
-        {% block sidebar %}{% endblock %}
-        <br class="clear" />
-    </div>
-    <!-- END Content -->
+	  <a class="page-link" href="/posgrado/">Acerca del Posgrado</a>
 
-    {% block footer %}<div id="footer"></div>{% endblock %}
+	  <a class="page-link" href="/aspirantes/">Aspirantes</a>
+
+	  <a class="page-link" href="/maestria/">Maestría</a>
+
+	  <a class="page-link" href="/doctorado/">Doctorado</a>
+
+	  <a class="page-link" href="/comite/">Comité Académico</a>
+
+	  <a class="page-link" href="/apoyos/">Apoyos</a>
+
+	  <a class="page-link" href="/publicaciones/">Publicaciones</a>
+
+	  <a class="page-link" href="/cursos/">Cursos y horarios</a>
+
+	  <a class="page-link" href="/tutores/">Tutores</a>
+
+	  <a class="page-link" href="https://sostenibilidad.posgrado.unam.mx/siges">Sistema</a>
+
+	</div>
+  </nav></div>
+  </header>
+
+
+  <main class="page-content" aria-label="Content">
+
+
+      <div class="wrapper">
+	<div class="home">
+
+	  <div style="padding: 1em; text-align: right;">
+	  {% if user.is_authenticated %}
+	  {{ user.get_full_name}} |
+	  <a href="{{ APP_PREFIX }}accounts/password/change/">cambiar contraseña</a> |
+	  <a href="{{ APP_PREFIX }}accounts/logout/">Terminar sesión</a>
+	  {% else %}
+	  <a href="{{ APP_PREFIX }}accounts/login/">Iniciar sesión</a>
+	  {% endif %}
+	  {% block nav-global %}{% endblock %}
+	  </div>
+
+	  <div style="margin-bottom: 1em; border-style: none none solid none; border-width: 1px; ">
+	  {% block breadcrumbs %}
+	  {% endblock %}
+	  </div>
+
+
+	{% block content %}
+	{{ content }}
+	{% endblock %}
+</main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Posgrado en Ciencias de la Sostenibilidad</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+	<ul class="contact-list"><li><a class="u-email" href="mailto:sostenibilidad@posgrado.unam.mx">sostenibilidad@posgrado.unam.mx</a></li></ul>
+	<img src="https://sostenibilidad.posgrado.unam.mx/assets/logo-posgradounam.png" />
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
 </div>
-<!-- END Container -->
+
+      <div class="footer-col footer-col-3">
+	<p>Posgrado en Ciencias de la Sostenibilidad, Unidad de Posgrado Edificio D primer piso Ciudad Universitaria CDMX Teléfono 5623-7012. Atención de lunes a viernes de 9:00 a 13:00 hrs.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
 
 </body>
 </html>
