@@ -155,6 +155,7 @@ class AcademicoAdmin(admin.ModelAdmin):
             a.semaforo_doctorado = a.verifica_semaforo_doctorado()
             a.semaforo_maestria = a.verifica_semaforo_maestria()
             a.verifica_titulo_honorifico()
+            a.copia_ultima_acreditacion()
             a.save()
 
     actualiza_campos.\

@@ -821,7 +821,13 @@ class Academico(models.Model):
         else:
             self.titulo_honorifico = u'Lic.'
     
-    
+
+    def copia_ultima_acreditacion(self):
+        ultima = self.acreditaciones.latest('fecha')
+        self.acreditacion = ultima.acreditacion
+        self.fecha_acreditacion = ultima.fecha
+        
+            
     def is_phd(self):
         niveles = [deg.nivel
                    for deg in self.user.gradoacademico_set.all()]
