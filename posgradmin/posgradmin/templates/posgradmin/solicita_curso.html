@@ -1,0 +1,24 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+
+<h1>{{ user.get_full_name }}</h1>
+
+<hr>
+<br />
+
+
+{% crispy form %}
+
+<div id='form-errors'>{{ form_errors }}</div>
+
+<script>
+$(document).ready(function() {
+    $('.dateinput').datepicker({ dateFormat: 'yy-mm-dd'});
+}); 
+</script>
+{% endblock %}
+

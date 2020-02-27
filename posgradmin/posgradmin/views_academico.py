@@ -8,7 +8,8 @@ import posgradmin.models as models
 from posgradmin import authorization as auth
 from django.conf import settings
 from django.shortcuts import render, HttpResponseRedirect
-
+import posgradmin.forms as forms
+from pprint import pprint
 # class MisCatedrasView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 #     login_url = settings.APP_PREFIX + 'accounts/login/'
 
@@ -24,6 +25,38 @@ from django.shortcuts import render, HttpResponseRedirect
 #         return new_context
 
 
+class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+    template = 'posgradmin/solicita_curso.html'
+    form_class = forms.CursoModelForm
+
+    def test_func(self):
+        return auth.is_academico(self.request.user)
+
+    def get(self, request, *args, **kwargs):
+
+        convocatoria = models.ConvocatoriaCurso.objects.get(pk=int(kwargs['pk']))
+        asignatura = models.Asignatura.objects.get(pk=int(kwargs['as_id']))
+        
+        return render(request,
+                      self.template,
+                      {
+                          'title': 'Asignaturas',
+                          'convocatoria': convocatoria,
+                          'form': self.form_class
+                       })
+
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            print(request.POST['sede'],
+                  request.POST['academicos'],
+                  request.POST['aula'],
+                  request.POST['horario'])        
+            return HttpResponseRedirect(reverse('inicio'))
+    
+
 class EligeAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
     template = 'posgradmin/elige_asignatura.html'
@@ -36,15 +69,18 @@ class EligeAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
         pk = int(kwargs['pk'])
-        print(pk)
+        convocatoria = models.ConvocatoriaCurso.objects.get(pk=pk)
+
         asignaturas = models.Asignatura.objects.filter(
-            Q(estado='aceptada') | Q(estado='propuesta'))
+            Q(tipo='Optativa') &
+            (Q(estado='aceptada') | Q(estado='propuesta')))
 
         return render(request,
                       self.template,
                       {
-                       'title': 'Asignaturas',
-                       'asignaturas': asignaturas
+                          'title': 'Asignaturas',
+                          'asignaturas': asignaturas,
+                          'convocatoria': convocatoria,
                        })
 
     

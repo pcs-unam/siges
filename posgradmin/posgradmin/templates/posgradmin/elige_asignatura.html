@@ -5,15 +5,23 @@
 
 {% block content %}
 
-<h1>Asignaturas</h1>
+<h1>Asignaturas disponibles para el semestre {{ convocatoria.year }}-{{ convocatoria.semestre }}</h1>
 
+Elija una asignatura para proponer su curso.
 <hr>
 <br />
 
+{% if convocatoria.status == 'abierta' %}
 {% for as in asignaturas %}
-{{ as }}
+<h2>{{ as.asignatura}}</h2>
+<ul>
+  <li><a href="{{ as.programa.url }}">programa</a></li>  
+  <li>clave: {{ as.clave }}</li>
+  <li>creditos: {{ as.creditos }}</li>
+  <li><a href="{% url 'solicita_curso' convocatoria.id as.id %}">solicitar curso</a></li>
+</ul>
 {% endfor %}
-
+{% endif %}
 
 {% endblock %}
 
