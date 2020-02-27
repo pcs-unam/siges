@@ -37,7 +37,7 @@ def get_perfiles_editables():
 
 class TogglePerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
-    template = 'posgradmin/try.html'
+    template = 'posgradmin/toggle_perfil_editar.html'
 
     form_class = forms.TogglePerfilEditarForm
 

@@ -1,6 +1,6 @@
 {% load md2 %}
+<div style="background-color: {% if object.academico.carencias_general %}#f1eaeb{% else %}#e0fae1{% endif %}; padding: 1em;">  
 
-<br /><br />
 <h2>General</h2>
 
 
@@ -15,6 +15,7 @@ Atención a los siguientes reactivos:<br />
 
 {% if user == object and editable == True %}
 <a class="btn btn-default" role="button" href="{% url 'academico_perfil' %}">editar esta sección</a>
+<br /><br />
 {% endif %}
 
 <ul class="list-group">
@@ -83,3 +84,6 @@ Atención a los siguientes reactivos:<br />
     {% endif %}
   </li>
 </ul>
+
+
+</div>

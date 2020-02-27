@@ -20,7 +20,6 @@ class TogglePerfilEditarForm(forms.Form):
                                 label='Perfiles editables')
     helper = FormHelper()
     helper.layout = Layout(
-        HTML(u"<p>Activar o desactivar los formularios de edición de perfiles.</p>"),
         Field('toggle'),
         FormActions(
             Submit('OK', 'OK', css_class="btn-primary")

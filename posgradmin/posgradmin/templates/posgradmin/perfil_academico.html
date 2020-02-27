@@ -34,8 +34,8 @@
 {% include "posgradmin/perfil_academico_seccion_general.html" %}
 {% endif %}
 
+<div style="background-color: {% if object.academico.carencias_resumen %}#f1eaeb{% else %}#fdfdfd{% endif %}; padding: 1em;">  
 
-<br /><br />
 <h2>Resumen Curricular</h2>
 
 
@@ -49,7 +49,7 @@ Recuerde llenar con ceros cuando no tenga cantidades qué reportar. Atención a 
 
 {% if user == object and editable == True %}
 <a class="btn btn-default" role="button" href="{% url 'academico_resumen' %}">editar esta sección</a>
-<hr />
+<br /><br />
 {% endif %}
 
 <img alt="" src="/media/perfil-academico/{{ object.academico.id }}/pc_resumen_academico.png">
@@ -164,7 +164,7 @@ Recuerde llenar con ceros cuando no tenga cantidades qué reportar. Atención a 
   {{ object.academico.top_5|markdown }}
 </div>
 
-
+</div>
 
 {% if object.academico.semaforo_maestria != "rojo" %}
 {% include "posgradmin/perfil_academico_seccion_actividad.html" %}

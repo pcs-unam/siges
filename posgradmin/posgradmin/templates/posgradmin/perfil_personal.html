@@ -89,6 +89,9 @@
 
 <h2>Grados Académicos</h2>
 
+<a href="{% url 'agregar_grado' %}">
+  agregar grado académico</a><br /><br />
+
 <ul class="list-group">
   {% for grado in object.gradoacademico_set.all %}
   <li class="list-group-item">
@@ -115,6 +118,10 @@
 
 
 <h2>Adscripción</h2>
+
+<a href="{% url 'agregar_adscripcion' %}">
+  agregar adscripción</a><br /><br />
+
 
 <ul class="list-group">
   {% for ad in user.perfil.adscripcion_set.all %}

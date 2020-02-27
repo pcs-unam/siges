@@ -4,9 +4,12 @@
 
 
 {% block content %}
+<h1>Invitar académicos</h1>
    {% crispy form %}
 
-<div id='form-success' class="alert alert-success" role="alert">
+{% if aciertos %}
+<div style="border-style: solid; border-width: 1px; border-color: green; padding: 1em; background-color: #eafaea">
+  <h2>Académicos registrados</h2>
   <table class="table table-striped">
     {% for row in aciertos %}
     <tr>
@@ -17,9 +20,12 @@
     {% endfor %}
   </table>
 </div>
+{% endif %}
 
 
-<div id='form-errors' class="alert alert-danger" role="alert">
+{% if form_errors %}
+<div style="border-style: solid; border-width: 1px; border-color: red; padding: 1em; background-color: #faeaea;">
+  <h2>Errores</h2>  
   <table class="table table-striped">
     {% for row in form_errors %}
     <tr>
@@ -30,6 +36,7 @@
     {% endfor %}
   </table>
 </div>
+{% endif %}
 
 
 <script>

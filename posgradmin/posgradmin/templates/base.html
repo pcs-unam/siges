@@ -50,14 +50,22 @@
 	<div class="home">
 
 	  <div style="padding: 1em; text-align: right;">
-	  {% if user.is_authenticated %}
-	  {{ user.get_full_name}} |
-	  <a href="{{ APP_PREFIX }}accounts/password/change/">cambiar contraseña</a> |
-	  <a href="{{ APP_PREFIX }}accounts/logout/">Terminar sesión</a>
-	  {% else %}
-	  <a href="{{ APP_PREFIX }}accounts/login/">Iniciar sesión</a>
-	  {% endif %}
-	  {% block nav-global %}{% endblock %}
+
+	    {% if user.is_authenticated %}
+
+	    {{ user.get_full_name}} |
+
+	    {% if user.is_staff %}
+	    <a href="{% url 'admin:index' %}">Base de Datos</a> |
+	    <a href="{% url 'toggle_perfil_editar' %}">Des/Bloquear formularios</a> |
+	    <a href="{% url 'academico_invitar' %}">Invitar académicos</a> |
+	    {% endif %}
+	    
+	    <a href="{{ APP_PREFIX }}accounts/password/change/">Cambiar contraseña</a> |
+	    <a href="{{ APP_PREFIX }}accounts/logout/">Terminar sesión</a>
+	    {% else %}
+	    <a href="{{ APP_PREFIX }}accounts/login/">Iniciar sesión</a>
+	    {% endif %}
 	  </div>
 
 	  <div style="margin-bottom: 1em; border-style: none none solid none; border-width: 1px; ">

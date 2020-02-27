@@ -5,11 +5,7 @@
 
 {% block content %}
 
-<h1>{{ user.get_full_name }}</h1>
-
-<hr>
-<br />
-
+<h1>Bloquear o desbloquear formularios de perfiles</h1>
 
 {% crispy form %}
 
@@ -21,4 +17,3 @@ $(document).ready(function() {
 }); 
 </script>
 {% endblock %}
-

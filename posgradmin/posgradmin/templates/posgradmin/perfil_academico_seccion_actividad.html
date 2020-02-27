@@ -1,6 +1,6 @@
 {% load md2 %}
-
-<br /><br />
+<div style="background-color: {% if object.academico.carencias_actividad %}#f1eaeb{% else %}#e0f8fd{% endif %}; padding: 1em;">
+  
 <h2>Actividad profesional y de Investigación</h2>
 
 {% if object.academico.carencias_actividad %}
@@ -15,7 +15,7 @@
 {% if user == object %}
 {% if object.academico.semaforo_maestria != "rojo" and editable == True %}
 <a class="btn btn-default" role="button" href="{% url 'academico_actividad' %}">editar esta sección</a>
-<hr />
+<br /><br />
 {% endif %}
 {% endif %}
 
@@ -54,3 +54,5 @@
   <li>{{ c }}</li>
   {% endfor %}
 </ul>
+
+</div>

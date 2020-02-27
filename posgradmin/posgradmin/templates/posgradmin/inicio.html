@@ -7,19 +7,19 @@
 
 <div class="row">
   <div class="col-sm-4">
-    {% if not user.perfil %}
+    {% if not user.perfil and not user.is_staff %}
     <div class="alert alert-danger" role="alert">
       <strong>No tiene perfil personal.</strong>
       <a href="{% url 'editar_perfil' %}">Crear perfil personal.</a>.
     </div>
     {% else %}
 
-    {% if not user.perfil.adscripcion_ok %}
+    {% if not user.perfil.adscripcion_ok and not user.is_staff %}
     <div class="alert alert-danger" role="alert">
       <strong>No ha agregado su adscripción</strong>
       <a href="{% url 'agregar_adscripcion' %}">Agregar adscripción</a>.
     </div>
-    {% elif not user.perfil.asociado_PCS %}
+    {% elif not user.perfil.asociado_PCS and not user.is_staff %}
     <div class="alert alert-danger" role="alert">
       <strong>No asociado a entidad del PCS</strong>
       <a href="{% url 'agregar_asociacion' %}">Registrar asociación</a>.
@@ -28,7 +28,7 @@
     {% endif %}
 
 
-    {% if not user.gradoacademico_set.all %}
+    {% if not user.gradoacademico_set.all and not user.is_staff %}
     <div class="alert alert-danger" role="alert">
       <strong>No ha agregado grados académicos</strong>
       <a href="{% url 'agregar_grado' %}">Agregar grados académicos</a>.
@@ -60,7 +60,7 @@
     </div>
 
 
-    <div class="jumbotron">
+    <div style="background-color: #fafaa0; padding: 1em; border-style: solid; border-width: 1px; border-color: #dadaa0;">
       <h1>Convocatoria para la impartición de cursos</h1>
       <p>¿Quieres dar un curso en al programa de posgrado?</p>
       <p><a class="btn btn-primary btn-lg" href="#" role="button">Elige una asignatura</a></p>
@@ -139,31 +139,6 @@
 
 
 </div>
-
-{% if user.is_staff or user.asistente %}
-<div class="row">
-
-
-  <div class="col-sm-4">
-    <div class="panel panel-warning">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon-king" aria-hidden="true"></span>
-	  Acciones especiales
-	</h3>
-      </div>
-      <div class="panel-body">
-	<p><a href="{% url 'toggle_perfil_editar' %}">Activar o desactivar formularios de edición de perfiles</a></p>
-	<p><a href="{% url 'academico_invitar' %}">Crear académicos desde hoja de cálculo</a></p>
-      </div>
-    </div>
-  </div>
-
-</div>
-{% endif %}
-
-
-
 
 
 {% endblock %}
