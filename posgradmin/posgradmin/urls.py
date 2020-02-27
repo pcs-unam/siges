@@ -15,7 +15,7 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     TogglePerfilEditar
 
 from posgradmin.views_academico import \
-    MisComitesView, MisEstudiantesView
+    MisComitesView, MisEstudiantesView, EligeAsignatura
 
 from posgradmin.views_estudiante import ComiteTutoralElegirView, \
     JuradoCandidaturaElegirView, \
@@ -203,6 +203,10 @@ urlpatterns = [
         name="user_detail"),
 
     url('^inicio/', InicioView.as_view()),
+
+    url('^convocatoria/cursos/(?P<pk>[0-9]+)/',
+        EligeAsignatura.as_view(),
+        name="elige_asignatura"),    
 
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 

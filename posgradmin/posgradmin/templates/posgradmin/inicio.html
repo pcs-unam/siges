@@ -66,7 +66,7 @@
       <h1>Convocatoria</h1>
       <h2>Para impartir cursos en el semestre {{ c.year}}-{{ c.semestre }}</h2>
       <p>¿Quieres dar un curso en el programa de posgrado?</p>
-      <p><a href="">Elige una asignatura</a></p>
+      <p><a href="{% url 'elige_asignatura' c.id %}">Elige una asignatura</a></p>
     </div>
     {% endfor %}
     {% endif %}

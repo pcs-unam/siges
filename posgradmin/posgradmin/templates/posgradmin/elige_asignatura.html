@@ -1,0 +1,19 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+
+<h1>Asignaturas</h1>
+
+<hr>
+<br />
+
+{% for as in asignaturas %}
+{{ as }}
+{% endfor %}
+
+
+{% endblock %}
+

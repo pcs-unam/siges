@@ -22,8 +22,6 @@ import pickle
 from os import path
 
 
-
-
 def get_perfiles_editables():
     try:
         with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle'), 'rb') as f:
