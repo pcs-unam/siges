@@ -60,12 +60,22 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
     template = 'posgradmin/solicita_curso.html'
     form_class = forms.CursoModelForm
     
+
     def test_func(self):
-        return auth.is_academico(self.request.user)
+        if auth.is_academico(self.request.user):
+            if self.request.user.academico.acreditacion in ['D', 'M', 'P', 'E',
+                                                            'candidato profesor']:
+                return True
+        return False
+
 
     def get(self, request, *args, **kwargs):
 
         convocatoria = models.ConvocatoriaCurso.objects.get(pk=int(kwargs['pk']))
+
+        if convocatoria.status == 'cerrada':
+            return HttpResponseRedirect(reverse('mis_cursos'))
+        
         asignatura = models.Asignatura.objects.get(pk=int(kwargs['as_id']))
         form = self.form_class(initial={'academicos': [request.user.academico, ]})
         
@@ -87,6 +97,9 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def post(self, request, *args, **kwargs):
         convocatoria = models.ConvocatoriaCurso.objects.get(pk=int(kwargs['pk']))
+        if convocatoria.status == 'cerrada':
+            return HttpResponseRedirect(reverse('mis_cursos'))
+        
         asignatura = models.Asignatura.objects.get(pk=int(kwargs['as_id']))
         
         form = self.form_class(request.POST)
@@ -118,8 +131,16 @@ class CursoView(LoginRequiredMixin, UserPassesTestMixin, View):
     form_class = forms.CursoModelForm
     
     def test_func(self):
-        return auth.is_academico(self.request.user)
 
+        curso = models.Curso.objects.get(pk=int(self.kwargs['pk']))        
+        if auth.is_academico(self.request.user):
+            if self.request.user.academico.acreditacion in ['D', 'M', 'P', 'E',
+                                                            'candidato profesor']:
+                if self.request.user.academico in curso.academicos.all():
+                    return True
+        return False
+
+    
     def get(self, request, *args, **kwargs):
 
         curso = models.Curso.objects.get(pk=int(kwargs['pk']))
@@ -141,6 +162,9 @@ class CursoView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         curso = models.Curso.objects.get(pk=int(kwargs['pk']))        
         convocatoria = curso.convocatoria
+        if convocatoria.status == 'cerrada':
+            return HttpResponseRedirect(reverse('mis_cursos'))
+        
         asignatura = curso.asignatura
 
         
