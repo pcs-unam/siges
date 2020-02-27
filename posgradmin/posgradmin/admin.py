@@ -197,8 +197,14 @@ admin.site.register(Asignatura, AsignaturaAdmin)
 
 
 class CursoAdmin(admin.ModelAdmin):
-    list_display = ['asignatura', 'profesores',
+    list_display = ['asignatura', 'lista_academicos',
                     'year', 'semestre', 'intersemestral', 'sede', 'activo']
+
+    def lista_academicos(self, obj):
+        return ", ".join([str(a) for a in obj.academicos.all()])
+    
+    lista_academicos.short_description = "Académicos"
+    
     autocomplete_fields = ['academicos',]
     readonly_fields = ['profesores', 'contacto', ]
 

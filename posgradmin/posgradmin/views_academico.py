@@ -12,7 +12,6 @@ import posgradmin.forms as forms
 from dal import autocomplete
 from django.urls import reverse
 
-from pprint import pprint
 
 class AcademicoAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
     login_url = settings.APP_PREFIX + 'accounts/login/'
@@ -66,14 +65,15 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
 
         convocatoria = models.ConvocatoriaCurso.objects.get(pk=int(kwargs['pk']))
         asignatura = models.Asignatura.objects.get(pk=int(kwargs['as_id']))
-        
+        form = self.form_class(initial={'academicos': [request.user.academico, ]})
+                               
         return render(request,
                       self.template,
                       {
                           'title': 'Asignaturas',
                           'convocatoria': convocatoria,
                           'asignatura': asignatura,
-                          'form': self.form_class
+                          'form': form
                        })
 
 
@@ -95,6 +95,7 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
             for ac_id in request.POST.getlist('academicos'):
                 ac = models.Academico.objects.get(pk=int(ac_id))
                 curso.academicos.add(ac)
+            curso.academicos.add(request.user.academico)
             curso.save()
 
             return HttpResponseRedirect(reverse('inicio'))
