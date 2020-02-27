@@ -1,7 +1,7 @@
 # coding: utf-8
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from posgradmin.models import Academico
+from posgradmin.models import Academico, Acreditacion
 
 
 @receiver(pre_save, sender=Academico)
@@ -16,3 +16,13 @@ def academico_verifica_resumen_perfil(sender, **kwargs):
     a.semaforo_maestria = a.verifica_semaforo_maestria()
     a.semaforo_doctorado = a.verifica_semaforo_doctorado()
     
+    a.copia_ultima_acreditacion()
+    
+
+@receiver(post_save, sender=Acreditacion)
+def copia_acreditacion_a_academico(sender, **kwargs):
+    ac = kwargs['instance']
+    ac.academico.copia_ultima_acreditacion()
+    ac.academico.save()
+
+

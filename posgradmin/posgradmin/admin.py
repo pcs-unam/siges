@@ -199,7 +199,8 @@ admin.site.register(Asignatura, AsignaturaAdmin)
 class CursoAdmin(admin.ModelAdmin):
     list_display = ['asignatura', 'profesores',
                     'year', 'semestre', 'intersemestral', 'sede', 'activo']
-
+    autocomplete_fields = ['academicos',]
+    readonly_fields = ['profesores', 'contacto', ]
 
 admin.site.register(Curso, CursoAdmin)
 

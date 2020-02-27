@@ -10,16 +10,28 @@ from django.conf import settings
 from django.shortcuts import render, HttpResponseRedirect
 import posgradmin.forms as forms
 from dal import autocomplete
+from django.urls import reverse
 
 from pprint import pprint
 
-class AcademicoAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        # Don't forget to filter out results depending on the visitor !
-        # if not self.request.user.is_authenticated():
-        #     return models.Academico.objects.none()
+class AcademicoAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
 
-        qs = models.Academico.objects.all()
+    def test_func(self):
+        if auth.is_academico(self.request.user):
+            if self.request.user.academico.acreditacion in ['D', 'M', 'P', 'E',
+                                                            'candidato profesor']:
+                return True
+        return False
+
+    
+    def get_queryset(self):
+
+        qs = models.Academico.objects.filter(Q(acreditacion='candidato profesor')
+                                             | Q(acreditacion='P')
+                                             | Q(acreditacion='M')
+                                             | Q(acreditacion='D')
+                                             | Q(acreditacion='E'))
 
         if self.q:
             qs = qs.filter(user__first_name__istartswith=self.q)
@@ -66,12 +78,25 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
     def post(self, request, *args, **kwargs):
+        convocatoria = models.ConvocatoriaCurso.objects.get(pk=int(kwargs['pk']))
+        asignatura = models.Asignatura.objects.get(pk=int(kwargs['as_id']))
         form = self.form_class(request.POST)
         if form.is_valid():
-            print(request.POST['sede'],
-                  request.POST['academicos'],
-                  request.POST['aula'],
-                  request.POST['horario'])        
+            curso = models.Curso(
+                convocatoria=convocatoria,
+                asignatura=asignatura,
+                year=convocatoria.year,
+                semestre=convocatoria.semestre,
+                sede=request.POST['sede'],
+                aula=request.POST['aula'],
+                horario=request.POST['horario'])
+            curso.save()
+
+            for ac_id in request.POST.getlist('academicos'):
+                ac = models.Academico.objects.get(pk=int(ac_id))
+                curso.academicos.add(ac)
+            curso.save()
+
             return HttpResponseRedirect(reverse('inicio'))
     
 

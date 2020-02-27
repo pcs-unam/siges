@@ -82,6 +82,8 @@ class SolicitudForm(forms.Form):
 
 class CursoModelForm(forms.ModelForm):
 
+    aula = forms.CharField(max_length=80, help_text='escriba "Unidad de Posgrado" para solicitar espacio')
+    
     class Meta:
         model = Curso
         exclude = ['convocatoria', 'grupo', 'year', 'semestre',
