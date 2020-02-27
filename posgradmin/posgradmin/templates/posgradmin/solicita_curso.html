@@ -4,7 +4,8 @@
 
 {% block content %}
 
-<h1>Solicitar curso</h1>
+{% if title %}<h1>{{ title }}</h1>{% endif %}
+
 <h2>{{ asignatura }}</h2>
 <h3>para el semestre {{ convocatoria.year }}-{{ convocatoria.semestre }}</h3>
 
@@ -20,7 +21,7 @@
         {{ form.as_table }}
 	</table>
       <button type="submit" />
-      solicitar
+      {{ title }}
       </button>
     </form>
 </div>

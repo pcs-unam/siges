@@ -34,7 +34,13 @@ class ConvocatoriaCurso(models.Model):
                      ('cerrada', 'cerrada')])
 
     def __str__(self):
-        return u"%s-%s %s" % (self.year, self.semestre, self.status)
+        if self.status == 'abierta':
+            status = '(abierta)'
+        else:
+            status = ''
+        return u"%s-%s %s" % (self.year,
+                              self.semestre,
+                              status)
 
     class Meta:
         verbose_name_plural = "Convocatorias para cursos"
@@ -839,9 +845,10 @@ class Academico(models.Model):
     
 
     def copia_ultima_acreditacion(self):
-        ultima = self.acreditaciones.latest('fecha')
-        self.acreditacion = ultima.acreditacion
-        self.fecha_acreditacion = ultima.fecha
+        if self.acreditaciones.count() > 0:
+            ultima = self.acreditaciones.latest('fecha')
+            self.acreditacion = ultima.acreditacion
+            self.fecha_acreditacion = ultima.fecha
         
             
     def is_phd(self):

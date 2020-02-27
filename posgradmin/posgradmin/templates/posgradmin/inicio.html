@@ -36,8 +36,6 @@
     {% endif %}
 
 
-
-
     <div class="container">
       <ul class="nav nav-pills">
 	{% if user.perfil %}
@@ -52,6 +50,12 @@
 	</li>
 	{% endif %}
 
+	{% if user.academico.curso_set.count > 0 %}
+	<li>
+	  <a href="{% url 'mis_cursos' %}">Mis cursos</a>
+	</li>
+	{% endif %}
+	
 	{% if user.estudiante %}
 	<a href="{% url 'perfil_estudiante' %}" class="list-group-item">Perfil de Estudiante</a>
 	{% endif %}
@@ -60,26 +64,11 @@
     </div>
 
 
-    {% if convocatorias_curso %}
-    {% for c in convocatorias_curso %}
-    <div style="background-color: #fafaa0; padding: 1em; border-style: solid; border-width: 1px; border-color: #dadaa0;">
-      <h1>Convocatoria</h1>
-      <h2>Para impartir cursos en el semestre {{ c.year}}-{{ c.semestre }}</h2>
-      <p>¿Quieres dar un curso en el programa de posgrado?</p>
-      <p><a href="{% url 'elige_asignatura' c.id %}">Elige una asignatura</a></p>
-    </div>
-    {% endfor %}
+
+
+    {% if user.academico.acreditacion == '' or user.academico.acreditacion in "PMDE" %}
+    {% include 'posgradmin/inicio_academico.html' %}
     {% endif %}
-
-    {# if user.perfil #}
-    {# include 'posgradmin/inicio_perfil.html' #}
-    {# else #}
-    {# endif #}
-
-
-    {# if user.academico #}
-    {# include 'posgradmin/inicio_academico.html' #}
-    {# endif #}
 
 
     {# if user.estudiante #}

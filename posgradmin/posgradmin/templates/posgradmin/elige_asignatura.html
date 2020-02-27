@@ -14,11 +14,15 @@ Elija una asignatura para proponer su curso.
 {% if convocatoria.status == 'abierta' %}
 {% for as in asignaturas %}
 <h2>{{ as.asignatura}}</h2>
+
+<div style="text-align: right;">
+<a href="{% url 'solicita_curso' convocatoria.id as.id %}">solicitar curso</a>
+</div>
+
 <ul>
-  <li><a href="{{ as.programa.url }}">programa</a></li>  
   <li>clave: {{ as.clave }}</li>
   <li>creditos: {{ as.creditos }}</li>
-  <li><a href="{% url 'solicita_curso' convocatoria.id as.id %}">solicitar curso</a></li>
+  <li><a href="{{ as.programa.url }}">programa</a></li>  
 </ul>
 {% endfor %}
 {% endif %}

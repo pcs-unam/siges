@@ -1,0 +1,62 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; <a href="{% url 'mis_cursos' %}">Mis cursos</a>
+</div>
+{% endblock %}
+
+
+{% block content %}
+<h2>Mis cursos</h2>
+
+{% for curso in object_list %}
+
+<div style="background-color: {% if curso.activo %}#ddeebb{% else %}#f3f3fe{% endif %}; padding: 1em; margin-bottom: 0.5em;">
+
+
+  <h3>{{ curso.asignatura}}</h3>
+  {% if curso.convocatoria.status == 'abierta' and not curso.activo %}
+  <div style="text-align: right;">  
+    <a href="{% url "curso" curso.id %}">editar curso</a>
+  </div>
+  {% endif %}
+  
+  <ul>
+    <li>clave: {{ curso.asignatura.clave }}</li>
+    <li>creditos: {{ asignatura.creditos }}</li>
+    <li><a href="{{ curso.asignatura.programa.url }}">programa</a></li>    
+  </ul>
+  {% if curso.activo %}
+  <h4>Curso aceptado</h4>
+  {% else %}
+  <hr />
+  {% endif %}
+  <ul>
+    <li>convocatoria: {{ curso.convocatoria }}</li>
+    <li>impartido por
+      <ul>
+	{% for a in curso.academicos.all %}
+	<li>
+	  {% if request.user.is_staff %}
+	  {{ a.perfil_comite_anchor }}
+	  {% else %}
+	  {{ a }}
+	  {% endif %}
+	</li>
+	{% endfor %}
+      </ul>
+    </li>
+    {% if curso.intersemestral %}
+    <li>Curso intersemestral</li>
+    {% endif %}
+    <li>{{ curso.sede }}</li>
+    <li>{{ curso.aula }}</li>
+    <li>{{ curso.horario}}</li>
+  </ul>
+
+</div>
+{% endfor %}
+
+{% endblock %}

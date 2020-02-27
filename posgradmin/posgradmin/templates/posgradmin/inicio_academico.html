@@ -1,40 +1,12 @@
-<div class="panel panel-default">
-
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
-      Perfil Académico
-    </h3>
-  </div>
-  
-  <div class="panel-body">
-    <p><a href="{% url 'perfil_academico' %}">perfil académico</a></p>    
-    {% if not user.academico.CVU %}
-    <div class="alert alert-danger" role="alert">
-      <strong>No ha registrado su número de CVU.</strong>
-      <a href="{% url 'registrar_academico' %}">Actualizar datos académicos.</a>.
-    </div>
-    {% endif %}
     
-    {% if not user.academico.resumen_completo %}
-    <div class="alert alert-danger" role="alert">
-      <strong>Resumen curricular incompleto.</strong>
-      <a href="{% url 'registrar_academico' %}">Actualizar datos académicos.</a>.
-    </div>
-    {% endif %}
-    
-    {% if not user.academico.actividad_completo %}
-    <div class="alert alert-danger" role="alert">
-      <strong>No hay descripciones de Actividad profesional y de investigación.</strong>
-      <a href="{% url 'registrar_academico' %}">actualizar datos académicos</a>.
-    </div>
-    {% endif %}
-    
-    
-    {% if user.academico.tutor %}
-    <p><a href="{% url 'mis_comites' %}">Mis comités de jurado</a></p>
-    <p><a href="{% url 'mis_estudiantes' %}">Mis estudiantes</a></p>
-    {% endif %}
-    
-  </div>
+{% if convocatorias_curso %}
+{% for c in convocatorias_curso %}
+<div style="background-color: #fafaa0; padding: 1em; border-style: solid; border-width: 1px; border-color: #dadaa0;">
+  <h1>Convocatoria</h1>
+  <h2>Para impartir cursos en el semestre {{ c.year}}-{{ c.semestre }}</h2>
+  <p>¿Quieres dar un curso en el programa de posgrado?</p>
+  <p><a href="{% url 'elige_asignatura' c.id %}">Elige una asignatura</a></p>
 </div>
+{% endfor %}
+{% endif %}
+

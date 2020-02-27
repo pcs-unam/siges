@@ -11,6 +11,7 @@ from django.shortcuts import render, HttpResponseRedirect
 import posgradmin.forms as forms
 from dal import autocomplete
 from django.urls import reverse
+from django.forms.models import model_to_dict
 
 
 class AcademicoAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
@@ -33,7 +34,8 @@ class AcademicoAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplet
                                              | Q(acreditacion='E'))
 
         if self.q:
-            qs = qs.filter(user__first_name__istartswith=self.q)
+            qs = qs.filter(Q(user__first_name__istartswith=self.q)
+                           | Q(user__last_name__icontains=self.q))
 
         return qs
 
@@ -68,13 +70,14 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
         form = self.form_class(initial={'academicos': [request.user.academico, ]})
         
         breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
-                       (reverse('elige_asignatura', args=[convocatoria.id,]), "Convocatoria para cursos %s-%s" % (convocatoria.year, convocatoria.semestre))
+                       (reverse('elige_asignatura', args=[convocatoria.id,]),
+                            "Convocatoria para cursos %s-%s" % (convocatoria.year, convocatoria.semestre))
                       )
                                
         return render(request,
                       self.template,
                       {
-                          'title': 'Asignaturas',
+                          'title': 'Solicitar curso',
                           'breadcrumbs': breadcrumbs,
                           'convocatoria': convocatoria,
                           'asignatura': asignatura,
@@ -104,8 +107,58 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
             curso.academicos.add(request.user.academico)
             curso.save()
 
-            return HttpResponseRedirect(reverse('inicio'))
+            return HttpResponseRedirect(reverse('mis_cursos'))
+
+
+
+
+class CursoView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+    template = 'posgradmin/solicita_curso.html'
+    form_class = forms.CursoModelForm
     
+    def test_func(self):
+        return auth.is_academico(self.request.user)
+
+    def get(self, request, *args, **kwargs):
+
+        curso = models.Curso.objects.get(pk=int(kwargs['pk']))
+        form = self.form_class(initial=model_to_dict(curso))
+        breadcrumbs = ((reverse('inicio'), 'Inicio'),
+                       (reverse('mis_cursos'), "Mis cursos"))
+                               
+        return render(request,
+                      self.template,
+                      {
+                          'title': 'Editar curso',
+                          'breadcrumbs': breadcrumbs,
+                          'convocatoria': curso.convocatoria,
+                          'asignatura': curso.asignatura,
+                          'form': form
+                       })
+
+
+    def post(self, request, *args, **kwargs):
+        curso = models.Curso.objects.get(pk=int(kwargs['pk']))        
+        convocatoria = curso.convocatoria
+        asignatura = curso.asignatura
+
+        
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            curso.sede = request.POST['sede']
+            curso.aula = request.POST['aula']
+            curso.horario = request.POST['horario']
+            curso.save()
+
+            curso.academicos.clear()
+            for ac_id in request.POST.getlist('academicos'):
+                ac = models.Academico.objects.get(pk=int(ac_id))
+                curso.academicos.add(ac)
+            curso.save()
+
+            return HttpResponseRedirect(reverse('mis_cursos'))
+        
 
 class EligeAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
@@ -167,3 +220,23 @@ class MisEstudiantesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         new_context = self.request.user.academico.estudiantes()
 
         return new_context
+
+
+
+class MisCursos(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
+    def test_func(self):
+        return auth.is_academico(self.request.user)
+
+    model = models.Curso
+    template_name = 'posgradmin/mis_cursos_list.html'
+
+    def get_queryset(self):
+        new_context = self.request.user.academico.curso_set.all()
+
+        return new_context
+
+
+
+    
