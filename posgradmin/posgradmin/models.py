@@ -1633,7 +1633,7 @@ class Curso(models.Model):
     profesores = models.TextField("Profesores", blank=True, null=True)
     contacto = models.TextField("Contacto", blank=True, null=True)
 
-    academicos = models.ManyToManyField(Academico)
+    academicos = models.ManyToManyField(Academico, help_text="profesores que impartirán el curso")
     
     aula = models.CharField(max_length=80, blank=True, null=True)
     horario = models.CharField(max_length=80, blank=True, null=True)

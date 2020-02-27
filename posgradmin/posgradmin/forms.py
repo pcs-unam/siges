@@ -83,6 +83,9 @@ class SolicitudForm(forms.Form):
 class CursoModelForm(forms.ModelForm):
 
     aula = forms.CharField(max_length=80, help_text='escriba "Unidad de Posgrado" para solicitar espacio')
+    sede = forms.ChoiceField(required=True, choices=(('CDMX', 'CDMX'),
+                                        ('Morelia', 'Morelia'),
+                                        (u'León', u'León')))
     
     class Meta:
         model = Curso

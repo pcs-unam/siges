@@ -57,7 +57,7 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
     template = 'posgradmin/solicita_curso.html'
     form_class = forms.CursoModelForm
-
+    
     def test_func(self):
         return auth.is_academico(self.request.user)
 
@@ -66,11 +66,16 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
         convocatoria = models.ConvocatoriaCurso.objects.get(pk=int(kwargs['pk']))
         asignatura = models.Asignatura.objects.get(pk=int(kwargs['as_id']))
         form = self.form_class(initial={'academicos': [request.user.academico, ]})
+        
+        breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                       (reverse('elige_asignatura', args=[convocatoria.id,]), "Convocatoria para cursos %s-%s" % (convocatoria.year, convocatoria.semestre))
+                      )
                                
         return render(request,
                       self.template,
                       {
                           'title': 'Asignaturas',
+                          'breadcrumbs': breadcrumbs,
                           'convocatoria': convocatoria,
                           'asignatura': asignatura,
                           'form': form
@@ -80,6 +85,7 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         convocatoria = models.ConvocatoriaCurso.objects.get(pk=int(kwargs['pk']))
         asignatura = models.Asignatura.objects.get(pk=int(kwargs['as_id']))
+        
         form = self.form_class(request.POST)
         if form.is_valid():
             curso = models.Curso(
@@ -104,7 +110,7 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
 class EligeAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
     template = 'posgradmin/elige_asignatura.html'
-
+    
     def test_func(self):
         return auth.is_academico(self.request.user)
 
@@ -119,10 +125,15 @@ class EligeAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
             Q(tipo='Optativa') &
             (Q(estado='aceptada') | Q(estado='propuesta')))
 
+        breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                       ('', "Convocatoria para cursos %s-%s" % (convocatoria.year, convocatoria.semestre))
+                      )
+        
         return render(request,
                       self.template,
                       {
                           'title': 'Asignaturas',
+                          'breadcrumbs': breadcrumbs,
                           'asignaturas': asignaturas,
                           'convocatoria': convocatoria,
                        })
