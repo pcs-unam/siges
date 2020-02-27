@@ -25,6 +25,23 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
 
+class ConvocatoriaCurso(models.Model):
+    year = models.PositiveSmallIntegerField("Año")
+    semestre = models.PositiveSmallIntegerField(
+        choices=((1, 1), (2, 2)))
+    status = models.CharField(max_length=10,
+            choices=[('abierta', 'abierta'),
+                     ('cerrada', 'cerrada')])
+
+    def __str__(self):
+        return u"%s-%s %s" % (self.year, self.semestre, self.status)
+
+    class Meta:
+        verbose_name_plural = "Convocatorias para cursos"
+        unique_together = ('year', 'semestre')
+        ordering = ['year', 'semestre', ]
+
+
 class Institucion(models.Model):
     nombre = models.CharField("Institución u Organización", max_length=150)
     suborganizacion = models.CharField(
@@ -1596,6 +1613,7 @@ class Asignatura(models.Model):
 
 
 class Curso(models.Model):
+    convocatoria = models.ForeignKey(ConvocatoriaCurso, on_delete=models.CASCADE, null=True)
     asignatura = models.ForeignKey(Asignatura, on_delete=models.CASCADE)
     grupo = models.CharField(max_length=20, blank=True, null=True)
     year = models.PositiveSmallIntegerField("Año")
@@ -1614,6 +1632,9 @@ class Curso(models.Model):
 
     profesores = models.TextField("Profesores", blank=True, null=True)
     contacto = models.TextField("Contacto", blank=True, null=True)
+
+    academicos = models.ManyToManyField(Academico)
+    
     aula = models.CharField(max_length=80, blank=True, null=True)
     horario = models.CharField(max_length=80, blank=True, null=True)
 

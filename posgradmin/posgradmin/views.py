@@ -214,7 +214,9 @@ class InicioView(LoginRequiredMixin, View):
         return render(request,
                       self.template_name,
                       {'title': 'Inicio',
-                       'breadcrumbs': self.breadcrumbs})
+                       'breadcrumbs': self.breadcrumbs,
+                       'convocatorias_curso': models.ConvocatoriaCurso.objects.filter(status='abierta')
+                      })
 
 
 class PerfilComite(LoginRequiredMixin, UserPassesTestMixin, View):

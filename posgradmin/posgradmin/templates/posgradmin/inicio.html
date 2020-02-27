@@ -60,12 +60,16 @@
     </div>
 
 
+    {% if convocatorias_curso %}
+    {% for c in convocatorias_curso %}
     <div style="background-color: #fafaa0; padding: 1em; border-style: solid; border-width: 1px; border-color: #dadaa0;">
-      <h1>Convocatoria para la impartición de cursos</h1>
-      <p>¿Quieres dar un curso en al programa de posgrado?</p>
-      <p><a class="btn btn-primary btn-lg" href="#" role="button">Elige una asignatura</a></p>
+      <h1>Convocatoria</h1>
+      <h2>Para impartir cursos en el semestre {{ c.year}}-{{ c.semestre }}</h2>
+      <p>¿Quieres dar un curso en el programa de posgrado?</p>
+      <p><a href="">Elige una asignatura</a></p>
     </div>
-
+    {% endfor %}
+    {% endif %}
 
     {# if user.perfil #}
     {# include 'posgradmin/inicio_perfil.html' #}

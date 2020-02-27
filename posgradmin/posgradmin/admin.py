@@ -9,7 +9,9 @@ from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
     Solicitud, Proyecto, Dictamen, \
     Comite, Curso, Asignatura, Sesion, Adscripcion, \
-    LineaInvestigacion, AnexoExpediente, Acreditacion
+    LineaInvestigacion, AnexoExpediente, Acreditacion, \
+    ConvocatoriaCurso
+    
 
 from .admin_action_academicos import exporta_resumen_academicos
 
@@ -340,3 +342,12 @@ class AcreditacionAdmin(admin.ModelAdmin):
     list_filter = ['acreditacion', ]
 
 admin.site.register(Acreditacion, AcreditacionAdmin)
+
+
+
+
+class ConvocatoriaCursoAdmin(admin.ModelAdmin):
+    list_display = ['year', 'semestre', 'status']
+    list_filter = ['status', ]
+
+admin.site.register(ConvocatoriaCurso, ConvocatoriaCursoAdmin)
