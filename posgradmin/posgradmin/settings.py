@@ -147,7 +147,7 @@ DATE_FORMAT = 'Y-m-d'
 
 STATIC_URL = '/static/'
 
-APP_PREFIX = '/'
+APP_PREFIX = 'http://localhost:8000/'
 
 ACCOUNT_ACTIVATION_DAYS = 2
 
@@ -159,7 +159,6 @@ EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-LOGIN_REDIRECT_URL = '/inicio/'
 
 
 solicitudes_estados = (
@@ -227,3 +226,5 @@ ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+LOGIN_REDIRECT_URL = ('inicio')

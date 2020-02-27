@@ -13,8 +13,8 @@ class AccountAdapter(DefaultAccountAdapter):
             a = models.Academico(user=request.user,
                                  acreditacion='candidato')
             a.save()
-
-        return resolve_url(settings.APP_PREFIX + '/inicio/')
+            
+        return resolve_url(settings.APP_PREFIX + 'inicio/')
 
     def is_open_for_signup(self, request):
         return False
