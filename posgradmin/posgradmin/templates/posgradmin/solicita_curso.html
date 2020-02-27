@@ -1,11 +1,15 @@
 {% extends "posgradmin/posgradmin_base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 
 
 
 {% block content %}
 
-<h1>{{ user.get_full_name }}</h1>
+<h1>Solicitar curso</h1>
+<h2>{{ asignatura }}</h2>
+<h3>para el semestre {{ convocatoria.year }}-{{ convocatoria.semestre }}</h3>
+
 
 <hr>
 <br />
@@ -15,10 +19,9 @@
 
 <div id='form-errors'>{{ form_errors }}</div>
 
-<script>
-$(document).ready(function() {
-    $('.dateinput').datepicker({ dateFormat: 'yy-mm-dd'});
-}); 
-</script>
+
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
 {% endblock %}
 

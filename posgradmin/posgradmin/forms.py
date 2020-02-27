@@ -11,8 +11,7 @@ from posgradmin.models import Perfil, Estudiante, Academico, \
     CampoConocimiento, GradoAcademico, Institucion, Comite, \
     Proyecto, Curso, Sesion, Adscripcion
 from django.conf import settings
-from django.forms.widgets import SelectMultiple
-
+from dal import autocomplete
 from pprint import pprint
 
 
@@ -83,20 +82,18 @@ class SolicitudForm(forms.Form):
 
 class CursoModelForm(forms.ModelForm):
 
-    
     class Meta:
         model = Curso
         exclude = ['convocatoria', 'grupo', 'year', 'semestre',
                    'entidad', 'profesores', 'contacto',
                    'intersemestral', 'activo', 'asignatura']
-
+        widgets = {
+            'academicos': autocomplete.ModelSelect2Multiple(url='academico-autocomplete')
+        }
 
     def __init__(self, *args, **kwargs):
 
         super(CursoModelForm, self).__init__(*args, **kwargs)
-
-        self.fields["academicos"].widget = SelectMultiple()
-        self.fields["academicos"].queryset = Academico.objects.all()        
         
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'

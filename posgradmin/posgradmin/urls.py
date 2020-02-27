@@ -15,7 +15,8 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     TogglePerfilEditar
 
 from posgradmin.views_academico import \
-    MisComitesView, MisEstudiantesView, EligeAsignatura, SolicitaCurso
+    MisComitesView, MisEstudiantesView, EligeAsignatura, SolicitaCurso, \
+    AcademicoAutocomplete
 
 from posgradmin.views_estudiante import ComiteTutoralElegirView, \
     JuradoCandidaturaElegirView, \
@@ -204,6 +205,12 @@ urlpatterns = [
 
     url('^inicio/', InicioView.as_view()),
 
+    url(
+        r'^academico-autocomplete/$',
+        AcademicoAutocomplete.as_view(),
+        name='academico-autocomplete',
+        ),
+    
     url('^convocatoria/cursos/(?P<pk>[0-9]+)/solicita/(?P<as_id>[0-9]+)/',
         SolicitaCurso.as_view(),
         name="solicita_curso"),    

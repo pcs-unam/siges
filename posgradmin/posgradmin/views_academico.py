@@ -9,7 +9,24 @@ from posgradmin import authorization as auth
 from django.conf import settings
 from django.shortcuts import render, HttpResponseRedirect
 import posgradmin.forms as forms
+from dal import autocomplete
+
 from pprint import pprint
+
+class AcademicoAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        # if not self.request.user.is_authenticated():
+        #     return models.Academico.objects.none()
+
+        qs = models.Academico.objects.all()
+
+        if self.q:
+            qs = qs.filter(user__first_name__istartswith=self.q)
+
+        return qs
+
+
 # class MisCatedrasView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 #     login_url = settings.APP_PREFIX + 'accounts/login/'
 
@@ -43,6 +60,7 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
                       {
                           'title': 'Asignaturas',
                           'convocatoria': convocatoria,
+                          'asignatura': asignatura,
                           'form': self.form_class
                        })
 

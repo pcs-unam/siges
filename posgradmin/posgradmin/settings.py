@@ -33,6 +33,8 @@ ALLOWED_HOSTS = [u'sostenibilidad.posgrado.unam.mx', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
     'posgradmin',
     'django.contrib.admin',
     'django.contrib.auth',
