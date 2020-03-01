@@ -7,9 +7,15 @@
 
 <h1>Asignaturas disponibles para el semestre {{ convocatoria.year }}-{{ convocatoria.semestre }}</h1>
 
-Elija una asignatura para proponer su curso.
+<p>
+  <a href="{% url 'proponer_asignatura' %}">Proponga una nueva asignatura optativa</a>.
+</p>
+<p>
+  O elija una asignatura en la siguiente lista para proponer su curso
+  haciendo click en "solicitar curso".
+</p>
 <hr>
-<br />
+
 
 {% if convocatoria.status == 'abierta' %}
 {% for as in asignaturas %}

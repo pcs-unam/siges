@@ -55,6 +55,53 @@ class AcademicoAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplet
 #         return new_context
 
 
+class ProponerAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+    template = 'posgradmin/proponer_asignatura.html'
+    form_class = forms.AsignaturaModelForm
+    
+    def test_func(self):
+        if auth.is_academico(self.request.user):
+            if self.request.user.academico.acreditacion in ['D', 'M', 'P',
+                                                            'candidato profesor']:
+                return True
+        return False
+
+
+    def get(self, request, *args, **kwargs):
+
+        form = self.form_class(initial={'academicos': [request.user.academico, ]})
+        
+        breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                       ('', 'Proponer Asignatura')
+                      )
+                               
+        return render(request,
+                      self.template,
+                      {
+                          'title': 'Proponer Asignatura',
+                          'breadcrumbs': breadcrumbs,
+                          'form': form
+                       })
+
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            a = models.Asignatura(
+                asignatura=request.POST['asignatura'],
+                clave=request.POST['clave'],
+                creditos=request.POST['creditos'],
+                tipo='Optativa',
+                estado='propuesta',
+                programa=request.FILES['programa'])
+            a.save()
+            return HttpResponseRedirect(reverse('inicio'))
+        else:
+            print(form.errors)
+
+
+
 class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
     template = 'posgradmin/solicita_curso.html'

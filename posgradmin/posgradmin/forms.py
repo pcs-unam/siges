@@ -9,7 +9,7 @@ from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, \
     CampoConocimiento, GradoAcademico, Institucion, Comite, \
-    Proyecto, Curso, Sesion, Adscripcion
+    Proyecto, Curso, Sesion, Adscripcion, Asignatura
 from django.conf import settings
 from dal import autocomplete
 from pprint import pprint
@@ -80,6 +80,16 @@ class SolicitudForm(forms.Form):
     )
 
 
+class AsignaturaModelForm(forms.ModelForm):
+    class Meta:
+        model = Asignatura
+        exclude = ['estado', 'tipo', 'campos_de_conocimiento']
+
+    def __init__(self, *args, **kwargs):
+        super(AsignaturaModelForm, self).__init__(*args, **kwargs)
+        self.fields['programa'].required = True
+
+        
 class CursoModelForm(forms.ModelForm):
 
     aula = forms.CharField(max_length=80, help_text='escriba "Unidad de Posgrado" para solicitar espacio')
