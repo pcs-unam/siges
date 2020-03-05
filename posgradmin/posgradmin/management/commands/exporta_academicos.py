@@ -21,15 +21,12 @@ class Command(BaseCommand):
 
 
 def export(outdir):
-    last_year = datetime.now().year - 1
     doctorado = Academico.objects.filter(
         Q(acreditacion='D'),
-        Q(fecha_acreditacion__year__gte=last_year)
     ).order_by('user__last_name')
 
     maestria = Academico.objects.filter(
         Q(acreditacion='M'),
-        Q(fecha_acreditacion__year__gte=last_year)
     ).order_by('user__last_name')
 
     mkdir('-p', outdir)
@@ -41,7 +38,7 @@ def export(outdir):
                                  {'doctorado': doctorado,
                                   'maestria': maestria,
                                   'pleca': random.randint(0, 19)
-                                  }).encode('utf-8'))
+                                  }))
 
 
     # escribir el indice por linea de investigacion
@@ -49,7 +46,6 @@ def export(outdir):
 
         academicos = linea.academico_set.filter(
             Q(acreditacion='D'),
-            Q(fecha_acreditacion__year__gte=last_year)
         ).order_by('user__last_name')
 
         index_md = path.join(outdir, 'indice_%s.md' % slugify(linea.nombre))
@@ -59,7 +55,7 @@ def export(outdir):
                                       'linea': linea,
                                       'link': slugify(linea.nombre),
                                       'pleca': random.randint(0, 19)
-                                     }).encode('utf-8'))
+                                     }))
 
 
     # escribir el indice por campo de conocimiento
@@ -67,7 +63,6 @@ def export(outdir):
 
         academicos = campo.academico_set.filter(
             Q(acreditacion='M') | Q(acreditacion='D'),
-            Q(fecha_acreditacion__year__gte=last_year)
         ).order_by('user__last_name')
 
         index_md = path.join(outdir, 'indice_%s.md' % slugify(campo.nombre))
@@ -77,7 +72,7 @@ def export(outdir):
                                       'campo': campo,
                                       'link': slugify(campo.nombre),
                                       'pleca': random.randint(0, 19)
-                                     }).encode('utf-8'))
+                                     }))
 
 
     # palabras = {}
@@ -115,4 +110,4 @@ def export(outdir):
                 {'a': a,
                  'palabras_clave': palabras_clave,
                  'pleca': random.randint(0, 19)
-                 }).encode('utf8'))
+                 }))
