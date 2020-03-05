@@ -99,6 +99,9 @@ class CursoModelForm(forms.ModelForm):
     
     class Meta:
         model = Curso
+        labels = {
+            "academicos": "Académicos"
+        }
         exclude = ['convocatoria', 'grupo', 'year', 'semestre',
                    'entidad', 'profesores', 'contacto',
                    'intersemestral', 'activo', 'asignatura']
