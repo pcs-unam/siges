@@ -5,15 +5,17 @@
 
 {% block content %}
 
-<h1>Asignaturas disponibles para el semestre {{ convocatoria.year }}-{{ convocatoria.semestre }}</h1>
+<h1>{{ convocatoria.year }}-{{ convocatoria.semestre }}</h1>
+
+<p>
+  Elija una asignatura en la siguiente lista para proponer un curso
+  haciendo clic en "solicitar curso".
+</p>
 
 <p>
   <a href="{% url 'proponer_asignatura' %}">Proponga una nueva asignatura optativa</a>.
 </p>
-<p>
-  O elija una asignatura en la siguiente lista para proponer su curso
-  haciendo click en "solicitar curso".
-</p>
+
 <hr>
 
 
