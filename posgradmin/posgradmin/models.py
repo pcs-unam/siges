@@ -1574,7 +1574,7 @@ class Asignatura(models.Model):
 
     clave = models.CharField(max_length=20, blank=True, null=True)
 
-    creditos = models.PositiveSmallIntegerField()
+    creditos = models.PositiveSmallIntegerField(default=0)
 
     campos_de_conocimiento = models.ManyToManyField(
         CampoConocimiento,
@@ -1599,7 +1599,7 @@ class Asignatura(models.Model):
                                        (u"aceptada",
                                         u"aceptada")))
 
-    programa = models.FileField("Documento con descripción extensa.",
+    programa = models.FileField("Formato de curso nuevo completo.",
                                 upload_to=curso_path,
                                 blank=True, null=True)
 

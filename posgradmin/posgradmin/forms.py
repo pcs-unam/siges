@@ -83,7 +83,7 @@ class SolicitudForm(forms.Form):
 class AsignaturaModelForm(forms.ModelForm):
     class Meta:
         model = Asignatura
-        exclude = ['estado', 'tipo', 'campos_de_conocimiento', 'clave',]
+        exclude = ['estado', 'tipo', 'campos_de_conocimiento', 'clave', 'creditos', ]
 
     def __init__(self, *args, **kwargs):
         super(AsignaturaModelForm, self).__init__(*args, **kwargs)
@@ -103,7 +103,7 @@ class CursoModelForm(forms.ModelForm):
             "academicos": "Académicos"
         }
         exclude = ['convocatoria', 'grupo', 'year', 'semestre',
-                   'entidad', 'profesores', 'contacto',
+                   'entidad', 'profesores', 'contacto', 
                    'intersemestral', 'activo', 'asignatura']
         widgets = {
             'academicos': autocomplete.ModelSelect2Multiple(url='academico-autocomplete')
