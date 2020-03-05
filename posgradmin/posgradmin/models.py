@@ -1643,7 +1643,7 @@ class Curso(models.Model):
     academicos = models.ManyToManyField(Academico, help_text="profesores que impartirán el curso")
     
     aula = models.CharField(max_length=80, blank=True, null=True)
-    horario = models.CharField(max_length=300, blank=True, null=True, help_text="dia(s) y horarios")
+    horario = models.CharField(max_length=300, blank=True, null=True, help_text="día(s) y horarios")
 
     intersemestral = models.BooleanField(default=False)
 
