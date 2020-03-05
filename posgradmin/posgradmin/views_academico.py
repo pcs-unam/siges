@@ -90,8 +90,6 @@ class ProponerAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
         if form.is_valid():
             a = models.Asignatura(
                 asignatura=request.POST['asignatura'],
-                clave=request.POST['clave'],
-                creditos=request.POST['creditos'],
                 tipo='Optativa',
                 estado='propuesta',
                 programa=request.FILES['programa'])
