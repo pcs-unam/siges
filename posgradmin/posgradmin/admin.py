@@ -199,6 +199,10 @@ admin.site.register(Asignatura, AsignaturaAdmin)
 class CursoAdmin(admin.ModelAdmin):
     list_display = ['asignatura', 'lista_academicos',
                     'year', 'semestre', 'intersemestral', 'sede', 'activo']
+    list_filter = ['year',
+                   'semestre',
+                   'activo',
+    ]
 
     def lista_academicos(self, obj):
         return ", ".join([str(a) for a in obj.academicos.all()])
