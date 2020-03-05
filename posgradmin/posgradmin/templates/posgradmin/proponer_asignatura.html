@@ -18,12 +18,8 @@
       {% csrf_token %}
       <table>
         {{ form.as_table }}
-	</table>
-      <button type="submit" />
-      {{ title }}
-      </button>
-    </form>
-</div>
+      </table>
+
 
 <p>
 Una vez propuesta la asignatura*  es necesario ingresar nuevamente a la
@@ -33,6 +29,13 @@ convocatoria para solicitar un curso de la misma.
 <p>
   * Una asignatura corresponde a un temario (el formato completo) y se puede impartir en diferentes cursos. Un curso además incluye sede, profesorado, horarios, etc.
 </p>
+      
+      <button type="submit" />
+      {{ title }}
+      </button>
+    </form>
+</div>
+
 
 
 {% endblock %}
