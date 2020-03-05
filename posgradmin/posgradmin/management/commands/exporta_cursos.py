@@ -38,7 +38,7 @@ def export(cursos, outdir):
            'Morelia',
            u'León',]
 
-    index = cursos.read().decode('utf-8')
+    index = cursos.read()
     cursos_path = cursos.name
     cursos.close()
     
@@ -54,12 +54,12 @@ def export(cursos, outdir):
                     curso_slug = slugify(c.asignatura.asignatura
                                          + '_'
                                          + c.sede)
-                    cursos_md += u" - [%s](/cursos/%s/)\n" % (c.asignatura.asignatura, curso_slug)
+                    cursos_md += " - [%s](/cursos/%s/)\n" % (c.asignatura.asignatura, curso_slug)
                 index = index.replace("<!-- " + slugify("%s %s" % (tipo[0], sede)) + " -->",
                                       cursos_md)
 
     with open(cursos_path, 'w') as f:
-        f.write(index.encode('utf-8'))
+        f.write(index)
     
     # crear una página por curso
     for c in Curso.objects.filter(activo=True):
@@ -78,4 +78,4 @@ def export(cursos, outdir):
                 {'curso': c,
                  'curso_slug': curso_slug,
                  'pleca': random.randint(0, 19)                 
-                 }).encode('utf8'))
+                 }))
