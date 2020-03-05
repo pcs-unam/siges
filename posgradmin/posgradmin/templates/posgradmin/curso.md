@@ -14,7 +14,7 @@ permalink: /cursos/{{ curso_slug }}/
 | Campo de Conocimiento | {{ curso.asignatura.campos_de_conocimiento.all|join:" // " }} |{% endif %}
 | Sede | {{ curso.sede|default:"" }} |
 | Aula | {{ curso.aula|default:"" }} |
-| Horario | {{ curso.horario|default:"" }} |
+| Día(s) y horario | {{ curso.horario|default:"" }} |
 | Profesores | {{ curso.profesores|linebreaksbr|default:"" }} |
 | Contacto | {{ curso.contacto|linebreaksbr|default:"" }} |
 {% if curso.asignatura.programa_url %}| Descargables |  [Programa]({{ curso.asignatura.programa.url }}) |{% endif %}
