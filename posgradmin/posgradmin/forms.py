@@ -83,7 +83,7 @@ class SolicitudForm(forms.Form):
 class AsignaturaModelForm(forms.ModelForm):
     class Meta:
         model = Asignatura
-        exclude = ['estado', 'tipo', 'campos_de_conocimiento']
+        exclude = ['estado', 'tipo', 'campos_de_conocimiento', 'clave',]
 
     def __init__(self, *args, **kwargs):
         super(AsignaturaModelForm, self).__init__(*args, **kwargs)
