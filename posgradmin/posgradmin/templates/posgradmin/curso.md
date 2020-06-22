@@ -15,6 +15,6 @@ permalink: /cursos/{{ curso_slug }}/
 | Sede | {{ curso.sede|default:"" }} |
 | Aula | {{ curso.aula|default:"" }} |
 | Día(s) y horario | {{ curso.horario|default:"" }} |
-| Profesores | {{ curso.profesores|linebreaksbr|default:"" }} |
+| Profesores | {{ academicos|safeseq|join:', ' }} |
 | Contacto | {{ curso.contacto|linebreaksbr|default:"" }} |
 {% if curso.asignatura.programa_url %}| Descargables |  [Programa]({{ curso.asignatura.programa.url }}) |{% endif %}

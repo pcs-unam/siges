@@ -77,5 +77,6 @@ def export(cursos, outdir):
                 'posgradmin/curso.md',
                 {'curso': c,
                  'curso_slug': curso_slug,
+                 'academicos': ["<a href='mailto:%s'>%s</a>" % (p.user.email, p) for p in c.academicos.all()],
                  'pleca': random.randint(0, 19)                 
                  }))
