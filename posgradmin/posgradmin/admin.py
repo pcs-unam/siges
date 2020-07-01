@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.http import HttpResponseRedirect
 from django.contrib import admin
 
 from django.contrib.auth.models import User
@@ -196,6 +197,31 @@ class AsignaturaAdmin(admin.ModelAdmin):
 admin.site.register(Asignatura, AsignaturaAdmin)
 
 
+
+
+def activa_curso(modeladmin, request, queryset):
+    for c in queryset.all():
+        c.activo = True
+        c.save()
+        
+    return HttpResponseRedirect('/admin/posgradmin/curso')
+
+
+activa_curso.short_description = "Marcar cursos como activos"
+
+
+def desactiva_curso(modeladmin, request, queryset):
+    for c in queryset.all():
+        c.activo = False
+        c.save()
+        
+    return HttpResponseRedirect('/admin/posgradmin/curso')
+
+
+desactiva_curso.short_description = "Marcar cursos como inactivos"
+
+
+
 class CursoAdmin(admin.ModelAdmin):
     list_display = ['asignatura', 'lista_academicos',
                     'year', 'semestre', 'intersemestral', 'sede', 'activo']
@@ -212,6 +238,9 @@ class CursoAdmin(admin.ModelAdmin):
     autocomplete_fields = ['academicos',]
     readonly_fields = ['profesores', 'contacto', ]
 
+    actions = [activa_curso, desactiva_curso]
+    
+    
 admin.site.register(Curso, CursoAdmin)
 
 
