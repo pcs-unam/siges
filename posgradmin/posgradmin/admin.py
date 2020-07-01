@@ -1,5 +1,6 @@
 # coding: utf-8
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.contrib import admin
 
 from django.contrib.auth.models import User
@@ -203,8 +204,7 @@ def activa_curso(modeladmin, request, queryset):
     for c in queryset.all():
         c.activo = True
         c.save()
-        
-    return HttpResponseRedirect('/admin/posgradmin/curso')
+    return HttpResponseRedirect(reverse('admin:posgradmin_curso_changelist'))        
 
 
 activa_curso.short_description = "Marcar cursos como activos"
@@ -215,8 +215,7 @@ def desactiva_curso(modeladmin, request, queryset):
         c.activo = False
         c.save()
         
-    return HttpResponseRedirect('/admin/posgradmin/curso')
-
+    return HttpResponseRedirect(reverse('admin:posgradmin_curso_changelist'))
 
 desactiva_curso.short_description = "Marcar cursos como inactivos"
 
