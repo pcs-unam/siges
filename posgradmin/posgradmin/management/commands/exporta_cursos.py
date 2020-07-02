@@ -65,9 +65,14 @@ def export(cursos, outdir):
     for c in Curso.objects.filter(activo=True):
         # mkdir('-p', path.join(outdir, ''))
 
+        if c.sede is None:
+            sede = ""
+        else:
+            sede = c.sede
+            
         curso_slug = slugify(c.asignatura.asignatura
                              + '_'
-                             + c.sede)
+                             + sede)
 
         c_md = path.join(outdir,
                          '%s.md' % curso_slug)
