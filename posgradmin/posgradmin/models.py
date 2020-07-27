@@ -1634,7 +1634,7 @@ class Curso(models.Model):
     sede = models.CharField(max_length=80,
                             blank=True, null=True,
                             choices=(
-                                ('virtual', 'virtual'),                                
+                                (u'En Línea', u'En Línea'),                                
                                 ('CDMX', 'CDMX'),
                                 ('Morelia', 'Morelia'),
                                 (u'León', u'León')))

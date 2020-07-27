@@ -29,12 +29,15 @@ class Command(BaseCommand):
 def export(cursos, outdir):
 
     mkdir('-p', outdir)
-    tipos=[(u"Cursos obligatorios", 'Obligatoria'),
-           (u"Cursos obligatorios por campo", 'Obligatorias por campo'),
-           (u"Cursos optativos", 'Optativa'),
-           (u"Seminarios de Doctorado", u"Seminario de Doctorado")
+    tipos=[
+        (u"Cursos Intersemestrales", u"Cursos Intersemestrales"),
+        (u"Cursos obligatorios", 'Obligatoria'),
+        (u"Cursos obligatorios por campo", 'Obligatorias por campo'),
+        (u"Cursos optativos", 'Optativa'),
+        (u"Seminarios de Doctorado", u"Seminario de Doctorado")
     ]
-    sedes=['CDMX',
+    sedes=['En Línea',
+           'CDMX',
            'Morelia',
            u'León',]
 
@@ -44,10 +47,17 @@ def export(cursos, outdir):
     
     for tipo in tipos:
         for sede in sedes:
-            cursos = Curso.objects.filter(
-                activo=True).filter(
-                    asignatura__tipo=tipo[1]).filter(
-                        sede=sede).order_by('asignatura__asignatura')
+            if tipo[0] == u"Cursos Intersemestrales":
+                cursos = Curso.objects.filter(
+                    activo=True).filter(
+                        intersemestral=True).filter(
+                            sede=sede).order_by('asignatura__asignatura')
+                
+            else:
+                cursos = Curso.objects.filter(
+                    activo=True).filter(
+                        asignatura__tipo=tipo[1]).filter(
+                            sede=sede).order_by('asignatura__asignatura')
             if cursos:
                 cursos_md = u"\n\n## %s %s\n\n" % (tipo[0], sede)
                 for c in cursos:
