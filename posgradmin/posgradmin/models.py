@@ -1633,9 +1633,11 @@ class Curso(models.Model):
                                         ('700', '700')))
     sede = models.CharField(max_length=80,
                             blank=True, null=True,
-                            choices=(('CDMX', 'CDMX'),
-                                     ('Morelia', 'Morelia'),
-                                     (u'León', u'León')))
+                            choices=(
+                                ('virtual', 'virtual'),                                
+                                ('CDMX', 'CDMX'),
+                                ('Morelia', 'Morelia'),
+                                (u'León', u'León')))
 
     profesores = models.TextField("Profesores", blank=True, null=True)
     contacto = models.TextField("Contacto", blank=True, null=True)
