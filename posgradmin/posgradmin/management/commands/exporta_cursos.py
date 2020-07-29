@@ -39,7 +39,7 @@ def export(cursos, outdir):
         (u"Seminarios de Doctorado", u"Seminario de Doctorado")
     ]
     sedes = [
-        'En Línea',
+        'en línea',
         'CDMX',
         'Morelia',
         u'León'
