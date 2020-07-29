@@ -120,13 +120,13 @@ class Perfil(models.Model):
 
     nacionalidad = models.CharField(max_length=100)
 
-    fecha_nacimiento = models.DateField('fecha de nacimiento', 
+    fecha_nacimiento = models.DateField('fecha de nacimiento',
                                         blank=True, null=True)
 
     headshot = models.ImageField("fotografía",
                                  upload_to=headshot_path,
                                  blank=True, null=True)
-    
+
     def __str__(self):
         return u"%s" % self.user.get_full_name()
 
@@ -137,7 +137,7 @@ class Perfil(models.Model):
         verbose_name_plural = "Perfiles Personales"
         ordering = ['user__first_name', 'user__last_name', ]
 
-        
+
     def asociado_PCS(self):
         for a in self.adscripcion_set.all():
             if a.institucion.entidad_PCS or a.asociacion_PCS:
@@ -627,7 +627,7 @@ class Academico(models.Model):
             ('por reacreditar D', 'por reacreditar D'),
             ('por reacreditar M', 'por reacreditar M'),
             ('baja', 'baja'),
-            ('P', 'P'),            
+            ('P', 'P'),
             ('D', 'D'),
             ('M', 'M'),
             ('E', 'E')))
@@ -820,11 +820,11 @@ class Academico(models.Model):
 
     titulo_honorifico = models.CharField(u'Título honorífico (Dra., Mtro, Lic)',
         max_length=12, default='Lic.',
-        null=True, blank=True,                                         
+        null=True, blank=True,
         choices=(
             (u'Lic.',  u'Lic.'),
             (u'Mtro.', u'Mtro.'),
-            (u'Mtra.', u'Mtra.'),            
+            (u'Mtra.', u'Mtra.'),
             (u'Dr.',   u'Dr.'),
             (u'Dra.',  u'Dra.')))
 
@@ -834,23 +834,23 @@ class Academico(models.Model):
                 self.titulo_honorifico = 'Dr.'
             else:
                 self.titulo_honorifico = 'Dra.'
-                
+
         elif self.is_msc():
-            if self.user.perfil.genero == 'M':            
+            if self.user.perfil.genero == 'M':
                 self.titulo_honorifico = u'Mtro.'
             else:
                 self.titulo_honorifico = u'Mtra.'
         else:
             self.titulo_honorifico = u'Lic.'
-    
+
 
     def copia_ultima_acreditacion(self):
         if self.acreditaciones.count() > 0:
             ultima = self.acreditaciones.latest('fecha')
             self.acreditacion = ultima.acreditacion
             self.fecha_acreditacion = ultima.fecha
-        
-            
+
+
     def is_phd(self):
         niveles = [deg.nivel
                    for deg in self.user.gradoacademico_set.all()]
@@ -1403,7 +1403,7 @@ class Acreditacion(models.Model):
     academico = models.ForeignKey(Academico, related_name="acreditaciones", on_delete=models.CASCADE)
     fecha = models.DateField(default=datetime.date.today)
     comentario = models.CharField(max_length=400,
-                                  null=True, blank=True)                                  
+                                  null=True, blank=True)
     acreditacion = models.CharField(
         max_length=25,
         default='candidato',
@@ -1415,19 +1415,19 @@ class Acreditacion(models.Model):
             ('por reacreditar D', 'por reacreditar D'),
             ('por reacreditar M', 'por reacreditar M'),
             ('baja', 'baja'),
-            ('P', 'P'),            
+            ('P', 'P'),
             ('D', 'D'),
             ('M', 'M'),
             ('E', 'E')))
 
     def __str__(self):
         return self.acreditacion
-    
+
     class Meta:
         verbose_name_plural = "acreditaciones"
         ordering = ['fecha', ]
-    
-        
+
+
 class Adscripcion(models.Model):
     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
@@ -1634,7 +1634,7 @@ class Curso(models.Model):
     sede = models.CharField(max_length=80,
                             blank=True, null=True,
                             choices=(
-                                (u'En Línea', u'En Línea'),                                
+                                (u'en línea', u'en línea'),
                                 ('CDMX', 'CDMX'),
                                 ('Morelia', 'Morelia'),
                                 (u'León', u'León')))
@@ -1643,7 +1643,7 @@ class Curso(models.Model):
     contacto = models.TextField("Contacto", blank=True, null=True)
 
     academicos = models.ManyToManyField(Academico, help_text="Profesores que impartirán el curso.")
-    
+
     aula = models.CharField(max_length=80, blank=True, null=True)
     horario = models.CharField(max_length=300, blank=True, null=True, help_text="Día(s) y horarios.")
 
@@ -1664,4 +1664,3 @@ class Curso(models.Model):
 class Acta(models.Model):
     acuerdos = models.TextField(blank=True)
     sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE)
-

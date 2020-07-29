@@ -29,48 +29,56 @@ class Command(BaseCommand):
 def export(cursos, outdir):
 
     mkdir('-p', outdir)
-    tipos=[
-        (u"Cursos Intersemestrales", u"Cursos Intersemestrales"),
+
+    intersemestral = [True, False]
+
+    tipos = [
         (u"Cursos obligatorios", 'Obligatoria'),
         (u"Cursos obligatorios por campo", 'Obligatorias por campo'),
         (u"Cursos optativos", 'Optativa'),
         (u"Seminarios de Doctorado", u"Seminario de Doctorado")
     ]
-    sedes=['En Línea',
-           'CDMX',
-           'Morelia',
-           u'León',]
+    sedes = [
+        'En Línea',
+        'CDMX',
+        'Morelia',
+        u'León'
+    ]
 
     index = cursos.read()
     cursos_path = cursos.name
     cursos.close()
-    
-    for tipo in tipos:
-        for sede in sedes:
-            if tipo[0] == u"Cursos Intersemestrales":
+
+    cursos_md = ""
+    for inter in intersemestral:
+        if inter:
+            cursos_md += "\n\n\n# Cursos Intersemestrales\n\n"
+        else:
+            cursos_md += "\n\n\n# Cursos Semestrales\n\n"
+
+        for tipo in tipos:
+            for sede in sedes:
                 cursos = Curso.objects.filter(
                     activo=True).filter(
-                        intersemestral=True).filter(
-                            sede=sede).order_by('asignatura__asignatura')
-                
-            else:
-                cursos = Curso.objects.filter(
-                    activo=True).filter(
-                        asignatura__tipo=tipo[1]).filter(
-                            sede=sede).order_by('asignatura__asignatura')
-            if cursos:
-                cursos_md = u"\n\n## %s %s\n\n" % (tipo[0], sede)
-                for c in cursos:
-                    curso_slug = slugify(c.asignatura.asignatura
-                                         + '_'
-                                         + c.sede)
-                    cursos_md += " - [%s](/cursos/%s/)\n" % (c.asignatura.asignatura, curso_slug)
-                index = index.replace("<!-- " + slugify("%s %s" % (tipo[0], sede)) + " -->",
-                                      cursos_md)
+                        intersemestral=inter).filter(
+                            asignatura__tipo=tipo[1]).filter(
+                                sede=sede).order_by('asignatura__asignatura')
+
+                if cursos:
+                    cursos_md += u"\n\n## %s %s\n\n" % (tipo[0], sede)
+                    for c in cursos:
+                        curso_slug = slugify(c.asignatura.asignatura
+                                             + '_'
+                                             + c.sede)
+                        cursos_md += " - [%s](/cursos/%s/)\n" % (c.asignatura.asignatura, curso_slug)
+                    index = index.replace("<!-- " + slugify("%s %s" % (tipo[0], sede)) + " -->",
+                                          cursos_md)
+    index = index.replace("<!-- cursos-siges -->", cursos_md)
+
 
     with open(cursos_path, 'w') as f:
         f.write(index)
-    
+
     # crear una página por curso
     for c in Curso.objects.filter(activo=True):
         # mkdir('-p', path.join(outdir, ''))
@@ -79,7 +87,7 @@ def export(cursos, outdir):
             sede = ""
         else:
             sede = c.sede
-            
+
         curso_slug = slugify(c.asignatura.asignatura
                              + '_'
                              + sede)
@@ -93,5 +101,5 @@ def export(cursos, outdir):
                 {'curso': c,
                  'curso_slug': curso_slug,
                  'academicos': ["<a href='mailto:%s'>%s</a>" % (p.user.email, p) for p in c.academicos.all()],
-                 'pleca': random.randint(0, 19)                 
+                 'pleca': random.randint(0, 19)
                  }))
