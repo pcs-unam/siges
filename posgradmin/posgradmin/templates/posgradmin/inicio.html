@@ -46,7 +46,11 @@
 
 	{% if user.academico %}
 	<li role="presentation">
+	  {% if user.academico.acreditacion == 'P' %}
+	  <a href="{% url 'perfil_profesor' %}" class="list-group-item">Perfil Académico</a>	  
+	  {% else %}
 	  <a href="{% url 'perfil_academico' %}" class="list-group-item">Perfil Académico</a>
+	  {% endif %}
 	</li>
 	{% endif %}
 

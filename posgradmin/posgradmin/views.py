@@ -443,6 +443,98 @@ class PerfilAcademicoDetail(LoginRequiredMixin, UserPassesTestMixin,
         return self.request.user
 
 
+class PerfilProfesorDetail(LoginRequiredMixin, UserPassesTestMixin,
+                            DetailView):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+    template_name = "posgradmin/perfil_profesor.html"
+
+    def test_func(self):
+        return True
+
+    def get_context_data(self, **kwargs):
+        context = super(PerfilProfesorDetail, self).get_context_data(**kwargs)
+        context['user'] = self.request.user
+
+        # may see intimacies?
+        u = context['object']
+
+        if (  # by authority
+                self.request.user == u
+                or self.request.user.is_staff):
+            see_private = True
+        else:
+            see_private = False
+
+        context['see_private'] = see_private
+        context['editable'] = get_perfiles_editables()
+
+        return context
+
+    def get_object(self):
+        return self.request.user
+
+
+class PerfilProfesorEditar(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+
+    def test_func(self):
+        return True
+
+    form_class = forms.PerfilProfesorModelForm
+
+    breadcrumbs = ((settings.APP_PREFIX + 'inicio/',
+                    'Inicio'),
+                   (settings.APP_PREFIX + 'inicio/perfil-academico/',
+                    'Perfil Académico'),
+                   (settings.APP_PREFIX + 'inicio/perfil-profesor/editar',
+                    'Editar perfil general'))
+
+    template_name = 'posgradmin/try.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        if hasattr(request.user, 'academico'):
+            a = request.user.academico
+            data = model_to_dict(a)
+            form = self.form_class(data=data, instance=a)
+        else:
+            form = self.form_class()
+
+        return render(request,
+                      self.template_name,
+                      {'form': form,
+                       'title': 'Editar Perfil Académico',
+                       'breadcrumbs': self.breadcrumbs})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+
+        if form.is_valid() and get_perfiles_editables():
+
+            a = request.user.academico
+
+            if 'anexo_CV' in request.FILES:
+                a.anexo_CV = request.FILES['anexo_CV']
+            elif 'anexo_CV-clear' in request.POST and a.anexo_CV.name != '':
+                a.anexo_CV.delete()
+
+            if 'ultimo_grado' in request.FILES:
+                a.ultimo_grado = request.FILES['ultimo_grado']
+            elif 'ultimo_grado-clear' in request.POST and a.ultimo_grado.name != '':
+                a.ultimo_grado.delete()
+
+            a.save()
+
+            return HttpResponseRedirect(reverse('perfil_profesor'))
+        else:
+            return render(request,
+                          self.template_name,
+                          {'form': form,
+                           'title': 'Editar Perfil Académico',
+                           'breadcrumbs': self.breadcrumbs})
+
+
+    
 class PerfilEstudianteDetail(LoginRequiredMixin, UserPassesTestMixin,
                              DetailView):
     login_url = settings.APP_PREFIX + 'accounts/login/'

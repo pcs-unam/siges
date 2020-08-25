@@ -4,7 +4,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from posgradmin.views import PerfilEditar, PerfilDetail, \
-    PerfilAcademicoDetail, \
+    PerfilAcademicoDetail, PerfilProfesorDetail, PerfilProfesorEditar,\
     AcademicoActividadView, AcademicoResumenCVView, AcademicoPerfilView, \
     InicioView, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
@@ -103,6 +103,14 @@ urlpatterns = [
         PerfilAcademicoDetail.as_view(),
         name='perfil_academico'),
 
+    url(r'^inicio/perfil-profesor/$',
+        PerfilProfesorDetail.as_view(),
+        name='perfil_profesor'),
+
+    url(r'^inicio/perfil-profesor/editar',
+        PerfilProfesorEditar.as_view(),
+        name="perfil_profesor_editar"),
+    
     url(r'^inicio/estudiantes/mis$',
         MisEstudiantesView.as_view(),
         name="mis_estudiantes"),

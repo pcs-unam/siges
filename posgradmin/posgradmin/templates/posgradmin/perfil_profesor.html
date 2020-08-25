@@ -1,0 +1,77 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load md2 %}
+
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  &rsaquo; <a href="{% url 'inicio' %}">Inicio</a>
+  &rsaquo; Perfil Académico
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+{% if not user.perfil %}
+<div style="border-style: solid; border-width: 1px; border-color: red; padding: 1em;">
+<strong>No tiene perfil personal.</strong>
+<a href="{% url 'editar_perfil' %}">Crear perfil personal.</a>.
+</div>
+{% endif %}
+
+
+<h1>{{ object.get_full_name }}</h1>
+<hr />
+
+{% if user.is_staff %}
+<a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar perfil académico</a><br /><br />
+{% endif %}
+
+<h2>General</h2>
+
+
+{% if object.academico.carencias_profesor %}
+<div style="border-style: solid; border-width: 1px; border-color: red; padding: 1em;">
+<strong>Perfil académico incompleto.</strong>
+Atención a los siguientes reactivos:<br />
+{{ object.academico.carencias_profesor|markdown }}
+</div>
+{% endif %}
+
+
+{% if user == object and editable == True %}
+<a class="btn btn-default" role="button" href="{% url 'perfil_profesor_editar' %}">editar esta sección</a>
+<br /><br />
+{% endif %}
+
+<ul class="list-group">
+
+  {% if object.academico.anexo_CV %}
+  <li class="list-group-item">
+    <a href="{{ object.academico.anexo_CV.url }}">CV extenso</a></li>
+  {% endif %}
+
+
+  {% if object.academico.ultimo_grado %}
+  <li class="list-group-item">
+    <a href="{{ object.academico.ultimo_grado.url }}">Último grado académico</a>
+  </li>
+  {% endif %}
+
+  <li class="list-group-item">
+    Acreditación: {{ object.academico.show_acreditacion }}
+
+    {% if object.academico.fecha_acreditacion %}
+    <p>Acreditado el {{ object.academico.fecha_acreditacion }}</p>
+    {% endif %}
+
+  </li>
+</ul>
+
+</div>
+
+
+
+
+<!-- academico -->
+{% endblock %}

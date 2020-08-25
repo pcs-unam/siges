@@ -249,6 +249,38 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
                    'solicitud', 'comite_academico', 'observaciones']
 
 
+
+
+class PerfilProfesorModelForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PerfilProfesorModelForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Div(Div(HTML("<h1 class='panel-title'>"
+                         + u"Generales</h1>"),
+                    Class="panel-heading"),
+                Div(
+                    Column(
+                        'anexo_CV',
+                        'ultimo_grado'),
+                    Class="panel-body")),
+            Submit('guardar', 'guardar'),
+        )
+
+    class Meta:
+        model = Academico
+        exclude = ['user',
+                   'fecha_acreditacion',
+                   'acreditacion',
+                   'CVU',
+                   'estimulo_UNAM',
+                   'nivel_SNI',
+                   'semaforo_maestria',
+                   'titulo_honorifico',
+                   'semaforo_doctorado',
+                   'solicitud', 'comite_academico', 'observaciones']
+        
+
 class AcademicoResumenCV_reacreditacion_ModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
