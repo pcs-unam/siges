@@ -1649,7 +1649,6 @@ class Curso(models.Model):
 
     intersemestral = models.BooleanField(default=False)
 
-    activo = models.BooleanField(default=False)
     status = models.CharField(max_length=10,
                               default='solicitado',
                               choices=[('solicitado', 'solicitado'),
