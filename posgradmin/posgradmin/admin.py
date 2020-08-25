@@ -223,10 +223,10 @@ desactiva_curso.short_description = "Marcar cursos como inactivos"
 
 class CursoAdmin(admin.ModelAdmin):
     list_display = ['asignatura', 'lista_academicos',
-                    'year', 'semestre', 'intersemestral', 'sede', 'activo']
+                    'year', 'semestre', 'intersemestral', 'sede', 'activo', 'status']
     list_filter = ['year',
                    'semestre',
-                   'activo',
+                   'status',
     ]
 
     def lista_academicos(self, obj):

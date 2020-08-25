@@ -59,7 +59,7 @@ def export(cursos, outdir):
         for tipo in tipos:
             for sede in sedes:
                 cursos = Curso.objects.filter(
-                    activo=True).filter(
+                    status='publicado').filter(
                         intersemestral=inter).filter(
                             asignatura__tipo=tipo[1]).filter(
                                 sede=sede).order_by('asignatura__asignatura')
@@ -80,7 +80,7 @@ def export(cursos, outdir):
         f.write(index)
 
     # crear una página por curso
-    for c in Curso.objects.filter(activo=True):
+    for c in Curso.objects.filter(status='publicado'):
         # mkdir('-p', path.join(outdir, ''))
 
         if c.sede is None:
