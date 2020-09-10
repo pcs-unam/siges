@@ -16,7 +16,7 @@ from pdfrw import PdfReader, PdfWriter, PageMerge
 from django.template.loader import render_to_string
 from sh import pandoc
 from tempfile import NamedTemporaryFile
-
+import datetime
 
 from .settings import BASE_DIR, MEDIA_ROOT
 
@@ -262,19 +262,20 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
         curso = models.Curso.objects.get(pk=int(kwargs['pk']))
 
         # 'profesor_invitado': ['373']
-        # 'fecha_de_participación_day': ['1']
-        # 'fecha_de_participación_month': ['1']
-        # 'fecha_de_participación_year': ['2021']
-        
+
+        fecha_participacion = datetime.date(int(request.POST['fecha_de_participación_year']),
+                                            int(request.POST['fecha_de_participación_month']),
+                                            int(request.POST['fecha_de_participación_day']))
+
         with NamedTemporaryFile(mode='r+') as carta_md:
             carta_md.write(
                 render_to_string('posgradmin/constancia_curso.md',
-                                 {'fecha': '2020-01-01',
+                                 {'fecha': datetime.date.today(),
                                   'profesor_invitado': 'juan peres',
                                   'tema': 'tema',
                                   'curso': curso,
-                                  'fecha_participacion': '2020-1-1',
-                                  'profesor': request.user }))
+                                  'fecha_participacion': fecha_participacion,
+                                  'profesor': request.user.get_full_name() }))
             carta_md.seek(0)
             const_path = '%s/perfil-academico/%s/curso_%s_%s.pdf' % (MEDIA_ROOT,
                                                                      request.user.academico.id,
@@ -282,7 +283,6 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
                                                                      'aguas'
             )
 
-            print(const_path)
             pandoc(carta_md.name, output=const_path)
             C = PdfReader(const_path)
             M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
