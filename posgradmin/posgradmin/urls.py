@@ -16,7 +16,7 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
 
 from posgradmin.views_academico import \
     MisComitesView, MisEstudiantesView, EligeAsignatura, SolicitaCurso, \
-    AcademicoAutocomplete, CursoView, MisCursos, ProponerAsignatura
+    AcademicoAutocomplete, CursoView, MisCursos, ProponerAsignatura, CursoConstancia
 
 from posgradmin.views_estudiante import ComiteTutoralElegirView, \
     JuradoCandidaturaElegirView, \
@@ -230,6 +230,10 @@ urlpatterns = [
     url('^cursos/mis/',
         MisCursos.as_view(),
         name="mis_cursos"),    
+
+    url('^cursos/(?P<pk>[0-9]+)/constancia/',
+        CursoConstancia.as_view(),
+        name="curso_constancia"),
         
     url('^cursos/(?P<pk>[0-9]+)/',
         CursoView.as_view(),

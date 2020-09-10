@@ -9,7 +9,7 @@ from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, \
     CampoConocimiento, GradoAcademico, Institucion, Comite, \
-    Proyecto, Curso, Sesion, Adscripcion, Asignatura
+    Proyecto, Curso, Sesion, Adscripcion, Asignatura, ConvocatoriaCurso
 from django.conf import settings
 from dal import autocomplete
 from pprint import pprint
@@ -117,6 +117,22 @@ class CursoModelForm(forms.ModelForm):
         self.helper.form_class = 'form-horizontal'
         self.helper.layout.append(Submit('solicitar', 'solicitar'))
         
+
+class CursoConstancia(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(CursoConstancia, self).__init__(*args, **kwargs)
+        invitados = [(p.id, p) for p in kwargs['initial']['academicos']]
+        self.fields['profesor_invitado'] = forms.ChoiceField(choices=invitados)
+
+        convocatoria = ConvocatoriaCurso.objects.get(pk=kwargs['initial']['convocatoria'])
+        year = convocatoria.year
+
+        self.fields['fecha_de_participación'] = forms.DateField(
+            widget=forms.SelectDateWidget(years=range(year, year+1)))
+        
+    
+    
         
 class PerfilModelForm(forms.ModelForm):
 
