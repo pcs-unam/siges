@@ -17,8 +17,10 @@ from django.template.loader import render_to_string
 from sh import pandoc
 from tempfile import NamedTemporaryFile
 import datetime
+from django.utils.text import slugify
 
-from .settings import BASE_DIR, MEDIA_ROOT
+
+from .settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
 
 
 
@@ -261,7 +263,7 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         curso = models.Curso.objects.get(pk=int(kwargs['pk']))
 
-        # 'profesor_invitado': ['373']
+        profesor_invitado = models.Academico.objects.get(pk=int(request.POST['profesor_invitado']))
 
         fecha_participacion = datetime.date(int(request.POST['fecha_de_participación_year']),
                                             int(request.POST['fecha_de_participación_month']),
@@ -271,28 +273,32 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
             carta_md.write(
                 render_to_string('posgradmin/constancia_curso.md',
                                  {'fecha': datetime.date.today(),
-                                  'profesor_invitado': 'juan peres',
+                                  'profesor_invitado': profesor_invitado,
                                   'tema': request.POST['tema'],
                                   'curso': curso,
                                   'fecha_participacion': fecha_participacion,
                                   'profesor': request.user.get_full_name() }))
             carta_md.seek(0)
-            const_path = '%s/perfil-academico/%s/curso_%s_%s.pdf' % (MEDIA_ROOT,
-                                                                     request.user.academico.id,
-                                                                     curso.id,
-                                                                     'aguas'
+
+            outdir = '%s/perfil-academico/%s/' % (MEDIA_ROOT,
+                                                  request.user.academico.id)
+            
+            tmpname = 'cursoplain_%s_%s.pdf' % (curso.id,
+                                                slugify(profesor_invitado)
             )
 
-            pandoc(carta_md.name, output=const_path)
-            C = PdfReader(const_path)
+            final_name = tmpname.replace('cursoplain', 'constancia_curso')
+            
+            pandoc(carta_md.name, output=outdir + tmpname)
+            C = PdfReader(outdir + tmpname)
             M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
             w = PdfWriter()
             merger = PageMerge(M.pages[0])
             merger.add(C.pages[0]).render()
             
-            w.write('/tmp/aguas.pdf', M)
+            w.write(outdir + final_name, M)
 
-        return HttpResponseRedirect(reverse('mis_cursos'))
+        return HttpResponseRedirect(MEDIA_URL+"perfil-academico/%s/%s" % (request.user.academico.id, final_name))
 
 
 

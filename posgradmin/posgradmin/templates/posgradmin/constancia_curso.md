@@ -2,7 +2,7 @@
 papersize: letter
 geometry:
 - top=30mm
-- left=20mm
+- left=30mm
 ---
 
 \pagenumbering{gobble}
