@@ -120,6 +120,8 @@ class CursoModelForm(forms.ModelForm):
 
 class CursoConstancia(forms.Form):
 
+    tema = forms.CharField(max_length=300, required=True)
+    
     def __init__(self, *args, **kwargs):
         super(CursoConstancia, self).__init__(*args, **kwargs)
         invitados = [(p.id, p) for p in kwargs['initial']['academicos']]

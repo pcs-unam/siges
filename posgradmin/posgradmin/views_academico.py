@@ -272,7 +272,7 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
                 render_to_string('posgradmin/constancia_curso.md',
                                  {'fecha': datetime.date.today(),
                                   'profesor_invitado': 'juan peres',
-                                  'tema': 'tema',
+                                  'tema': request.POST['tema'],
                                   'curso': curso,
                                   'fecha_participacion': fecha_participacion,
                                   'profesor': request.user.get_full_name() }))
