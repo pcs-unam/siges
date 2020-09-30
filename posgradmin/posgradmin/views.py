@@ -484,7 +484,7 @@ class PerfilProfesorEditar(LoginRequiredMixin, UserPassesTestMixin, View):
 
     breadcrumbs = ((settings.APP_PREFIX + 'inicio/',
                     'Inicio'),
-                   (settings.APP_PREFIX + 'inicio/perfil-academico/',
+                   (settings.APP_PREFIX + 'inicio/perfil-profesor/',
                     'Perfil Académico'),
                    (settings.APP_PREFIX + 'inicio/perfil-profesor/editar',
                     'Editar perfil general'))
