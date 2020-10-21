@@ -124,14 +124,14 @@ class CursoConstancia(forms.Form):
     
     def __init__(self, *args, **kwargs):
         super(CursoConstancia, self).__init__(*args, **kwargs)
-        invitados = [(p.id, p) for p in kwargs['initial']['academicos']]
-        self.fields['profesor_invitado'] = forms.ChoiceField(choices=invitados)
+
+        self.fields['profesor_invitado'] = forms.CharField()
 
         convocatoria = ConvocatoriaCurso.objects.get(pk=kwargs['initial']['convocatoria'])
         year = convocatoria.year
 
         self.fields['fecha_de_participación'] = forms.DateField(
-            widget=forms.SelectDateWidget(years=range(year, year+1)))
+            widget=forms.SelectDateWidget(years=range(year - 1, year + 1)))
         
     
     

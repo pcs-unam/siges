@@ -29,7 +29,7 @@
     <li><a href="{{ curso.asignatura.programa.url }}">programa</a></li>    
   </ul>
   <h4>Status: {{ curso.status }}</h4>
-  {% if curso.status == 'aceptado' or curso.status == 'publicado' or curso.status == 'concluido' %}
+  {% if curso.status == 'aceptado' or curso.status == 'concluido' %}
   <a href="{% url "curso_constancia" curso.id %}">emitir constancia</a>
   {% endif %}
   <hr />

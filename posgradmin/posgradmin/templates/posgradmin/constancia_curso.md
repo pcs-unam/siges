@@ -5,6 +5,7 @@ geometry:
 - left=30mm
 ---
 
+
 \pagenumbering{gobble}
 
 \rightline{Ciudad Universitaria, Cd. Mx., a {{ fecha }} }

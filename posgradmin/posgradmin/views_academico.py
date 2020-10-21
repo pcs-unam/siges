@@ -263,13 +263,13 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         curso = models.Curso.objects.get(pk=int(kwargs['pk']))
 
-        profesor_invitado = models.Academico.objects.get(pk=int(request.POST['profesor_invitado']))
+        profesor_invitado = request.POST['profesor_invitado']
 
         fecha_participacion = datetime.date(int(request.POST['fecha_de_participación_year']),
                                             int(request.POST['fecha_de_participación_month']),
                                             int(request.POST['fecha_de_participación_day']))
 
-        with NamedTemporaryFile(mode='r+') as carta_md:
+        with NamedTemporaryFile(mode='r+', encoding='utf-8') as carta_md:
             carta_md.write(
                 render_to_string('posgradmin/constancia_curso.md',
                                  {'fecha': datetime.date.today(),
