@@ -227,6 +227,7 @@ class CursoAdmin(admin.ModelAdmin):
     list_filter = ['year',
                    'semestre',
                    'status',
+                   'intersemestral',
     ]
 
     search_fields = ['asignatura__asignatura']

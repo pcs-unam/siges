@@ -629,7 +629,9 @@ class Academico(models.Model):
             ('baja', 'baja'),
             ('P', 'P'),
             ('D', 'D'),
-            ('M', 'M')))
+            ('M', 'M'),
+            ('E', 'E')
+        ))
 
     solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE,
                                      blank=True, null=True)
@@ -1416,7 +1418,9 @@ class Acreditacion(models.Model):
             ('baja', 'baja'),
             ('P', 'P'),
             ('D', 'D'),
-            ('M', 'M')))
+            ('M', 'M'),
+            ('E', 'E')            
+        ))
 
     def __str__(self):
         return self.acreditacion
