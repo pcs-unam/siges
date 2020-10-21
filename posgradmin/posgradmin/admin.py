@@ -229,8 +229,14 @@ class CursoAdmin(admin.ModelAdmin):
                    'status',
     ]
 
+    search_fields = ['asignatura__asignatura']
+    
     def lista_academicos(self, obj):
-        return ", ".join([str(a) for a in obj.academicos.all()])
+        return ", ".join([str(a) + " (>CP)"
+                          if a.acreditacion == 'candidato profesor'
+                          else
+                          str(a)
+                          for a in obj.academicos.all()])
     
     lista_academicos.short_description = "Académicos"
     
