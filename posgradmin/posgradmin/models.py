@@ -877,7 +877,7 @@ class Academico(models.Model):
         elif (self.acreditacion == 'D'
               or self.acreditacion == 'PD'
               or self.acreditacion == 'NPD'):
-            return "Doctorado"
+            return "Maestría y Doctorado"
         elif self.acreditacion == "M":
             return "Maestría"
         else:
