@@ -14,7 +14,7 @@ from django.urls import reverse
 from django.forms.models import model_to_dict
 from pdfrw import PdfReader, PdfWriter, PageMerge
 from django.template.loader import render_to_string
-from sh import pandoc
+from sh import pandoc, mkdir
 from tempfile import NamedTemporaryFile
 import datetime
 from django.utils.text import slugify
@@ -295,7 +295,8 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
             w = PdfWriter()
             merger = PageMerge(M.pages[0])
             merger.add(C.pages[0]).render()
-            
+
+            mkdir("-p", outdir)
             w.write(outdir + final_name, M)
 
         return HttpResponseRedirect(MEDIA_URL+"perfil-academico/%s/%s" % (request.user.academico.id, final_name))
