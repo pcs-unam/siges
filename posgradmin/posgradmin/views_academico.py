@@ -288,7 +288,8 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
             )
 
             final_name = tmpname.replace('cursoplain', 'constancia_curso')
-            
+
+            mkdir("-p", outdir)
             pandoc(carta_md.name, output=outdir + tmpname)
             C = PdfReader(outdir + tmpname)
             M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
@@ -296,7 +297,6 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
             merger = PageMerge(M.pages[0])
             merger.add(C.pages[0]).render()
 
-            mkdir("-p", outdir)
             w.write(outdir + final_name, M)
 
         return HttpResponseRedirect(MEDIA_URL+"perfil-academico/%s/%s" % (request.user.academico.id, final_name))
