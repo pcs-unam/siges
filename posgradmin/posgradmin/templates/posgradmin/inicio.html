@@ -46,8 +46,8 @@
 
 	{% if user.academico %}
 	<li role="presentation">
-	  {% if user.academico.acreditacion == 'P' %}
-	  <a href="{% url 'perfil_profesor' %}" class="list-group-item">Perfil Académico</a>	  
+	  {% if user.academico.acreditacion == 'P' or user.academico.acreditacion == 'candidato profesor' %}
+	  <a href="{% url 'perfil_profesor' %}" class="list-group-item">Perfil Académico</a>
 	  {% else %}
 	  <a href="{% url 'perfil_academico' %}" class="list-group-item">Perfil Académico</a>
 	  {% endif %}
@@ -59,7 +59,7 @@
 	  <a href="{% url 'mis_cursos' %}">Mis cursos</a>
 	</li>
 	{% endif %}
-	
+
 	{% if user.estudiante %}
 	<a href="{% url 'perfil_estudiante' %}" class="list-group-item">Perfil de Estudiante</a>
 	{% endif %}

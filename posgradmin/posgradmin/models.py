@@ -1419,7 +1419,7 @@ class Acreditacion(models.Model):
             ('P', 'P'),
             ('D', 'D'),
             ('M', 'M'),
-            ('E', 'E')            
+            ('E', 'E')
         ))
 
     def __str__(self):

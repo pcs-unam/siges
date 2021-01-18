@@ -110,7 +110,7 @@ urlpatterns = [
     url(r'^inicio/perfil-profesor/editar',
         PerfilProfesorEditar.as_view(),
         name="perfil_profesor_editar"),
-    
+
     url(r'^inicio/estudiantes/mis$',
         MisEstudiantesView.as_view(),
         name="mis_estudiantes"),
@@ -218,32 +218,32 @@ urlpatterns = [
         AcademicoAutocomplete.as_view(),
         name='academico-autocomplete',
         ),
-    
+
     url('^convocatoria-cursos/(?P<pk>[0-9]+)/asignatura/(?P<as_id>[0-9]+)/',
         SolicitaCurso.as_view(),
-        name="solicita_curso"),    
-    
+        name="solicita_curso"),
+
     url('^convocatoria-cursos/(?P<pk>[0-9]+)/',
         EligeAsignatura.as_view(),
-        name="elige_asignatura"),    
+        name="elige_asignatura"),
 
     url('^cursos/mis/',
         MisCursos.as_view(),
-        name="mis_cursos"),    
+        name="mis_cursos"),
 
     url('^cursos/(?P<pk>[0-9]+)/constancia/',
         CursoConstancia.as_view(),
         name="curso_constancia"),
-        
+
     url('^cursos/(?P<pk>[0-9]+)/',
         CursoView.as_view(),
         name="curso"),
 
     url('^proponer-asignatura/',
         ProponerAsignatura.as_view(),
-        name="proponer_asignatura"),    
-        
-    
+        name="proponer_asignatura"),
+
+
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 
 

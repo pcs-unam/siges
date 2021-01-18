@@ -180,7 +180,7 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                         comentario=u'invitado',
                         acreditacion=tipo_candidato)
                     ac.save()
-                    
+
                     aciertos.append([i, ] + row)
                 except (IntegrityError, ValidationError) as E:
                     errores.append([str(E), i] + [cell
@@ -534,7 +534,7 @@ class PerfilProfesorEditar(LoginRequiredMixin, UserPassesTestMixin, View):
                            'breadcrumbs': self.breadcrumbs})
 
 
-    
+
 class PerfilEstudianteDetail(LoginRequiredMixin, UserPassesTestMixin,
                              DetailView):
     login_url = settings.APP_PREFIX + 'accounts/login/'

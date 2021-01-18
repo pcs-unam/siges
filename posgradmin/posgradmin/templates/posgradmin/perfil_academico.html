@@ -29,12 +29,11 @@
 {% endif %}
 
 
-
 {% if object.academico.semaforo_maestria != "rojo" %}
 {% include "posgradmin/perfil_academico_seccion_general.html" %}
 {% endif %}
 
-<div style="background-color: {% if object.academico.carencias_resumen %}#f1eaeb{% else %}#fdfdfd{% endif %}; padding: 1em;">  
+<div style="background-color: {% if object.academico.carencias_resumen %}#f1eaeb{% else %}#fdfdfd{% endif %}; padding: 1em;">
 
 <h2>Resumen Curricular</h2>
 

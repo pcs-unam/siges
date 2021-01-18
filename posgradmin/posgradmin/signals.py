@@ -15,14 +15,12 @@ def academico_verifica_resumen_perfil(sender, **kwargs):
 
     a.semaforo_maestria = a.verifica_semaforo_maestria()
     a.semaforo_doctorado = a.verifica_semaforo_doctorado()
-    
+
     a.copia_ultima_acreditacion()
-    
+
 
 @receiver(post_save, sender=Acreditacion)
 def copia_acreditacion_a_academico(sender, **kwargs):
     ac = kwargs['instance']
     ac.academico.copia_ultima_acreditacion()
     ac.academico.save()
-
-
