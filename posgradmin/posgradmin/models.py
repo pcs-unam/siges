@@ -1656,6 +1656,7 @@ class Curso(models.Model):
                               choices=[('solicitado', 'solicitado'),
                                        ('aceptado', 'aceptado'),
                                        ('rechazado', 'rechazado'),
+                                       ('cancelado', 'cancelado'),
                                        ('publicado', 'publicado'),
                                        ('concluido', 'concluido'),])
 
