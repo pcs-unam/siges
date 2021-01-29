@@ -376,6 +376,10 @@ class MisCursos(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = 'posgradmin/mis_cursos_list.html'
 
     def get_queryset(self):
-        new_context = self.request.user.academico.curso_set.all()
+        return self.request.user.academico.curso_set.all()
 
-        return new_context
+
+    def get_context_data(self, **kwargs):
+        ctxt = super(MisCursos, self).get_context_data(**kwargs)
+        ctxt['MEDIA_URL'] = MEDIA_URL
+        return ctxt

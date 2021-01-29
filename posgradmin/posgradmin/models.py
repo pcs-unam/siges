@@ -23,6 +23,11 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from tempfile import NamedTemporaryFile
+from django.template.loader import render_to_string
+from sh import pandoc, mkdir, rm
+from pdfrw import PdfReader, PdfWriter, PageMerge
+
 
 
 class ConvocatoriaCurso(models.Model):
@@ -1659,6 +1664,39 @@ class Curso(models.Model):
                                        ('cancelado', 'cancelado'),
                                        ('publicado', 'publicado'),
                                        ('concluido', 'concluido'),])
+
+    def genera_constancias(self):
+        if self.status == 'concluido':
+
+            with NamedTemporaryFile(mode='r+', encoding='utf-8') as carta_md:
+
+                carta_md.write(
+                    render_to_string('posgradmin/constancia_curso_profesores.md',
+                                     {'fecha': datetime.date.today(),
+                                      'firma': BASE_DIR + '/docs/firma.png',
+                                      'academicos': list(self.academicos.all()),
+                                      'curso': self}))
+                carta_md.seek(0)
+
+                outdir = '%s/cursos/%s/' % (MEDIA_ROOT, self.id)
+                mkdir("-p", outdir)
+
+                tmpname = 'cursoplain_profesores.pdf'
+
+                final_name = tmpname.replace('cursoplain', 'constancia_curso')
+
+                print(outdir + tmpname)
+                print(outdir)
+                pandoc(carta_md.name, "--latex-engine=xelatex", output=outdir + tmpname)
+                C = PdfReader(outdir + tmpname)
+                M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
+                w = PdfWriter()
+                merger = PageMerge(M.pages[0])
+                merger.add(C.pages[0]).render()
+
+                rm(outdir + tmpname)                
+                w.write(outdir + final_name, M)
+
 
     class Meta:
         verbose_name_plural = "Cursos"
