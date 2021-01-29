@@ -200,24 +200,23 @@ admin.site.register(Asignatura, AsignaturaAdmin)
 
 
 
-def activa_curso(modeladmin, request, queryset):
+def publica_curso(modeladmin, request, queryset):
     for c in queryset.all():
-        c.activo = True
+        c.status = 'publicado'
         c.save()
     return HttpResponseRedirect(reverse('admin:posgradmin_curso_changelist'))        
 
+publica_curso.short_description = "Marcar cursos como publicados"
 
-activa_curso.short_description = "Marcar cursos como activos"
 
-
-def desactiva_curso(modeladmin, request, queryset):
+def concluye_curso(modeladmin, request, queryset):
     for c in queryset.all():
-        c.activo = False
+        c.status = 'concluido'
         c.save()
         
     return HttpResponseRedirect(reverse('admin:posgradmin_curso_changelist'))
 
-desactiva_curso.short_description = "Marcar cursos como inactivos"
+concluye_curso.short_description = "Marcar cursos como concluidos"
 
 
 
@@ -244,7 +243,7 @@ class CursoAdmin(admin.ModelAdmin):
     autocomplete_fields = ['academicos',]
     readonly_fields = ['profesores', 'contacto', ]
 
-    actions = [activa_curso, desactiva_curso]
+    actions = [publica_curso, concluye_curso]
     
     
 admin.site.register(Curso, CursoAdmin)
