@@ -51,11 +51,6 @@ def export(cursos, outdir):
 
     cursos_md = ""
     for inter in intersemestral:
-        if inter:
-            cursos_md += "\n\n\n# Cursos Intersemestrales\n\n"
-        else:
-            cursos_md += "\n\n\n# Cursos Semestrales\n\n"
-
         for tipo in tipos:
             for sede in sedes:
                 cursos = Curso.objects.filter(
@@ -65,6 +60,11 @@ def export(cursos, outdir):
                                 sede=sede).order_by('asignatura__asignatura')
 
                 if cursos:
+                    if inter:
+                        cursos_md += "\n\n\n# Cursos Intersemestrales\n\n"
+                    else:
+                        cursos_md += "\n\n\n# Cursos Semestrales\n\n"
+                    
                     cursos_md += u"\n\n## %s %s\n\n" % (tipo[0], sede)
                     for c in cursos:
                         curso_slug = slugify(c.asignatura.asignatura
