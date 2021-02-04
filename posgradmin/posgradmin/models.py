@@ -953,17 +953,17 @@ class Academico(models.Model):
         if self.comite_maestria_otros is None:
             carencias += u" - " + str(self._meta.get_field('comite_maestria_otros').verbose_name) + u"\n"
 
-        if self.acreditacion in ('D', 'M', 'E') and self.participacion_comite_maestria is None:
-            carencias += u" - " + str(self._meta.get_field('participacion_comite_maestria').verbose_name) + u"\n"
+        # if self.acreditacion in ('D', 'M', 'E') and self.participacion_comite_maestria is None:
+        #     carencias += u" - " + str(self._meta.get_field('participacion_comite_maestria').verbose_name) + u"\n"
 
-        if self.acreditacion in ('D', 'M', 'E') and self.participacion_tutor_maestria is None:
-            carencias += u" - " + str(self._meta.get_field('participacion_tutor_maestria').verbose_name) + u"\n"
+        # if self.acreditacion in ('D', 'M', 'E') and self.participacion_tutor_maestria is None:
+        #     carencias += u" - " + str(self._meta.get_field('participacion_tutor_maestria').verbose_name) + u"\n"
 
-        if self.acreditacion in ('D', 'M', 'E') and self.participacion_comite_doctorado is None:
-            carencias += u" - " + str(self._meta.get_field('participacion_comite_doctorado').verbose_name) + u"\n"
+        # if self.acreditacion in ('D', 'M', 'E') and self.participacion_comite_doctorado is None:
+        #     carencias += u" - " + str(self._meta.get_field('participacion_comite_doctorado').verbose_name) + u"\n"
 
-        if self.acreditacion in ('D', 'M', 'E') and self.participacion_tutor_doctorado is None:
-            carencias += u" - " + str(self._meta.get_field('participacion_tutor_doctorado').verbose_name) + u"\n"
+        # if self.acreditacion in ('D', 'M', 'E') and self.participacion_tutor_doctorado is None:
+        #     carencias += u" - " + str(self._meta.get_field('participacion_tutor_doctorado').verbose_name) + u"\n"
 
         if self.articulos_internacionales_5 is None:
             carencias += u" - " + str(self._meta.get_field('articulos_internacionales_5').verbose_name) + u"\n"
