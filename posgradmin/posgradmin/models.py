@@ -1473,6 +1473,10 @@ class Acreditacion(models.Model):
                 rm(outdir + tmpname)
                 w.write(outdir + final_name, M)
 
+                anexo = AnexoExpediente(user=self.academico.user,
+                                        fecha=datetime.datetime.now())
+                anexo.archivo.name = 'expediente/%s/%s' % (self.academico.user.username, final_name)
+                anexo.save()
 
 
 class Adscripcion(models.Model):
