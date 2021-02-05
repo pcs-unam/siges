@@ -32,10 +32,18 @@ def curso_genera_constancias(sender, **kwargs):
     c = kwargs['instance']
     c.genera_constancias()
 
+
 def curso_academicos_changed(sender, **kwargs):
     if kwargs['action'] == "post_add":
         c = kwargs['instance']
         c.genera_constancias()
 
 m2m_changed.connect(curso_academicos_changed, sender=Curso.academicos.through)
-    
+
+
+
+@receiver(post_save, sender=Acreditacion)
+def genera_carta_acreditacion(sender, **kwargs):
+    ac = kwargs['instance']
+    ac.genera_carta()
+

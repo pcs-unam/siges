@@ -1435,6 +1435,46 @@ class Acreditacion(models.Model):
         ordering = ['fecha', ]
 
 
+    def genera_carta(self):
+        if self.acreditacion in ('D', 'M'):
+
+            if self.academico.user.gradoacademico_set.filter(nivel='doctorado').count() > 0:
+                if self.academico.user.perfil.genero == 'M':
+                    dr = 'Dr. '
+                else:
+                    dr = 'Dra. '
+            else:
+                dr = ""
+
+            with NamedTemporaryFile(mode='r+', encoding='utf-8') as carta_md:
+
+                carta_md.write(
+                    render_to_string('posgradmin/carta_acreditacion.md',
+                                     {'fecha': datetime.date.today(),
+                                      'ac': self,
+                                      'dr': dr,
+                                      'firma': BASE_DIR + '/docs/firma.png'}))
+                carta_md.seek(0)
+
+                outdir = '%s/expediente/%s/' % (MEDIA_ROOT, self.academico.user.username)
+                mkdir("-p", outdir)
+
+                tmpname = 'cartaplain_%s.pdf' % self.acreditacion
+
+                final_name = tmpname.replace('cartaplain', 'carta_acreditacion')
+
+                pandoc(carta_md.name, "--latex-engine=xelatex", output=outdir + tmpname)
+                C = PdfReader(outdir + tmpname)
+                M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
+                w = PdfWriter()
+                merger = PageMerge(M.pages[0])
+                merger.add(C.pages[0]).render()
+
+                rm(outdir + tmpname)
+                w.write(outdir + final_name, M)
+
+
+
 class Adscripcion(models.Model):
     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
@@ -1685,8 +1725,6 @@ class Curso(models.Model):
 
                 final_name = tmpname.replace('cursoplain', 'constancia_curso')
 
-                print(outdir + tmpname)
-                print(outdir)
                 pandoc(carta_md.name, "--latex-engine=xelatex", output=outdir + tmpname)
                 C = PdfReader(outdir + tmpname)
                 M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
@@ -1694,7 +1732,7 @@ class Curso(models.Model):
                 merger = PageMerge(M.pages[0])
                 merger.add(C.pages[0]).render()
 
-                rm(outdir + tmpname)                
+                rm(outdir + tmpname)
                 w.write(outdir + final_name, M)
 
 
