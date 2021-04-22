@@ -104,7 +104,7 @@ class CursoModelForm(forms.ModelForm):
         }
         exclude = ['convocatoria', 'grupo', 'year', 'semestre',
                    'entidad', 'profesores', 'contacto', 
-                   'intersemestral', 'activo', 'asignatura']
+                   'intersemestral', 'activo', 'asignatura', 'status', ]
         widgets = {
             'academicos': autocomplete.ModelSelect2Multiple(url='academico-autocomplete')
         }
