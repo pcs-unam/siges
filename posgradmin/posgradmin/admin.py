@@ -9,10 +9,10 @@ from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 
 from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
-    Solicitud, Proyecto, Dictamen, \
-    Comite, Curso, Asignatura, Sesion, Adscripcion, \
+    Solicitud, Proyecto, \
+    Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
-    ConvocatoriaCurso, Estudios, EstadoEstudios
+    ConvocatoriaCurso, Estudios, EstadoEstudios, EstudianteTutor
     
 
 from .admin_action_academicos import exporta_resumen_academicos
@@ -25,6 +25,24 @@ admin.site.site_header = \
 admin.site.site_title = "Posgrado en Ciencias de la Sostenibilidad"
 admin.site.site_url = "/"
 
+@admin.register(EstudianteTutor)
+class EstudianteTutorAdmin(admin.ModelAdmin):
+    model = EstudianteTutor
+    list_display = ['estudiante', 'tutor', 'tipo', 'year', 'semestre']
+    
+    search_fields = ['estudiante__cuenta',
+                     'estudiante__user__first_name',
+                     'estudiante__user__last_name',
+                     'estudiante__user__email',
+                     'tutor__user__first_name',
+                     'tutor__user__last_name',
+                     'tutor__user__email',]
+    list_filter = ['tipo',
+                   'year',
+                   'semestre' ]
+
+    autocomplete_fields = ['estudiante', 'tutor',]
+    
 class EstadoEstudiosInline(admin.TabularInline):
     model = EstadoEstudios
     fk_name = 'estudios'
@@ -51,18 +69,30 @@ class EstudiosInline(admin.TabularInline):
     model = Estudios
     fk_name = 'estudiante'
     extra = 0
+    show_change_link = True
     classes = ('grp-collapse grp-closed',)
-    fields = ['ingreso', 'semestre', 'plan', 'institucion', ]
+    fields = ['ingreso', 'semestre', 'plan', 'institucion',]
 
+
+
+class TutoresInline(admin.TabularInline):
+    model = EstudianteTutor
+    fk_name = 'estudiante'
+    extra = 0
+    classes = ('grp-collapse grp-closed',)
+    fields = ['tutor', 'year', 'semestre', 'tipo', ]
+    autocomplete_fields = ['tutor',]    
+    
+    
 @admin.register(Estudiante)
 class EstudianteAdmin(admin.ModelAdmin):
     search_fields = ['cuenta',
                      'user__first_name',
                      'user__last_name',
                      'user__email', ]
-    list_display = ['user', 'cuenta', ]
+    list_display = ['user', 'cuenta', 'estudios']
 
-    inlines = [EstudiosInline, ]
+    inlines = [EstudiosInline, TutoresInline]
     
     def unificado(self, estudiante):
         return format_html(estudiante.as_a())
@@ -206,15 +236,6 @@ class AdscripcionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Adscripcion, AdscripcionAdmin)
-
-
-class ComiteAdmin(admin.ModelAdmin):
-    list_display = ['estudiante', 'tipo', 'miembro1', 'miembro2', 'miembro3']
-    search_fields = ['estudiante__user__first_name',
-                     'estudiante__user__last_name']
-
-
-admin.site.register(Comite, ComiteAdmin)
 
 
 class AsignaturaAdmin(admin.ModelAdmin):
@@ -380,9 +401,8 @@ admin.site.register(User, UserAdmin)
 
 admin.site.register(CampoConocimiento)
 admin.site.register(LineaInvestigacion)
-# admin.site.register(Comentario)
 admin.site.register(Proyecto)
-admin.site.register(Dictamen)
+
 
 
 class AnexoExpedienteAdmin(admin.ModelAdmin):

@@ -8,7 +8,7 @@ from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, C
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from django.utils.safestring import mark_safe
 from posgradmin.models import Perfil, Estudiante, Academico, \
-    CampoConocimiento, GradoAcademico, Institucion, Comite, \
+    CampoConocimiento, GradoAcademico, Institucion, \
     Proyecto, Curso, Sesion, Adscripcion, Asignatura, ConvocatoriaCurso
 from django.conf import settings
 from dal import autocomplete
@@ -594,98 +594,6 @@ class InstitucionModelForm(forms.ModelForm):
         self.helper.layout.append(Submit('agregar', 'agregar'))
 
 
-class ComiteTutoralModelForm(forms.ModelForm):
-    tutor = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'))
-
-    cotutor = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'))
-
-    miembro1 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'))
-
-    miembro2 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'),
-        required=False)
-
-    miembro3 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'),
-        required=False)
-
-    class Meta:
-        model = Comite
-        exclude = ['solicitud', 'tipo', 'estudiante',
-                   'miembro1', 'miembro2', 'miembro3',
-                   'miembro4', 'miembro5']
-
-    def __init__(self, *args, **kwargs):
-
-        super(ComiteTutoralModelForm, self).__init__(*args, **kwargs)
-
-        self.helper = FormHelper(self)
-        self.helper.form_class = 'form-horizontal'
-        self.helper.layout.append(Submit('elegir', 'elegir'))
-
-
-class CandidaturaModelForm(forms.ModelForm):
-    presidente = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'))
-
-    secretario = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'))
-
-    miembro1 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'))
-
-    miembro2 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'),
-        required=False)
-
-    miembro3 = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'),
-        required=False)
-
-    class Meta:
-        model = Comite
-        exclude = ['solicitud', 'tipo', 'estudiante',
-                   'miembro1', 'miembro2', 'miembro3',
-                   'miembro4', 'miembro5']
-
-    def __init__(self, *args, **kwargs):
-
-        super(CandidaturaModelForm, self).__init__(*args, **kwargs)
-
-        self.helper = FormHelper(self)
-        self.helper.form_class = 'form-horizontal'
-        self.helper.layout.append(Submit('elegir', 'elegir'))
-
-
-class JuradoGradoModelForm(forms.ModelForm):
-    presidente = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'))
-
-    secretario = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'))
-
-    vocal = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'))
-
-    suplente = forms.ModelChoiceField(
-        queryset=Academico.objects.filter(acreditacion='D'))
-
-    class Meta:
-        model = Comite
-        exclude = ['solicitud', 'tipo', 'estudiante',
-                   'miembro1', 'miembro2', 'miembro3',
-                   'miembro4', 'miembro5']
-
-    def __init__(self, *args, **kwargs):
-
-        super(JuradoGradoModelForm, self).__init__(*args, **kwargs)
-
-        self.helper = FormHelper(self)
-        self.helper.form_class = 'form-horizontal'
-        self.helper.layout.append(Submit('elegir', 'elegir'))
 
 
 class ProyectoModelForm(forms.ModelForm):

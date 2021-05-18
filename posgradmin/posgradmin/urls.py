@@ -15,12 +15,10 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     TogglePerfilEditar
 
 from posgradmin.views_academico import \
-    MisComitesView, MisEstudiantesView, EligeAsignatura, SolicitaCurso, \
+    MisEstudiantesView, EligeAsignatura, SolicitaCurso, \
     AcademicoAutocomplete, CursoView, MisCursos, ProponerAsignatura, CursoConstancia
 
-from posgradmin.views_estudiante import ComiteTutoralElegirView, \
-    JuradoCandidaturaElegirView, \
-    JuradoGradoElegirView, CambiarProyectoView
+from posgradmin.views_estudiante import CambiarProyectoView
 
 from posgradmin.views_asistente import SesionesListView, SesionDetail # EstudianteCargar
 
@@ -155,18 +153,6 @@ urlpatterns = [
     url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/anexar$',
         SolicitudAnexo.as_view()),
 
-    url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/elegir-comite-tutoral$',
-        ComiteTutoralElegirView.as_view(),
-        name="elegir_comite_tutoral"),
-
-    url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/elegir-jurado-candidatura$',
-        JuradoCandidaturaElegirView.as_view(),
-        name="elegir_jurado_candidatura"),
-
-    url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/elegir-jurado-grado$',
-        JuradoGradoElegirView.as_view(),
-        name="elegir_jurado_grado"),
-
     url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/cambiar-proyecto$',
         CambiarProyectoView.as_view(),
         name="cambiar_proyecto"),
@@ -186,18 +172,6 @@ urlpatterns = [
     url(r'^inicio/$',
         InicioView.as_view(),
         name="inicio"),
-
-    # url(r'^inicio/catedras/mis$',
-    #     MisCatedrasView.as_view(),
-    #     name="mis_catedras"),
-
-    url(r'^inicio/comites/mis$',
-        MisComitesView.as_view(),
-        name="mis_comites"),
-
-    # url(r'^inicio/solicitudes/(?P<pk>[0-9]+)/registrar-catedra$',
-    #     CatedraRegistrar.as_view(),
-    #     name="registrar_catedra"),
 
     url(r'^inicio/sesiones/(?P<pk>[0-9]+)/$',
         SesionDetail.as_view(),

@@ -335,19 +335,6 @@ class EligeAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
                        })
 
 
-class MisComitesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    login_url = settings.APP_PREFIX + 'accounts/login/'
-
-    def test_func(self):
-        return auth.is_academico(self.request.user)
-
-    model = models.Comite
-    template_name = 'posgradmin/comite_list.html'
-
-    def get_queryset(self):
-        new_context = self.request.user.academico.comites()
-
-        return new_context
 
 
 class MisEstudiantesView(LoginRequiredMixin, UserPassesTestMixin, ListView):

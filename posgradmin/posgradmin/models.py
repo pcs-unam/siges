@@ -1123,12 +1123,10 @@ class Academico(models.Model):
 
     def __str__(self):
         name = self.user.get_full_name()
-        if name:
-            return name
-        else:
-            return self.user.username
+        if not name:
+            name = self.user.username
 
-        return name
+        return "%s [%s]" % (name, self.acreditacion)
 
     def publicaciones_5(self):
         try:
@@ -1500,6 +1498,41 @@ class Acreditacion(models.Model):
                 anexo.save()
 
 
+class EstudianteTutor(models.Model):
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+    tutor = models.ForeignKey(Academico,
+                              limit_choices_to=Q(acreditacion='D')
+                                                | Q(acreditacion='M')
+                                                | Q(acreditacion='E'),
+                              on_delete=models.CASCADE)
+    year = models.PositiveSmallIntegerField("Año")
+    semestre = models.PositiveSmallIntegerField(
+        choices=((1, 1), (2, 2)))
+    tipo = models.CharField(
+        max_length=25,
+        default='D',
+        choices=(
+            ('D', 'tutor'),
+            ('M', 'miembro de comité de doctorado'),
+            ('T', 'tutor de doctorado'),
+            ('A', 'tutor de maestría'),                
+            ('X', 'miembro de comité de maestría'),
+            ('Y', 'segundo tutor de maestría'),
+            ('Z', 'tutor principal de maestría')))
+
+    class Meta:
+        verbose_name_plural = "Estudiantes y tutores"
+        ordering = ['year', 'semestre' ]
+
+    def __str__(self):
+        return "%s : %s %s-%s: %s" % (self.estudiante,
+                                  self.tutor,
+                                  self.year,
+                                  self.semestre,
+                                  self.tipo)
+
+
+                
 class Adscripcion(models.Model):
     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
@@ -1522,117 +1555,6 @@ class Adscripcion(models.Model):
             asoc = ""
         return u"%s %s" % (self.institucion,
                            asoc)
-
-
-class Comite(models.Model):
-    miembro1 = models.ForeignKey(Academico, on_delete=models.CASCADE,
-                                 related_name="miembro1_comites")
-    miembro2 = models.ForeignKey(Academico, on_delete=models.CASCADE,
-                                 related_name="miembro2_comites")
-    miembro3 = models.ForeignKey(Academico, on_delete=models.CASCADE,
-                                 related_name="miembro3_comites",
-                                 null=True, blank=True)
-    miembro4 = models.ForeignKey(Academico, on_delete=models.CASCADE,
-                                 related_name="miembro4_comites",
-                                 null=True, blank=True)
-    miembro5 = models.ForeignKey(Academico, on_delete=models.CASCADE,
-                                 related_name="miembro5_comites",
-                                 null=True, blank=True)
-
-    solicitud = models.ForeignKey(Solicitud, null=True, blank=True, on_delete=models.CASCADE)
-    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
-    tipo = models.CharField(max_length=15,
-                            choices=(('tutoral', 'tutoral'),
-                                     ('candidatura', 'candidatura'),
-                                     ('grado', 'grado')))
-
-    def get_tipo(self):
-        if self.tipo == 'tutoral':
-            return u'Comité tutoral'
-        elif self.tipo == 'candidatura':
-            return u"Jurado de examen de candidatura"
-        elif self.tipo == 'grado':
-            return u"Jurado de examen de grado"
-
-    class Meta:
-        verbose_name_plural = "Comités"
-
-    def __str__(self):
-        return u'[%s] %s, %s, %s' \
-            % (self.tipo,
-               self.miembro1,
-               self.miembro2,
-               self.miembro3)
-
-    def as_ul(self):
-        ul = """
-        <ul>
-        <li>
-            <a href="%sinicio/usuario/%s/">%s</a></li>
-        <li>
-            <a href="%sinicio/usuario/%s/">%s</a></li>
-        """ % (
-                APP_PREFIX, self.miembro1.user.id, self.miembro1,
-                APP_PREFIX, self.miembro2.user.id, self.miembro2)
-
-        if self.miembro3:
-            ul += """<li>
-            <a href="%sinicio/usuario/%s/">%s</a></li>""" % (
-                APP_PREFIX, self.miembro3.user.id, self.miembro3)
-
-        if self.miembro4:
-            ul += """<li>
-            <a href="%sinicio/usuario/%s/">%s</a></li>""" % (
-                APP_PREFIX, self.miembro4.user.id, self.miembro4)
-
-        if self.miembro5:
-            ul += """<li>
-            <a href="%sinicio/usuario/%s/">%s</a></li>""" % (
-                APP_PREFIX, self.miembro5.user.id, self.miembro5)
-
-        ul += "</ul>"
-        return ul
-
-
-class Asistente(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    def cuantas_solicitudes(self):
-        solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
-                       for estado in solicitudes_estados]
-        solicitudes.append(('todas', self.solicitudes().count()))
-
-        return solicitudes
-
-    def solicitudes(self, estado=None):
-        if estado is None or estado is 'todas':
-            return Solicitud.objects.all()
-        else:
-            return Solicitud.objects.filter(estado=estado)
-
-    class Meta:
-        verbose_name_plural = "Asistentes de Proceso"
-
-    def __str__(self):
-        return "%s (asistente de proceso)" % self.user
-
-
-class Dictamen(models.Model):
-    resolucion = models.CharField(max_length=15,
-                                  choices=(('concedida', 'concedida'),
-                                           ('denegada', 'denegada')))
-    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
-    autor = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    fecha = models.DateField(auto_now_add=True)
-
-    class Meta:
-        verbose_name_plural = "Dictámenes"
-
-    def __str__(self):
-        return u'#%s %s por %s' \
-            % (self.solicitud.id,
-               self.resolucion,
-               self.autor)
 
 
 def curso_path(instance, filename):
