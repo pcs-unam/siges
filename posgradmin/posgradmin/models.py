@@ -205,33 +205,10 @@ class GradoAcademico(models.Model):
     class Meta:
         verbose_name_plural = "Grados académicos"
 
-
+        
 class Estudiante(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cuenta = models.CharField(max_length=100)
-    ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado",
-                                               blank=True, null=True)
-    semestre = models.PositiveSmallIntegerField(
-        "semestre de ingreso al posgrado",
-        choices=((1, 1),
-                 (2, 2)),
-        blank=True, null=True)
-
-    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE,
-                                    help_text=u"Institución de Inscripción",
-                                    limit_choices_to={'entidad_PCS': True},
-                                    blank=True, null=True)
-
-    convenio = models.CharField(max_length=100, blank=True)
-
-    plan = models.CharField(
-        max_length=20,
-        choices=((u"Maestría", u"Maestría"),
-                 (u"Doctorado", u"Doctorado")))
-
-    doctorado_directo = models.BooleanField(default=False)
-    opcion_titulacion = models.BooleanField("Opción a titulación",
-                                            default=False)
 
     estado = models.CharField(max_length=15,
                               default=u"vigente",
@@ -244,28 +221,6 @@ class Estudiante(models.Model):
                                   (u"baja temporal", u"baja temporal"),
                                   (u"baja definitiva", u"baja definitiva")))
 
-    fecha_baja = models.DateField(blank=True, null=True)
-    motivo_baja = models.CharField(max_length=200,
-                                   blank=True)
-
-    fecha_graduacion = models.DateField(u"Fecha de graduación",
-                                        blank=True, null=True)
-    folio_graduacion = models.CharField(u"Folio de acta de examen de grado",
-                                        max_length=200, blank=True)
-    mencion_honorifica = models.BooleanField(default=False)
-    medalla_alfonso_caso = models.BooleanField(u"Medalla Alfonso Caso",
-                                               default=False)
-    anno_graduacion = models.PositiveSmallIntegerField(u"año de graduación",
-                                                       blank=True,
-                                                       null=True)
-    semestre_graduacion = models.PositiveSmallIntegerField(
-        u"semestre de graduación",
-        choices=((1, 1),
-                 (2, 2)),
-        blank=True,
-        null=True)
-
-    observaciones = models.TextField(blank=True)
 
     class Meta:
         ordering = ['user__first_name', 'user__last_name', ]
@@ -345,6 +300,72 @@ class Estudiante(models.Model):
             self.user.id,
             self.user.get_full_name())
 
+
+class Estudios(models.Model):
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+    ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado",
+                                               blank=True, null=True)
+    semestre = models.PositiveSmallIntegerField(
+        "semestre de ingreso al posgrado",
+        choices=((1, 1),
+                 (2, 2)))
+
+    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE,
+                                    help_text=u"Institución de Inscripción",
+                                    limit_choices_to={'entidad_PCS': True},
+                                    blank=True, null=True)
+
+    plan = models.CharField(
+        max_length=20,
+        choices=((u"Maestría", u"Maestría"),
+                 (u"Doctorado", u"Doctorado")))
+    
+    doctorado_directo = models.BooleanField(default=False)
+    opcion_titulacion = models.BooleanField("Opción a titulación",
+                                            default=False)
+
+    folio_graduacion = models.CharField(u"Folio de acta de examen de grado",
+                                        max_length=200, blank=True)
+    mencion_honorifica = models.BooleanField(default=False)
+    medalla_alfonso_caso = models.BooleanField(u"Medalla Alfonso Caso",
+                                               default=False)
+
+    class Meta:
+        verbose_name_plural = "estudios"
+        ordering = ['ingreso', ]
+
+    def __str__(self):
+        return u"%s-%s de %s" % (self.plan, self.ingreso, self.estudiante)
+        
+
+
+class EstadoEstudios(models.Model):
+    estudios = models.ForeignKey(Estudios, related_name="estados", on_delete=models.CASCADE)
+    fecha = models.DateField(default=datetime.date.today)
+    comentario = models.CharField(max_length=400,
+                                  null=True, blank=True)
+    estado = models.CharField(
+        max_length=25,
+        default='inscrito',
+        choices=(
+            ('inscrito', 'inscrito'),
+            ('egresado', 'egresado'),
+            ('graduado', 'graduado'),
+            ('indeterminado', u'indeterminado'),
+            ('baja', 'baja'),
+            (u'suspensión 1', u'suspensión 1'),
+            (u'suspensión 2', u'suspensión 2'),
+            ('plazo adicional', 'plazo adicional'),
+        ))
+
+    def __str__(self):
+        return self.estado
+
+    class Meta:
+        verbose_name_plural = "estados de estudios"
+        ordering = ['fecha', ]
+    
+    
 
 class Beca(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)

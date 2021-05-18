@@ -12,7 +12,7 @@ from .models import Perfil, Academico, Estudiante, \
     Solicitud, Proyecto, Dictamen, \
     Comite, Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
-    ConvocatoriaCurso
+    ConvocatoriaCurso, Estudios, EstadoEstudios
     
 
 from .admin_action_academicos import exporta_resumen_academicos
@@ -25,25 +25,51 @@ admin.site.site_header = \
 admin.site.site_title = "Posgrado en Ciencias de la Sostenibilidad"
 admin.site.site_url = "/"
 
+class EstadoEstudiosInline(admin.TabularInline):
+    model = EstadoEstudios
+    fk_name = 'estudios'
+    extra = 0
+    classes = ('grp-collapse grp-closed',)
+    fields = ['fecha', 'estado', 'comentario', ]
 
+@admin.register(Estudios)
+class EstudiosAdmin(admin.ModelAdmin):
+    search_fields = ['estudiante__cuenta',
+                     'estudiante__user__first_name',
+                     'estudiante__user__last_name',
+                     'estudiante__user__email']
+
+    list_display = ['estudiante',
+                    'plan',
+                    'ingreso',
+                    'semestre',
+                    'institucion']
+
+    inlines = [EstadoEstudiosInline, ]
+
+class EstudiosInline(admin.TabularInline):
+    model = Estudios
+    fk_name = 'estudiante'
+    extra = 0
+    classes = ('grp-collapse grp-closed',)
+    fields = ['ingreso', 'semestre', 'plan', 'institucion', ]
+
+@admin.register(Estudiante)
 class EstudianteAdmin(admin.ModelAdmin):
     search_fields = ['cuenta',
                      'user__first_name',
                      'user__last_name',
                      'user__email', ]
-    list_display = ['user', 'cuenta',
-                    'plan', 'ingreso', ]
+    list_display = ['user', 'cuenta', ]
 
-    list_filter = ['plan',
-                   'ingreso', ]
-
+    inlines = [EstudiosInline, ]
+    
     def unificado(self, estudiante):
         return format_html(estudiante.as_a())
 
     unificado.short_description = 'Vista unificada'
 
 
-admin.site.register(Estudiante, EstudianteAdmin)
 
 
 class AcreditacionInline(admin.TabularInline):
