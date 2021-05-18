@@ -205,25 +205,21 @@ class GradoAcademico(models.Model):
     class Meta:
         verbose_name_plural = "Grados académicos"
 
-        
+
 class Estudiante(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cuenta = models.CharField(max_length=100)
 
-    estado = models.CharField(max_length=15,
-                              default=u"vigente",
-                              choices=(
-                                  (u"graduado", u"graduado"),
-                                  (u"egresado", u"egresado"),
-                                  (u"inscrito", u"inscrito"),
-                                  (u'plazo adicional', u'plazo adicional'),
-                                  (u'indeterminado', u'indeterminado'),
-                                  (u"baja temporal", u"baja temporal"),
-                                  (u"baja definitiva", u"baja definitiva")))
-
-
     class Meta:
         ordering = ['user__first_name', 'user__last_name', ]
+
+    def ultimo_estado(self):
+        if self.estudios.count() > 0:
+            ultimo_estado = self.estudios.latest('ingreso').ultimo_estado
+        else:
+            ultimo_estado = None
+
+        return ultimo_estado
 
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
@@ -231,47 +227,10 @@ class Estudiante(models.Model):
         else:
             return False
 
-    def solicitudes(self, estado=None):
-        if estado is None or estado is 'todas':
-            return Solicitud.objects.filter(
-                solicitante=self.user
-            )
-        else:
-            return Solicitud.objects.filter(
-                solicitante=self.user).filter(
-                    estado=estado)
-
-    def cuantas_solicitudes(self):
-        solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
-                       for estado in solicitudes_estados]
-        solicitudes.append(('todas',
-                            self.solicitudes().count()))
-
-        return solicitudes
-
     def __str__(self):
-        return u"%s [%s]" % (self.user.get_full_name(),
-                             self.cuenta)
-
-    def comite_tutoral(self):
-        # comites solicitados
-        for c in Comite.objects.filter(
-                Q(tipo='tutoral')
-                & Q(estudiante=self)).order_by('-id'):
-            if c.solicitud:
-                if c.solicitud.dictamen_final():
-                    if c.solicitud.dictamen_final().resolucion == 'concedida':
-                        return c
-
-        # comites importados
-        if Comite.objects.filter(tipo='tutoral',
-                                 estudiante=self,
-                                 solicitud=None).count() > 0:
-            return Comite.objects.filter(tipo='tutoral',
-                                         estudiante=self,
-                                         solicitud=None).last()
-
-        return None
+        return u"%s (%s) %s" % (self.user.get_full_name(),
+                                self.cuenta,
+                                self.ultimo_estado())
 
     def get_proyecto(self):
         for p in self.proyecto_set.all():
@@ -302,7 +261,7 @@ class Estudiante(models.Model):
 
 
 class Estudios(models.Model):
-    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+    estudiante = models.ForeignKey(Estudiante, related_name='estudios', on_delete=models.CASCADE)
     ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado",
                                                blank=True, null=True)
     semestre = models.PositiveSmallIntegerField(
@@ -319,7 +278,7 @@ class Estudios(models.Model):
         max_length=20,
         choices=((u"Maestría", u"Maestría"),
                  (u"Doctorado", u"Doctorado")))
-    
+
     doctorado_directo = models.BooleanField(default=False)
     opcion_titulacion = models.BooleanField("Opción a titulación",
                                             default=False)
@@ -330,13 +289,21 @@ class Estudios(models.Model):
     medalla_alfonso_caso = models.BooleanField(u"Medalla Alfonso Caso",
                                                default=False)
 
+    ultimo_estado = models.CharField(
+        max_length=25,
+        default='inscrito')
+
     class Meta:
         verbose_name_plural = "estudios"
         ordering = ['ingreso', ]
 
     def __str__(self):
         return u"%s-%s de %s" % (self.plan, self.ingreso, self.estudiante)
-        
+
+    def copia_ultimo_estado(self):
+        if self.estados.count() > 0:
+            ultimo = self.estados.latest('id')
+            self.ultimo_estado = ultimo.estado
 
 
 class EstadoEstudios(models.Model):
@@ -364,8 +331,8 @@ class EstadoEstudios(models.Model):
     class Meta:
         verbose_name_plural = "estados de estudios"
         ordering = ['fecha', ]
-    
-    
+
+
 
 class Beca(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
@@ -1515,7 +1482,7 @@ class EstudianteTutor(models.Model):
             ('D', 'tutor'),
             ('M', 'miembro de comité de doctorado'),
             ('T', 'tutor de doctorado'),
-            ('A', 'tutor de maestría'),                
+            ('A', 'tutor de maestría'),
             ('X', 'miembro de comité de maestría'),
             ('Y', 'segundo tutor de maestría'),
             ('Z', 'tutor principal de maestría')))
@@ -1532,7 +1499,7 @@ class EstudianteTutor(models.Model):
                                   self.tipo)
 
 
-                
+
 class Adscripcion(models.Model):
     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)

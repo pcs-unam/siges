@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from posgradmin.models import Academico, Acreditacion, Curso
+from posgradmin.models import Academico, Acreditacion, Curso, EstadoEstudios
 from django.db.models.signals import m2m_changed
 
 
@@ -27,6 +27,13 @@ def copia_acreditacion_a_academico(sender, **kwargs):
     ac.academico.save()
 
 
+@receiver(post_save, sender=EstadoEstudios)
+def copia_estado_a_estado_estudios(sender, **kwargs):
+    es = kwargs['instance']
+    es.estudios.copia_ultimo_estado()
+    es.estudios.save()
+
+
 @receiver(post_save, sender=Curso)
 def curso_genera_constancias(sender, **kwargs):
     c = kwargs['instance']
@@ -46,4 +53,3 @@ m2m_changed.connect(curso_academicos_changed, sender=Curso.academicos.through)
 def genera_carta_acreditacion(sender, **kwargs):
     ac = kwargs['instance']
     ac.genera_carta()
-

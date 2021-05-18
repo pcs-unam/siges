@@ -13,7 +13,7 @@ from .models import Perfil, Academico, Estudiante, \
     Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
     ConvocatoriaCurso, Estudios, EstadoEstudios, EstudianteTutor
-    
+
 
 from .admin_action_academicos import exporta_resumen_academicos
 
@@ -29,7 +29,7 @@ admin.site.site_url = "/"
 class EstudianteTutorAdmin(admin.ModelAdmin):
     model = EstudianteTutor
     list_display = ['estudiante', 'tutor', 'tipo', 'year', 'semestre']
-    
+
     search_fields = ['estudiante__cuenta',
                      'estudiante__user__first_name',
                      'estudiante__user__last_name',
@@ -42,7 +42,7 @@ class EstudianteTutorAdmin(admin.ModelAdmin):
                    'semestre' ]
 
     autocomplete_fields = ['estudiante', 'tutor',]
-    
+
 class EstadoEstudiosInline(admin.TabularInline):
     model = EstadoEstudios
     fk_name = 'estudios'
@@ -61,9 +61,20 @@ class EstudiosAdmin(admin.ModelAdmin):
                     'plan',
                     'ingreso',
                     'semestre',
+                    'ultimo_estado',
                     'institucion']
 
+    list_filter = ['ingreso',
+                   'semestre',
+                   'institucion',
+                   'plan',
+                   'ultimo_estado']
+
+
+    readonly_fields = ['ultimo_estado', ]
+
     inlines = [EstadoEstudiosInline, ]
+
 
 class EstudiosInline(admin.TabularInline):
     model = Estudios
@@ -71,8 +82,8 @@ class EstudiosInline(admin.TabularInline):
     extra = 0
     show_change_link = True
     classes = ('grp-collapse grp-closed',)
-    fields = ['ingreso', 'semestre', 'plan', 'institucion',]
-
+    readonly_fields = ['ultimo_estado', ]
+    fields = ['ingreso', 'semestre', 'plan', 'institucion', 'ultimo_estado']
 
 
 class TutoresInline(admin.TabularInline):
@@ -81,19 +92,28 @@ class TutoresInline(admin.TabularInline):
     extra = 0
     classes = ('grp-collapse grp-closed',)
     fields = ['tutor', 'year', 'semestre', 'tipo', ]
-    autocomplete_fields = ['tutor',]    
-    
-    
+    autocomplete_fields = ['tutor',]
+
+
 @admin.register(Estudiante)
 class EstudianteAdmin(admin.ModelAdmin):
     search_fields = ['cuenta',
                      'user__first_name',
                      'user__last_name',
                      'user__email', ]
-    list_display = ['user', 'cuenta', 'estudios']
+    readonly_fields = ['user', ]
+    list_display = ['fullname', 'cuenta', 'ultimo_estado']
 
     inlines = [EstudiosInline, TutoresInline]
-    
+
+    def fullname(self, obj):
+        name = obj.user.get_full_name()
+        if name:
+            return name
+        else:
+            return obj.user.username
+
+
     def unificado(self, estudiante):
         return format_html(estudiante.as_a())
 
@@ -128,7 +148,7 @@ class AcademicoAdmin(admin.ModelAdmin):
 
     readonly_fields = ['fecha_acreditacion',
                        'acreditacion' ]
-    
+
     fieldsets = (
         (None,
          {'fields': ('user',
@@ -251,7 +271,7 @@ def publica_curso(modeladmin, request, queryset):
     for c in queryset.all():
         c.status = 'publicado'
         c.save()
-    return HttpResponseRedirect(reverse('admin:posgradmin_curso_changelist'))        
+    return HttpResponseRedirect(reverse('admin:posgradmin_curso_changelist'))
 
 publica_curso.short_description = "Marcar cursos como publicados"
 
@@ -260,7 +280,7 @@ def concluye_curso(modeladmin, request, queryset):
     for c in queryset.all():
         c.status = 'concluido'
         c.save()
-        
+
     return HttpResponseRedirect(reverse('admin:posgradmin_curso_changelist'))
 
 concluye_curso.short_description = "Marcar cursos como concluidos"
@@ -277,22 +297,22 @@ class CursoAdmin(admin.ModelAdmin):
     ]
 
     search_fields = ['asignatura__asignatura']
-    
+
     def lista_academicos(self, obj):
         return ", ".join([str(a) + " (>CP)"
                           if a.acreditacion == 'candidato profesor'
                           else
                           str(a)
                           for a in obj.academicos.all()])
-    
+
     lista_academicos.short_description = "Académicos"
-    
+
     autocomplete_fields = ['academicos',]
     readonly_fields = ['profesores', 'contacto', ]
 
     actions = [publica_curso, concluye_curso]
-    
-    
+
+
 admin.site.register(Curso, CursoAdmin)
 
 
