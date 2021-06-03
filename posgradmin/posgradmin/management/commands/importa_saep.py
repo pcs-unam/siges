@@ -35,10 +35,12 @@ def importa(db_file):
             print(i, a[idx['cuenta']], 'sin email, imposible importar')
             continue
         
-        # ['anio', 'semestre', 'cuenta', 'nombre', 'apellidop', 'apellidom', 'nombrew', 'edocivil', 'direccion', 'colonia', 'delegacion', 'estadores', 'codigo',
-        # 'ladapart', 'telpart',
-        # 'ladatrab', 'teltrab', 'exttrab', 
-        # 'nacional', 'sexo', 'anio', 'mes', 'dia', 'carrera', 'facultad', 'institu', 'pais', 'estado', 'promedio', 'aniot', 'mest', 'diat', 'anioing', 'seming', 'ingrein', 'entidad', 'plan', 'orienta', 'tiempocp', 'email', 'curp', 'planpostant', 'facantpos', 'instantpos', 'paisantpos', 'estadoantpos', 'concluyoantpos', 'anogrant', 'mesgrant', 'diagrant']
+        # ['anio', 'semestre', 'cuenta',
+        # 'edocivil', 
+        # 'carrera', 'facultad', 'institu', 'pais', 'estado', 'promedio', 'aniot', 'mest', 'diat',
+        #'anioing', 'seming', 'ingrein',
+        # 'entidad', 'plan', 'orienta', 'tiempocp',
+        # 'planpostant', 'facantpos', 'instantpos', 'paisantpos', 'estadoantpos', 'concluyoantpos', 'anogrant', 'mesgrant', 'diagrant']
         
         if models.User.objects.filter(username=a[idx['cuenta']]).count() == 1:
             u = models.User.objects.get(username=a[idx['cuenta']])
@@ -51,16 +53,27 @@ def importa(db_file):
                 print('renamed', u)
         elif models.User.objects.filter(username=a[idx['email']].split('@')[0]).count() == 1:
             u = models.User.objects.get(username=a[idx['email']].split('@')[0])
-            u.first_name = a[idx['nombrew']]
-            u.last_name = a[idx['apellidop']] + " " + a[idx['apellidom']]
+            u.first_name = " ".join([chunk.capitalize()
+                                     for chunk in a[idx['nombrew']].split(" ")])
+            u.last_name = " ".join([chunk.capitalize()
+                                    for chunk in a[idx['apellidop']].split(" ")]) \
+                                        + " " \
+                                        + \
+                                        " ".join([chunk.capitalize()
+                                                  for chunk in a[idx['apellidom']].split(" ")])
             u.email = a[idx['email']]
             u.save()
             print('updated', u)
         else:
             u, created = models.User.objects.get_or_create(
                 username = a[idx['email']].split('@')[0],
-                first_name = a[idx['nombrew']],
-                last_name = a[idx['apellidop']] + " " + a[idx['apellidom']],
+                first_name = " ".join([chunk.capitalize() for chunk in a[idx['nombrew']].split(" ")]),
+                last_name = " ".join([chunk.capitalize()
+                                      for chunk in a[idx['apellidop']].split(" ")]) \
+                                + " " \
+                                + \
+                                " ".join([chunk.capitalize()
+                                          for chunk in a[idx['apellidom']].split(" ")]),
                 email = a[idx['email']]
             )
 
@@ -69,7 +82,6 @@ def importa(db_file):
             else:
                 print('weird updated', u)
 
-        # 'ladapart', 'telpart',                
         p, created = models.Perfil.objects.get_or_create(
             user = u)
 
@@ -92,3 +104,14 @@ def importa(db_file):
         else:
             print('update perfil', p)
 
+
+        e, created = models.Estudiante.objects.get_or_create(
+            user = u
+        )
+        e.cuenta = a[idx['cuenta']]
+        e.save()
+        
+        if created:
+            print('created estudiante', e)
+        else:
+            print('updated estudiante', e)
