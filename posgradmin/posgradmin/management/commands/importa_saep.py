@@ -34,7 +34,9 @@ def importa(db_file):
         elif a[idx['email']] == '':
             print(i, a[idx['cuenta']], 'sin email, imposible importar')
             continue
-        
+
+        # anio	semestre	cuenta	nombre	apellidop	apellidom	nombrew	edocivil	direccion	colonia	delegacion	estadores	codigo	telpart	teltrab	exttrab	ladatrab	ladapart	nacional	sexo	anio	mes	dia	carrera	facultad	institu	pais	estado	promedio	aniot	mest	diat	anioing	seming	ingrein	entidad	plan	orienta	tiempocp	email	curp	planpostant	facantpos	instantpos	paisantpos	estadoantpos	concluyoantpos	anogrant	mesgrant	diagrant
+
         # ['anio', 'semestre', 'cuenta',
         # 'edocivil', 
         # 'carrera', 'facultad', 'institu', 'pais', 'estado', 'promedio', 'aniot', 'mest', 'diat',
@@ -94,7 +96,7 @@ def importa(db_file):
         p.codigo_postal = a[idx['codigo']]
         p.genero = a[idx['sexo']]
         p.nacionalidad = a[idx['nacional']]
-        p.fecha_nacimiento = datetime(a[idx['anio']],
+        p.fecha_nacimiento = datetime(a[20],
                                       a[idx['mes']],
                                       a[idx['dia']])
 
@@ -115,3 +117,24 @@ def importa(db_file):
             print('created estudiante', e)
         else:
             print('updated estudiante', e)
+
+
+        # ignora institucion
+            
+        s, created = models.Estudios.objects.get_or_create(
+            estudiante = e,
+            ingreso = a[0],
+            semestre = a[idx['semestre']],
+        )
+
+        if a[idx['plan']] == 5172:
+            s.plan = 'Doctorado'
+        else:
+            s.plan = u'Maestría'
+
+        s.save()
+
+        if created:
+            print('created estudios', s)
+        else:
+            print('updated estudios', s)
