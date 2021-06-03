@@ -1465,7 +1465,7 @@ class Acreditacion(models.Model):
                 anexo.save()
 
 
-class EstudianteTutor(models.Model):
+class MembresiaComite(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     tutor = models.ForeignKey(Academico,
                               limit_choices_to=Q(acreditacion='D')
@@ -1488,7 +1488,7 @@ class EstudianteTutor(models.Model):
             ('Z', 'tutor principal de maestría')))
 
     class Meta:
-        verbose_name_plural = "Estudiantes y tutores"
+        verbose_name_plural = "Comités tutorales"
         ordering = ['year', 'semestre' ]
 
     def __str__(self):

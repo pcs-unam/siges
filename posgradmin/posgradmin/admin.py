@@ -12,7 +12,7 @@ from .models import Perfil, Academico, Estudiante, \
     Solicitud, Proyecto, \
     Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
-    ConvocatoriaCurso, Estudios, EstadoEstudios, EstudianteTutor
+    ConvocatoriaCurso, Estudios, EstadoEstudios, MembresiaComite
 
 
 from .admin_action_academicos import exporta_resumen_academicos
@@ -25,9 +25,9 @@ admin.site.site_header = \
 admin.site.site_title = "Posgrado en Ciencias de la Sostenibilidad"
 admin.site.site_url = "/"
 
-@admin.register(EstudianteTutor)
-class EstudianteTutorAdmin(admin.ModelAdmin):
-    model = EstudianteTutor
+@admin.register(MembresiaComite)
+class MembresiaComiteAdmin(admin.ModelAdmin):
+    model = MembresiaComite
     list_display = ['estudiante', 'tutor', 'tipo', 'year', 'semestre']
 
     search_fields = ['estudiante__cuenta',
@@ -87,7 +87,7 @@ class EstudiosInline(admin.TabularInline):
 
 
 class TutoresInline(admin.TabularInline):
-    model = EstudianteTutor
+    model = MembresiaComite
     fk_name = 'estudiante'
     extra = 0
     classes = ('grp-collapse grp-closed',)
