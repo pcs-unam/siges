@@ -1488,7 +1488,7 @@ class MembresiaComite(models.Model):
             ('Z', 'tutor principal de maestría')))
 
     class Meta:
-        verbose_name_plural = "Comités tutorales"
+        verbose_name_plural = "Membresías de Comités Tutorales"
         ordering = ['year', 'semestre' ]
 
     def __str__(self):
