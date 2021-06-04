@@ -19,6 +19,58 @@ class Command(BaseCommand):
         importa(options['ods_file'])
 
 
+def get_institucion(entidad_num):
+    if entidad_num == 600:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Escuela Nacional de Estudios Superiores Unidad León",
+                                              entidad_PCS=True)
+    if entidad_num == 700:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Escuela Nacional de Estudios Superiores Unidad Morelia",
+                                              entidad_PCS=True)
+    if entidad_num == 1:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Facultad de Arquitectura ",
+                                              entidad_PCS=True)
+    if entidad_num == 3:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Facultad de Ciencias",
+                                              entidad_PCS=True)
+    if entidad_num == 65:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Instituto de Biología",
+                                              entidad_PCS=True)
+    if entidad_num == 67:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Instituto de Ciencias del Mar y Limnología",
+                                              entidad_PCS=True)
+    if entidad_num == 69:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Instituto de Ecología",
+                                              entidad_PCS=True)
+    if entidad_num == 90:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Instituto de Energías Renovables",
+                                              entidad_PCS=True)
+    if entidad_num == 11:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Instituto de Ingeniería",
+                                              entidad_PCS=True)
+    if entidad_num == 79:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Instituto de Investigaciones Económicas",
+                                              entidad_PCS=True)
+    if entidad_num == 87:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Instituto de Investigaciones Sociales",
+                                              entidad_PCS=True)
+    if entidad_num == 97:
+        return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
+                                              suborganizacion="Instituto de Investigaciones en Ecosistemas y Sustentabilidad",
+                                              entidad_PCS=True)
+
+        
+
 def importa(db_file):
     data = get_data(db_file.name)
 
@@ -38,12 +90,12 @@ def importa(db_file):
         # anio	semestre	cuenta	nombre	apellidop	apellidom	nombrew	edocivil	direccion	colonia	delegacion	estadores	codigo	telpart	teltrab	exttrab	ladatrab	ladapart	nacional	sexo	anio	mes	dia	carrera	facultad	institu	pais	estado	promedio	aniot	mest	diat	anioing	seming	ingrein	entidad	plan	orienta	tiempocp	email	curp	planpostant	facantpos	instantpos	paisantpos	estadoantpos	concluyoantpos	anogrant	mesgrant	diagrant
 
         # ['anio', 'semestre', 'cuenta',
-        # 'edocivil', 
+        # 'edocivil',
         # 'carrera', 'facultad', 'institu', 'pais', 'estado', 'promedio', 'aniot', 'mest', 'diat',
         #'anioing', 'seming', 'ingrein',
         # 'entidad', 'plan', 'orienta', 'tiempocp',
         # 'planpostant', 'facantpos', 'instantpos', 'paisantpos', 'estadoantpos', 'concluyoantpos', 'anogrant', 'mesgrant', 'diagrant']
-        
+
         if models.User.objects.filter(username=a[idx['cuenta']]).count() == 1:
             u = models.User.objects.get(username=a[idx['cuenta']])
             if models.User.objects.filter(username=a[idx['email']].split('@')[0]).count() == 1:
@@ -112,15 +164,14 @@ def importa(db_file):
         )
         e.cuenta = a[idx['cuenta']]
         e.save()
-        
+
         if created:
             print('created estudiante', e)
         else:
             print('updated estudiante', e)
 
 
-        # ignora institucion
-            
+
         s, created = models.Estudios.objects.get_or_create(
             estudiante = e,
             ingreso = a[0],
@@ -129,9 +180,12 @@ def importa(db_file):
 
         if a[idx['plan']] == 5172:
             s.plan = 'Doctorado'
+        elif a[idx['plan']] == 4172:
+            s.plan = u'Maestría'
         else:
             s.plan = u'Maestría'
 
+        s.institucion = get_institucion(a[idx['entidad']])
         s.save()
 
         if created:
