@@ -136,11 +136,9 @@ def importa(db_file):
             else:
                 print('weird updated', u)
 
-        p, created = models.Perfil.objects.get_or_create(
-            user = u)
-
-        p.curp = a[idx['curp']],
-        p.telefono = str(a[idx['ladapart']]) + str(a[idx['telpart']]),
+        p, created = models.Perfil.objects.get_or_create(user = u)
+        p.curp = a[idx['curp']]
+        p.telefono = str(a[idx['ladapart']]) + str(a[idx['telpart']])
         p.direccion1 = "\n".join([a[idx['direccion']],
                                   a[idx['colonia']],
                                   a[idx['delegacion']],
@@ -175,7 +173,7 @@ def importa(db_file):
         s, created = models.Estudios.objects.get_or_create(
             estudiante = e,
             ingreso = a[0],
-            semestre = a[idx['semestre']],
+            semestre = a[idx['semestre']]
         )
 
         if a[idx['plan']] == 5172:
