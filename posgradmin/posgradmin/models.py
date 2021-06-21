@@ -1093,7 +1093,7 @@ class Academico(models.Model):
         if not name:
             name = self.user.username
 
-        return "%s [%s]" % (name, self.acreditacion)
+        return "%s" % name
 
     def publicaciones_5(self):
         try:

@@ -136,6 +136,7 @@ class AcademicoAdmin(admin.ModelAdmin):
     inlines = [AcreditacionInline, ]
 
     list_display = ['fullname',
+                    'acreditacion',
                     'perfil_personal_completo',
                     'resumen_completo',
                     'perfil_comite',
