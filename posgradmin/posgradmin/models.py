@@ -1468,9 +1468,6 @@ class Acreditacion(models.Model):
 class MembresiaComite(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     tutor = models.ForeignKey(Academico,
-                              limit_choices_to=Q(acreditacion='D')
-                                                | Q(acreditacion='M')
-                                                | Q(acreditacion='E'),
                               on_delete=models.CASCADE)
     year = models.PositiveSmallIntegerField("Año")
     semestre = models.PositiveSmallIntegerField(

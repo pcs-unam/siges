@@ -107,17 +107,7 @@ def importa(db_file):
                 print('renamed', u)
         elif models.User.objects.filter(username=a[idx['email']].split('@')[0]).count() == 1:
             u = models.User.objects.get(username=a[idx['email']].split('@')[0])
-            u.first_name = " ".join([chunk.capitalize()
-                                     for chunk in a[idx['nombrew']].split(" ")])
-            u.last_name = " ".join([chunk.capitalize()
-                                    for chunk in a[idx['apellidop']].split(" ")]) \
-                                        + " " \
-                                        + \
-                                        " ".join([chunk.capitalize()
-                                                  for chunk in a[idx['apellidom']].split(" ")])
-            u.email = a[idx['email']]
-            u.save()
-            print('updated', u)
+            print('loaded', u)
         else:
             u, created = models.User.objects.get_or_create(
                 username = a[idx['email']].split('@')[0],
@@ -133,9 +123,19 @@ def importa(db_file):
 
             if created:
                 print('created', u)
-            else:
-                print('weird updated', u)
 
+        u.first_name = " ".join([chunk.capitalize()
+                                 for chunk in a[idx['nombrew']].split(" ")])
+        u.last_name = " ".join([chunk.capitalize()
+                                for chunk in a[idx['apellidop']].split(" ")]) \
+                                    + " " \
+                                    + \
+                                    " ".join([chunk.capitalize()
+                                              for chunk in a[idx['apellidom']].split(" ")])
+        u.email = a[idx['email']]
+        u.save()
+        print('updated', u)
+                
         p, created = models.Perfil.objects.get_or_create(user = u)
         p.curp = a[idx['curp']]
         p.telefono = str(a[idx['ladapart']]) + str(a[idx['telpart']])
@@ -168,6 +168,7 @@ def importa(db_file):
         else:
             print('updated estudiante', e)
 
+        print('found estudiante', models.Estudiante.objects.filter(cuenta=a[idx['cuenta']]).count())
 
 
         s, created = models.Estudios.objects.get_or_create(
@@ -190,3 +191,5 @@ def importa(db_file):
             print('created estudios', s)
         else:
             print('updated estudios', s)
+
+
