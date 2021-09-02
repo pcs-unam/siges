@@ -160,13 +160,20 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                 i += 1
                 [nombre, apellidos, email] = row
                 try:
-                    u = models.User()
-                    u.first_name = nombre
-                    u.last_name = apellidos
                     validate_email(email)
-                    u.email = email
-                    u.username = email.split('@')[0]
-                    u.save()
+                    username = email.split('@')[0]
+
+                    if models.User.objects.filter(username=username,
+                                                 email=email).count() > 0:
+                        u = models.User.objects.get(username=username,
+                                                    email=email)
+                    else:
+                        u = models.User()
+                        u.first_name = nombre
+                        u.last_name = apellidos                        
+                        u.email = email
+                        u.username = username
+                        u.save()
 
                     a = models.Academico()
                     a.acreditacion = tipo_candidato
