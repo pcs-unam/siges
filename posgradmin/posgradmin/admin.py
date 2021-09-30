@@ -68,6 +68,7 @@ class EstudiosAdmin(admin.ModelAdmin):
                    'semestre',
                    'institucion',
                    'plan',
+                   'permiso_trabajar',
                    'ultimo_estado']
 
 

@@ -289,6 +289,11 @@ class Estudios(models.Model):
     medalla_alfonso_caso = models.BooleanField(u"Medalla Alfonso Caso",
                                                default=False)
 
+    permiso_trabajar = models.BooleanField("Permiso para trabajar",
+                                           default=False)
+    beca = models.CharField(u"Descripción de Beca",
+                            max_length=200, blank=True)
+
     ultimo_estado = models.CharField(
         max_length=25,
         default='inscrito')
