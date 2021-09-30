@@ -1621,6 +1621,8 @@ class Curso(models.Model):
                                        ('publicado', 'publicado'),
                                        ('concluido', 'concluido'),])
 
+    observaciones = models.TextField(blank=True)
+    
     def genera_constancias(self):
         if self.status == 'concluido':
 
