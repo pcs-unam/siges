@@ -210,6 +210,8 @@ class Estudiante(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cuenta = models.CharField(max_length=100)
 
+    promedio_ingreso = models.DecimalField("Promedio del último grado. Dos dígitos máximo, dos decimales.", max_digits=2, decimal_places=2)
+    
     class Meta:
         ordering = ['user__first_name', 'user__last_name', ]
 
