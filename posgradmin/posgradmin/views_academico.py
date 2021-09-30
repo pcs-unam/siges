@@ -282,7 +282,7 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
 
             outdir = '%s/perfil-academico/%s/' % (MEDIA_ROOT,
                                                   request.user.academico.id)
-            
+
             tmpname = 'cursoplain_%s_%s.pdf' % (curso.id,
                                                 slugify(profesor_invitado)
             )
@@ -300,6 +300,97 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
             w.write(outdir + final_name, M)
 
         return HttpResponseRedirect(MEDIA_URL+"perfil-academico/%s/%s" % (request.user.academico.id, final_name))
+
+
+
+
+class CursoConstanciaEstudiante(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+    template = 'posgradmin/curso_constancia.html'
+    form_class = forms.CursoConstanciaEstudiante
+
+    def test_func(self):
+
+        curso = models.Curso.objects.get(pk=int(self.kwargs['pk']))
+        if auth.is_academico(self.request.user):
+            if self.request.user.academico.acreditacion in ['D', 'M', 'P', 'E',
+                                                            'candidato profesor']:
+                if self.request.user.academico in curso.academicos.all():
+                    return True
+        return False
+
+
+    def get(self, request, *args, **kwargs):
+
+        curso = models.Curso.objects.get(pk=int(kwargs['pk']))
+        form = self.form_class(initial=model_to_dict(curso))
+        breadcrumbs = ((reverse('inicio'), 'Inicio'),
+                       (reverse('mis_cursos'), "Mis cursos"))
+
+        return render(request,
+                      self.template,
+                      {
+                          'title': 'Emitir constancia para estudiante',
+                          'breadcrumbs': breadcrumbs,
+                          'convocatoria': curso.convocatoria,
+                          'asignatura': curso.asignatura,
+                          'form': form
+                       })
+
+
+    def post(self, request, *args, **kwargs):
+        curso = models.Curso.objects.get(pk=int(kwargs['pk']))
+        
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            estudiante_invitado = request.POST['estudiante_invitado']
+            calificacion = request.POST['calificacion']
+        
+            with NamedTemporaryFile(mode='r+', encoding='utf-8') as carta_md:
+                carta_md.write(
+                    render_to_string('posgradmin/constancia_curso_estudiante.md',
+                                     {'fecha': datetime.date.today(),
+                                      'estudiante_invitado': estudiante_invitado,
+                                      'calificacion': calificacion,
+                                      'curso': curso,
+                                      'horas': 100,
+                                      'profesor': request.user.get_full_name() }))
+                carta_md.seek(0)
+
+                outdir = '%s/perfil-academico/%s/' % (MEDIA_ROOT,
+                                                      request.user.academico.id)
+
+                tmpname = 'cursoplain_%s_%s.pdf' % (curso.id,
+                                                    slugify(estudiante_invitado)
+                )
+
+                final_name = tmpname.replace('cursoplain', 'constancia_curso')
+
+                mkdir("-p", outdir)
+                pandoc(carta_md.name, output=outdir + tmpname)
+                C = PdfReader(outdir + tmpname)
+                M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
+                w = PdfWriter()
+                merger = PageMerge(M.pages[0])
+                merger.add(C.pages[0]).render()
+
+                w.write(outdir + final_name, M)
+
+            return HttpResponseRedirect(
+                MEDIA_URL + "perfil-academico/%s/%s" % (request.user.academico.id,
+                                                        final_name))
+        else:
+            return render(request,
+                          self.template,
+                          {
+                              'title': 'Emitir constancia para estudiante',
+                              'breadcrumbs': breadcrumbs,
+                              'convocatoria': curso.convocatoria,
+                              'asignatura': curso.asignatura,
+                              'form': form
+                          })
+            
+
 
 
 

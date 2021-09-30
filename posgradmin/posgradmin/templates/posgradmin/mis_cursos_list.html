@@ -25,14 +25,18 @@
   
   <ul>
     <li>clave: {{ curso.asignatura.clave }}</li>
-    <li>creditos: {{ asignatura.creditos }}</li>
+    <li>creditos: {{ curso.asignatura.creditos }}</li>
     <li><a href="{{ curso.asignatura.programa.url }}">programa</a></li>    
   </ul>
   <h4>Status: {{ curso.status }}</h4>
   <ul>
   {% if curso.status == 'concluido' %}
-  <li><a href="{{ MEDIA_URL }}/cursos/{{ curso.id }}/constancia_curso_profesores.pdf">descargar constancia</a></li>
-                    
+  <li>
+    <a href="{{ MEDIA_URL }}/cursos/{{ curso.id }}/constancia_curso_profesores.pdf">
+      descargar constancia</a></li>
+  <!--<li>
+      <a href="{% url 'curso_constancia_estudiante' curso.id %}">
+	emitir constancia para estudiantes invitados</a></li>-->
   
   {% endif %}
   

@@ -132,7 +132,15 @@ class CursoConstancia(forms.Form):
 
         self.fields['fecha_de_participación'] = forms.DateField(
             widget=forms.SelectDateWidget(years=range(year - 1, year + 1)))
-        
+
+
+class CursoConstanciaEstudiante(forms.Form):
+
+    estudiante_invitado = forms.CharField(max_length=300, required=True)
+    calificacion = forms.DecimalField(max_digits=4,
+                                      decimal_places=2,
+                                      max_value=10,
+                                      min_value=0)
     
     
         
