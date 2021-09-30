@@ -110,6 +110,9 @@ class Perfil(models.Model):
                            + "este dato, ingresar la palabra extranjero(a)",
                            max_length=100)
 
+    CVU = models.CharField(u"Número de CVU",
+                           max_length=100, blank=True, null=True)
+
     telefono = models.CharField(max_length=100)
     telefono_movil = models.CharField(max_length=100, blank=True)
 
@@ -607,7 +610,8 @@ class Academico(models.Model):
                                           ('C', 'C'),
                                           ('E', 'E')))
     CVU = models.CharField(u"Número de CVU",
-                           max_length=100, blank=True, null=True)
+                           max_length=100, blank=True, null=True,
+                           help_text="movido a Perfil Personal")
 
     numero_trabajador_unam = models.CharField(u"Número de trabajador (UNAM)",
                                               max_length=100,
