@@ -766,11 +766,11 @@ class Academico(models.Model):
     # disponibilidad
     disponible_tutor = models.BooleanField(
         u"Disponible como tutor principal (dirección de alumnos)",
-        default=False)
+        default=True)
 
     disponible_miembro = models.BooleanField(
         u"Disponible como miembro de comité tutor (asesoría de alumnos)",
-        default=False)
+        default=True)
 
     # epílogo
     observaciones = models.TextField(blank=True)
