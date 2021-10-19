@@ -1516,6 +1516,8 @@ class Asignatura(models.Model):
 
     creditos = models.PositiveSmallIntegerField(default=0)
 
+    horas = models.PositiveSmallIntegerField(default=0)    
+
     campos_de_conocimiento = models.ManyToManyField(
         CampoConocimiento,
         blank=True)
