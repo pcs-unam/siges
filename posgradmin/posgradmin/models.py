@@ -219,8 +219,8 @@ class Estudiante(models.Model):
         ordering = ['user__first_name', 'user__last_name', ]
 
     def ultimo_estado(self):
-        if self.estudios.count() > 0:
-            ultimo_estado = self.estudios.latest('ingreso').ultimo_estado
+        if self.historial.count() > 0:
+            ultimo_estado = self.historial.latest('fecha').estado
         else:
             ultimo_estado = None
 
@@ -265,14 +265,32 @@ class Estudiante(models.Model):
             self.user.get_full_name())
 
 
-class Estudios(models.Model):
-    estudiante = models.ForeignKey(Estudiante, related_name='estudios', on_delete=models.CASCADE)
-    ingreso = models.PositiveSmallIntegerField("año de ingreso al posgrado",
-                                               blank=True, null=True)
+class Historial(models.Model):
+    estudiante = models.ForeignKey(Estudiante, related_name='historial', on_delete=models.CASCADE)
+
+    fecha = models.DateField(default=datetime.date.today)
+    
+    year = models.PositiveSmallIntegerField("año",
+                                            blank=True, null=True)
     semestre = models.PositiveSmallIntegerField(
-        "semestre de ingreso al posgrado",
+        "semestre",
         choices=((1, 1),
                  (2, 2)))
+
+    estado = models.CharField(
+        max_length=25,
+        default='inscrito',
+        choices=(
+            ('inscrito', 'inscrito'),
+            ('egresado', 'egresado'),
+            ('graduado', 'graduado'),
+            ('indeterminado', u'indeterminado'),
+            ('baja', 'baja'),
+            (u'suspensión 1 sem', u'suspensión 1 sem'),
+            (u'suspensión 2 sem', u'suspensión 2 sem'),
+            ('plazo adicional', 'plazo adicional'),
+        ))
+
 
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE,
                                     help_text=u"Institución de Inscripción",
@@ -296,63 +314,16 @@ class Estudios(models.Model):
 
     permiso_trabajar = models.BooleanField("Permiso para trabajar",
                                            default=False)
-    beca = models.CharField(u"Descripción de Beca",
-                            max_length=200, blank=True)
-
-    ultimo_estado = models.CharField(
-        max_length=25,
-        default='inscrito')
+    beca_descripcion = models.CharField(u"Descripción de Beca",
+                                        max_length=200, blank=True)
+    beca = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name_plural = "estudios"
-        ordering = ['ingreso', ]
-
-    def __str__(self):
-        return u"%s-%s de %s" % (self.plan, self.ingreso, self.estudiante)
-
-    def copia_ultimo_estado(self):
-        if self.estados.count() > 0:
-            ultimo = self.estados.latest('id')
-            self.ultimo_estado = ultimo.estado
-
-
-class EstadoEstudios(models.Model):
-    estudios = models.ForeignKey(Estudios, related_name="estados", on_delete=models.CASCADE)
-    fecha = models.DateField(default=datetime.date.today)
-    comentario = models.CharField(max_length=400,
-                                  null=True, blank=True)
-    estado = models.CharField(
-        max_length=25,
-        default='inscrito',
-        choices=(
-            ('inscrito', 'inscrito'),
-            ('egresado', 'egresado'),
-            ('graduado', 'graduado'),
-            ('indeterminado', u'indeterminado'),
-            ('baja', 'baja'),
-            (u'suspensión 1', u'suspensión 1'),
-            (u'suspensión 2', u'suspensión 2'),
-            ('plazo adicional', 'plazo adicional'),
-        ))
-
-    def __str__(self):
-        return self.estado
-
-    class Meta:
-        verbose_name_plural = "estados de estudios"
+        verbose_name_plural = "Historial"
         ordering = ['fecha', ]
 
-
-
-class Beca(models.Model):
-    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
-
-    fecha_inicio = models.DateField()
-    fecha_fin = models.DateField()
-    tipo = models.CharField(max_length=100)
-
     def __str__(self):
-        return u"%s %s" % (self.estudiante, self.tipo)
+        return u"[%s] %s: %s-%s" % (self.fecha, self.estudiante, self.plan, self.estado)
 
 
 class Sesion(models.Model):

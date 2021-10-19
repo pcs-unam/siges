@@ -12,7 +12,7 @@ from .models import Perfil, Academico, Estudiante, \
     Solicitud, Proyecto, \
     Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
-    ConvocatoriaCurso, Estudios, EstadoEstudios, MembresiaComite
+    ConvocatoriaCurso, Historial, MembresiaComite
 
 
 from .admin_action_academicos import exporta_resumen_academicos
@@ -43,48 +43,39 @@ class MembresiaComiteAdmin(admin.ModelAdmin):
 
     autocomplete_fields = ['estudiante', 'tutor',]
 
-class EstadoEstudiosInline(admin.TabularInline):
-    model = EstadoEstudios
-    fk_name = 'estudios'
-    extra = 0
-    classes = ('grp-collapse grp-closed',)
-    fields = ['fecha', 'estado', 'comentario', ]
 
-@admin.register(Estudios)
-class EstudiosAdmin(admin.ModelAdmin):
+@admin.register(Historial)
+class HistorialAdmin(admin.ModelAdmin):
     search_fields = ['estudiante__cuenta',
                      'estudiante__user__first_name',
                      'estudiante__user__last_name',
                      'estudiante__user__email']
 
-    list_display = ['estudiante',
+    list_display = ['fecha',
+                    'estudiante',
                     'plan',
-                    'ingreso',
+                    'year',
                     'semestre',
-                    'ultimo_estado',
+                    'estado',
                     'institucion']
 
-    list_filter = ['ingreso',
+    list_filter = ['year',
                    'semestre',
                    'institucion',
                    'plan',
                    'permiso_trabajar',
-                   'ultimo_estado']
+                   'estado']
 
 
-    readonly_fields = ['ultimo_estado', ]
 
-    inlines = [EstadoEstudiosInline, ]
-
-
-class EstudiosInline(admin.TabularInline):
-    model = Estudios
+class HistorialInline(admin.TabularInline):
+    model = Historial
     fk_name = 'estudiante'
     extra = 0
     show_change_link = True
     classes = ('grp-collapse grp-closed',)
-    readonly_fields = ['ultimo_estado', ]
-    fields = ['ingreso', 'semestre', 'plan', 'institucion', 'ultimo_estado']
+
+    fields = ['fecha', 'estado', 'plan', 'year', 'semestre']
 
 
 class TutoresInline(admin.TabularInline):
@@ -105,7 +96,7 @@ class EstudianteAdmin(admin.ModelAdmin):
     readonly_fields = ['user', ]
     list_display = ['fullname', 'cuenta', 'ultimo_estado']
 
-    inlines = [EstudiosInline, TutoresInline]
+    inlines = [HistorialInline, TutoresInline]
 
     def fullname(self, obj):
         name = obj.user.get_full_name()
