@@ -353,7 +353,6 @@ class CursoConstanciaEstudiante(LoginRequiredMixin, UserPassesTestMixin, View):
                                       'estudiante_invitado': estudiante_invitado,
                                       'calificacion': calificacion,
                                       'curso': curso,
-                                      'horas': 100,
                                       'profesor': request.user.get_full_name() }))
                 carta_md.seek(0)
 
