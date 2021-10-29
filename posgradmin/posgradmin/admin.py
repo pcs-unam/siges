@@ -6,13 +6,15 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 
+from django.contrib.contenttypes.admin import GenericStackedInline, GenericTabularInline
+
 
 from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
     Solicitud, Proyecto, \
     Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
-    ConvocatoriaCurso, Historial, MembresiaComite
+    ConvocatoriaCurso, Historial, MembresiaComite, Nota
 
 
 from .admin_action_academicos import exporta_resumen_academicos
@@ -25,6 +27,41 @@ admin.site.site_header = \
 admin.site.site_title = "Posgrado en Ciencias de la Sostenibilidad"
 admin.site.site_url = "/"
 
+
+class AutoAutor(object):
+    exclude = ('autor', )
+
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        for obj in formset.deleted_objects:
+            obj.delete()
+        for instance in instances:
+            instance.autor = request.user
+            instance.save()
+        formset.save_m2m()
+
+        
+
+class NotaInline(GenericStackedInline):
+    model = Nota
+    extra = 0
+    fields = ['nota', 'estado', 'archivo' ]
+
+    def save_model(self, request, obj, form, change):
+        if getattr(obj, 'autor', None) is None:
+            obj.autor = request.user
+        obj.save()
+    
+
+@admin.register(Nota)
+class NotaAdmin(admin.ModelAdmin):
+    list_filter = ['estado', ]
+    list_display = ['fecha', 'autor', 'estado', 'content_type', 'object_id']
+    readonly_fields = ['autor', 'fecha', ]
+    exclude = ['content_type', 'object_id']
+
+    show_change_link = True
+    
 @admin.register(MembresiaComite)
 class MembresiaComiteAdmin(admin.ModelAdmin):
     model = MembresiaComite
@@ -45,7 +82,7 @@ class MembresiaComiteAdmin(admin.ModelAdmin):
 
 
 @admin.register(Historial)
-class HistorialAdmin(admin.ModelAdmin):
+class HistorialAdmin(AutoAutor, admin.ModelAdmin):
     search_fields = ['estudiante__cuenta',
                      'estudiante__user__first_name',
                      'estudiante__user__last_name',
@@ -65,6 +102,7 @@ class HistorialAdmin(admin.ModelAdmin):
                    'plan',
                    'permiso_trabajar',
                    'estado']
+    inlines = [NotaInline, ]    
 
 
 
@@ -78,6 +116,7 @@ class HistorialInline(admin.TabularInline):
     fields = ['fecha', 'estado', 'plan', 'year', 'semestre']
 
 
+
 class TutoresInline(admin.TabularInline):
     model = MembresiaComite
     fk_name = 'estudiante'
@@ -88,7 +127,7 @@ class TutoresInline(admin.TabularInline):
 
 
 @admin.register(Estudiante)
-class EstudianteAdmin(admin.ModelAdmin):
+class EstudianteAdmin(AutoAutor, admin.ModelAdmin):
     search_fields = ['cuenta',
                      'user__first_name',
                      'user__last_name',
@@ -96,7 +135,7 @@ class EstudianteAdmin(admin.ModelAdmin):
     readonly_fields = ['user', ]
     list_display = ['fullname', 'cuenta', 'ultimo_estado']
 
-    inlines = [HistorialInline, TutoresInline]
+    inlines = [HistorialInline, TutoresInline, NotaInline]
 
     def fullname(self, obj):
         name = obj.user.get_full_name()
@@ -122,10 +161,10 @@ class AcreditacionInline(admin.TabularInline):
     fields = ['fecha', 'acreditacion', 'comentario', ]
 
 
-class AcademicoAdmin(admin.ModelAdmin):
+class AcademicoAdmin(AutoAutor, admin.ModelAdmin):
     search_fields = ['user__first_name', 'user__last_name', 'user__username']
 
-    inlines = [AcreditacionInline, ]
+    inlines = [AcreditacionInline, NotaInline]
 
     list_display = ['fullname',
                     'acreditacion',
@@ -281,7 +320,7 @@ concluye_curso.short_description = "Marcar cursos como concluidos"
 
 
 
-class CursoAdmin(admin.ModelAdmin):
+class CursoAdmin(AutoAutor, admin.ModelAdmin):
     list_display = ['asignatura', 'lista_academicos',
                     'year', 'semestre', 'intersemestral', 'sede', 'status']
     list_filter = ['year',
@@ -290,6 +329,8 @@ class CursoAdmin(admin.ModelAdmin):
                    'intersemestral',
     ]
 
+    inlines = [NotaInline, ]    
+    
     search_fields = ['asignatura__asignatura']
 
     def lista_academicos(self, obj):
@@ -326,37 +367,38 @@ class InstitucionAdmin(admin.ModelAdmin):
 admin.site.register(Institucion, InstitucionAdmin)
 
 
-class SesionAdmin(admin.ModelAdmin):
-    search_fields = ['descripcion', 'fecha']
-    list_display = ['fecha', 'descripcion',
-                    'unificado']
+# class SesionAdmin(admin.ModelAdmin):
+#     search_fields = ['descripcion', 'fecha']
+#     list_display = ['fecha', 'descripcion',
+#                     'unificado']
 
-    def unificado(self, sesion):
-        return format_html(sesion.as_a())
+#     def unificado(self, sesion):
+#         return format_html(sesion.as_a())
 
-    unificado.short_description = 'Ver'
-
-
-admin.site.register(Sesion, SesionAdmin)
+#     unificado.short_description = 'Ver'
 
 
-class SolicitudAdmin(admin.ModelAdmin):
-    search_fields = ['resumen', 'fecha_creacion',
-                     'solicitante__first_name',
-                     'solicitante__last_name']
-    list_display = ['resumen', 'user', 'fecha_creacion',
-                    'unificado', 'estado', 'tipo']
-
-    def unificado(self, solicitud):
-        return solicitud.as_a()
-
-    def user(self, solicitud):
-        return format_html(solicitud.solicitante.perfil)
-
-    unificado.short_description = 'Ver'
+# admin.site.register(Sesion, SesionAdmin)
 
 
-admin.site.register(Solicitud, SolicitudAdmin)
+# # Class
+# SolicitudAdmin(admin.ModelAdmin):
+#     search_fields = ['resumen', 'fecha_creacion',
+#                      'solicitante__first_name',
+#                      'solicitante__last_name']
+#     list_display = ['resumen', 'user', 'fecha_creacion',
+#                     'unificado', 'estado', 'tipo']
+
+#     def unificado(self, solicitud):
+#         return solicitud.as_a()
+
+#     def user(self, solicitud):
+#         return format_html(solicitud.solicitante.perfil)
+
+#     unificado.short_description = 'Ver'
+
+
+# admin.site.register(Solicitud, SolicitudAdmin)
 
 
 class AdscripcionInline(admin.TabularInline):
@@ -365,7 +407,7 @@ class AdscripcionInline(admin.TabularInline):
     extra = 1
 
 
-class PerfilAdmin(admin.ModelAdmin):
+class PerfilAdmin(AutoAutor, admin.ModelAdmin):
     list_display = [
         'fullname',
         'telefono',
@@ -374,7 +416,7 @@ class PerfilAdmin(admin.ModelAdmin):
        ]
     search_fields = ['user__first_name', 'user__last_name']
 
-    inlines = [AdscripcionInline, ]
+    inlines = [AdscripcionInline, NotaInline, ]
 
     def email(self, obj):
         return obj.user.email
@@ -451,8 +493,8 @@ admin.site.register(Acreditacion, AcreditacionAdmin)
 
 
 
-class ConvocatoriaCursoAdmin(admin.ModelAdmin):
+class ConvocatoriaCursoAdmin(AutoAutor, admin.ModelAdmin):
     list_display = ['year', 'semestre', 'status']
     list_filter = ['status', ]
-
+    inlines = [NotaInline, ]
 admin.site.register(ConvocatoriaCurso, ConvocatoriaCursoAdmin)

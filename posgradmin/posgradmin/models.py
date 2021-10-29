@@ -11,6 +11,10 @@ from django.db.models import Q
 
 from django.contrib.auth.models import User
 
+from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+
 from .settings import solicitudes_profesoriles,\
     solicitudes_tutoriles, solicitud_otro,\
     solicitudes_estados, MEDIA_URL, \
@@ -29,6 +33,39 @@ from sh import pandoc, mkdir, rm
 from pdfrw import PdfReader, PdfWriter, PageMerge
 
 
+def nota_path(instance, filename):
+    (root, ext) = os.path.splitext(filename)
+    return os.path.join(u'nota_%s_%s' % (instance.id, slugify(root) + ext))
+
+
+class Nota(models.Model):
+    nota = models.TextField()
+    fecha = models.DateTimeField(auto_now_add=True)    
+    autor = models.ForeignKey(User,
+                              on_delete=models.CASCADE, null=True, blank=True)
+
+    archivo = models.FileField(upload_to=nota_path,
+                               null=True, blank=True)    
+    estado = models.CharField(max_length=40,
+                              default='memo',
+                              choices=((u"memo",
+                                        u"memo"),
+                                       (u"atendida",
+                                        u"atendida"),
+                                       (u"solicitud",
+                                        u"solicitud")))
+
+    
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return "%s, fecha: %s" % (self.autor,
+                                      self.fecha.strftime("%Y-%m-%d %H:%M"))
+
+
+
 
 class ConvocatoriaCurso(models.Model):
     year = models.PositiveSmallIntegerField("Año")
@@ -37,6 +74,10 @@ class ConvocatoriaCurso(models.Model):
     status = models.CharField(max_length=10,
             choices=[('abierta', 'abierta'),
                      ('cerrada', 'cerrada')])
+
+    notas = GenericRelation(Nota,
+                           related_query_name='convocatoria_curso')
+    
 
     def __str__(self):
         if self.status == 'abierta':
@@ -135,6 +176,10 @@ class Perfil(models.Model):
                                  upload_to=headshot_path,
                                  blank=True, null=True)
 
+    notas = GenericRelation(Nota,
+                           related_query_name='perfil')
+
+    
     def __str__(self):
         return u"%s" % self.user.get_full_name()
 
@@ -214,6 +259,10 @@ class Estudiante(models.Model):
     cuenta = models.CharField(max_length=100)
 
     promedio_ingreso = models.DecimalField("Promedio del último grado. Dos dígitos máximo, dos decimales.", max_digits=4, decimal_places=2)
+
+    notas = GenericRelation(Nota,
+                           related_query_name='estudiante')
+
     
     class Meta:
         ordering = ['user__first_name', 'user__last_name', ]
@@ -318,6 +367,10 @@ class Historial(models.Model):
                                         max_length=200, blank=True)
     beca = models.BooleanField(default=False)
 
+    notas = GenericRelation(Nota,
+                            related_query_name='historial')
+
+    
     class Meta:
         verbose_name_plural = "Historial"
         ordering = ['fecha', ]
@@ -804,6 +857,10 @@ class Academico(models.Model):
             (u'Dr.',   u'Dr.'),
             (u'Dra.',  u'Dra.')))
 
+    notas = GenericRelation(Nota,
+                            related_query_name='academico')
+
+    
     def verifica_titulo_honorifico(self):
         if self.is_phd():
             if self.user.perfil.genero == 'M':
@@ -1601,6 +1658,10 @@ class Curso(models.Model):
                                        ('concluido', 'concluido'),])
 
     observaciones = models.TextField(blank=True)
+
+    notas = GenericRelation(Nota,
+                            related_query_name='curso')
+
     
     def genera_constancias(self):
         if self.status == 'concluido':
@@ -1646,3 +1707,6 @@ class Curso(models.Model):
 class Acta(models.Model):
     acuerdos = models.TextField(blank=True)
     sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE)
+
+
+
