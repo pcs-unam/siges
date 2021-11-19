@@ -59,6 +59,8 @@ def busca_tutor(rfc):
 def importa(db_file):
     data = get_data(db_file.name)
 
+    models.MembresiaComite.objects.all().delete()
+    
     # crea diccionario: llaves son rfc, valores curps y correos
     for i in range(0, len(data['tutor']) - 1):
         m = data['tutor'][i]
@@ -83,17 +85,20 @@ def importa(db_file):
             if models.Estudiante.objects.filter(cuenta=m[idx['cuenta']]).count() == 1:
                 e = models.Estudiante.objects.get(cuenta=m[idx['cuenta']])
 
-                mc, created = models.MembresiaComite.objects.get_or_create(
-                    estudiante=e,
-                    tutor=a,
-                    year=m[idx['anio']],
-                    semestre=m[idx['semestre']],
-                    tipo=m[idx['tipo']])
-
-                if created:
-                    print('membresia creada', mc)
+                if models.MembresiaComite.objects.filter(
+                        estudiante=e,
+                        tutor=a,
+                        tipo=m[idx['tipo']]).count() == 0:
+                    membresia = models.MembresiaComite(
+                        estudiante=e,
+                        tutor=a,
+                        year=m[idx['anio']],
+                        semestre=m[idx['semestre']],
+                        tipo=m[idx['tipo']])
+                    membresia.save()
+                    print('membresia creada', membresia)
                 else:
-                    print('membresia ya existente', mc)
+                    print('membresia ya existente', e, a)
 
             elif models.Estudiante.objects.filter(cuenta=m[idx['cuenta']]).count() > 1:
                 print('Estudiante DUPLICADO', m[idx['cuenta']])

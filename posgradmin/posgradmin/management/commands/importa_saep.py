@@ -74,6 +74,8 @@ def get_institucion(entidad_num):
 def importa(db_file):
     data = get_data(db_file.name)
 
+    models.Historial.objects.all().delete()
+    
     for i in range(0, len(data['alumnos'])):
         a = data['alumnos'][i]
 
@@ -157,11 +159,17 @@ def importa(db_file):
             print('update perfil', p)
 
 
-        e, created = models.Estudiante.objects.get_or_create(
-            user = u
-        )
-        e.cuenta = a[idx['cuenta']]
-        e.save()
+        if models.Estudiante.objects.filter(user = u).count() > 0:
+            e = models.Estudiante.objects.get(user=u)
+            e.cuenta = a[idx['cuenta']]
+            e.promedio_ingreso = 10.0  
+            e.save()
+        else:
+            e = models.Estudiante(
+                user=u,
+                cuenta=a[idx['cuenta']],
+                promedio_ingreso = 10.0)
+            e.save()
 
         if created:
             print('created estudiante', e)
@@ -170,26 +178,31 @@ def importa(db_file):
 
         print('found estudiante', models.Estudiante.objects.filter(cuenta=a[idx['cuenta']]).count())
 
-
-        s, created = models.Estudios.objects.get_or_create(
-            estudiante = e,
-            ingreso = a[0],
-            semestre = a[idx['semestre']]
-        )
-
+        
         if a[idx['plan']] == 5172:
-            s.plan = 'Doctorado'
+            plan = 'Doctorado'
         elif a[idx['plan']] == 4172:
-            s.plan = u'Maestría'
+            plan = u'Maestría'
         else:
-            s.plan = u'Maestría'
+            plan = u'Maestría'
+        
+        if models.Historial.objects.filter(estudiante=e, plan=plan,
+                                           estado='inscrito').count() == 0:
+            h, created = models.Historial.objects.get_or_create(
+                fecha=date(a[0], 8, 1),  # inscripciones en agosto, ver #223
+                estudiante = e,
+                year = a[0],
+                plan = plan,
+                estado = 'inscrito',
+                semestre = a[idx['semestre']]
+            )
 
-        s.institucion = get_institucion(a[idx['entidad']])
-        s.save()
+        h.institucion = get_institucion(a[idx['entidad']])
+        h.save()
 
         if created:
-            print('created estudios', s)
+            print('created estudios', h)
         else:
-            print('updated estudios', s)
+            print('updated estudios', h)
 
 

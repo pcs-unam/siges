@@ -122,7 +122,7 @@ class TutoresInline(admin.TabularInline):
     fk_name = 'estudiante'
     extra = 0
     classes = ('grp-collapse grp-closed',)
-    fields = ['tutor', 'year', 'semestre', 'tipo', ]
+    fields = ['year', 'semestre', 'tutor', 'tipo', ]
     autocomplete_fields = ['tutor',]
 
 
@@ -132,7 +132,7 @@ class EstudianteAdmin(AutoAutor, admin.ModelAdmin):
                      'user__first_name',
                      'user__last_name',
                      'user__email', ]
-    readonly_fields = ['user', ]
+    readonly_fields = ['fullname', 'user', ]
     list_display = ['fullname', 'cuenta', 'ultimo_estado']
 
     inlines = [HistorialInline, TutoresInline, NotaInline]
