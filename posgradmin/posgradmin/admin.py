@@ -361,6 +361,8 @@ admin.site.register(GradoAcademico, GradoAcademicoAdmin)
 
 
 class InstitucionAdmin(admin.ModelAdmin):
+    search_fields = ['nombre', 'suborganizacion']
+    list_filter = ['dependencia_UNAM', 'entidad_PCS']
     list_display = ['nombre', 'suborganizacion', 'dependencia_UNAM']
 
 
