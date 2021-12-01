@@ -58,7 +58,7 @@ class NotaInline(GenericStackedInline):
 @admin.register(Nota)
 class NotaAdmin(admin.ModelAdmin):
     list_filter = ['estado', 'fecha',]
-    list_display = ['link_to', 'fecha', 'autor', 'estado', 'objeto',]
+    list_display = ['link_to', 'tipo', 'fecha', 'autor', 'estado', 'objeto',]
     search_fields = ['fecha', 'asunto']
     readonly_fields = ['autor', 'fecha', ]
     exclude = ['content_type', 'object_id']
