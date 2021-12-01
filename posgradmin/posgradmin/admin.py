@@ -58,7 +58,7 @@ class NotaInline(GenericStackedInline):
 @admin.register(Nota)
 class NotaAdmin(admin.ModelAdmin):
     list_filter = ['estado', 'fecha']
-    list_display = ['document', 'autor', 'estado', 'tipo', 'objeto', 'asunto']
+    list_display = ['document', 'fecha', 'autor', 'estado', 'objeto', 'asunto']
     search_fields = ['fecha', 'asunto']
     readonly_fields = ['autor', 'fecha', ]
     exclude = ['content_type', 'object_id']
@@ -78,7 +78,7 @@ class NotaAdmin(admin.ModelAdmin):
         path = reverse('admin:posgradmin_%s_change' % obj.content_type.model.lower(),
                        args=(obj.object_id,))
         change_url = "<a href='%s'>%s</a>" % (path,
-                                              fecha.replace(tzinfo=None).isoformat(' ', 'minutes'))
+                                              obj.content_type.name)
         return format_html(change_url)
 
     document.allow_tags = True
