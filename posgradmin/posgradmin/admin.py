@@ -20,6 +20,8 @@ from .models import Perfil, Academico, Estudiante, \
 from .admin_action_academicos import exporta_resumen_academicos
 
 from django.utils.html import format_html
+from django.utils import timezone
+from django.utils.text import Truncator
 
 
 admin.site.site_header = \
@@ -40,28 +42,49 @@ class AutoAutor(object):
             instance.save()
         formset.save_m2m()
 
-        
+
 
 class NotaInline(GenericStackedInline):
     model = Nota
     extra = 0
-    fields = ['nota', 'estado', 'archivo' ]
+    fields = ['asunto', 'nota', 'estado', 'archivo' ]
 
     def save_model(self, request, obj, form, change):
         if getattr(obj, 'autor', None) is None:
             obj.autor = request.user
         obj.save()
-    
+
 
 @admin.register(Nota)
 class NotaAdmin(admin.ModelAdmin):
-    list_filter = ['estado', ]
-    list_display = ['fecha', 'autor', 'estado', 'content_type', 'object_id']
+    list_filter = ['estado', 'fecha']
+    list_display = ['document', 'autor', 'estado', 'tipo', 'objeto', 'asunto']
+    search_fields = ['fecha', 'asunto']
     readonly_fields = ['autor', 'fecha', ]
     exclude = ['content_type', 'object_id']
 
-    show_change_link = True
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def tipo(self, obj):
+        return obj.content_type.name
+                                
+    def objeto(self, obj):
+        return obj.content_type.get_object_for_this_type(pk=obj.object_id)
     
+    def document(self, obj):
+        fecha = timezone.localtime(obj.fecha)
+
+        path = reverse('admin:posgradmin_%s_change' % obj.content_type.model.lower(),
+                       args=(obj.object_id,))
+        change_url = "<a href='%s'>%s</a>" % (path,
+                                              fecha.replace(tzinfo=None).isoformat(' ', 'minutes'))
+        return format_html(change_url)
+
+    document.allow_tags = True
+    document.short_description = 'Documento'
+
+
 @admin.register(MembresiaComite)
 class MembresiaComiteAdmin(admin.ModelAdmin):
     model = MembresiaComite
@@ -102,7 +125,7 @@ class HistorialAdmin(AutoAutor, admin.ModelAdmin):
                    'plan',
                    'permiso_trabajar',
                    'estado']
-    inlines = [NotaInline, ]    
+    inlines = [NotaInline, ]
 
 
 
@@ -329,8 +352,8 @@ class CursoAdmin(AutoAutor, admin.ModelAdmin):
                    'intersemestral',
     ]
 
-    inlines = [NotaInline, ]    
-    
+    inlines = [NotaInline, ]
+
     search_fields = ['asignatura__asignatura']
 
     def lista_academicos(self, obj):

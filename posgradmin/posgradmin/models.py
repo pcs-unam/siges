@@ -39,6 +39,7 @@ def nota_path(instance, filename):
 
 
 class Nota(models.Model):
+    asunto = models.CharField(max_length=100)
     nota = models.TextField()
     fecha = models.DateTimeField(auto_now_add=True)    
     autor = models.ForeignKey(User,
