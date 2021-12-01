@@ -57,8 +57,8 @@ class NotaInline(GenericStackedInline):
 
 @admin.register(Nota)
 class NotaAdmin(admin.ModelAdmin):
-    list_filter = ['estado', 'fecha']
-    list_display = ['document', 'fecha', 'autor', 'estado', 'objeto', 'asunto']
+    list_filter = ['estado', 'fecha',]
+    list_display = ['link_to', 'fecha', 'autor', 'estado', 'objeto',]
     search_fields = ['fecha', 'asunto']
     readonly_fields = ['autor', 'fecha', ]
     exclude = ['content_type', 'object_id']
@@ -72,17 +72,17 @@ class NotaAdmin(admin.ModelAdmin):
     def objeto(self, obj):
         return obj.content_type.get_object_for_this_type(pk=obj.object_id)
     
-    def document(self, obj):
+    def link_to(self, obj):
         fecha = timezone.localtime(obj.fecha)
 
         path = reverse('admin:posgradmin_%s_change' % obj.content_type.model.lower(),
                        args=(obj.object_id,))
         change_url = "<a href='%s'>%s</a>" % (path,
-                                              obj.content_type.name)
+                                              obj.asunto)
         return format_html(change_url)
 
-    document.allow_tags = True
-    document.short_description = 'Documento'
+    link_to.allow_tags = True
+    link_to.short_description = 'Asunto'
 
 
 @admin.register(MembresiaComite)
