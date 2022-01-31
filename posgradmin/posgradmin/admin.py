@@ -2,6 +2,8 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import admin
+from reversion.admin import VersionAdmin
+
 
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
@@ -56,7 +58,7 @@ class NotaInline(GenericStackedInline):
 
 
 @admin.register(Nota)
-class NotaAdmin(admin.ModelAdmin):
+class NotaAdmin(VersionAdmin):
     list_filter = ['estado', 'fecha',]
     list_display = ['link_to', 'tipo', 'fecha', 'autor', 'estado', 'objeto',]
     search_fields = ['fecha', 'asunto']
@@ -86,7 +88,7 @@ class NotaAdmin(admin.ModelAdmin):
 
 
 @admin.register(MembresiaComite)
-class MembresiaComiteAdmin(admin.ModelAdmin):
+class MembresiaComiteAdmin(VersionAdmin):
     model = MembresiaComite
     list_display = ['estudiante', 'tutor', 'tipo', 'year', 'semestre']
 
@@ -105,7 +107,7 @@ class MembresiaComiteAdmin(admin.ModelAdmin):
 
 
 @admin.register(Historial)
-class HistorialAdmin(AutoAutor, admin.ModelAdmin):
+class HistorialAdmin(AutoAutor, VersionAdmin):
     search_fields = ['estudiante__cuenta',
                      'estudiante__user__first_name',
                      'estudiante__user__last_name',
@@ -150,7 +152,7 @@ class TutoresInline(admin.TabularInline):
 
 
 @admin.register(Estudiante)
-class EstudianteAdmin(AutoAutor, admin.ModelAdmin):
+class EstudianteAdmin(AutoAutor, VersionAdmin):
     search_fields = ['cuenta',
                      'user__first_name',
                      'user__last_name',
@@ -184,7 +186,7 @@ class AcreditacionInline(admin.TabularInline):
     fields = ['fecha', 'acreditacion', 'comentario', ]
 
 
-class AcademicoAdmin(AutoAutor, admin.ModelAdmin):
+class AcademicoAdmin(AutoAutor, VersionAdmin):
     search_fields = ['user__first_name', 'user__last_name', 'user__username']
 
     inlines = [AcreditacionInline, NotaInline]
@@ -301,7 +303,7 @@ class AcademicoAdmin(AutoAutor, admin.ModelAdmin):
 admin.site.register(Academico, AcademicoAdmin)
 
 
-class AdscripcionAdmin(admin.ModelAdmin):
+class AdscripcionAdmin(VersionAdmin):
     search_fields = ['perfil__user__first_name',
                      'perfil__user__last_name']
     list_display = ['perfil',
@@ -343,7 +345,7 @@ concluye_curso.short_description = "Marcar cursos como concluidos"
 
 
 
-class CursoAdmin(AutoAutor, admin.ModelAdmin):
+class CursoAdmin(AutoAutor, VersionAdmin):
     list_display = ['asignatura', 'lista_academicos',
                     'year', 'semestre', 'intersemestral', 'sede', 'status']
     list_filter = ['year',
@@ -374,7 +376,7 @@ class CursoAdmin(AutoAutor, admin.ModelAdmin):
 admin.site.register(Curso, CursoAdmin)
 
 
-class GradoAcademicoAdmin(admin.ModelAdmin):
+class GradoAcademicoAdmin(VersionAdmin):
     search_fields = ['user__username']
     list_display = ['grado_obtenido', 'nivel', 'user',
                     'institucion', 'fecha_obtencion']
@@ -383,7 +385,7 @@ class GradoAcademicoAdmin(admin.ModelAdmin):
 admin.site.register(GradoAcademico, GradoAcademicoAdmin)
 
 
-class InstitucionAdmin(admin.ModelAdmin):
+class InstitucionAdmin(VersionAdmin):
     search_fields = ['nombre', 'suborganizacion']
     list_filter = ['dependencia_UNAM', 'entidad_PCS']
     list_display = ['nombre', 'suborganizacion', 'dependencia_UNAM']
@@ -432,7 +434,7 @@ class AdscripcionInline(admin.TabularInline):
     extra = 1
 
 
-class PerfilAdmin(AutoAutor, admin.ModelAdmin):
+class PerfilAdmin(AutoAutor, VersionAdmin):
     list_display = [
         'fullname',
         'telefono',
@@ -506,7 +508,7 @@ admin.site.register(AnexoExpediente, AnexoExpedienteAdmin)
 
 
 
-class AcreditacionAdmin(admin.ModelAdmin):
+class AcreditacionAdmin(VersionAdmin):
     list_display = ['acreditacion', 'academico', 'fecha']
     search_fields = ['academico__user__username',
                      'academico__user__first_name',
@@ -518,7 +520,7 @@ admin.site.register(Acreditacion, AcreditacionAdmin)
 
 
 
-class ConvocatoriaCursoAdmin(AutoAutor, admin.ModelAdmin):
+class ConvocatoriaCursoAdmin(AutoAutor, VersionAdmin):
     list_display = ['year', 'semestre', 'status']
     list_filter = ['status', ]
     inlines = [NotaInline, ]

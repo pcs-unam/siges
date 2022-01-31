@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'export_action',
-    'django_extensions'
+    'django_extensions',
+    'reversion',
 ]
 
 SITE_ID = 1
