@@ -1,4 +1,10 @@
 # Byte-compiled / optimized / DLL files
+*.pdf
+*.xlsx
+*.ods
+*.sqlite3
+*.csv
+*.docx
 __pycache__/
 *.py[cod]
 *$py.class
