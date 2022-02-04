@@ -358,6 +358,19 @@ class Historial(models.Model):
 
     folio_graduacion = models.CharField(u"Folio de acta de examen de grado",
                                         max_length=200, blank=True)
+
+    modo_graduacion = models.CharField(
+        max_length=35,
+        default='-',
+        choices=(
+            ('-', '-'),
+            ('tesis', 'tesis'),
+            ('reporte técnico', 'reporte técnico'),
+            ('artículo', u'artículo'),
+            ('protocolo de investigación doctoral', 'protocolo de investigación doctoral'),
+        ))
+
+    
     mencion_honorifica = models.BooleanField(default=False)
     medalla_alfonso_caso = models.BooleanField(u"Medalla Alfonso Caso",
                                                default=False)
