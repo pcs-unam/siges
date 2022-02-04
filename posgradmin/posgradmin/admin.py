@@ -16,7 +16,8 @@ from .models import Perfil, Academico, Estudiante, \
     Solicitud, Proyecto, \
     Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
-    ConvocatoriaCurso, Historial, MembresiaComite, Nota
+    ConvocatoriaCurso, Historial, MembresiaComite, Nota, \
+    EstanciaPAEP
 
 
 from .admin_action_academicos import exporta_resumen_academicos
@@ -106,6 +107,30 @@ class MembresiaComiteAdmin(VersionAdmin):
     autocomplete_fields = ['estudiante', 'tutor',]
 
 
+@admin.register(EstanciaPAEP)
+class EstanciaPAEPAdmin(AutoAutor, VersionAdmin):
+    search_fields = ['estudiante__cuenta',
+                     'estudiante__user__first_name',
+                     'estudiante__user__last_name',
+                     'estudiante__user__email',
+                     'nombre']
+
+    list_display = ['fecha_solicitud',        
+                    'estudiante',
+                    'tipo',
+                    'nombre',
+                    'institucion',        
+                    'fecha_inicio',
+                    'fecha_fin']
+
+    list_filter = ['tipo',
+                   'estado',]
+    
+    inlines = [NotaInline, ]
+
+    autocomplete_fields = ['estudiante', 'institucion',]
+
+    
 @admin.register(Historial)
 class HistorialAdmin(AutoAutor, VersionAdmin):
     search_fields = ['estudiante__cuenta',

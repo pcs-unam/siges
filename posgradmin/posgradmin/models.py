@@ -41,12 +41,12 @@ def nota_path(instance, filename):
 class Nota(models.Model):
     asunto = models.CharField(max_length=100)
     nota = models.TextField()
-    fecha = models.DateTimeField(auto_now_add=True)    
+    fecha = models.DateTimeField(auto_now_add=True)
     autor = models.ForeignKey(User,
                               on_delete=models.CASCADE, null=True, blank=True)
 
     archivo = models.FileField(upload_to=nota_path,
-                               null=True, blank=True)    
+                               null=True, blank=True)
     estado = models.CharField(max_length=40,
                               default='memo',
                               choices=((u"memo",
@@ -56,7 +56,7 @@ class Nota(models.Model):
                                        (u"solicitud",
                                         u"solicitud")))
 
-    
+
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
@@ -78,7 +78,7 @@ class ConvocatoriaCurso(models.Model):
 
     notas = GenericRelation(Nota,
                            related_query_name='convocatoria_curso')
-    
+
 
     def __str__(self):
         if self.status == 'abierta':
@@ -180,7 +180,7 @@ class Perfil(models.Model):
     notas = GenericRelation(Nota,
                            related_query_name='perfil')
 
-    
+
     def __str__(self):
         return u"%s" % self.user.get_full_name()
 
@@ -264,7 +264,7 @@ class Estudiante(models.Model):
     notas = GenericRelation(Nota,
                            related_query_name='estudiante')
 
-    
+
     class Meta:
         ordering = ['user__first_name', 'user__last_name', ]
 
@@ -319,7 +319,7 @@ class Historial(models.Model):
     estudiante = models.ForeignKey(Estudiante, related_name='historial', on_delete=models.CASCADE)
 
     fecha = models.DateField(default=datetime.date.today)
-    
+
     year = models.PositiveSmallIntegerField("año",
                                             blank=True, null=True)
     semestre = models.PositiveSmallIntegerField(
@@ -370,7 +370,7 @@ class Historial(models.Model):
             ('protocolo de investigación doctoral', 'protocolo de investigación doctoral'),
         ))
 
-    
+
     mencion_honorifica = models.BooleanField(default=False)
     medalla_alfonso_caso = models.BooleanField(u"Medalla Alfonso Caso",
                                                default=False)
@@ -384,7 +384,7 @@ class Historial(models.Model):
     notas = GenericRelation(Nota,
                             related_query_name='historial')
 
-    
+
     class Meta:
         verbose_name_plural = "Historial"
         ordering = ['fecha', ]
@@ -392,6 +392,51 @@ class Historial(models.Model):
     def __str__(self):
         return u"[%s] %s: %s-%s" % (self.fecha, self.estudiante, self.plan, self.estado)
 
+
+class EstanciaPAEP(models.Model):
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)    
+    nombre = models.CharField(max_length=200, help_text="Nombre de la actividad")
+    fecha_solicitud = models.DateField("Fecha de solicitud", default=datetime.date.today)
+    fecha_inicio = models.DateField(blank=True, null=True)
+    fecha_fin = models.DateField(blank=True, null=True)
+
+    #País
+    #Ciudad
+    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
+
+    monto_otorgado = models.DecimalField("Monto otorgado en pesos mexicanos", max_digits=8, decimal_places=2)
+
+    tipo = models.CharField(
+        max_length=25,
+        default='estancia',
+        choices=(
+            ('curso', 'curso'),
+            ('congreso', 'congreso'),
+            ('estancia', 'estancia'),
+        ))
+
+    estado = models.CharField(
+        max_length=25,
+        default='solicitado',
+        choices=(
+            ('solicitado', 'solicitado'),
+            ('otorgado', 'otorgado'),
+            ('rechazado', 'rechazado'),
+            ('concluido', 'concluido'),
+            ('sin producto', 'sin producto'),
+        ))
+
+    notas = GenericRelation(Nota,
+                            related_query_name='estancia')
+
+    class Meta:
+        verbose_name_plural = "Estancias PAEP"
+
+    def __str__(self):
+        return u"%s | %s | %s" % (self.estudiante,
+                                self.tipo,
+                                self.nombre)
+    
 
 class Sesion(models.Model):
     fecha = models.DateField()
@@ -874,7 +919,7 @@ class Academico(models.Model):
     notas = GenericRelation(Nota,
                             related_query_name='academico')
 
-    
+
     def verifica_titulo_honorifico(self):
         if self.is_phd():
             if self.user.perfil.genero == 'M':
@@ -1586,7 +1631,7 @@ class Asignatura(models.Model):
 
     creditos = models.PositiveSmallIntegerField(default=0)
 
-    horas = models.PositiveSmallIntegerField(default=0)    
+    horas = models.PositiveSmallIntegerField(default=0)
 
     campos_de_conocimiento = models.ManyToManyField(
         CampoConocimiento,
@@ -1675,7 +1720,7 @@ class Curso(models.Model):
     notas = GenericRelation(Nota,
                             related_query_name='curso')
 
-    
+
     def genera_constancias(self):
         if self.status == 'concluido':
 
@@ -1720,6 +1765,3 @@ class Curso(models.Model):
 class Acta(models.Model):
     acuerdos = models.TextField(blank=True)
     sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE)
-
-
-
