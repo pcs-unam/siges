@@ -394,7 +394,7 @@ class Historial(models.Model):
 
 
 class EstanciaPAEP(models.Model):
-    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)    
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=200, help_text="Nombre de la actividad")
     fecha_solicitud = models.DateField("Fecha de solicitud", default=datetime.date.today)
     fecha_inicio = models.DateField(blank=True, null=True)
@@ -413,6 +413,8 @@ class EstanciaPAEP(models.Model):
             ('curso', 'curso'),
             ('congreso', 'congreso'),
             ('estancia', 'estancia'),
+            ('encuentro', 'encuentro'),
+            ('otro', 'otro'),
         ))
 
     estado = models.CharField(
@@ -436,7 +438,7 @@ class EstanciaPAEP(models.Model):
         return u"%s | %s | %s" % (self.estudiante,
                                 self.tipo,
                                 self.nombre)
-    
+
 
 class Sesion(models.Model):
     fecha = models.DateField()
