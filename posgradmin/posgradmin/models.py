@@ -549,26 +549,13 @@ class Solicitud(models.Model):
 
 
 class Proyecto(models.Model):
-    campo_conocimiento = models.ForeignKey(CampoConocimiento, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=200)
+    fecha = models.DateField()
+    titulo = models.CharField(max_length=200)
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
-    solicitud = models.ForeignKey(Solicitud, blank=True, null=True, on_delete=models.CASCADE)
-    aprobado = models.BooleanField(default=False)
-
-    def update_status(self):
-        if self.solicitud and self.solicitud.dictamen_final():
-            if self.solicitud.dictamen_final().resolucion == 'concedida':
-                self.aprobado = True
-                self.save()
 
     def __str__(self):
-        if self.aprobado:
-            estado = 'aprobado'
-        else:
-            estado = 'no aprobado'
-        return u'"%s" en %s (%s)' % (self.nombre,
-                                     self.campo_conocimiento,
-                                     estado)
+        return '"%s" por %s' % (self.titulo,
+                                self.estudiante)
 
 
 def anexo_path(instance, filename):

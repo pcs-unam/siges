@@ -175,7 +175,14 @@ class TutoresInline(admin.TabularInline):
     fields = ['year', 'semestre', 'tutor', 'tipo', ]
     autocomplete_fields = ['tutor',]
 
+class ProyectosInline(admin.TabularInline):
+    model = Proyecto
+    fk_name = 'estudiante'
+    extra = 0
+    classes = ('grp-collapse grp-closed',)
+    fields = ['fecha', 'titulo', ]
 
+    
 @admin.register(Estudiante)
 class EstudianteAdmin(AutoAutor, VersionAdmin):
     search_fields = ['cuenta',
@@ -185,7 +192,7 @@ class EstudianteAdmin(AutoAutor, VersionAdmin):
     readonly_fields = ['fullname', 'user', ]
     list_display = ['fullname', 'cuenta', 'ultimo_estado']
 
-    inlines = [HistorialInline, TutoresInline, NotaInline]
+    inlines = [HistorialInline, TutoresInline, ProyectosInline, NotaInline]
 
     def fullname(self, obj):
         name = obj.user.get_full_name()
@@ -509,8 +516,18 @@ admin.site.register(User, UserAdmin)
 
 admin.site.register(CampoConocimiento)
 admin.site.register(LineaInvestigacion)
-admin.site.register(Proyecto)
 
+@admin.register(Proyecto)
+class ProyectoAdmin(VersionAdmin):
+    search_fields = ['estudiante__cuenta',
+                     'estudiante__user__first_name',
+                     'estudiante__user__last_name',
+                     'estudiante__user__email',
+                     'fecha',
+                     'titulo']
+    autocomplete_fields = ['estudiante',]    
+    list_display = ['titulo', 'estudiante', 'fecha']
+    
 
 
 class AnexoExpedienteAdmin(admin.ModelAdmin):
