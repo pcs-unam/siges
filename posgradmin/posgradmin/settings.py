@@ -229,3 +229,5 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 LOGIN_REDIRECT_URL = ('inicio')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
