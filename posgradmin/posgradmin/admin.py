@@ -71,10 +71,10 @@ class NotaAdmin(VersionAdmin):
 
     def tipo(self, obj):
         return obj.content_type.name
-                                
+
     def objeto(self, obj):
         return obj.content_type.get_object_for_this_type(pk=obj.object_id)
-    
+
     def link_to(self, obj):
         fecha = timezone.localtime(obj.fecha)
 
@@ -115,22 +115,22 @@ class EstanciaPAEPAdmin(AutoAutor, VersionAdmin):
                      'estudiante__user__email',
                      'nombre']
 
-    list_display = ['fecha_solicitud',        
+    list_display = ['fecha_solicitud',
                     'estudiante',
                     'tipo',
                     'nombre',
-                    'institucion',        
+                    'institucion',
                     'fecha_inicio',
                     'fecha_fin']
 
     list_filter = ['tipo',
                    'estado',]
-    
+
     inlines = [NotaInline, ]
 
     autocomplete_fields = ['estudiante', 'institucion',]
 
-    
+
 @admin.register(Historial)
 class HistorialAdmin(AutoAutor, VersionAdmin):
     search_fields = ['estudiante__cuenta',
@@ -153,7 +153,7 @@ class HistorialAdmin(AutoAutor, VersionAdmin):
                    'permiso_trabajar',
                    'estado']
     inlines = [NotaInline, ]
-
+    autocomplete_fields = ['estudiante',]
 
 
 class HistorialInline(admin.TabularInline):
@@ -182,7 +182,7 @@ class ProyectosInline(admin.TabularInline):
     classes = ('grp-collapse grp-closed',)
     fields = ['fecha', 'titulo', ]
 
-    
+
 @admin.register(Estudiante)
 class EstudianteAdmin(AutoAutor, VersionAdmin):
     search_fields = ['cuenta',
@@ -525,9 +525,9 @@ class ProyectoAdmin(VersionAdmin):
                      'estudiante__user__email',
                      'fecha',
                      'titulo']
-    autocomplete_fields = ['estudiante',]    
+    autocomplete_fields = ['estudiante',]
     list_display = ['titulo', 'estudiante', 'fecha']
-    
+
 
 
 class AnexoExpedienteAdmin(admin.ModelAdmin):
