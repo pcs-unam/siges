@@ -161,61 +161,6 @@ EMAIL_PORT = 25
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-
-solicitudes_estados = (
-        ("nueva",
-         "nueva"),
-        ("agendada",
-         "agendada"),
-        ("atendida",
-         "atendida"),
-        ("cancelada",
-         "cancelada"),
-)
-
-
-solicitudes_profesoriles = (
-        ("registrar_catedra",
-         "Registrar Cátedra"),
-        ("solicitar_apoyo_economico",
-         "Solicitar Apoyo Económico"),
-    )
-
-solicitudes_tutoriles = (
-        ("registrar_catedra",
-         "Registrar Cátedra"),
-        ("solicitar_apoyo_economico",
-         "Solicitar Apoyo Económico"),
-        ("solicitar_baja_tutor",
-         "Solicitar Baja de Tutoría en el Programa"),
-        ("avisar_ausencia",
-         "Aviso de Ausencia por Sabático u Otra Razón"))
-
-solicitudes_estudiantiles = (
-    ("cambio_proyecto",
-     "Cambio de título y/o campo de conocimiento de proyecto"),
-
-    ("cambiar_comite_tutoral",
-     "Elegir comité tutoral"),
-
-    ('registrar_actividad_complementaria',
-     "Registro de actividad complementaria"),
-    ('solicitar_candidatura',
-     "Solicitud de examen de candidtaura"),
-
-    ('seleccionar_jurado_candidatura',
-     "Selección de jurado de candidatura"),
-    ('seleccionar_jurado_grado',
-     "Selección de jurado de grado"),
-
-    ("reportar_suspension",
-     "Reportar suspensión"))
-
-solicitud_otro = (
-    ('otro',
-     'Otro'),)
-
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 

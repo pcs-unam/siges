@@ -22,11 +22,6 @@ from posgradmin.views_estudiante import CambiarProyectoView
 
 from posgradmin.views_asistente import SesionesListView, SesionDetail # EstudianteCargar
 
-from posgradmin.views_solicitud import SolicitudCambiarEstado, \
-    SolicitudNuevaView, SolicitudDetail, SolicitudDictaminar, \
-    SolicitudComment, SolicitudAgendar, \
-    SolicitudAnexo, SolicitudSortableView
-
 from django.conf.urls.static import static
 
 from posgradmin.settings import MEDIA_ROOT, MEDIA_URL
@@ -128,46 +123,6 @@ urlpatterns = [
     re_path(r'^inicio/academicos/search/$',
         AcademicoSearch.as_view(),
         name="academicos_search"),
-
-    # re_path(r'^inicio/catedras/$',
-    #     CatedraSortableView.as_view(),
-    #     name="lista_catedras"),
-
-    re_path(r'^inicio/solicitudes/$',
-        SolicitudSortableView.as_view(),
-        name="solicitudes"),
-
-    re_path(r'^inicio/solicitudes/(?P<pk>[0-9]+)/dictaminar$',
-        SolicitudDictaminar.as_view(),
-        name="dictaminar"),
-
-    re_path(r'^inicio/solicitudes/(?P<pk>[0-9]+)/comentar$',
-        SolicitudComment.as_view()),
-
-    re_path(r'^inicio/solicitudes/(?P<pk>[0-9]+)/agendar$',
-        SolicitudAgendar.as_view()),
-
-    re_path(r'^inicio/solicitudes/(?P<pk>[0-9]+)/estado/(?P<estado>[\w-]+)$',
-        SolicitudCambiarEstado.as_view()),
-
-    re_path(r'^inicio/solicitudes/(?P<pk>[0-9]+)/anexar$',
-        SolicitudAnexo.as_view()),
-
-    re_path(r'^inicio/solicitudes/(?P<pk>[0-9]+)/cambiar-proyecto$',
-        CambiarProyectoView.as_view(),
-        name="cambiar_proyecto"),
-
-    re_path(r'^inicio/solicitudes/(?P<pk>[0-9]+)/$',
-        SolicitudDetail.as_view(),
-        name="solicitud_detail"),
-
-    re_path(r'^inicio/solicitudes/e/([\w-]+)/$',
-        SolicitudSortableView.as_view(),
-        name="solicitudes_estado"),
-
-    re_path(r'^inicio/solicitudes/nueva',
-        SolicitudNuevaView.as_view(),
-        name='solicitud_nueva'),
 
     re_path(r'^inicio/$',
         InicioView.as_view(),

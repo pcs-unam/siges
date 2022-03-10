@@ -13,7 +13,7 @@ from django.contrib.contenttypes.admin import GenericStackedInline, GenericTabul
 
 from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
-    Solicitud, Proyecto, \
+    Proyecto, \
     Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
     ConvocatoriaCurso, Historial, MembresiaComite, Nota, \
@@ -425,39 +425,6 @@ class InstitucionAdmin(VersionAdmin):
 
 admin.site.register(Institucion, InstitucionAdmin)
 
-
-# class SesionAdmin(admin.ModelAdmin):
-#     search_fields = ['descripcion', 'fecha']
-#     list_display = ['fecha', 'descripcion',
-#                     'unificado']
-
-#     def unificado(self, sesion):
-#         return format_html(sesion.as_a())
-
-#     unificado.short_description = 'Ver'
-
-
-# admin.site.register(Sesion, SesionAdmin)
-
-
-# # Class
-# SolicitudAdmin(admin.ModelAdmin):
-#     search_fields = ['resumen', 'fecha_creacion',
-#                      'solicitante__first_name',
-#                      'solicitante__last_name']
-#     list_display = ['resumen', 'user', 'fecha_creacion',
-#                     'unificado', 'estado', 'tipo']
-
-#     def unificado(self, solicitud):
-#         return solicitud.as_a()
-
-#     def user(self, solicitud):
-#         return format_html(solicitud.solicitante.perfil)
-
-#     unificado.short_description = 'Ver'
-
-
-# admin.site.register(Solicitud, SolicitudAdmin)
 
 
 class AdscripcionInline(admin.TabularInline):

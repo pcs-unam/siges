@@ -15,9 +15,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
-from .settings import solicitudes_profesoriles,\
-    solicitudes_tutoriles, solicitud_otro,\
-    solicitudes_estados, MEDIA_URL, \
+from .settings import MEDIA_URL, \
     APP_PREFIX, MEDIA_ROOT, BASE_DIR
 
 from wordcloud import WordCloud
@@ -287,21 +285,6 @@ class Estudiante(models.Model):
                                 self.cuenta,
                                 self.ultimo_estado())
 
-    def get_proyecto(self):
-        for p in self.proyecto_set.all():
-            p.update_status()
-
-        return self.proyecto_set.filter(
-            aprobado=True
-        ).order_by('id').last()
-
-    def get_proyecto_no_aprobado(self):
-        for p in self.proyecto_set.order_by('-id'):
-            if p.id > self.get_proyecto().id \
-               and p.solicitud.dictamen_final() is None:
-                return p
-        return None
-
     def perfil_publico_anchor(self):
         return u"""<a href='%sinicio/perfil/publico/%s'>%s</a>""" % (
             APP_PREFIX,
@@ -466,88 +449,6 @@ class Sesion(models.Model):
         verbose_name_plural = "Sesiones"
 
 
-class Solicitud(models.Model):
-    resumen = models.CharField(max_length=100)
-    tipo = models.CharField(max_length=100,
-                            choices=solicitudes_profesoriles +
-                            solicitudes_tutoriles + solicitud_otro)
-    solicitante = models.ForeignKey(User, on_delete=models.CASCADE)
-    fecha_creacion = models.DateField(auto_now_add=True)
-    sesion = models.ForeignKey(Sesion, blank=True, null=True, on_delete=models.CASCADE)
-    descripcion = models.TextField(blank=True)
-
-    estado = models.CharField(max_length=30, default="nueva",
-                              choices=solicitudes_estados)
-
-    def agendable(self, user):
-        if hasattr(user, 'asistente') or user.is_staff:
-            if self.estado == 'nueva':
-                return True
-
-    def dictaminable(self, user):
-
-        if self.estado == 'agendada':
-
-            if self.solicitante.id == user.id:
-                return False
-
-            if hasattr(user, 'asistente') or user.is_staff:
-                return True
-        else:
-            return False
-
-    def cancelable(self, user):
-        if self.estado == 'nueva':  # sólo nuevas se cancelan
-            if self.predictamen():
-                return False
-
-            if self.solicitante.id == user.id:   # cancelar las propias
-                return True
-        else:
-            return False
-
-    def dictamen_final(self):
-        return self.dictamen_set.filter(autor__is_staff=True).last()
-
-    def predictamen(self):
-        if self.dictamen_final():
-            return True
-        elif self.dictamen_set.count() > 0:
-            return True
-        else:
-            return False
-
-    def __str__(self):
-        return u"#%s %s [%s]" % (self.id, self.resumen, self.solicitante)
-
-    def as_a(self):
-        icon = """<span class='glyphicon glyphicon-{icon}'
-                        aria-hidden=true></span>"""
-        if self.dictamen_final():
-            if self.dictamen_final().resolucion == 'concedida':
-                status = '%s' % icon.format(icon='thumbs-up')
-            else:
-                status = '%s' % icon.format(icon='thumbs-down')
-        elif self.predictamen():
-            status = '%s' % icon.format(icon='eye-open')
-        elif self.estado == 'cancelada':
-            return u"""<a href='%sinicio/solicitudes/%s'>
-                       <strike>#%s</strike></a>""" % (
-                           APP_PREFIX,
-                           self.id, self.id)
-        elif self.estado == 'agendada':
-            status = '%s' % icon.format(icon='calendar')
-        else:
-            status = self.estado
-
-        return u"""<a href='%sinicio/solicitudes/%s'>#%s %s</a>""" % (
-            APP_PREFIX,
-            self.id, self.id, status)
-
-    class Meta:
-        verbose_name_plural = "Solicitudes"
-
-
 class Proyecto(models.Model):
     fecha = models.DateField()
     titulo = models.CharField(max_length=200)
@@ -563,26 +464,6 @@ def anexo_path(instance, filename):
     return os.path.join(u'solicitudes/%s/%s' % (instance.solicitud.id,
                                                 slugify(root) + ext))
 
-
-class Anexo(models.Model):
-    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
-    autor = models.ForeignKey(User, on_delete=models.CASCADE)
-    fecha = models.DateTimeField(auto_now_add=True)
-    archivo = models.FileField(upload_to=anexo_path)
-
-    def url(self):
-        return u"%s/solicitudes/%s/%s" % (MEDIA_URL,
-                                          self.solicitud.id,
-                                          os.path.basename(self.archivo.path))
-
-    def basename(self):
-        return os.path.basename(self.archivo.file.name)
-
-    def __str__(self):
-        return u"[%s anexo a #%s por %s el %s]" % (self.basename(),
-                                                   self.solicitud.id,
-                                                   self.autor,
-                                                   self.fecha)
 
 
 def anexo_expediente_path(instance, filename):
@@ -609,24 +490,6 @@ class AnexoExpediente(models.Model):
 
     class Meta:
         verbose_name_plural = "Expedientes"
-
-
-class Acuerdo(models.Model):
-    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
-    archivo = models.FileField()
-    fecha = models.DateTimeField(auto_now_add=True)
-    # id asamblea
-
-
-class Comentario(models.Model):
-    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
-    autor = models.ForeignKey(User, on_delete=models.CASCADE)
-    fecha = models.DateTimeField(auto_now_add=True)
-    comentario = models.CharField(max_length=300)
-    # anexo?
-
-    def __str__(self):
-        return u'%s por %s: "%s"' % (self.fecha, self.autor, self.comentario)
 
 
 def anexo_academico_CV_path(instance, filename):
@@ -714,9 +577,6 @@ class Academico(models.Model):
             ('M', 'M'),
             ('E', 'E')
         ))
-
-    solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE,
-                                     blank=True, null=True)
 
     campos_de_conocimiento = models.ManyToManyField(
         CampoConocimiento,
@@ -1119,67 +979,6 @@ class Academico(models.Model):
 
     def nombre_completo(self):
         return self.__str__()
-
-
-    def solicitudes(self, estado=None):
-        solicitudes_de_estudiantes = set()
-        for e in self.estudiantes():
-            for s in e.solicitudes():
-                solicitudes_de_estudiantes.add(s.id)
-
-        if estado is None or estado == 'todas':
-            return Solicitud.objects.filter(
-                Q(pk__in=solicitudes_de_estudiantes)
-                | Q(solicitante=self.user))
-        else:
-            return Solicitud.objects.filter(
-                (Q(pk__in=solicitudes_de_estudiantes)
-                 | Q(solicitante=self.user))
-                & Q(estado=estado))
-
-    def cuantas_solicitudes(self):
-        solicitudes = [(estado[0], self.solicitudes(estado=estado[0]).count())
-                       for estado in solicitudes_estados]
-        solicitudes.append(('todas', self.solicitudes().count()))
-
-        return solicitudes
-
-    def estudiantes(self):
-        estudiantes = set()
-        if self.tutor:
-            for c in Comite.objects.filter(Q(tipo='tutoral')
-                                           & (Q(miembro1=self)
-                                              | Q(miembro2=self)
-                                              | Q(miembro3=self)
-                                              | Q(miembro4=self)
-                                              | Q(miembro5=self))):
-                if c.solicitud:
-                    if c.solicitud.dictamen_final():
-                        if c.solicitud.dictamen_final()\
-                                      .resolucion == 'concedida':
-                            estudiantes.add(c.estudiante)
-                        elif c.solicitud.estado != 'cancelada':
-                            estudiantes.add(c.estudiante)
-                else:
-                    if Comite.objects.filter(
-                            estudiante=c.estudiante).count() == 1:
-                        estudiantes.add(c.estudiante)
-            return estudiantes
-        else:
-            return []
-
-    def comites(self):
-        comites = list()
-
-        for c in Comite.objects.filter(
-                (Q(tipo='candidatura') | Q(tipo='grado'))
-                & (Q(miembro1=self)
-                   | Q(miembro2=self)
-                   | Q(miembro3=self))):
-            if c.solicitud.dictamen_final():
-                if c.solicitud.dictamen_final().resolucion == 'concedida':
-                    comites.append(c)
-        return comites
 
     def __str__(self):
         name = self.user.get_full_name()
