@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from django.urls import re_path, include
+from django.urls import path, re_path, include
 from django.contrib import admin
 
 from posgradmin.views import PerfilEditar, PerfilDetail, \
@@ -9,18 +9,14 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     InicioView, \
     GradoAcademicoAgregar, GradoAcademicoEliminar, InstitucionAgregarView, \
     AdscripcionEliminar, AdscripcionAgregar, AsociacionAgregar, \
-    EstudianteSortableView, AcademicoSortableView, \
+    AcademicoSortableView, \
     UserDetail, PerfilComite, \
-    PerfilEstudianteDetail, AcademicoInvitar, AcademicoSearch, \
+    EstudianteFichaDetail, AcademicoInvitar, AcademicoSearch, \
     TogglePerfilEditar
 
 from posgradmin.views_academico import \
-    MisEstudiantesView, EligeAsignatura, SolicitaCurso, \
+    EligeAsignatura, SolicitaCurso, \
     AcademicoAutocomplete, CursoView, MisCursos, ProponerAsignatura, CursoConstancia, CursoConstanciaEstudiante
-
-from posgradmin.views_estudiante import CambiarProyectoView
-
-from posgradmin.views_asistente import SesionesListView, SesionDetail # EstudianteCargar
 
 from django.conf.urls.static import static
 
@@ -37,6 +33,10 @@ urlpatterns = [
 
     re_path('^accounts/', include('allauth.urls')),
 
+    path('estudiante/<slug:slug>',
+        EstudianteFichaDetail.as_view(),
+        name='estudiante_ficha'),
+    
     re_path(r'^export_action/', include(("export_action.urls", 'export_action'),
                                      namespace="export_action")),
 
@@ -88,10 +88,6 @@ urlpatterns = [
         PerfilDetail.as_view(),
         name='perfil'),
 
-    re_path(r'^inicio/perfil-estudiante/$',
-        PerfilEstudianteDetail.as_view(),
-        name='perfil_estudiante'),
-
     re_path(r'^inicio/perfil-academico/$',
         PerfilAcademicoDetail.as_view(),
         name='perfil_academico'),
@@ -103,18 +99,6 @@ urlpatterns = [
     re_path(r'^inicio/perfil-profesor/editar',
         PerfilProfesorEditar.as_view(),
         name="perfil_profesor_editar"),
-
-    re_path(r'^inicio/estudiantes/mis$',
-        MisEstudiantesView.as_view(),
-        name="mis_estudiantes"),
-
-    # re_path(r'^inicio/estudiantes/cargar$',
-    #     EstudianteCargar.as_view(),
-    #     name="cargar_estudiantes"),
-
-    re_path(r'^inicio/estudiantes/$',
-        EstudianteSortableView.as_view(),
-        name="lista_estudiantes"),
 
     re_path(r'^inicio/academicos/$',
         AcademicoSortableView.as_view(),
@@ -128,13 +112,13 @@ urlpatterns = [
         InicioView.as_view(),
         name="inicio"),
 
-    re_path(r'^inicio/sesiones/(?P<pk>[0-9]+)/$',
-        SesionDetail.as_view(),
-        name="sesion_detail"),
+    # re_path(r'^inicio/sesiones/(?P<pk>[0-9]+)/$',
+    #     SesionDetail.as_view(),
+    #     name="sesion_detail"),
 
-    re_path(r'^inicio/sesiones/$',
-        SesionesListView.as_view(),
-        name='lista_sesiones'),
+    # re_path(r'^inicio/sesiones/$',
+    #     SesionesListView.as_view(),
+    #     name='lista_sesiones'),
 
     re_path(r'^inicio/usuario/(?P<pk>[0-9]+)/$',
         UserDetail.as_view(),

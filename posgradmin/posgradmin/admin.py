@@ -190,7 +190,7 @@ class EstudianteAdmin(AutoAutor, VersionAdmin):
                      'user__last_name',
                      'user__email', ]
     readonly_fields = ['fullname', 'user', ]
-    list_display = ['fullname', 'cuenta', 'ultimo_estado']
+    list_display = ['fullname', 'ficha', 'ultimo_estado']
 
     inlines = [HistorialInline, TutoresInline, ProyectosInline, NotaInline]
 
@@ -202,12 +202,10 @@ class EstudianteAdmin(AutoAutor, VersionAdmin):
             return obj.user.username
 
 
-    def unificado(self, estudiante):
-        return format_html(estudiante.as_a())
+    def ficha(self, estudiante):
+        return format_html(estudiante.ficha_a())
 
-    unificado.short_description = 'Vista unificada'
-
-
+    ficha.short_description = u'Ficha resumen de estudiante'
 
 
 class AcreditacionInline(admin.TabularInline):
@@ -313,7 +311,6 @@ class AcademicoAdmin(AutoAutor, VersionAdmin):
         return format_html(academico.perfil_comite_anchor())
 
     perfil_comite.short_description = u'Perfil para el Comité Académico'
-
 
     actions = ['actualiza_campos',
                exporta_resumen_academicos

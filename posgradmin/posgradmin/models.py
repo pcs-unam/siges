@@ -285,11 +285,10 @@ class Estudiante(models.Model):
                                 self.cuenta,
                                 self.ultimo_estado())
 
-    def perfil_publico_anchor(self):
-        return u"""<a href='%sinicio/perfil/publico/%s'>%s</a>""" % (
-            APP_PREFIX,
-            self.user.get_username(), self.__str__())
-
+    def ficha_a(self):
+        return u"""<a href='%sestudiante/%s'>%s</a>""" % (APP_PREFIX,
+                                                          self.cuenta,
+                                                          self.cuenta)
 
     def as_a(self):
         return "<a href='%sinicio/usuario/%s/'>%s</a>" % (

@@ -1,0 +1,39 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load md2 %}
+
+{% block content %}
+{{ estudiante }}
+
+<li>Foto</li>
+<li>{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</li>
+<li>{{ estudiante.cuenta }}</li>
+
+<li>Plan de estudios</li>
+<li>Generación (año y semestre)</li>
+<li>Entidad</li>
+<li>Estatus</li>
+
+<li>Beca</li>
+<li>Fecha de inicio de beca</li>
+
+
+<li>Género {{ estudiante.user.perfil.genero }}</li>
+<li>Fecha nacimiento {{ estudiante.user.perfil.fecha_nacimiento }}</li>
+<li>Nacionalidad {{ estudiante.user.perfil.nacionalidad }}</li>
+
+<li>Datos de contacto {{ estudiante.user.perfil.telefono }}
+  {{ estudiante.user.perfil.telefono_movil}}
+  {{ estudiante.user.perfil.website }}
+  {{ estudiante.user.email }}
+</li>
+
+<li>CVU {{ estudiante.user.perfil.CVU }}</li>
+<li>CURP {{ estudiante.user.perfil.curp }}</li>
+<li>RFC {{ estudiante.user.perfil.rfc }}</li>
+
+<li>Último campo</li>
+<li>Última línea</li>
+<li>Último proyecto</li>
+<li>Último comité</li>
+
+{% endblock %}
