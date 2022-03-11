@@ -2,38 +2,72 @@
 {% load md2 %}
 
 {% block content %}
-{{ estudiante }}
 
-<li>Foto</li>
-<li>{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</li>
-<li>{{ estudiante.cuenta }}</li>
-
-<li>Plan de estudios</li>
-<li>Generación (año y semestre)</li>
-<li>Entidad</li>
-<li>Estatus</li>
-
-<li>Beca</li>
-<li>Fecha de inicio de beca</li>
+<a href="/admin/posgradmin/estudiante/">tabla de estudiantes</a>
+<hr />
 
 
-<li>Género {{ estudiante.user.perfil.genero }}</li>
-<li>Fecha nacimiento {{ estudiante.user.perfil.fecha_nacimiento }}</li>
-<li>Nacionalidad {{ estudiante.user.perfil.nacionalidad }}</li>
+<div class="flex flex-row">
+  {% if U.perfil.headshot %}
+  <div>
+    <img alt="" class="media-object"
+	 width="150px"
+	 src="{{ U.perfil.headshot.url }}" />
+  </div>
+  {% endif %}
 
-<li>Datos de contacto {{ estudiante.user.perfil.telefono }}
-  {{ estudiante.user.perfil.telefono_movil}}
-  {{ estudiante.user.perfil.website }}
-  {{ estudiante.user.email }}
-</li>
+  <div class="text-green-800 text-2xl">
+    {{ estudiante }}
+  </div>
+</div>
 
-<li>CVU {{ estudiante.user.perfil.CVU }}</li>
-<li>CURP {{ estudiante.user.perfil.curp }}</li>
-<li>RFC {{ estudiante.user.perfil.rfc }}</li>
 
-<li>Último campo</li>
-<li>Última línea</li>
-<li>Último proyecto</li>
-<li>Último comité</li>
+
+<ul class="rounded shadow m-2 p-4 bg-gray-100">
+  <li>Género {{ estudiante.user.perfil.genero }}</li>
+  <li>Fecha nacimiento {{ estudiante.user.perfil.fecha_nacimiento }}</li>
+  <li>Nacionalidad {{ estudiante.user.perfil.nacionalidad }}</li>
+</ul>
+
+
+<div class="flex flex-row">
+
+  <ul class="rounded shadow m-2 p-4 bg-blue-100">
+    <li>Datos de contacto</li>
+    <li>{{ estudiante.user.perfil.telefono }}</li>
+    <li>móvil: {{ estudiante.user.perfil.telefono_movil}}</li>
+    <li>website: {{ estudiante.user.perfil.website }}</li>
+    <li><a href="mailto:{{ estudiante.user.email }}">{{ estudiante.user.email }}</a></li>
+  </ul>
+
+  <ul class="rounded shadow m-2 p-4 bg-blue-100">
+    <li>CVU: {{ estudiante.user.perfil.CVU }}</li>
+    <li>CURP: {{ estudiante.user.perfil.curp }}</li>
+    <li>RFC: {{ estudiante.user.perfil.rfc }}</li>
+  </ul>
+
+</div>
+
+<div class="flex flex-row">
+
+  <ul class="rounded shadow m-2 p-4 bg-green-100">
+    <li>Plan de estudios</li>
+    <li>Generación (año y semestre)</li>
+    <li>Entidad</li>
+    <li>Estatus</li>
+  </ul>
+
+  <ul class="rounded shadow m-2 p-4 bg-green-100">
+    <li>Beca</li>
+    <li>Fecha de inicio de beca</li>
+  </ul>
+</div>
+
+<ul class="rounded shadow m-2 p-4 bg-amber-100">
+  <li>Último campo</li>
+  <li>Última línea</li>
+  <li>Último proyecto</li>
+  <li>Último comité</li>
+</ul>
 
 {% endblock %}

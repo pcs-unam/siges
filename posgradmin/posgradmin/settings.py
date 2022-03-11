@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     'export_action',
     'django_extensions',
     'reversion',
+    'tailwind',
+    'theme',
+    'django_browser_reload',
 ]
 
 SITE_ID = 1
@@ -176,3 +179,9 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 LOGIN_REDIRECT_URL = ('inicio')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+TAILWIND_APP_NAME = 'theme'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

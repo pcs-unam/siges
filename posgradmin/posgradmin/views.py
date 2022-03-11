@@ -554,7 +554,13 @@ class EstudianteFichaDetail(LoginRequiredMixin, UserPassesTestMixin,
     slug_field = 'cuenta'
 
     def test_func(self):
-        return True
+        if self.request.user.is_superuser:
+            return True
+
+        if self.request.user.is_staff:
+            return True
+
+        return False
 
     def get_context_data(self, **kwargs):
         context = super(EstudianteFichaDetail, self).get_context_data(**kwargs)
