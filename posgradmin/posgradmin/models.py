@@ -27,7 +27,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from tempfile import NamedTemporaryFile
 from django.template.loader import render_to_string
-from sh import pandoc, mkdir, rm
+from sh import pandoc, rm
+import pathlib
 from pdfrw import PdfReader, PdfWriter, PageMerge
 
 
@@ -1333,7 +1334,7 @@ class Acreditacion(models.Model):
                 carta_md.seek(0)
 
                 outdir = '%s/expediente/%s/' % (MEDIA_ROOT, self.academico.user.username)
-                mkdir("-p", outdir)
+                pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
 
                 tmpname = 'cartaplain_%s.pdf' % self.acreditacion
 
@@ -1528,7 +1529,7 @@ class Curso(models.Model):
                 carta_md.seek(0)
 
                 outdir = '%s/cursos/%s/' % (MEDIA_ROOT, self.id)
-                mkdir("-p", outdir)
+                pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
 
                 tmpname = 'cursoplain_profesores.pdf'
 
