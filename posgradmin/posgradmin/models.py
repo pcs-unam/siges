@@ -1340,7 +1340,7 @@ class Acreditacion(models.Model):
 
                 final_name = tmpname.replace('cartaplain', 'carta_acreditacion')
 
-                pandoc(carta_md.name, "--latex-engine=xelatex", output=outdir + tmpname)
+                pandoc(carta_md.name, "--pdf-engine=xelatex", output=outdir + tmpname)
                 C = PdfReader(outdir + tmpname)
                 M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
                 w = PdfWriter()
