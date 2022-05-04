@@ -1329,13 +1329,17 @@ class Acreditacion(models.Model):
 
             tmpname = 'cartaplain_%s.pdf' % self.acreditacion
 
+            with open(outdir + tmpname + '.md', 'w') as f:
+                f.write(
+                    render_to_string('posgradmin/carta_acreditacion.md',
+                                     {'fecha': datetime.date.today(),
+                                      'ac': self,
+                                      'dr': dr,
+                                      'firma': BASE_DIR + '/docs/firma.png'}))
             final_name = tmpname.replace('cartaplain', 'carta_acreditacion')
 
-            doc = pandoc.read(render_to_string('posgradmin/carta_acreditacion.md',
-                                               {'fecha': datetime.date.today(),
-                                                'ac': self,
-                                                'dr': dr,
-                                                'firma': BASE_DIR + '/docs/firma.png'}))
+            
+            doc = pandoc.read(file=open(outdir + tmpname + '.md'))
             pandoc.write(doc,
                          file=outdir + tmpname,
                          format="latex")
@@ -1523,14 +1527,16 @@ class Curso(models.Model):
 
             tmpname = 'cursoplain_profesores.pdf'
 
+            with open(outdir + tmpname + '.md', 'w') as f:
+                f.write(render_to_string('posgradmin/constancia_curso_profesores.md',
+                                         {'fecha': datetime.date.today(),
+                                          'firma': BASE_DIR + '/docs/firma.png',
+                                          'academicos': list(self.academicos.all()),
+                                          'curso': self}))
+            
             final_name = tmpname.replace('cursoplain', 'constancia_curso')
 
-            doc = pandoc.read(
-                render_to_string('posgradmin/constancia_curso_profesores.md',
-                                 {'fecha': datetime.date.today(),
-                                  'firma': BASE_DIR + '/docs/firma.png',
-                                  'academicos': list(self.academicos.all()),
-                                  'curso': self}))
+            doc = pandoc.read(file=open(outdir + tmpname + '.md'))
                     
             pandoc.write(doc,
                          file=outdir + tmpname,
