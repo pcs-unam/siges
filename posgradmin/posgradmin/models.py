@@ -16,7 +16,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 from .settings import MEDIA_URL, \
-    APP_PREFIX, MEDIA_ROOT, BASE_DIR, PANDOC_TMP
+    APP_PREFIX, MEDIA_ROOT, BASE_DIR
 
 from wordcloud import WordCloud
 
