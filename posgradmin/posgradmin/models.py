@@ -16,7 +16,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 from .settings import MEDIA_URL, \
-    APP_PREFIX, MEDIA_ROOT, BASE_DIR
+    APP_PREFIX, MEDIA_ROOT, BASE_DIR, PANDOC_TMP
 
 from wordcloud import WordCloud
 
@@ -27,8 +27,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from tempfile import NamedTemporaryFile
 from django.template.loader import render_to_string
-from sh import rm
-import pandoc
+from sh import rm, pandoc
 import pathlib
 from pdfrw import PdfReader, PdfWriter, PageMerge
 
@@ -1336,14 +1335,12 @@ class Acreditacion(models.Model):
                                       'ac': self,
                                       'dr': dr,
                                       'firma': BASE_DIR + '/docs/firma.png'}))
-            final_name = tmpname.replace('cartaplain', 'carta_acreditacion')
 
-            
-            doc = pandoc.read(file=open(outdir + tmpname + '.md', encoding='utf8'))
-            pandoc.write(doc,
-                         file=outdir + tmpname,
-                         format="latex")
-            
+            pandoc(outdir + tmpname + '.md',
+                   to="latex",
+                   output=outdir + tmpname,
+                   )
+                        
             C = PdfReader(outdir + tmpname)
             M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
             w = PdfWriter()
@@ -1351,6 +1348,8 @@ class Acreditacion(models.Model):
             merger.add(C.pages[0]).render()
 
             rm(outdir + tmpname)
+
+            final_name = tmpname.replace('cartaplain', 'carta_acreditacion')            
             w.write(outdir + final_name, M)
 
             anexo = AnexoExpediente(user=self.academico.user,
