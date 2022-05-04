@@ -1329,7 +1329,7 @@ class Acreditacion(models.Model):
 
             tmpname = 'cartaplain_%s.pdf' % self.acreditacion
 
-            with open(outdir + tmpname + '.md', 'w') as f:
+            with open(outdir + tmpname + '.md', 'w', encoding='utf8') as f:
                 f.write(
                     render_to_string('posgradmin/carta_acreditacion.md',
                                      {'fecha': datetime.date.today(),
@@ -1527,7 +1527,7 @@ class Curso(models.Model):
 
             tmpname = 'cursoplain_profesores.pdf'
 
-            with open(outdir + tmpname + '.md', 'w') as f:
+            with open(outdir + tmpname + '.md', 'w', encoding='utf8') as f:
                 f.write(render_to_string('posgradmin/constancia_curso_profesores.md',
                                          {'fecha': datetime.date.today(),
                                           'firma': BASE_DIR + '/docs/firma.png',
