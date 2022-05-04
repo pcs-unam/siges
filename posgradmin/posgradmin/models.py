@@ -27,7 +27,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from tempfile import NamedTemporaryFile
 from django.template.loader import render_to_string
-from sh import pandoc, rm
+from sh import rm
+import pandoc
 import pathlib
 from pdfrw import PdfReader, PdfWriter, PageMerge
 
@@ -1323,37 +1324,35 @@ class Acreditacion(models.Model):
             else:
                 dr = ""
 
-            with NamedTemporaryFile(mode='r+', encoding='utf-8') as carta_md:
+            outdir = '%s/expediente/%s/' % (MEDIA_ROOT, self.academico.user.username)
+            pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
 
-                carta_md.write(
-                    render_to_string('posgradmin/carta_acreditacion.md',
-                                     {'fecha': datetime.date.today(),
-                                      'ac': self,
-                                      'dr': dr,
-                                      'firma': BASE_DIR + '/docs/firma.png'}))
-                carta_md.seek(0)
+            tmpname = 'cartaplain_%s.pdf' % self.acreditacion
 
-                outdir = '%s/expediente/%s/' % (MEDIA_ROOT, self.academico.user.username)
-                pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
+            final_name = tmpname.replace('cartaplain', 'carta_acreditacion')
 
-                tmpname = 'cartaplain_%s.pdf' % self.acreditacion
+            doc = pandoc.read(render_to_string('posgradmin/carta_acreditacion.md',
+                                               {'fecha': datetime.date.today(),
+                                                'ac': self,
+                                                'dr': dr,
+                                                'firma': BASE_DIR + '/docs/firma.png'}))
+            pandoc.write(doc,
+                         file=outdir + tmpname,
+                         format="latex")
+            
+            C = PdfReader(outdir + tmpname)
+            M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
+            w = PdfWriter()
+            merger = PageMerge(M.pages[0])
+            merger.add(C.pages[0]).render()
 
-                final_name = tmpname.replace('cartaplain', 'carta_acreditacion')
+            rm(outdir + tmpname)
+            w.write(outdir + final_name, M)
 
-                pandoc(carta_md.name, "--pdf-engine=xelatex", output=outdir + tmpname)
-                C = PdfReader(outdir + tmpname)
-                M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
-                w = PdfWriter()
-                merger = PageMerge(M.pages[0])
-                merger.add(C.pages[0]).render()
-
-                rm(outdir + tmpname)
-                w.write(outdir + final_name, M)
-
-                anexo = AnexoExpediente(user=self.academico.user,
-                                        fecha=datetime.datetime.now())
-                anexo.archivo.name = 'expediente/%s/%s' % (self.academico.user.username, final_name)
-                anexo.save()
+            anexo = AnexoExpediente(user=self.academico.user,
+                                    fecha=datetime.datetime.now())
+            anexo.archivo.name = 'expediente/%s/%s' % (self.academico.user.username, final_name)
+            anexo.save()
 
 
 class MembresiaComite(models.Model):
@@ -1518,32 +1517,33 @@ class Curso(models.Model):
     def genera_constancias(self):
         if self.status == 'concluido':
 
-            with NamedTemporaryFile(mode='r+', encoding='utf-8') as carta_md:
 
-                carta_md.write(
-                    render_to_string('posgradmin/constancia_curso_profesores.md',
-                                     {'fecha': datetime.date.today(),
-                                      'firma': BASE_DIR + '/docs/firma.png',
-                                      'academicos': list(self.academicos.all()),
-                                      'curso': self}))
-                carta_md.seek(0)
+            outdir = '%s/cursos/%s/' % (MEDIA_ROOT, self.id)
+            pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
 
-                outdir = '%s/cursos/%s/' % (MEDIA_ROOT, self.id)
-                pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
+            tmpname = 'cursoplain_profesores.pdf'
 
-                tmpname = 'cursoplain_profesores.pdf'
+            final_name = tmpname.replace('cursoplain', 'constancia_curso')
 
-                final_name = tmpname.replace('cursoplain', 'constancia_curso')
+            doc = pandoc.read(
+                render_to_string('posgradmin/constancia_curso_profesores.md',
+                                 {'fecha': datetime.date.today(),
+                                  'firma': BASE_DIR + '/docs/firma.png',
+                                  'academicos': list(self.academicos.all()),
+                                  'curso': self}))
+                    
+            pandoc.write(doc,
+                         file=outdir + tmpname,
+                         format='latex')
 
-                pandoc(carta_md.name, "--latex-engine=xelatex", output=outdir + tmpname)
-                C = PdfReader(outdir + tmpname)
-                M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
-                w = PdfWriter()
-                merger = PageMerge(M.pages[0])
-                merger.add(C.pages[0]).render()
+            C = PdfReader(outdir + tmpname)
+            M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
+            w = PdfWriter()
+            merger = PageMerge(M.pages[0])
+            merger.add(C.pages[0]).render()
 
-                rm(outdir + tmpname)
-                w.write(outdir + final_name, M)
+            rm(outdir + tmpname)
+            w.write(outdir + final_name, M)
 
 
     class Meta:
