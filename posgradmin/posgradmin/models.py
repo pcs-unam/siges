@@ -1339,7 +1339,7 @@ class Acreditacion(models.Model):
             final_name = tmpname.replace('cartaplain', 'carta_acreditacion')
 
             
-            doc = pandoc.read(file=open(outdir + tmpname + '.md'))
+            doc = pandoc.read(file=open(outdir + tmpname + '.md', encoding='utf8'))
             pandoc.write(doc,
                          file=outdir + tmpname,
                          format="latex")
