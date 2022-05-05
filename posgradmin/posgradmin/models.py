@@ -27,7 +27,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from tempfile import NamedTemporaryFile
 from django.template.loader import render_to_string
-from sh import rm, pandoc
+from sh import rm
+import subprocess
 import pathlib
 from pdfrw import PdfReader, PdfWriter, PageMerge
 
@@ -1336,10 +1337,9 @@ class Acreditacion(models.Model):
                                       'dr': dr,
                                       'firma': BASE_DIR + '/docs/firma.png'}))
 
-            pandoc(outdir + tmpname + '.md',
-                   to="latex",
-                   output=outdir + tmpname,
-                   )
+            subprocess.run(["pandoc", outdir + tmpname + '.md',
+                            "--to", "latex",
+                            "--output", outdir + tmpname])
                         
             C = PdfReader(outdir + tmpname)
             M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
@@ -1534,12 +1534,11 @@ class Curso(models.Model):
                                           'curso': self}))
             
             final_name = tmpname.replace('cursoplain', 'constancia_curso')
-
-            doc = pandoc.read(file=open(outdir + tmpname + '.md'))
                     
-            pandoc.write(doc,
-                         file=outdir + tmpname,
-                         format='latex')
+            subprocess.run(["pandoc",
+                            outdir + tmpname + '.md',
+                            "--format",'latex',
+                            "--output", outdir + tmpname])                            
 
             C = PdfReader(outdir + tmpname)
             M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
