@@ -1337,6 +1337,7 @@ class Acreditacion(models.Model):
                                       'dr': dr,
                                       'firma': BASE_DIR + '/docs/firma.png'}))
 
+            os.chdir(outdir)
             subprocess.run(["pandoc", outdir + tmpname + '.md',
                             "--to", "latex",
                             "--output", outdir + tmpname])
@@ -1347,7 +1348,8 @@ class Acreditacion(models.Model):
             merger = PageMerge(M.pages[0])
             merger.add(C.pages[0]).render()
 
-            rm(outdir + tmpname)
+            pathlib.Path(outdir + tmpname).unlink()
+            pathlib.Path(outdir + tmpname + '.md').unlink()
 
             final_name = tmpname.replace('cartaplain', 'carta_acreditacion')            
             w.write(outdir + final_name, M)
@@ -1534,10 +1536,11 @@ class Curso(models.Model):
                                           'curso': self}))
             
             final_name = tmpname.replace('cursoplain', 'constancia_curso')
-                    
+
+            os.chdir(outdir)
             subprocess.run(["pandoc",
                             outdir + tmpname + '.md',
-                            "--format",'latex',
+                            "--to",'latex',
                             "--output", outdir + tmpname])                            
 
             C = PdfReader(outdir + tmpname)
@@ -1546,7 +1549,9 @@ class Curso(models.Model):
             merger = PageMerge(M.pages[0])
             merger.add(C.pages[0]).render()
 
-            rm(outdir + tmpname)
+            pathlib.Path(outdir + tmpname).unlink()
+            pathlib.Path(outdir + tmpname + '.md').unlink()
+
             w.write(outdir + final_name, M)
 
 
