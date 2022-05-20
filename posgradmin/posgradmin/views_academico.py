@@ -14,10 +14,11 @@ from django.urls import reverse
 from django.forms.models import model_to_dict
 from pdfrw import PdfReader, PdfWriter, PageMerge
 from django.template.loader import render_to_string
-from sh import pandoc, mkdir
 from tempfile import NamedTemporaryFile
 import datetime
 from django.utils.text import slugify
+import pathlib
+import subprocess
 
 
 from .settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
@@ -289,8 +290,12 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
 
             final_name = tmpname.replace('cursoplain', 'constancia_curso')
 
-            mkdir("-p", outdir)
-            pandoc(carta_md.name, output=outdir + tmpname)
+            pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
+
+            subprocess.run(["pandoc", carta_md.name,
+                            '--to', 'latex',
+                            "--output", outdir + tmpname])
+
             C = PdfReader(outdir + tmpname)
             M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
             w = PdfWriter()
@@ -340,12 +345,12 @@ class CursoConstanciaEstudiante(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def post(self, request, *args, **kwargs):
         curso = models.Curso.objects.get(pk=int(kwargs['pk']))
-        
+
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             estudiante_invitado = request.POST['estudiante_invitado']
             calificacion = request.POST['calificacion']
-        
+
             with NamedTemporaryFile(mode='r+', encoding='utf-8') as carta_md:
                 carta_md.write(
                     render_to_string('posgradmin/constancia_curso_estudiante.md',
@@ -365,8 +370,13 @@ class CursoConstanciaEstudiante(LoginRequiredMixin, UserPassesTestMixin, View):
 
                 final_name = tmpname.replace('cursoplain', 'constancia_curso')
 
-                mkdir("-p", outdir)
-                pandoc(carta_md.name, output=outdir + tmpname)
+                pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
+
+                subprocess.run(["pandoc",
+                                carta_md.name,
+                                "--to",'latex',
+                                "--output", outdir + tmpname])
+
                 C = PdfReader(outdir + tmpname)
                 M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
                 w = PdfWriter()
@@ -388,7 +398,7 @@ class CursoConstanciaEstudiante(LoginRequiredMixin, UserPassesTestMixin, View):
                               'asignatura': curso.asignatura,
                               'form': form
                           })
-            
+
 
 
 
