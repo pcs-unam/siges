@@ -293,6 +293,7 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
 
         pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
 
+        os.chdir(outdir)
         subprocess.run(["pandoc", carta_md.name,
                         '--to', 'latex',
                         "--output", outdir + tmpname])
@@ -373,6 +374,7 @@ class CursoConstanciaEstudiante(LoginRequiredMixin, UserPassesTestMixin, View):
 
             pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
 
+            os.chdir(outdir)            
             subprocess.run(["pandoc",
                             outdir + tmpname + '.md',
                             "--to",'latex',
