@@ -19,6 +19,7 @@ import datetime
 from django.utils.text import slugify
 import pathlib
 import subprocess
+import os
 
 
 from .settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
