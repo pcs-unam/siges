@@ -277,7 +277,7 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
                                             slugify(profesor_invitado)
         )
 
-        with open(outdir + tmpname + '.md', encoding='utf-8') as carta_md:
+        with open(outdir + tmpname + '.md', 'w', encoding='utf-8') as carta_md:
             carta_md.write(
                 render_to_string('posgradmin/constancia_curso.md',
                                  {'fecha': datetime.date.today(),
@@ -359,7 +359,7 @@ class CursoConstanciaEstudiante(LoginRequiredMixin, UserPassesTestMixin, View):
                                                 slugify(estudiante_invitado)
             )
 
-            with open(outdir + tmpname + '.md', encoding='utf-8') as carta_md:
+            with open(outdir + tmpname + '.md', 'w', encoding='utf-8') as carta_md:
                 carta_md.write(
                     render_to_string('posgradmin/constancia_curso_estudiante.md',
                                      {'fecha': datetime.date.today(),
