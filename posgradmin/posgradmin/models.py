@@ -1458,6 +1458,10 @@ class Asignatura(models.Model):
                                 upload_to=curso_path,
                                 blank=True, null=True)
 
+    proponente = models.ForeignKey(User,
+                                   on_delete=models.CASCADE, null=True, blank=True)
+    
+
     class Meta:
         ordering = ['asignatura', 'clave', ]
 

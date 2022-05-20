@@ -90,7 +90,8 @@ class ProponerAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
                 asignatura=request.POST['asignatura'],
                 tipo='Optativa',
                 estado='propuesta',
-                programa=request.FILES['programa'])
+                programa=request.FILES['programa'],
+                proponente=request.user)
             a.save()
             return HttpResponseRedirect(reverse('inicio'))
         else:

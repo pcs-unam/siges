@@ -346,7 +346,10 @@ admin.site.register(Adscripcion, AdscripcionAdmin)
 
 
 class AsignaturaAdmin(admin.ModelAdmin):
-    list_display = ['asignatura', 'clave', 'tipo', 'estado', ]
+    search_fields = ['asignatura',
+                     'clave']
+    
+    list_display = ['asignatura', 'clave', 'tipo', 'estado', 'proponente']
 
 
 admin.site.register(Asignatura, AsignaturaAdmin)
