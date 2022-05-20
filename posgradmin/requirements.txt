@@ -15,3 +15,4 @@ django-simple-search
 django-autocomplete-light==3.5.1
 pyexcel-ods3
 django-reversion==4.0.1
+Impostor==3.0.0

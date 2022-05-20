@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'sortable_listview',
     'django_markdown2',
+    'impostor',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -91,6 +92,7 @@ TEMPLATES = [
 ]
 
 AUTHENTICATION_BACKENDS = (
+    'impostor.backend.AuthBackend',
      # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
     # `allauth` specific authentication methods, such as login by e-mail
