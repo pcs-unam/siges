@@ -121,17 +121,9 @@ class CursoModelForm(forms.ModelForm):
 class CursoConstancia(forms.Form):
 
     tema = forms.CharField(max_length=300, required=True)
+    horas_impartidas = forms.IntegerField(required=True)
+    profesor_invitado = forms.CharField()
     
-    def __init__(self, *args, **kwargs):
-        super(CursoConstancia, self).__init__(*args, **kwargs)
-
-        self.fields['profesor_invitado'] = forms.CharField()
-
-        convocatoria = ConvocatoriaCurso.objects.get(pk=kwargs['initial']['convocatoria'])
-        year = convocatoria.year
-
-        self.fields['fecha_de_participación'] = forms.DateField(
-            widget=forms.SelectDateWidget(years=range(year - 1, year + 1)))
 
 
 class CursoConstanciaEstudiante(forms.Form):

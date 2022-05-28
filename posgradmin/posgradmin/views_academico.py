@@ -268,10 +268,8 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
 
         profesor_invitado = request.POST['profesor_invitado']
 
-        fecha_participacion = datetime.date(int(request.POST['fecha_de_participación_year']),
-                                            int(request.POST['fecha_de_participación_month']),
-                                            int(request.POST['fecha_de_participación_day']))
-
+        horas_impartidas = request.POST['horas_impartidas']
+        
         outdir = '%s/perfil-academico/%s/' % (MEDIA_ROOT,
                                               request.user.academico.id)
 
@@ -286,7 +284,7 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
                                   'profesor_invitado': profesor_invitado,
                                   'tema': request.POST['tema'],
                                   'curso': curso,
-                                  'fecha_participacion': fecha_participacion,
+                                  'horas_impartidas': horas_impartidas,
                                   'profesor': request.user.get_full_name() }))
 
 
