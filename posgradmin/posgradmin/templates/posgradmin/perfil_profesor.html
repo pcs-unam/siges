@@ -40,7 +40,9 @@ Atención a los siguientes reactivos:<br />
 
 
 {% if user == object and editable == True %}
-<a class="btn btn-default" role="button" href="{% url 'perfil_profesor_editar' %}">editar esta sección</a>
+<a
+  class="rounded bg-violet-800 p-4 text-white hover:bg-violet-700"
+  role="button" href="{% url 'perfil_profesor_editar' %}">editar esta sección</a>
 <br /><br />
 {% endif %}
 

@@ -34,6 +34,7 @@
   <li class="list-group-item">
     <div style="float: right">
       <button type="button"
+	      class="rounded bg-red-800 p-4 text-white hover:bg-red-700"	      
 	      onClick="if (confirm('¿eliminar {{ grado.grado_obtenido}}?')) window.location='{% url 'eliminar_grado' grado.id %}'">
 	eliminar grado
       </button>
@@ -55,7 +56,8 @@
   {% for ad in object.adscripcion_set.all %}
   <li class="list-group-item">
     <div style="float: right">
-      <button type="button" class="btn btn-danger btn-xs"
+      <button type="button"
+	      class="rounded bg-red-800 p-4 text-white hover:bg-red-700"
 	      onClick="if (confirm('¿eliminar adscripción a {{ ad.institucion }}?'))
 		       window.location='{% url 'eliminar_adscripcion' ad.id%}'">
 	eliminar adscripción

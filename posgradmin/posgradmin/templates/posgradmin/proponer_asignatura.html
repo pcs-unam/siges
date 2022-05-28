@@ -15,25 +15,25 @@
 
 <div>
   <form action="" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <table>
-        {{ form.as_table }}
-      </table>
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
 
-
-<p>
-Una vez propuesta la asignatura*  es necesario ingresar nuevamente a la
-convocatoria para solicitar un curso de la misma.
-</p>
-
-<p>
-  * Una asignatura corresponde a un temario (el formato completo) y se puede impartir en diferentes cursos. Un curso además incluye sede, profesorado, horarios, etc.
-</p>
-      
-      <button type="submit" />
+    <p>
+      Una vez propuesta la asignatura*  es necesario ingresar nuevamente a la
+      convocatoria para solicitar un curso de la misma.
+    </p>
+    
+    <p>
+      * Una asignatura corresponde a un temario (el formato completo) y se puede impartir en diferentes cursos. Un curso además incluye sede, profesorado, horarios, etc.
+    </p>
+    
+    <button type="submit"
+	    class="rounded bg-violet-800 p-4 text-white hover:bg-violet-700">
       {{ title }}
-      </button>
-    </form>
+    </button>
+  </form>
 </div>
 
 
