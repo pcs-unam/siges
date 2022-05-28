@@ -1,4 +1,4 @@
-django==3.2
+django==3.2.13
 django-allauth
 django-crispy-forms
 django-sortable-listview
@@ -16,3 +16,5 @@ django-autocomplete-light==3.5.1
 pyexcel-ods3
 django-reversion==4.0.1
 Impostor==3.0.0
+pdfrw
+django-tailwind
