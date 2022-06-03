@@ -1341,7 +1341,7 @@ class Acreditacion(models.Model):
             subprocess.run(["pandoc", outdir + tmpname + '.md',
                             "--to", "latex",
                             "--output", outdir + tmpname])
-                        
+
             C = PdfReader(outdir + tmpname)
             M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
             w = PdfWriter()
@@ -1351,7 +1351,7 @@ class Acreditacion(models.Model):
             pathlib.Path(outdir + tmpname).unlink()
             pathlib.Path(outdir + tmpname + '.md').unlink()
 
-            final_name = tmpname.replace('cartaplain', 'carta_acreditacion')            
+            final_name = tmpname.replace('cartaplain', 'carta_acreditacion')
             w.write(outdir + final_name, M)
 
             anexo = AnexoExpediente(user=self.academico.user,
@@ -1460,7 +1460,7 @@ class Asignatura(models.Model):
 
     proponente = models.ForeignKey(User,
                                    on_delete=models.CASCADE, null=True, blank=True)
-    
+
 
     class Meta:
         ordering = ['asignatura', 'clave', ]
@@ -1472,6 +1472,11 @@ class Asignatura(models.Model):
                                         os.path.basename(self.programa.path))
         else:
             return None
+
+
+    def get_asignatura(self):
+        return u'%s' % self.asignatura
+
 
     def __str__(self):
         return u'%s (%s)' % (self.asignatura,
@@ -1532,20 +1537,22 @@ class Curso(models.Model):
 
             tmpname = 'cursoplain_profesores.pdf'
 
-            with open(outdir + tmpname + '.md', 'w', encoding='utf8') as f:
+            with open(outdir + tmpname + '.md', 'w', encoding='utf-8') as f:
+                print(f.name)
                 f.write(render_to_string('posgradmin/constancia_curso_profesores.md',
                                          {'fecha': datetime.date.today(),
                                           'firma': BASE_DIR + '/docs/firma.png',
                                           'academicos': list(self.academicos.all()),
                                           'curso': self}))
-            
+
             final_name = tmpname.replace('cursoplain', 'constancia_curso')
 
             os.chdir(outdir)
             subprocess.run(["pandoc",
                             outdir + tmpname + '.md',
+                            "--pdf-engine=xelatex",
                             "--to",'latex',
-                            "--output", outdir + tmpname])                            
+                            "--output", outdir + tmpname])
 
             C = PdfReader(outdir + tmpname)
             M = PdfReader(BASE_DIR + '/docs/membrete_pcs.pdf')
