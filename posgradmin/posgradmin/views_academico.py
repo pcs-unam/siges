@@ -272,7 +272,8 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
         
         outdir = '%s/perfil-academico/%s/' % (MEDIA_ROOT,
                                               request.user.academico.id)
-
+        pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
+        
         tmpname = 'cursoplain_%s_%s.pdf' % (curso.id,
                                             slugify(profesor_invitado)
         )
@@ -291,7 +292,7 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
 
         final_name = tmpname.replace('cursoplain', 'constancia_curso')
 
-        pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
+
 
         os.chdir(outdir)
         subprocess.run(["pandoc", carta_md.name,
@@ -355,6 +356,7 @@ class CursoConstanciaEstudiante(LoginRequiredMixin, UserPassesTestMixin, View):
 
             outdir = '%s/perfil-academico/%s/' % (MEDIA_ROOT,
                                                   request.user.academico.id)
+            pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
 
             tmpname = 'cursoplain_%s_%s.pdf' % (curso.id,
                                                 slugify(estudiante_invitado)
@@ -372,7 +374,6 @@ class CursoConstanciaEstudiante(LoginRequiredMixin, UserPassesTestMixin, View):
 
             final_name = tmpname.replace('cursoplain', 'constancia_curso')
 
-            pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
 
             os.chdir(outdir)            
             subprocess.run(["pandoc",
