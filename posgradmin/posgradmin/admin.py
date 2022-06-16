@@ -384,11 +384,14 @@ class CursoAdmin(AutoAutor, VersionAdmin):
                    'semestre',
                    'status',
                    'intersemestral',
+                   'sede',
     ]
 
     inlines = [NotaInline, ]
 
-    search_fields = ['asignatura__asignatura']
+    search_fields = ['asignatura__asignatura',
+                     'academicos__user__first_name',
+                     'academicos__user__last_name']
 
     def lista_academicos(self, obj):
         return ", ".join([str(a) + " (>CP)"
