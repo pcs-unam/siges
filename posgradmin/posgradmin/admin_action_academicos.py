@@ -84,3 +84,36 @@ def exporta_resumen_academicos(modeladmin, request, queryset):
     wb.save(response)
 
     return response
+
+
+
+
+
+def exporta_emails_cursos(modeladmin, request, queryset):
+
+    response = HttpResponse(content_type='application/vnd.ms-excel', charset='utf-8')
+    response['Content-Disposition'] = 'attachment; filename="correos_cursos.xlsx"'
+
+    wb = Workbook()
+    ws = wb.active
+
+    ws.append(["Nombre del curso",
+               "Año",
+               "Semestre",
+               "Nombre del profesor",
+               "Correo del profesor"])
+
+    for c in queryset:
+        for a in c.academicos.all():
+            row = [
+                c.asignatura.asignatura,
+                c.year,
+                c.semestre,
+                a.user.get_full_name(),
+                a.user.email
+            ]
+            ws.append(row)
+
+    wb.save(response)
+
+    return response

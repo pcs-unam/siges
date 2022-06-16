@@ -20,7 +20,7 @@ from .models import Perfil, Academico, Estudiante, \
     EstanciaPAEP
 
 
-from .admin_action_academicos import exporta_resumen_academicos
+from .admin_action_academicos import exporta_resumen_academicos, exporta_emails_cursos
 
 from django.utils.html import format_html
 from django.utils import timezone
@@ -405,7 +405,11 @@ class CursoAdmin(AutoAutor, VersionAdmin):
     autocomplete_fields = ['academicos',]
     readonly_fields = ['profesores', 'contacto', ]
 
-    actions = [publica_curso, concluye_curso]
+    actions = [publica_curso,
+               concluye_curso,
+               exporta_emails_cursos,
+    ]
+               
 
 
 admin.site.register(Curso, CursoAdmin)
