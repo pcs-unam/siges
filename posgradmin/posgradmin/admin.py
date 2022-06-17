@@ -20,7 +20,7 @@ from .models import Perfil, Academico, Estudiante, \
     EstanciaPAEP
 
 
-from .admin_action_academicos import exporta_resumen_academicos, exporta_emails_cursos
+from .admin_action_academicos import exporta_resumen_academicos, exporta_emails_cursos, exporta_emails_estudiantes
 
 from django.utils.html import format_html
 from django.utils import timezone
@@ -185,6 +185,7 @@ class ProyectosInline(admin.TabularInline):
 
 @admin.register(Estudiante)
 class EstudianteAdmin(AutoAutor, VersionAdmin):
+    actions = [exporta_emails_estudiantes, ]
     search_fields = ['cuenta',
                      'user__first_name',
                      'user__last_name',

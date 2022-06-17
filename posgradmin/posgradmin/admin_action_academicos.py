@@ -117,3 +117,28 @@ def exporta_emails_cursos(modeladmin, request, queryset):
     wb.save(response)
 
     return response
+
+
+
+
+def exporta_emails_estudiantes(modeladmin, request, queryset):
+
+    response = HttpResponse(content_type='application/vnd.ms-excel', charset='utf-8')
+    response['Content-Disposition'] = 'attachment; filename="correos_estudiantes.xlsx"'
+
+    wb = Workbook()
+    ws = wb.active
+
+    ws.append(["Nombre",
+               "Correo"])
+
+    for e in queryset:
+        row = [
+            e.user.get_full_name(),
+            e.user.email
+        ]
+        ws.append(row)
+
+    wb.save(response)
+
+    return response
