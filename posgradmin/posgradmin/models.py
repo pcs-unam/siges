@@ -261,12 +261,27 @@ class Estudiante(models.Model):
 
     promedio_ingreso = models.DecimalField("Promedio del último grado. Dos dígitos máximo, dos decimales.", max_digits=4, decimal_places=2)
 
+    estado = models.CharField(
+        max_length=25,
+        choices=(
+            ('inscrito', 'inscrito'),
+            ('egresado', 'egresado'),
+            ('graduado', 'graduado'),
+            ('indeterminado', u'indeterminado'),
+            ('baja', 'baja'),
+            (u'suspensión 1 sem', u'suspensión 1 sem'),
+            (u'suspensión 2 sem', u'suspensión 2 sem'),
+            ('plazo adicional', 'plazo adicional'),
+        ),
+        null=True, blank=True)
+    
     notas = GenericRelation(Nota,
                            related_query_name='estudiante')
 
 
     class Meta:
         ordering = ['user__first_name', 'user__last_name', ]
+
 
     def ultimo_estado(self):
         if self.historial.count() > 0:
@@ -285,7 +300,7 @@ class Estudiante(models.Model):
     def __str__(self):
         return u"%s (%s) %s" % (self.user.get_full_name(),
                                 self.cuenta,
-                                self.ultimo_estado())
+                                self.estado)
 
     def ficha_a(self):
         return u"""<a href='%sestudiante/%s'>%s</a>""" % (APP_PREFIX,

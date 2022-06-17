@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from posgradmin.models import Academico, Acreditacion, Curso
+from posgradmin.models import Academico, Acreditacion, Curso, Historial
 from django.db.models.signals import m2m_changed
 
 
@@ -26,6 +26,13 @@ def copia_acreditacion_a_academico(sender, **kwargs):
     ac.academico.copia_ultima_acreditacion()
     ac.academico.save()
 
+
+@receiver(post_save, sender=Historial)
+def copia_estado_a_estudiante(sender, **kwargs):
+    hist = kwargs['instance']
+    hist.estudiante.estado = hist.estudiante.ultimo_estado()
+    hist.estudiante.save()
+    
 
 @receiver(post_save, sender=Curso)
 def curso_genera_constancias(sender, **kwargs):
