@@ -349,8 +349,10 @@ admin.site.register(Adscripcion, AdscripcionAdmin)
 
 class AsignaturaAdmin(admin.ModelAdmin):
     search_fields = ['asignatura',
-                     'clave']
-    
+                     'clave',
+                     'proponente__first_name',
+                     'proponente__last_name']
+    list_filter = ['tipo', 'estado', 'campos_de_conocimiento']
     list_display = ['asignatura', 'clave', 'tipo', 'estado', 'proponente']
 
 
