@@ -346,18 +346,14 @@ class AdscripcionAdmin(VersionAdmin):
 
 admin.site.register(Adscripcion, AdscripcionAdmin)
 
-
-class AsignaturaAdmin(admin.ModelAdmin):
+@admin.register(Asignatura)
+class AsignaturaAdmin(VersionAdmin):
     search_fields = ['asignatura',
                      'clave',
                      'proponente__first_name',
                      'proponente__last_name']
     list_filter = ['tipo', 'estado', 'campos_de_conocimiento']
     list_display = ['asignatura', 'clave', 'tipo', 'estado', 'proponente']
-
-
-admin.site.register(Asignatura, AsignaturaAdmin)
-
 
 
 
