@@ -100,20 +100,20 @@ def importa(dgae, saep):
             nuevos_saep[metaphone] = row
 
 
-    folio_dgae = {}
+    idx_dgae = {}
     dgae = []
-    for row in dgaer:
+    for idx, row in enumerate(dgaer):
         metaphone = jellyfish.metaphone("%s %s %s" % (row['nombre'],
                                                       row['apellido1'],
                                                       row['apellido2']))
-        # este diccionario permite unir folio en DGAE con cuenta en SAEP
-        folio_dgae[metaphone] = row['folio']
+        # este diccionario permite unir el indice en DGAE con cuenta en SAEP
+        idx_dgae[metaphone] = idx
         dgae.append(row)
 
 
     # DGAE repite renglones por estudiante, por cada grado academico
     # a continuacion generamos una lista y la guardamos en un diccionario
-    # con el folio DGAE como llave
+    # con el indice DGAE como llave
     campos_grado = ["antecedente_academico", "nivel_antecedente_academico", "promedio",
                     "estatus_graduacion", "fecha_graduacion", "entidad_academica",
                     "institucion", "pais_antecedente_academico",
@@ -121,39 +121,35 @@ def importa(dgae, saep):
                     "completa", "completada_en_fecha"]
 
     grados_dgae = {}
-    for a in dgae:
-        folio = a['folio']
+    for idx, a in enumerate(dgae):
 
         grado = {}
         for c in campos_grado:
             grado[c] = a[c]
 
-        if folio in grados_dgae:
-            grados_dgae[folio].append(grado)
+        if idx in grados_dgae:
+            grados_dgae[idx].append(grado)
         else:
-            grados_dgae[folio] = [grado, ]
+            grados_dgae[idx] = [grado, ]
 
 
     # por otro lado hacemos un diccionario de alumnos DGAE
-    # cuya llave es el folio DGAE
+    # cuya llave es el indice DGAE
     alumno_dgae = {}
-    for a in dgae:
-        folio = a['folio']
+    for idx, a in enumerate(dgae):
         # tirar todo lo que se repite
-        for c in campos_grado + ['folio',
-                                 'orientacion_interdisciplinaria',
+        for c in campos_grado + ['orientacion_interdisciplinaria',
                                  'estatus_orientacion_interdisciplinaria',
                                  'documentos_personales',
                                  'documentos_administrativos',
                                  'documentos_academicos']:
             a.pop(c)
-
-            alumno_dgae[folio] = a
+            alumno_dgae[idx] = a
 
 
     # Cargar todos los alumnos nuevos a la base de datos
     for n in nuevos_saep:
-        print(nuevos_saep[n]['cuenta'], alumno_dgae[folio_dgae[n]], len(grados_dgae[folio_dgae[n]]))
+        print(nuevos_saep[n]['cuenta'], alumno_dgae[idx_dgae[n]], len(grados_dgae[idx_dgae[n]]))
 
                                  # for n in nuevos_saep:
                                  #     print(nuevos_saep[n]['cuenta'], nuevos_dgae[n])
