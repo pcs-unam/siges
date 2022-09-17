@@ -28,9 +28,10 @@ def copia_acreditacion_a_academico(sender, **kwargs):
 
 
 @receiver(post_save, sender=Historial)
-def copia_estado_a_estudiante(sender, **kwargs):
+def copia_plan_estado_a_estudiante(sender, **kwargs):
     hist = kwargs['instance']
     hist.estudiante.estado = hist.estudiante.ultimo_estado()
+    hist.estudiante.plan = hist.estudiante.ultimo_plan()    
     hist.estudiante.save()
     
 

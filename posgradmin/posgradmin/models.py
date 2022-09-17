@@ -259,8 +259,6 @@ class Estudiante(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cuenta = models.CharField(max_length=100)
 
-    promedio_ingreso = models.DecimalField("Promedio del último grado. Dos dígitos máximo, dos decimales.", max_digits=4, decimal_places=2)
-
     estado = models.CharField(
         max_length=25,
         choices=(
@@ -274,6 +272,13 @@ class Estudiante(models.Model):
             ('plazo adicional', 'plazo adicional'),
         ),
         null=True, blank=True)
+
+    plan = models.CharField(
+        max_length=20,
+        choices=[("Maestría", "Maestría"),
+                 ("Doctorado", "Doctorado")],
+        default="Maestría"
+    )
     
     notas = GenericRelation(Nota,
                            related_query_name='estudiante')
@@ -283,6 +288,14 @@ class Estudiante(models.Model):
         ordering = ['user__first_name', 'user__last_name', ]
 
 
+    def ultimo_plan(self):
+        if self.historial.count() > 0:
+            plan = self.historial.latest('fecha').plan
+        else:
+            plan = None
+
+        return plan
+        
     def ultimo_estado(self):
         if self.historial.count() > 0:
             ultimo_estado = self.historial.latest('fecha').estado

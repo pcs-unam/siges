@@ -190,9 +190,9 @@ class EstudianteAdmin(AutoAutor, VersionAdmin):
                      'user__first_name',
                      'user__last_name',
                      'user__email', ]
-    readonly_fields = ['fullname', 'user', 'estado']
-    list_filter = ['estado', ]
-    list_display = ['fullname', 'ficha', 'ultimo_estado']
+    readonly_fields = ['fullname', 'user', 'estado', 'plan']
+    list_filter = ['estado', 'plan']
+    list_display = ['fullname', 'ficha', 'plan', 'estado']
 
     inlines = [HistorialInline, TutoresInline, ProyectosInline, NotaInline]
 
