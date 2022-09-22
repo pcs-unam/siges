@@ -408,7 +408,7 @@ class Historial(models.Model):
         ordering = ['fecha', ]
 
     def __str__(self):
-        return u"[%s] %s: %s-%s" % (self.fecha, self.estudiante, self.plan, self.estado)
+        return u"[%s] %s: %s" % (self.fecha, self.estudiante, self.plan)
 
 
 class EstanciaPAEP(models.Model):

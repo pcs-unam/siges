@@ -159,13 +159,13 @@ def importa(dgae, saep):
     # Cargar todos los reingresos a la base de datos
     print('-------------------------------- cargando reingresos ----------------------')
     for m in reingresos:
-        
+
         a = reingresos[m]
 
         if models.Estudiante.objects.filter(cuenta=a['cuenta']).count() == 0:
             print("[REINGRESO][ERROR] fila", m, a, 'imposible reingresar estudiante sin registro previo')
             continue
-        
+
         e = models.Estudiante.objects.get(cuenta=a['cuenta'])
         year, semestre = a['semestre'].split('-')
         if a['nivel'] == 'M':
@@ -174,8 +174,8 @@ def importa(dgae, saep):
             plan = 'Doctorado'
         else:
             print('[REINGRESO][ERROR] plan no válido', a)
-        
-        # TODO: cargar institucion, grados
+
+
         h, created = models.Historial.objects.get_or_create(
             fecha = date.today(),
             estudiante = e,
@@ -184,43 +184,17 @@ def importa(dgae, saep):
             plan = plan,
             estado = 'inscrito',
         )
+
+        h.institucion = get_institucion(int(a['entidad']))
+        h.save()
+        
         e.estado = e.ultimo_estado()
         e.plan = e.ultimo_plan()
         e.save()
 
-        print('historial actualizado', e)
+        print('historial actualizado', h)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                                 #     if models.Historial.objects.filter(estudiante=e, plan=plan,
-                                 #                                        estado='inscrito').count() == 0:
-                                 #         h, created = models.Historial.objects.get_or_create(
-                                 #             fecha=date(a[0], 8, 1),  # inscripciones en agosto, ver #223
-                                 #             estudiante = e,
-                                 #             year = a[0],
-                                 #             plan = plan,
-                                 #             estado = 'inscrito',
-                                 #             semestre = a[idx['semestre']]
-                                 #         )
-
-                                 #     h.institucion = get_institucion(a[idx['entidad']])
-                                 #     h.save()
-
-                                 #     if created:
-                                 #         print('created estudios', h)
-                                 #     else:
-                                 #         print('updated estudios', h)
 
 
 
