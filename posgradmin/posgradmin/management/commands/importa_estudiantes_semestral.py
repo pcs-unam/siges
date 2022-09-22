@@ -106,29 +106,7 @@ def importa(dgae, saep):
         a = nuevos_saep[m] | alumno_dgae[idx_dgae[m]]
         a['grados'] = grados_dgae[m]
 
-        # usamos el lado izquierdo de su correo como username, o su cuenta
-        username = a['correo'].split('@')[0]
-        if models.User.objects.filter(username=username).count() > 0:
-            # ya existe usuario con ese username!
-            u = models.User.objects.get(username=username)
-            if models.Estudiante.objects.filter(user=u,
-                                                cuenta=a['cuenta']).count() == 0:
-                # pero no hay estudiante con esa cuenta, de modo que es alguien más
-                # para evitar colisión usar su cuenta como nombre de usuario
-                username = a['cuenta']
-
-        u, created = models.User.objects.get_or_create(
-            username = username,
-            email = a['correo']
-        )
-
-        if created:
-            u.first_name = a['nombre']
-            u.last_name = "%s %s" % (a['apellido1'], a['apellido2'])
-            u.save()
-            print('nuevo usuario', u, u.first_name, u.last_name)
-        else:
-            print('usuario encontrado', u)
+        u = get_user(a)
 
         p, created = models.Perfil.objects.get_or_create(user = u)
 
@@ -162,7 +140,7 @@ def importa(dgae, saep):
         elif a['nivel'] == 'D':
             plan = 'Doctorado'
         else:
-            print('[ERROR] plan no válido', a)
+            print('[NUEVOS][ERROR] plan no válido', a)
 
         # TODO: cargar institucion, grados
         h, created = models.Historial.objects.get_or_create(
@@ -178,19 +156,39 @@ def importa(dgae, saep):
         e.save()
 
 
-    exit(0)
     # Cargar todos los reingresos a la base de datos
     print('-------------------------------- cargando reingresos ----------------------')
     for m in reingresos:
+        
         a = reingresos[m]
-        e, created = models.Estudiante.objects.get_or_create(cuenta=a['cuenta'])
 
-        # reingresos no pueden estar en archivo de nuevos
-        if m in idx_dgae:
-            print('[ERROR] fila', m, a, 'reingreso en archivo de nuevos')
+        if models.Estudiante.objects.filter(cuenta=a['cuenta']).count() == 0:
+            print("[REINGRESO][ERROR] fila", m, a, 'imposible reingresar estudiante sin registro previo')
+            continue
+        
+        e = models.Estudiante.objects.get(cuenta=a['cuenta'])
+        year, semestre = a['semestre'].split('-')
+        if a['nivel'] == 'M':
+            plan = 'Maestría'
+        elif a['nivel'] == 'D':
+            plan = 'Doctorado'
+        else:
+            print('[REINGRESO][ERROR] plan no válido', a)
+        
+        # TODO: cargar institucion, grados
+        h, created = models.Historial.objects.get_or_create(
+            fecha = date.today(),
+            estudiante = e,
+            year = year,
+            semestre = semestre,
+            plan = plan,
+            estado = 'inscrito',
+        )
+        e.estado = e.ultimo_estado()
+        e.plan = e.ultimo_plan()
+        e.save()
 
-
-
+        print('historial actualizado', e)
 
 
 
@@ -226,6 +224,32 @@ def importa(dgae, saep):
 
 
 
+def get_user(a):
+    # usamos el lado izquierdo de su correo como username, o su cuenta
+    username = a['correo'].split('@')[0]
+    if models.User.objects.filter(username=username).count() > 0:
+        # ya existe usuario con ese username!
+        u = models.User.objects.get(username=username)
+        if models.Estudiante.objects.filter(user=u,
+                                            cuenta=a['cuenta']).count() == 0:
+            # pero no hay estudiante con esa cuenta, de modo que es alguien más
+            # para evitar colisión usar su cuenta como nombre de usuario
+            username = a['cuenta']
+
+    u, created = models.User.objects.get_or_create(
+        username = username,
+        email = a['correo']
+    )
+
+    if created:
+        u.first_name = a['nombre']
+        u.last_name = "%s %s" % (a['apellido1'], a['apellido2'])
+        u.save()
+        print('nuevo usuario', u, u.first_name, u.last_name)
+    else:
+        print('usuario encontrado', u)
+
+    return u
 
 
 def get_institucion(entidad_num):

@@ -137,7 +137,7 @@ class HistorialAdmin(AutoAutor, VersionAdmin):
                      'estudiante__user__first_name',
                      'estudiante__user__last_name',
                      'estudiante__user__email']
-
+    readonly_fields = ['estudiante']
     list_display = ['fecha',
                     'estudiante',
                     'plan',
