@@ -102,10 +102,12 @@ def importa(dgae, saep):
     # Cargar todos los alumnos nuevos a la base de datos
     print('-------------------------------- cargando nuevos ingresos ----------------------')
     for m in nuevos_saep:
-
+        
         a = nuevos_saep[m] | alumno_dgae[idx_dgae[m]]
         a['grados'] = grados_dgae[m]
 
+        print(a)
+        
         u = get_user(a)
 
         p, created = models.Perfil.objects.get_or_create(user = u)
@@ -142,7 +144,7 @@ def importa(dgae, saep):
         else:
             print('[NUEVOS][ERROR] plan no válido', a)
 
-        # TODO: cargar institucion, grados
+
         h, created = models.Historial.objects.get_or_create(
             fecha = date.today(),
             estudiante = e,
@@ -151,10 +153,25 @@ def importa(dgae, saep):
             plan = plan,
             estado = 'inscrito',
         )
+
+        h.institucion = get_institucion(int(a['entidad']))
+
+        print('***%s***' % a['campo_conocimiento_seleccionado'])
+        if plan == 'Maestría':
+            h.campo_conocimiento = models.CampoConocimiento.objects.get(
+                nombre__icontains=a['campo_conocimiento_seleccionado'])
+        elif plan == 'Doctorado':
+            h.lineas_investigacion = models.LineaInvestigacion.objects.get(
+                nombre__icontains=a['campo_conocimiento_seleccionado'])
+            
+        h.save()
+        
         e.estado = e.ultimo_estado()
         e.plan = e.ultimo_plan()
         e.save()
-
+        
+        # TODO: cargar grados, 
+        
 
     # Cargar todos los reingresos a la base de datos
     print('-------------------------------- cargando reingresos ----------------------')
