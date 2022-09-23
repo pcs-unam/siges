@@ -183,6 +183,8 @@ class ProyectosInline(admin.TabularInline):
     fields = ['fecha', 'titulo', ]
 
 
+    
+
 @admin.register(Estudiante)
 class EstudianteAdmin(AutoAutor, VersionAdmin):
     actions = [exporta_emails_estudiantes, ]
@@ -480,8 +482,16 @@ class AnexoExpedienteInline(admin.StackedInline):
     model = AnexoExpediente
 
 
+class GradosInline(admin.TabularInline):
+    model = GradoAcademico
+    fk_name = 'user'
+    extra = 0
+    classes = ('grp-collapse grp-closed',)
+    fields = ['fecha_obtencion', 'nivel', 'grado_obtenido', 'institucion']
+
+    
 class UserAdmin(AuthUserAdmin):
-    inlines = [UserProfileInline, AnexoExpedienteInline]
+    inlines = [UserProfileInline, GradosInline, AnexoExpedienteInline]
     ordering = ('username', 'first_name', 'last_name', '-date_joined')
 
 

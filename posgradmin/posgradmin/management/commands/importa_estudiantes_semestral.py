@@ -102,12 +102,10 @@ def importa(dgae, saep):
     # Cargar todos los alumnos nuevos a la base de datos
     print('-------------------------------- cargando nuevos ingresos ----------------------')
     for m in nuevos_saep:
-        
+
         a = nuevos_saep[m] | alumno_dgae[idx_dgae[m]]
         a['grados'] = grados_dgae[m]
 
-        print(a)
-        
         u = get_user(a)
 
         p, created = models.Perfil.objects.get_or_create(user = u)
@@ -156,22 +154,50 @@ def importa(dgae, saep):
 
         h.institucion = get_institucion(int(a['entidad']))
 
-        print('***%s***' % a['campo_conocimiento_seleccionado'])
-        if plan == 'Maestría':
-            h.campo_conocimiento = models.CampoConocimiento.objects.get(
-                nombre__icontains=a['campo_conocimiento_seleccionado'])
-        elif plan == 'Doctorado':
-            h.lineas_investigacion = models.LineaInvestigacion.objects.get(
-                nombre__icontains=a['campo_conocimiento_seleccionado'])
-            
+        if 'campo_conocimiento_seleccionado' in a:
+            if plan == 'Maestría':
+                h.campo_conocimiento = models.CampoConocimiento.objects.get(
+                    nombre__icontains=a['campo_conocimiento_seleccionado'])
+            elif plan == 'Doctorado':
+                h.lineas_investigacion = models.LineaInvestigacion.objects.get(
+                    nombre__icontains=a['campo_conocimiento_seleccionado'])
+        else:
+            print('[NUEVOS][WARN] sin campo de conocimiento')
+
         h.save()
-        
+
         e.estado = e.ultimo_estado()
         e.plan = e.ultimo_plan()
         e.save()
-        
-        # TODO: cargar grados, 
-        
+
+        # cargar grados,
+        for g in a['grados']:
+
+            if g['nivel_antecedente_academico'] == 'L':
+                nivel = 'licenciatura'
+            elif g['nivel_antecedente_academico'] == 'M':
+                nivel = 'maestria'
+            elif g['nivel_antecedente_academico'] == 'D':
+                nivel = 'doctorado'
+
+            institucion = get_institucion_by_names(entidad=g['entidad_academica'],
+                                                   institucion=g['institucion'],
+                                                   estado=g['estado_antecedente_academico'],
+                                                   pais=g['pais_antecedente_academico'])
+            
+
+            if g['estatus_graduacion'] == 'Titulado o graduado':
+                day, month, year = g['fecha_graduacion'].split('/')
+                g, created = models.GradoAcademico.objects.get_or_create(
+                    user=u,
+                    nivel=nivel,
+                    institucion=institucion,
+                    grado_obtenido=g['antecedente_academico'],
+                    fecha_obtencion=datetime(int(year), int(month), int(day)))
+
+                print('grado academico', e, g)
+                # TODO: 'promedio': '8.67',
+                # TODO: en proceso o trunca
 
     # Cargar todos los reingresos a la base de datos
     print('-------------------------------- cargando reingresos ----------------------')
@@ -204,7 +230,7 @@ def importa(dgae, saep):
 
         h.institucion = get_institucion(int(a['entidad']))
         h.save()
-        
+
         e.estado = e.ultimo_estado()
         e.plan = e.ultimo_plan()
         e.save()
@@ -292,3 +318,20 @@ def get_institucion(entidad_num):
         return models.Institucion.objects.get(nombre="Universidad Nacional Autónoma de México",
                                               suborganizacion="Instituto de Investigaciones en Ecosistemas y Sustentabilidad",
                                               entidad_PCS=True)
+
+def get_institucion_by_names(entidad, institucion, estado, pais):
+    if 'UNAM' in entidad:
+        dependencia_UNAM = True
+    else:
+        dependencia_UNAM = False
+        
+    i, created = models.Institucion.objects.get_or_create(
+        nombre=entidad,
+        suborganizacion=institucion,
+        dependencia_UNAM=dependencia_UNAM,
+        estado=estado,
+        pais=pais)
+    if created:
+        print("nueva institucion", i)
+    return i
+                
