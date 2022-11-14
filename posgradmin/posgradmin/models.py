@@ -604,6 +604,7 @@ class Academico(models.Model):
             ('P', 'P'),
             ('D', 'D'),
             ('M', 'M'),
+            ('MCT_M', 'MCT_M'),
             ('E', 'E')
         ))
 
@@ -1330,6 +1331,7 @@ class Acreditacion(models.Model):
             ('P', 'P'),
             ('D', 'D'),
             ('M', 'M'),
+            ('MCT_M', 'MCT_M'),            
             ('E', 'E')
         ))
 
@@ -1342,7 +1344,7 @@ class Acreditacion(models.Model):
 
 
     def genera_carta(self):
-        if self.acreditacion in ('D', 'M'):
+        if self.acreditacion in ('D', 'M', 'MCT_M'):
 
             if self.academico.user.gradoacademico_set.filter(nivel='doctorado').count() > 0:
                 if self.academico.user.perfil.genero == 'M':

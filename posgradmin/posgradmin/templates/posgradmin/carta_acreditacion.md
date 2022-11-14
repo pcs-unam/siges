@@ -24,7 +24,7 @@ Presente
 
 Por este medio le informo que el Comité Académico del Programa de
 Posgrado en Ciencias de la Sostenibilidad aprobó su acreditación como
-{% if ac.academico.user.perfil.genero == 'M' %}tutor{% else %}tutora{% endif %} de {% if ac.acreditacion == 'M' %}Maestría{% else %}Doctorado{% endif %} en este Programa de Posgrado.
+{% if ac.acreditacion == 'MCT_M' %}Miembro de Comité Tutor a nivel Maestr'ia{% else %}{% if ac.academico.user.perfil.genero == 'M' %}tutor{% else %}tutora{% endif %} de {% if ac.acreditacion == 'M' %}Maestría{% else %}Doctorado{% endif %}{% endif %} en este Programa de Posgrado.
 
 Es una buena noticia para el Programa saber que a partir de ahora
 contaremos con su participación. Sin duda su experiencia y compromiso
