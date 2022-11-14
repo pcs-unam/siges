@@ -269,7 +269,7 @@ class Estudiante(models.Model):
             ('baja', 'baja'),
             (u'suspensión 1 sem', u'suspensión 1 sem'),
             (u'suspensión 2 sem', u'suspensión 2 sem'),
-            ('plazo adicional', 'plazo adicional'),
+            ('ausente', 'ausente'),
         ),
         null=True, blank=True)
 
@@ -350,7 +350,7 @@ class Historial(models.Model):
             ('baja', 'baja'),
             (u'suspensión 1 sem', u'suspensión 1 sem'),
             (u'suspensión 2 sem', u'suspensión 2 sem'),
-            ('plazo adicional', 'plazo adicional'),
+            ('ausente', 'ausente'),
         ))
 
 
