@@ -26,7 +26,7 @@ def export(outdir):
     ).order_by('user__last_name')
 
     maestria = Academico.objects.filter(
-        Q(acreditacion='M'),
+        Q(acreditacion='M') | Q(acreditacion='MCT_M') 
     ).order_by('user__last_name')
 
     mkdir('-p', outdir)
