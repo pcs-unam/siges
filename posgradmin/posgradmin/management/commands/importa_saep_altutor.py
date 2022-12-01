@@ -54,20 +54,20 @@ def busca_tutor(rfc):
         return None
     return p.user.academico
 
-    
-    
+
+
 def importa(db_file):
     data = get_data(db_file.name)
 
     models.MembresiaComite.objects.all().delete()
-    
+
     # crea diccionario: llaves son rfc, valores curps y correos
     for i in range(0, len(data['tutor']) - 1):
         m = data['tutor'][i]
         if len(m) == 0:
             continue
         elif len(m) > 9:
-            tutor_email[m[0]] = m[9]            
+            tutor_email[m[0]] = m[9]
         tutor_curp[m[0]] = m[8]
 
     # busca tutores por rfc
@@ -79,7 +79,7 @@ def importa(db_file):
         print('busque', m[idx['rfc']], 'hallazgo', busca_tutor(m[idx['rfc']]))
 
         a = busca_tutor(m[idx['rfc']])
-        
+
         if a is not None:
 
             if models.Estudiante.objects.filter(cuenta=m[idx['cuenta']]).count() == 1:
@@ -88,6 +88,8 @@ def importa(db_file):
                 if models.MembresiaComite.objects.filter(
                         estudiante=e,
                         tutor=a,
+                        year=m[idx['anio']],
+                        semestre=m[idx['semestre']],
                         tipo=m[idx['tipo']]).count() == 0:
                     membresia = models.MembresiaComite(
                         estudiante=e,
@@ -102,5 +104,3 @@ def importa(db_file):
 
             elif models.Estudiante.objects.filter(cuenta=m[idx['cuenta']]).count() > 1:
                 print('Estudiante DUPLICADO', m[idx['cuenta']])
-
-
