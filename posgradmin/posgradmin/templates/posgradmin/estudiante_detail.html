@@ -4,6 +4,7 @@
 {% block content %}
 
 <a href="/admin/posgradmin/estudiante/">tabla de estudiantes</a>
+
 <hr />
 
 
@@ -33,15 +34,15 @@
 <div class="flex flex-row">
 
   <ul class="rounded shadow m-2 p-4 bg-blue-100">
-    <li>Datos de contacto</li>
-    <li>{{ estudiante.user.perfil.telefono }}</li>
-    <li>móvil: {{ estudiante.user.perfil.telefono_movil}}</li>
-    <li>website: {{ estudiante.user.perfil.website }}</li>
+    {% if estudiante.user.perfil.telefono %}<li>tel.: {{ estudiante.user.perfil.telefono }}</li>{% endif %}
+    {% if estudiante.user.perfil.telefono_movil %}<li>móvil: {{ estudiante.user.perfil.telefono_movil}}</li>{% endif %}
+    {% if estudiante.user.perfil.website %}<li>website: <a href="{{ estudiante.user.perfil.website }}">{{ estudiante.user.perfil.website }}</a></li>{% endif %}
     <li><a href="mailto:{{ estudiante.user.email }}">{{ estudiante.user.email }}</a></li>
+    {% if estudiante.user.perfil.direccion1 %}<li>dirección: {{ estudiante.user.perfil.direccion1 }} CP {{ estudiante.user.perfil.codigo_postal }}</li>{% endif %}    
   </ul>
 
   <ul class="rounded shadow m-2 p-4 bg-blue-100">
-    <li>CVU: {{ estudiante.user.perfil.CVU }}</li>
+    {% if estudiante.user.perfil.CVU %}<li>CVU: {{ estudiante.user.perfil.CVU }}</li>{% endif %}
     <li>CURP: {{ estudiante.user.perfil.curp }}</li>
     <li>RFC: {{ estudiante.user.perfil.rfc }}</li>
   </ul>
@@ -51,23 +52,53 @@
 <div class="flex flex-row">
 
   <ul class="rounded shadow m-2 p-4 bg-green-100">
-    <li>Plan de estudios</li>
-    <li>Generación (año y semestre)</li>
-    <li>Entidad</li>
-    <li>Estatus</li>
+    <li>Plan de estudios: {{ estudiante.plan }}</li>
+    <li>Generación: {{ estudiante.generacion }}</li>
+    <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>    
+    <li>Entidad: {{ estudiante.entidad }}</li>
+    <li>Estatus: {{ estudiante.estado }}</li>
   </ul>
 
-  <ul class="rounded shadow m-2 p-4 bg-green-100">
-    <li>Beca</li>
-    <li>Fecha de inicio de beca</li>
-  </ul>
 </div>
 
-<ul class="rounded shadow m-2 p-4 bg-amber-100">
-  <li>Último campo</li>
-  <li>Última línea</li>
-  <li>Último proyecto</li>
-  <li>Último comité</li>
-</ul>
+<div class="rounded shadow m-2 p-4 bg-lime-100">
+  <h2 class="text-l">Comité ({{ estudiante.ultima_inscripcion }})</h2>
+  <div class="bg-gray-100">
+  <table>
+    {% for m in estudiante.comite_vigente %}
+    <tr>
+      <td>{{ m.get_tipo_display }}</td><td>{{ m.tutor }}</td>
+    </tr>      
+    {% endfor %}
+  </table>
+  </div>
+</div>
+
+
+{% if estudiante.notas.count > 0 %}
+<div class="rounded shadow m-2 p-4 bg-amber-100">
+  <h2>Notas</h2>
+  {% for n in estudiante.notas.all %}
+  <div class="bg-slate-100 shadow p-2">
+    <div class="text-gray-600 float-right">{{ n.fecha }}, {{ n.autor }}, {{ n.estado }}</div>
+    <div class="text-gray-800 font-bold text-xl mb-2">{{ n.asunto }}</div>
+    {{ n.nota|markdown }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="rounded shadow m-2 p-4 bg-stone-100">
+  <h2 class="text-l">Historial</h2>
+  <div class="bg-gray-100">
+  <table>
+    {% for h in estudiante.historial.all %}
+    <tr>
+      <td>{{ h.fecha }}</td><td>{{ h.estado }}</td><td>{{ h.plan }}</td><td>{{ h.institucion }}</td><td>{{ h.notas_set.all }}</td>
+    </tr>      
+    {% endfor %}
+  </table>
+  </div>
+</div>
 
 {% endblock %}

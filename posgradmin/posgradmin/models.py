@@ -279,7 +279,7 @@ class Estudiante(models.Model):
                  ("Doctorado", "Doctorado")],
         default="Maestría"
     )
-    
+
     notas = GenericRelation(Nota,
                            related_query_name='estudiante')
 
@@ -295,7 +295,7 @@ class Estudiante(models.Model):
             plan = None
 
         return plan
-        
+
     def ultimo_estado(self):
         if self.historial.count() > 0:
             ultimo_estado = self.historial.latest('fecha').estado
@@ -303,6 +303,41 @@ class Estudiante(models.Model):
             ultimo_estado = None
 
         return ultimo_estado
+
+    def generacion(self):
+        if self.historial.count() > 0:
+            y = self.historial.earliest('fecha').year
+            s = self.historial.earliest('fecha').semestre
+            return f"{y}-{s}"
+        else:
+            return None
+
+    def entidad(self):
+        if self.historial.count() > 0:
+            e = self.historial.latest('fecha').institucion
+        else:
+            e = None
+
+        return e
+
+
+    def comite_vigente(self):
+        if self.historial.count() > 0:
+            y = self.historial.latest('fecha').year
+            s = self.historial.latest('fecha').semestre
+            return self.membresiacomite_set.filter(year=y, semestre=s)
+        else:
+            return []
+
+
+    def ultima_inscripcion(self):
+        if self.historial.count() > 0:
+            h = self.historial.filter(estado="inscrito").latest('fecha')
+            y = h.year
+            s = h.semestre
+            return f"{y}-{s}"
+        else:
+            return None
 
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
@@ -1331,7 +1366,7 @@ class Acreditacion(models.Model):
             ('P', 'P'),
             ('D', 'D'),
             ('M', 'M'),
-            ('MCT_M', 'MCT_M'),            
+            ('MCT_M', 'MCT_M'),
             ('E', 'E')
         ))
 
