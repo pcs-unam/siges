@@ -75,17 +75,19 @@ def importa(db_file):
     data = get_data(db_file.name)
 
     # quitar usuarios con estudiante
-    for u in models.User.objects.all():
-        if hasattr( u, 'estudiante'):
-            u.delete()
+    # for u in models.User.objects.all():
+    #     if hasattr( u, 'estudiante'):
+    #         u.delete()
     # no debe haber usuarios que no sean estudiantes ni académicos
-    for u in models.User.objects.all():
-        if not hasattr( u, 'academico'):
-            u.delete()
+    # for u in models.User.objects.all():
+    #     if not hasattr( u, 'academico'):
+    #         u.delete()
+
+
 
     # examinar el archivo linea por linea
-    for i in range(0, len(data['alumnos'])):
-        a = data['alumnos'][i]
+    for i in range(0, len(data['alumni'])):
+        a = data['alumni'][i]
 
         # generar indice de columnas usando el encabezado
         if i == 0:
@@ -95,54 +97,99 @@ def importa(db_file):
         elif len(a) == 0:
             # descartar lineas vacias
             continue
-        elif a[idx['email']] == '':
+        elif a[idx['correos']] == '':
             # descartar estudiantes sin correo
             print('[ERROR] fila',i, 'cuenta', a[idx['cuenta']], 'sin email, imposible importar')
             continue
 
+        correos = a[idx['correos']].split(',')
+        username = correos[0].split('@')[0]
 
-        u, created = models.User.objects.get_or_create(
-            username = a[idx['email']].split('@')[0],
-        )
+        cuenta=a[idx['cuenta']]
+        e_hallados = models.Estudiante.objects.filter(cuenta=cuenta).count()        
+        if e_hallados == 1:
+            # estudiante existe!
+            print(f'Estudiante existe: {cuenta}')
+            e = models.Estudiante.objects.get(cuenta=cuenta)
+            u = e.user
+            if models.User.objects.filter(username=username).count == 0:            
+                u.username = username
+                u.save()
+            e_created = False
+            u_created = False
+            print(f'usuario actualizado {u}')
+        elif e_hallados > 1:
+            print(f'Mas de un estudiante con esta cuenta: {cuenta}')
+            e = models.Estudiante.objects.filter(cuenta=cuenta).last()
+            print(f'eligiendo el último {e}')
+            u = e.user
+            if models.User.objects.filter(username=username).count == 0:
+                u.username = username
+                u.save()
+            
+            e_created = False
+            u_created = False
+            print(f'usuario actualizado {u}')
+            
+        else:
+            # estudiante no existe!
+            print(f'Estudiante no existe: {cuenta}')
+            u, u_created = models.User.objects.get_or_create(
+                username=username
+            )
+            if u_created:
+                print(f'Usuario creado: {u}')
+            else:
+                print(f'Usuario existe: {u}')
+                
+            e, e_created = models.Estudiante.objects.get_or_create(
+                user=u,
+                cuenta=a[idx['cuenta']])
+            print(f"estudiante creado: {e}")
+            
+        u.last_name = " ".join([chunk.capitalize()
+                                for chunk in a[idx['primer_apellido']].split(" ")])
+        u.last_name += " "
+        u.last_name += " ".join([chunk.capitalize()
+                                 for chunk in a[idx['segundo_apellido']].split(" ")])
 
-        if created:
-            u.last_name = " ".join([chunk.capitalize()
-                                  for chunk in a[idx['apellidop']].split(" ")])
-            u.last_name += " "
-            u.last_name += " ".join([chunk.capitalize()
-                                   for chunk in a[idx['apellidom']].split(" ")])
+        u.first_name = " ".join([chunk.capitalize() for chunk in a[idx['nombre']].split(" ")])
 
-            u.first_name = " ".join([chunk.capitalize() for chunk in a[idx['nombrew']].split(" ")])
+        u.email = correos[0]
+        u.save()
+        print(f'usuario actualizado {u}')
 
-            u.email = a[idx['email']]
-            u.save()
-            print('nuevo usuario', u)
-
+        
         p, created = models.Perfil.objects.get_or_create(user = u)
         if created:
-            p.curp = a[idx['curp']]
-            p.telefono = str(a[idx['ladapart']]) + str(a[idx['telpart']])
-            p.direccion1 = "\n".join([a[idx['direccion']],
-                                      a[idx['colonia']],
-                                      a[idx['delegacion']],
-                                      a[idx['estadores']]])
-            p.codigo_postal = a[idx['codigo']]
-            p.genero = a[idx['sexo']]
-            p.nacionalidad = a[idx['nacional']]
-            p.fecha_nacimiento = datetime(a[20],
-                                          a[idx['mes']],
-                                          a[idx['dia']])
+            print(f"perfil creado: {p}")
+        else:
+            print(f"perfil encontrado: {p}")
 
-            p.save()
-            print('nuevo perfil', p)
+        # filas sin curp a veces estan truncadas, siempre son extranjeres
+        if len(a) > 34:
+            try:
+                p.curp = a[idx['curp']]
+            except:
+                print(a, len(a), idx)
+                exit()
+        else:
+            p.curp = 'extranjere'
+        
+        p.telefono = str(str(a[idx['tel_1']]))
+        p.direccion1 = "\n".join([str(a[idx['calle_numero']]),
+                                  a[idx['colonia']],
+                                  a[idx['delegacion']],
+                                  a[idx['entidad_federativa']]])
+        p.codigo_postal = a[idx['codigo_postal']]
+        p.genero = a[idx['genero']]
+        p.nacionalidad = a[idx['nacionalidad']]
 
+        p.fecha_nacimiento = a[idx['fecha_nacimiento']]
 
-        e, created = models.Estudiante.objects.get_or_create(
-            user=u,
-            cuenta=a[idx['cuenta']])
+        p.save()
+        print(f'perfil actualizado: {p}')
 
-        if created:
-            print("nuevo estudiante", e)
 
         if a[idx['plan']] == 5172:
             plan = 'Doctorado'
@@ -152,9 +199,9 @@ def importa(db_file):
             plan = u'Maestría'
 
         h, created = models.Historial.objects.get_or_create(
-            fecha=date(a[0], 8, 1),  # inscripciones en agosto, ver #223
+            fecha=date(a[idx['anio']], 8, 1),  # inscripciones en agosto, ver #223
             estudiante = e,
-            year = a[0],
+            year = a[idx['anio']],
             plan = plan,
             estado = 'inscrito',
             semestre = a[idx['semestre']]
