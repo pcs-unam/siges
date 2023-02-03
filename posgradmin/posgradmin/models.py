@@ -51,6 +51,8 @@ class Nota(models.Model):
                               default='memo',
                               choices=((u"memo",
                                         u"memo"),
+                                       ("denuncia",
+                                        "denuncia"),
                                        (u"atendida",
                                         u"atendida"),
                                        (u"solicitud",
