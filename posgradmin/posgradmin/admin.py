@@ -154,7 +154,7 @@ class HistorialAdmin(AutoAutor, VersionAdmin):
                    'estado']
     inlines = [NotaInline, ]
     autocomplete_fields = ['estudiante',]
-
+    ordering = ("-fecha", "-year", "-semestre")
 
 class HistorialInline(admin.TabularInline):
     model = Historial
@@ -164,7 +164,7 @@ class HistorialInline(admin.TabularInline):
     classes = ('grp-collapse grp-closed',)
 
     fields = ['fecha', 'estado', 'plan', 'year', 'semestre']
-
+    ordering = ("-fecha", "-year", "-semestre")
 
 
 class TutoresInline(admin.TabularInline):
