@@ -52,7 +52,7 @@
 <div class="flex flex-row">
 
   <ul class="rounded shadow m-2 p-4 bg-green-100">
-    <li>Plan de estudios: {{ estudiante.plan }}</li>
+    <li>Plan de estudios: <strong>{{ estudiante.plan }}</strong></li>
     <li>Generación: {{ estudiante.generacion }}</li>
     <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>    
     <li>Entidad: {{ estudiante.entidad }}</li>
@@ -60,6 +60,23 @@
   </ul>
 
 </div>
+
+
+<div class="flex flex-col rounded shadow m-2 p-4 bg-amber-50">
+
+  <h2 class="text-l">Grados Académicos</h2>  
+
+  {% for g in estudiante.user.gradoacademico_set.all %}
+  <div class="m-2 p-2 bg-lime-50 shadow">
+    <em>{{ g.fecha_obtencion }}</em><br />
+    <strong>{{ g.grado_obtenido }}</strong>
+    (nivel {{ g.nivel }}) <br />
+    {{ g.institucion }}
+  </div>
+  {% endfor %}
+
+</div>
+
 
 <div class="rounded shadow m-2 p-4 bg-lime-100">
   <h2 class="text-l">Comité ({{ estudiante.ultima_inscripcion }})</h2>

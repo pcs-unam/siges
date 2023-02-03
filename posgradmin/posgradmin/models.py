@@ -255,6 +255,7 @@ class GradoAcademico(models.Model):
 
     class Meta:
         verbose_name_plural = "Grados académicos"
+        ordering = ("-fecha_obtencion",)
 
 
 class Estudiante(models.Model):
@@ -442,7 +443,7 @@ class Historial(models.Model):
 
     class Meta:
         verbose_name_plural = "Historial"
-        ordering = ['fecha', ]
+        ordering = ['-fecha', '-year', '-semestre']
 
     def __str__(self):
         return u"[%s] %s: %s" % (self.fecha, self.estudiante, self.plan)
