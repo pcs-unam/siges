@@ -283,6 +283,11 @@ class Estudiante(models.Model):
         default="Maestría"
     )
 
+    doctorado_directo = models.BooleanField(default=False)
+    opcion_titulacion = models.BooleanField("Opción a titulación",
+                                            default=False)
+
+    
     notas = GenericRelation(Nota,
                            related_query_name='estudiante')
 
@@ -402,9 +407,6 @@ class Historial(models.Model):
         choices=((u"Maestría", u"Maestría"),
                  (u"Doctorado", u"Doctorado")))
 
-    doctorado_directo = models.BooleanField(default=False)
-    opcion_titulacion = models.BooleanField("Opción a titulación",
-                                            default=False)
 
     folio_graduacion = models.CharField(u"Folio de acta de examen de grado",
                                         max_length=200, blank=True)
