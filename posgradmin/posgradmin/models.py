@@ -287,6 +287,13 @@ class Estudiante(models.Model):
     opcion_titulacion = models.BooleanField("Opción a titulación",
                                             default=False)
 
+    campo_conocimiento = models.ForeignKey(CampoConocimiento,
+                                           blank=True, null=True,
+                                           on_delete=models.CASCADE)
+    lineas_investigacion = models.ForeignKey(LineaInvestigacion,
+                                           blank=True, null=True,
+                                             on_delete=models.CASCADE)
+
     
     notas = GenericRelation(Nota,
                            related_query_name='estudiante')
@@ -436,12 +443,6 @@ class Historial(models.Model):
     notas = GenericRelation(Nota,
                             related_query_name='historial')
 
-    campo_conocimiento = models.ForeignKey(CampoConocimiento,
-                                           blank=True, null=True,
-                                           on_delete=models.CASCADE)
-    lineas_investigacion = models.ForeignKey(LineaInvestigacion,
-                                           blank=True, null=True,
-                                             on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = "Historial"
