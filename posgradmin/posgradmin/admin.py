@@ -17,7 +17,7 @@ from .models import Perfil, Academico, Estudiante, \
     Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
     ConvocatoriaCurso, Historial, MembresiaComite, Nota, \
-    EstanciaPAEP
+    EstanciaPAEP, Graduado
 
 
 from .admin_action_academicos import exporta_resumen_academicos, exporta_emails_cursos, exporta_emails_estudiantes
@@ -129,7 +129,32 @@ class EstanciaPAEPAdmin(AutoAutor, VersionAdmin):
     inlines = [NotaInline, ]
 
     autocomplete_fields = ['estudiante', 'institucion',]
+    
 
+
+
+class GraduadoAdmin(AutoAutor, VersionAdmin):
+    autocomplete_fields = ['estudiante', ]    
+    search_fields = ['estudiante__cuenta',
+                     'estudiante__user__first_name',
+                     'estudiante__user__last_name',
+                     'estudiante__user__email']
+
+    list_display = ['fecha',
+                    'estudiante',
+                    'plan',
+                    'year',
+                    'semestre',
+                    'modo_graduacion']
+
+    list_filter = ['year',
+                   'semestre',
+                   'plan',
+                   'modo_graduacion']
+    inlines = [NotaInline, ]
+    ordering = ("-fecha", "-year", "-semestre")
+
+admin.site.register(Graduado, GraduadoAdmin)
 
 @admin.register(Historial)
 class HistorialAdmin(AutoAutor, VersionAdmin):
@@ -415,15 +440,6 @@ class CursoAdmin(AutoAutor, VersionAdmin):
 
 
 admin.site.register(Curso, CursoAdmin)
-
-
-class GradoAcademicoAdmin(VersionAdmin):
-    search_fields = ['user__username']
-    list_display = ['grado_obtenido', 'nivel', 'user',
-                    'institucion', 'fecha_obtencion']
-
-
-admin.site.register(GradoAcademico, GradoAcademicoAdmin)
 
 
 class InstitucionAdmin(VersionAdmin):

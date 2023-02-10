@@ -377,6 +377,47 @@ class Estudiante(models.Model):
             self.user.get_full_name())
 
 
+class Graduado(models.Model):
+    estudiante = models.ForeignKey(Estudiante,
+                                   related_name='graduaciones',
+                                   on_delete=models.CASCADE)
+
+    mencion_honorifica = models.BooleanField(default=False)
+    medalla_alfonso_caso = models.BooleanField(u"Medalla Alfonso Caso",
+                                               default=False)
+
+    fecha = models.DateField(default=datetime.date.today)
+
+    year = models.PositiveSmallIntegerField("año",
+                                            blank=True, null=True)
+    semestre = models.PositiveSmallIntegerField(
+        "semestre",
+        choices=((1, 1),
+                 (2, 2)))
+
+    plan = models.CharField(
+        max_length=20,
+        choices=((u"Maestría", u"Maestría"),
+                 (u"Doctorado", u"Doctorado")))
+
+    folio_graduacion = models.CharField(u"Folio de acta de examen de grado",
+                                        max_length=200, blank=True)
+
+    modo_graduacion = models.CharField(
+        max_length=35,
+        default='-',
+        choices=(
+            ('-', '-'),
+            ('tesis', 'tesis'),
+            ('reporte técnico', 'reporte técnico'),
+            ('artículo', u'artículo'),
+            ('protocolo de investigación doctoral', 'protocolo de investigación doctoral'),
+        ))
+
+    notas = GenericRelation(Nota,
+                            related_query_name='historial')
+
+    
 class Historial(models.Model):
     estudiante = models.ForeignKey(Estudiante, related_name='historial', on_delete=models.CASCADE)
 
@@ -403,7 +444,6 @@ class Historial(models.Model):
             ('ausente', 'ausente'),
         ))
 
-
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE,
                                     help_text=u"Institución de Inscripción",
                                     limit_choices_to={'entidad_PCS': True},
@@ -414,25 +454,6 @@ class Historial(models.Model):
         choices=((u"Maestría", u"Maestría"),
                  (u"Doctorado", u"Doctorado")))
 
-
-    folio_graduacion = models.CharField(u"Folio de acta de examen de grado",
-                                        max_length=200, blank=True)
-
-    modo_graduacion = models.CharField(
-        max_length=35,
-        default='-',
-        choices=(
-            ('-', '-'),
-            ('tesis', 'tesis'),
-            ('reporte técnico', 'reporte técnico'),
-            ('artículo', u'artículo'),
-            ('protocolo de investigación doctoral', 'protocolo de investigación doctoral'),
-        ))
-
-
-    mencion_honorifica = models.BooleanField(default=False)
-    medalla_alfonso_caso = models.BooleanField(u"Medalla Alfonso Caso",
-                                               default=False)
 
     permiso_trabajar = models.BooleanField("Permiso para trabajar",
                                            default=False)
