@@ -188,8 +188,9 @@ class HistorialInline(admin.TabularInline):
     show_change_link = True
     classes = ('grp-collapse grp-closed',)
 
-    fields = ['fecha', 'estado', 'plan', 'year', 'semestre']
+    fields = ['fecha', 'estado', 'plan', 'year', 'semestre', 'institucion']
     ordering = ("-fecha", "-year", "-semestre")
+    readonly_fields = ['institucion',]
 
 
 class TutoresInline(admin.TabularInline):
