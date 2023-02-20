@@ -546,6 +546,9 @@ class Proyecto(models.Model):
     titulo = models.CharField(max_length=200)
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['-fecha', ]
+    
     def __str__(self):
         return '"%s" por %s' % (self.titulo,
                                 self.estudiante)

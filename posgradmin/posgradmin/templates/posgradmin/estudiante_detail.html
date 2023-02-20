@@ -68,7 +68,11 @@
   
   <ul class="">
     {% for p in estudiante.proyecto_set.all %}
-    <li>{{ p.titulo }}<br />{{ p.fecha}}</li>
+    <li>
+      <strong>{{ p.fecha}}</strong>
+      <br />
+      {{ p.titulo }}
+    </li>
     {% endfor %}
   </ul>
 
