@@ -62,11 +62,11 @@
 </div>
 
 
-<div class="flex flex-row">
+<div class="rounded shadow m-2 p-4 bg-orange-100">
 
   <h2 class="text-l">Proyecto</h2>
   
-  <ul class="rounded shadow m-2 p-4 bg-orange-100">
+  <ul class="">
     {% for p in estudiante.proyecto_set.all %}
     <li>{{ p.titulo }} - {{ p.fecha}}</li>
     {% endfor %}
