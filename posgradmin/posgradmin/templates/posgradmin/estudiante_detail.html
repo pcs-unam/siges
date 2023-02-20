@@ -68,11 +68,26 @@
   
   <ul class="">
     {% for p in estudiante.proyecto_set.all %}
-    <li>{{ p.titulo }} - {{ p.fecha}}</li>
+    <li>{{ p.titulo }}<br />{{ p.fecha}}</li>
     {% endfor %}
   </ul>
 
 </div>
+
+{% if estudiante.campo_conocimiento %}
+<div class="rounded shadow m-2 p-4 bg-orange-100">
+  <h2 class="text-l">Campo de Conocimiento</h2>
+  {{ estudiante.campo_conocimiento }}
+</div>
+{% endif %}
+
+
+{% if estudiante.lineas_investigacion %}
+<div class="rounded shadow m-2 p-4 bg-orange-100">
+  <h2 class="text-l">Linea de investigación</h2>
+  {{ estudiante.lineas_investigacion }}
+</div>
+{% endif %}
 
 
 <div class="flex flex-col rounded shadow m-2 p-4 bg-amber-50">
