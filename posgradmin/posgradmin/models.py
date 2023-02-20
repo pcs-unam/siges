@@ -338,8 +338,9 @@ class Estudiante(models.Model):
 
     def comite_vigente(self):
         if self.historial.count() > 0:
-            y = self.historial.filter(estado='inscrito').latest('fecha').year
-            s = self.historial.filter(estado='inscrito').latest('fecha').semestre   # registro mas reciente de inscripcion determina comite
+            m = self.membresiacomite_set.order_by('year', 'semestre').last()
+            y = m.year
+            s = m.semestre
             return self.membresiacomite_set.filter(year=y, semestre=s)
         else:
             return []
