@@ -38,7 +38,7 @@
     {% if estudiante.user.perfil.telefono_movil %}<li>móvil: {{ estudiante.user.perfil.telefono_movil}}</li>{% endif %}
     {% if estudiante.user.perfil.website %}<li>website: <a href="{{ estudiante.user.perfil.website }}">{{ estudiante.user.perfil.website }}</a></li>{% endif %}
     <li><a href="mailto:{{ estudiante.user.email }}">{{ estudiante.user.email }}</a></li>
-    {% if estudiante.user.perfil.direccion1 %}<li>dirección: {{ estudiante.user.perfil.direccion1 }} CP {{ estudiante.user.perfil.codigo_postal }}</li>{% endif %}    
+    {% if estudiante.user.perfil.direccion1 %}<li>dirección: {{ estudiante.user.perfil.direccion1 }} CP {{ estudiante.user.perfil.codigo_postal }}</li>{% endif %}
   </ul>
 
   <ul class="rounded shadow m-2 p-4 bg-blue-100">
@@ -54,7 +54,7 @@
   <ul class="rounded shadow m-2 p-4 bg-green-100">
     <li>Plan de estudios: <strong>{{ estudiante.plan }}</strong></li>
     <li>Generación: {{ estudiante.generacion }}</li>
-    <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>    
+    <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
     <li>Entidad: {{ estudiante.entidad }}</li>
     <li>Estatus: {{ estudiante.estado }}</li>
   </ul>
@@ -62,9 +62,22 @@
 </div>
 
 
+<div class="flex flex-row">
+
+  <h2 class="text-l">Proyecto</h2>
+  
+  <ul class="rounded shadow m-2 p-4 bg-orange-100">
+    {% for p in estudiante.proyecto_set.all %}
+    <li>{{ p.titulo }} - {{ p.fecha}}</li>
+    {% endfor %}
+  </ul>
+
+</div>
+
+
 <div class="flex flex-col rounded shadow m-2 p-4 bg-amber-50">
 
-  <h2 class="text-l">Grados Académicos</h2>  
+  <h2 class="text-l">Grados Académicos</h2>
 
   {% for g in estudiante.user.gradoacademico_set.all %}
   <div class="m-2 p-2 bg-lime-50 shadow">
@@ -85,7 +98,7 @@
     {% for m in estudiante.comite_vigente %}
     <tr>
       <td>{{ m.get_tipo_display }}</td><td>{{ m.tutor }}</td>
-    </tr>      
+    </tr>
     {% endfor %}
   </table>
   </div>
@@ -112,7 +125,7 @@
     {% for h in estudiante.historial.all %}
     <tr>
       <td>{{ h.fecha }}</td><td>{{ h.estado }}</td><td>{{ h.plan }}</td><td>{{ h.institucion }}</td><td>{{ h.notas_set.all }}</td>
-    </tr>      
+    </tr>
     {% endfor %}
   </table>
   </div>
