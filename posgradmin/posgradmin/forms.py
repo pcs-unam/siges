@@ -22,7 +22,7 @@ class TogglePerfilEditarForm(forms.Form):
     helper.layout = Layout(
         Field('toggle'),
         FormActions(
-            Submit('OK', 'OK', css_class="btn-primary")
+            Submit('OK', 'OK', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700")
         )
     )
 
@@ -41,7 +41,7 @@ class AcademicoInvitarForm(forms.Form):
         Field('tutor_o_profesor'),
         Field('lista'),
         FormActions(
-            Submit('subir', 'Crear candidatos', css_class="btn-primary")
+            Submit('subir', 'Crear candidatos', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700")
         )
     )
 
@@ -75,7 +75,7 @@ class SolicitudForm(forms.Form):
         Field('anexo'),
 
         FormActions(
-            Submit('someter', 'Someter Solicitud', css_class="btn-primary")
+            Submit('someter', 'Someter Solicitud', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700")
         )
     )
 
@@ -172,7 +172,7 @@ class PerfilModelForm(forms.ModelForm):
                            'codigo_postal'),
                     Class="panel-body"),
                 Class="panel panel-default"),
-            Submit('guardar', 'guardar'))
+            Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"))
 
     class Meta:
         model = Perfil
@@ -191,7 +191,7 @@ class EstudianteAutoregistroForm(forms.Form):
         Field('proyecto', size=70),
         'campo_conocimiento',
         FormActions(
-            Submit('registrarme', 'Registrarme', css_class="btn-primary"))
+            Submit('registrarme', 'Registrarme', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"))
     )
 
 
@@ -203,7 +203,7 @@ class EstudianteModelForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
-        self.helper.layout.append(Submit('guardar', 'guardar'))
+        self.helper.layout.append(Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"))
 
     class Meta:
         model = Estudiante
@@ -253,7 +253,7 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
                          """)),
              Div(Column('disponible_tutor', "disponible_miembro"),
                  Class="panel panel-default"),
-             Submit('guardar', 'guardar'),
+             Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
         )
 
     class Meta:
@@ -282,7 +282,7 @@ class PerfilProfesorModelForm(forms.ModelForm):
                         'anexo_CV',
                         'ultimo_grado'),
                     Class="panel-body")),
-            Submit('guardar', 'guardar'),
+            Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
         )
 
     class Meta:
@@ -340,7 +340,7 @@ class AcademicoResumenCV_reacreditacion_ModelForm(forms.ModelForm):
                 HTML("<h3>Otras publicaciones</h3>"),
                 'otras_publicaciones',
                 Class="panel-body"),
-            Submit('guardar', 'guardar'),
+            Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
         )
 
     class Meta:
@@ -389,7 +389,7 @@ class AcademicoResumenCVModelForm(forms.ModelForm):
                 HTML("<h4>Otras publicaciones</h4>"),
                 'otras_publicaciones',
                 Class="panel-body"),
-            Submit('guardar', 'guardar'),
+            Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
         )
 
     class Meta:
@@ -434,7 +434,7 @@ class AcademicoActividadModelForm(forms.ModelForm):
                 'campos_de_conocimiento',
             ),
                 Class="panel-body"),
-            Submit('guardar', 'guardar'))
+            Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"))
 
     class Meta:
         model = Academico
@@ -458,7 +458,7 @@ class SolicitudCommentForm(forms.Form):
     helper.layout = Layout(
         Field('comentario', rows="3", cols="40", css_class='input-xlarge'),
         FormActions(
-            Submit('comentar', 'comentar', css_class="btn-primary"),
+            Submit('comentar', 'comentar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
         )
     )
 
@@ -473,7 +473,7 @@ class SolicitudAgendarForm(forms.Form):
     helper.layout = Layout(
         Field('sesion'),
         FormActions(
-            Submit('agendar', 'agendar', css_class="btn-primary"),
+            Submit('agendar', 'agendar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
         )
     )
 
@@ -487,7 +487,7 @@ class SolicitudDictamenForm(forms.Form):
 
     helper = FormHelper()
     denegar = Submit('denegar', 'denegar', css_class="btn-danger")
-    denegar.field_classes.replace('btn-primary', 'btn-danger')
+    denegar.field_classes.replace('bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700', 'btn-danger')
 
     helper.layout = Layout(
         Field('comentario', rows="3", cols="40", css_class='input-xlarge'),
@@ -508,7 +508,7 @@ class SolicitudAnexoForm(forms.Form):
     helper.layout = Layout(
         'anexo',
         FormActions(
-            Submit('anexar', 'anexar', css_class="btn-primary"),
+            Submit('anexar', 'anexar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
         )
     )
 
@@ -608,7 +608,7 @@ class ProyectoModelForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
-        self.helper.layout.append(Submit('guardar', 'guardar'))
+        self.helper.layout.append(Submit('guardar', 'guardar',css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"))
 
 
 # class CursoModelForm(forms.ModelForm):
@@ -632,6 +632,6 @@ class EstudianteCargarForm(forms.Form):
         Field('semestre'),
         Field('lista'),
         FormActions(
-            Submit('cargar', 'cargar', css_class="btn-primary"),
+            Submit('cargar', 'cargar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
         )
     )
