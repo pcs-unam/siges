@@ -311,6 +311,16 @@ class Estudiante(models.Model):
 
         return plan
 
+    
+    def ultimo_proyecto(self):
+        if self.proyecto_set.count() > 0:
+            p = self.proyecto_set.latest('fecha')
+        else:
+            p = None
+
+        return p
+    
+    
     def ultimo_estado(self):
         if self.historial.count() > 0:
             ultimo_estado = self.historial.latest('fecha').estado
