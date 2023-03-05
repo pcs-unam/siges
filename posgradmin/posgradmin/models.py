@@ -484,20 +484,40 @@ class Historial(models.Model):
         return u"[%s] %s: %s" % (self.fecha, self.estudiante, self.plan)
 
 
-class EstanciaPAEP(models.Model):
+class ApoyoMovilidad(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=200, help_text="Nombre de la actividad")
+
     fecha_solicitud = models.DateField("Fecha de solicitud", default=datetime.date.today)
+
+    year = models.PositiveSmallIntegerField("año",
+                                            blank=True, null=True)
+    
+    semestre = models.PositiveSmallIntegerField(
+        "semestre",
+        choices=((1, 1),
+                 (2, 2)))
+
     fecha_inicio = models.DateField(blank=True, null=True)
     fecha_fin = models.DateField(blank=True, null=True)
 
-    #País
-    #Ciudad
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
-
+    internacional = models.BooleanField(default=True)
+    ciudad = models.CharField(max_length=200, blank=True, null=True)
+    pais = models.CharField(max_length=200, blank=True, null=True)
+    
     monto_otorgado = models.DecimalField("Monto otorgado en pesos mexicanos", max_digits=8, decimal_places=2)
 
-    tipo = models.CharField(
+    tipo_apoyo = models.CharField(
+        max_length=255,
+        default='paep',
+        choices=(
+            ('paep', 'PAEP'),
+            ('larga duración', 'Larga Duración'),
+            ('otro', 'otro')    # ver como registrar otro
+        ))
+
+    tipo_actividad = models.CharField(
         max_length=25,
         default='estancia',
         choices=(
@@ -513,21 +533,19 @@ class EstanciaPAEP(models.Model):
         default='solicitado',
         choices=(
             ('solicitado', 'solicitado'),
-            ('otorgado', 'otorgado'),
-            ('rechazado', 'rechazado'),
-            ('concluido', 'concluido'),
-            ('sin producto', 'sin producto'),
+            ('reporte entregado', 'reporte entregado'),
+            ('cancelado', 'cancelado'),            
         ))
 
     notas = GenericRelation(Nota,
                             related_query_name='estancia')
 
     class Meta:
-        verbose_name_plural = "Estancias PAEP"
+        verbose_name_plural = "Apoyos para Movilidad"
 
     def __str__(self):
         return u"%s | %s | %s" % (self.estudiante,
-                                self.tipo,
+                                self.tipo_apoyo,
                                 self.nombre)
 
 
