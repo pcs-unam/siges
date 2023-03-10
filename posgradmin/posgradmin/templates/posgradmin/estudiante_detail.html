@@ -111,7 +111,16 @@
   <table>
     {% for m in estudiante.comite_vigente %}
     <tr>
-      <td>{{ m.get_tipo_display }}</td><td>{{ m.tutor }}</td>
+      <td>
+	{{ m.get_tipo_display }}
+      </td>
+      <td>
+	{% if m.tutor %}
+	{{ m.tutor }}
+	{% elif m.invitado %}
+	{{ m.invitado }} (invitado)
+	{% endif %}
+      </td>
     </tr>
     {% endfor %}
   </table>

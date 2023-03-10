@@ -13,7 +13,7 @@ from django.contrib.contenttypes.admin import GenericStackedInline, GenericTabul
 
 from .models import Perfil, Academico, Estudiante, \
     GradoAcademico, Institucion, CampoConocimiento, \
-    Proyecto, \
+    Proyecto, Invitado, InvitadoMembresiaComite, \
     Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
     ConvocatoriaCurso, Historial, MembresiaComite, Nota, \
@@ -104,7 +104,7 @@ class MembresiaComiteAdmin(VersionAdmin):
                    'year',
                    'semestre' ]
 
-    autocomplete_fields = ['estudiante', 'tutor',]
+    autocomplete_fields = ['estudiante', 'tutor', ]
 
 
 @admin.register(ApoyoMovilidad)
@@ -118,7 +118,7 @@ class ApoyoMovilidadAdmin(AutoAutor, VersionAdmin):
     list_display = ['fecha_solicitud',
                     'estudiante',
                     'tipo_apoyo',
-                    'tipo_actividad',                    
+                    'tipo_actividad',
                     'nombre',
                     'institucion',
                     'fecha_inicio',
@@ -131,12 +131,12 @@ class ApoyoMovilidadAdmin(AutoAutor, VersionAdmin):
     inlines = [NotaInline, ]
 
     autocomplete_fields = ['estudiante', 'institucion',]
-    
+
 
 
 
 class GraduadoAdmin(AutoAutor, VersionAdmin):
-    autocomplete_fields = ['estudiante', ]    
+    autocomplete_fields = ['estudiante', ]
     search_fields = ['estudiante__cuenta',
                      'estudiante__user__first_name',
                      'estudiante__user__last_name',
@@ -201,8 +201,18 @@ class TutoresInline(admin.TabularInline):
     extra = 0
     classes = ('grp-collapse grp-closed',)
     fields = ['year', 'semestre', 'tutor', 'tipo', ]
-    autocomplete_fields = ['tutor',]
+    autocomplete_fields = ['tutor', ]
 
+
+class TutoresInvitadosInline(admin.TabularInline):
+    model = InvitadoMembresiaComite
+    fk_name = 'estudiante'
+    extra = 0
+    classes = ('grp-collapse grp-closed',)
+    fields = ['year', 'semestre', 'invitado', 'tipo', ]
+    autocomplete_fields = ['invitado', ]
+
+    
 class ProyectosInline(admin.TabularInline):
     model = Proyecto
     fk_name = 'estudiante'
@@ -211,7 +221,12 @@ class ProyectosInline(admin.TabularInline):
     fields = ['fecha', 'titulo', ]
 
 
-    
+@admin.register(Invitado)
+class InvitadoAdmin(AutoAutor, VersionAdmin):
+    search_fields = ['nombre', 'correo']
+    list_display = ['nombre', 'correo']
+
+
 
 @admin.register(Estudiante)
 class EstudianteAdmin(AutoAutor, VersionAdmin):
@@ -224,7 +239,7 @@ class EstudianteAdmin(AutoAutor, VersionAdmin):
     list_filter = ['estado', 'plan']
     list_display = ['fullname', 'ficha', 'plan', 'estado']
 
-    inlines = [HistorialInline, TutoresInline, ProyectosInline, NotaInline]
+    inlines = [HistorialInline, TutoresInline, TutoresInvitadosInline, ProyectosInline, NotaInline]
 
     def fullname(self, obj):
         name = obj.user.get_full_name()
@@ -439,7 +454,7 @@ class CursoAdmin(AutoAutor, VersionAdmin):
                concluye_curso,
                exporta_emails_cursos,
     ]
-               
+
 
 
 admin.site.register(Curso, CursoAdmin)
@@ -508,7 +523,7 @@ class GradosInline(admin.TabularInline):
     classes = ('grp-collapse grp-closed',)
     fields = ['fecha_obtencion', 'nivel', 'grado_obtenido', 'institucion']
 
-    
+
 class UserAdmin(AuthUserAdmin):
     inlines = [UserProfileInline, GradosInline, AnexoExpedienteInline]
     ordering = ('username', 'first_name', 'last_name', '-date_joined')

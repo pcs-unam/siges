@@ -236,6 +236,15 @@ class Perfil(models.Model):
             self.user.get_username(), self.__str__())
 
 
+
+class Invitado(models.Model):
+    nombre = models.CharField(max_length=333)
+    correo = models.EmailField(blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre
+    
+    
 class GradoAcademico(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -351,7 +360,9 @@ class Estudiante(models.Model):
             m = self.membresiacomite_set.order_by('year', 'semestre').last()
             y = m.year
             s = m.semestre
-            return self.membresiacomite_set.filter(year=y, semestre=s)
+            tutores = self.membresiacomite_set.filter(year=y, semestre=s)
+            invitados = self.invitadomembresiacomite_set.filter(year=y, semestre=s)
+            return list(tutores) + list(invitados)
         else:
             return []
 
@@ -1484,10 +1495,43 @@ class Acreditacion(models.Model):
             anexo.save()
 
 
+class InvitadoMembresiaComite(models.Model):
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+    invitado = models.ForeignKey(Invitado,
+                                 on_delete=models.CASCADE)
+    
+    year = models.PositiveSmallIntegerField("Año")
+    semestre = models.PositiveSmallIntegerField(
+        choices=((1, 1), (2, 2)))
+    tipo = models.CharField(
+        max_length=25,
+        default='D',
+        choices=(
+            ('D', 'tutor'),
+            ('M', 'miembro de comité de doctorado'),
+            ('T', 'tutor de doctorado'),
+            ('A', 'tutor de maestría'),
+            ('X', 'miembro de comité de maestría'),
+            ('Y', 'segundo tutor de maestría'),
+            ('Z', 'tutor principal de maestría')))
+
+    class Meta:
+        verbose_name_plural = "Invitados en Comités Tutorales"
+        ordering = ['year', 'semestre' ]
+
+    def __str__(self):
+        return "%s : %s %s-%s: %s" % (self.estudiante,
+                                  self.invitado,
+                                  self.year,
+                                  self.semestre,
+                                  self.tipo)
+
+    
 class MembresiaComite(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     tutor = models.ForeignKey(Academico,
                               on_delete=models.CASCADE)
+    
     year = models.PositiveSmallIntegerField("Año")
     semestre = models.PositiveSmallIntegerField(
         choices=((1, 1), (2, 2)))
