@@ -105,6 +105,7 @@
 </div>
 
 
+{% if estudiante.comite_vigente %}
 <div class="rounded shadow m-2 p-4 bg-lime-100">
   <h2 class="text-l">Comité ({{ estudiante.ultima_inscripcion }})</h2>
   <div class="bg-gray-100">
@@ -126,6 +127,7 @@
   </table>
   </div>
 </div>
+{% endif %}
 
 
 {% if estudiante.notas.count > 0 %}

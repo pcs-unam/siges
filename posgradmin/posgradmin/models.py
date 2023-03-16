@@ -356,7 +356,7 @@ class Estudiante(models.Model):
 
 
     def comite_vigente(self):
-        if self.historial.count() > 0:
+        if self.membresiacomite_set.count() > 0:
             m = self.membresiacomite_set.order_by('year', 'semestre').last()
             y = m.year
             s = m.semestre
