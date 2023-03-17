@@ -450,6 +450,31 @@ class Graduado(models.Model):
     notas = GenericRelation(Nota,
                             related_query_name='historial')
 
+
+class Sede(models.Model):
+    estudiante = models.ForeignKey(Estudiante, related_name='sedes', on_delete=models.CASCADE)
+    plan = models.CharField(
+        max_length=20,
+        choices=((u"Maestría", u"Maestría"),
+                 (u"Doctorado", u"Doctorado")
+                 ))
+    sede = models.CharField(
+        max_length=20,
+        choices=(("CDMX", "CDMX"),
+                 ("León", "León"),
+                 ("Morelia (IIES)", "Morelia (IIES)"),
+                 ("Morelia (ENES)", "Morelia (ENES)"),
+                 ))
+    
+    class Meta:
+        verbose_name_plural = "Sedes administrativas"
+        unique_together = ('estudiante', 'plan')
+
+
+    def __str__(self):
+        return f"Sede administrativa para {self.plan}: {self.sede}"
+        
+
     
 class Historial(models.Model):
     estudiante = models.ForeignKey(Estudiante, related_name='historial', on_delete=models.CASCADE)

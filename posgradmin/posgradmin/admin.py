@@ -17,7 +17,7 @@ from .models import Perfil, Academico, Estudiante, \
     Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
     ConvocatoriaCurso, Historial, MembresiaComite, Nota, \
-    ApoyoMovilidad, Graduado
+    ApoyoMovilidad, Graduado, Sede
 
 
 from .admin_action_academicos import exporta_resumen_academicos, exporta_emails_cursos, exporta_emails_estudiantes
@@ -183,6 +183,15 @@ class HistorialAdmin(AutoAutor, VersionAdmin):
     autocomplete_fields = ['estudiante',]
     ordering = ("-fecha", "-year", "-semestre")
 
+class SedeInline(admin.TabularInline):
+    model = Sede
+    fk_name = 'estudiante'
+    extra = 0
+    show_change_link = True
+    classes = ('grp-collapse grp-closed',)
+    fields = ['plan', 'sede']
+
+
 class HistorialInline(admin.TabularInline):
     model = Historial
     fk_name = 'estudiante'
@@ -194,7 +203,7 @@ class HistorialInline(admin.TabularInline):
     ordering = ("-fecha", "-year", "-semestre")
     readonly_fields = ['institucion',]
 
-
+    
 class TutoresInline(admin.TabularInline):
     model = MembresiaComite
     fk_name = 'estudiante'
@@ -239,7 +248,7 @@ class EstudianteAdmin(AutoAutor, VersionAdmin):
     list_filter = ['estado', 'plan']
     list_display = ['fullname', 'ficha', 'plan', 'estado']
 
-    inlines = [HistorialInline, TutoresInline, TutoresInvitadosInline, ProyectosInline, NotaInline]
+    inlines = [HistorialInline, SedeInline, TutoresInline, TutoresInvitadosInline, ProyectosInline, NotaInline]
 
     def fullname(self, obj):
         name = obj.user.get_full_name()
