@@ -338,14 +338,24 @@ class Estudiante(models.Model):
 
         return ultimo_estado
 
-    def generacion(self):
-        if self.historial.count() > 0:
-            y = self.historial.earliest('fecha').year
-            s = self.historial.earliest('fecha').semestre
+
+    def generacion(self, plan):
+        if self.historial.filter(plan=plan).count() > 0:
+            h = self.historial.filter(
+                plan=plan).order_by('year', 'semestre').first()
+            y = h.year
+            s = h.semestre
             return f"{y}-{s}"
         else:
             return None
 
+    def generacion_maestria(self):
+        return self.generacion(plan="Maestría")
+
+    def generacion_doctorado(self):
+        return self.generacion(plan="Doctorado")
+
+    
     def entidad(self):
         if self.historial.count() > 0:
             e = self.historial.latest('fecha').institucion

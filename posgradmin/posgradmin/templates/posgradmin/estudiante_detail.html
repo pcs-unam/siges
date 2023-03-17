@@ -53,7 +53,12 @@
 
   <ul class="rounded shadow m-2 p-4 bg-green-100">
     <li>Plan de estudios: <strong>{{ estudiante.plan }}</strong></li>
-    <li>Generación: {{ estudiante.generacion }}</li>
+    {% if estudiante.generacion_maestria %}
+    <li>Generación de Maestría: {{ estudiante.generacion_maestria }}</li>
+    {% endif %}
+    {% if estudiante.generacion_doctorado %}
+    <li>Generación de Doctorado: {{ estudiante.generacion_doctorado }}</li>
+    {% endif %}
     <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
     <li>Entidad: {{ estudiante.entidad }}</li>
     <li>Estatus: {{ estudiante.estado }}</li>
