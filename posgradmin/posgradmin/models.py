@@ -418,7 +418,8 @@ class Graduado(models.Model):
     medalla_alfonso_caso = models.BooleanField(u"Medalla Alfonso Caso",
                                                default=False)
 
-    fecha = models.DateField(default=datetime.date.today)
+    fecha = models.DateField("fecha de graduación",
+                             default=datetime.date.today)
 
     year = models.PositiveSmallIntegerField("año",
                                             blank=True, null=True)
@@ -453,7 +454,9 @@ class Graduado(models.Model):
 class Historial(models.Model):
     estudiante = models.ForeignKey(Estudiante, related_name='historial', on_delete=models.CASCADE)
 
-    fecha = models.DateField(default=datetime.date.today)
+    fecha = models.DateField("fecha del registro",
+                             help_text=u"fecha del registro en la bitácora",                             
+                             default=datetime.date.today)
 
     year = models.PositiveSmallIntegerField("año",
                                             blank=True, null=True)
