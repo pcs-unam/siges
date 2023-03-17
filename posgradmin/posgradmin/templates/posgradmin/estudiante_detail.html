@@ -67,6 +67,26 @@
 </div>
 
 
+{% if estudiante.sedes.all %}
+<div class="rounded shadow m-2 p-4 bg-lime-100">  
+  <h2 class="text-l">Sedes administrativas</h2>
+
+  <div class="bg-gray-100">  
+    <table>
+      <tbody>
+	{% for s in  estudiante.sedes.all %}
+	<tr>
+	  <td>{{ s.plan }}</td>
+	  <td>{{ s.sede }}</td>	
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+
 {% if estudiante.ultimo_proyecto %}
 <div class="rounded shadow m-2 p-4 bg-orange-100">
   <h2 class="text-l">Proyecto</h2>
