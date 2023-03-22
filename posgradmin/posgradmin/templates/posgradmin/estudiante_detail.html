@@ -87,16 +87,26 @@
 {% endif %}
 
 
-{% if estudiante.ultimo_proyecto %}
-<div class="rounded shadow m-2 p-4 bg-orange-100">
+{% if estudiante.proyecto_set.all %}
+<div class="rounded shadow m-2 p-4 bg-lime-100">  
   <h2 class="text-l">Proyecto</h2>
-  <ul class="">
-    <li>
-      {{ estudiante.ultimo_proyecto.titulo }}
-    </li>
-  </ul>
+
+  <div class="bg-gray-100">  
+    <table>
+      <tbody>
+	{% for p in  estudiante.proyecto_set.all %}
+	<tr>
+	  <td>{{ p.plan }}</td>
+	  <td>{{ p.titulo }}</td>	
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endif %}
+
+
 
 {% if estudiante.campo_conocimiento %}
 <div class="rounded shadow m-2 p-4 bg-orange-100">

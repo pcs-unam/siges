@@ -227,7 +227,7 @@ class ProyectosInline(admin.TabularInline):
     fk_name = 'estudiante'
     extra = 0
     classes = ('grp-collapse grp-closed',)
-    fields = ['fecha', 'titulo', ]
+    fields = ['fecha', 'plan', 'titulo', ]
 
 
 @admin.register(Invitado)
@@ -553,7 +553,8 @@ class ProyectoAdmin(VersionAdmin):
                      'fecha',
                      'titulo']
     autocomplete_fields = ['estudiante',]
-    list_display = ['titulo', 'estudiante', 'fecha']
+    list_display = ['fecha', 'plan', 'estudiante', 'titulo',]
+    list_filter = ['plan',]    
 
 
 

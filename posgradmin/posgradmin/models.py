@@ -623,6 +623,13 @@ class Proyecto(models.Model):
     titulo = models.CharField(max_length=200)
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
 
+    plan = models.CharField(
+        max_length=20,
+        choices=[("Maestría", "Maestría"),
+                 ("Doctorado", "Doctorado")],
+        default="Maestría"
+    )    
+    
     class Meta:
         ordering = ['-fecha', ]
     
