@@ -17,7 +17,7 @@ from .models import Perfil, Academico, Estudiante, \
     Curso, Asignatura, Sesion, Adscripcion, \
     LineaInvestigacion, AnexoExpediente, Acreditacion, \
     ConvocatoriaCurso, Historial, MembresiaComite, Nota, \
-    ApoyoMovilidad, Graduado, Sede
+    ApoyoMovilidad, Graduado, Sede, MiembroJuradoGraduacion, InvitadoJuradoGraduacion
 
 
 from .admin_action_academicos import exporta_resumen_academicos, exporta_emails_cursos, exporta_emails_estudiantes
@@ -134,7 +134,19 @@ class ApoyoMovilidadAdmin(AutoAutor, VersionAdmin):
 
 
 
+class InvitadosJuradoInline(admin.TabularInline):
+    model = InvitadoJuradoGraduacion
+    fk_name = 'graduado'
+    extra = 0
+    autocomplete_fields = ['invitado', ]
 
+
+class MiembrosJuradoInline(admin.TabularInline):
+    model = MiembroJuradoGraduacion
+    fk_name = 'graduado'
+    extra = 0
+    autocomplete_fields = ['academico', ]
+    
 class GraduadoAdmin(AutoAutor, VersionAdmin):
     autocomplete_fields = ['estudiante', ]
     search_fields = ['estudiante__cuenta',
@@ -153,7 +165,9 @@ class GraduadoAdmin(AutoAutor, VersionAdmin):
                    'semestre',
                    'plan',
                    'modo_graduacion']
-    inlines = [NotaInline, ]
+    inlines = [InvitadosJuradoInline,
+               MiembrosJuradoInline,
+               NotaInline, ]
     ordering = ("-fecha", "-year", "-semestre")
 
 admin.site.register(Graduado, GraduadoAdmin)

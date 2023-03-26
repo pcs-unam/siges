@@ -450,7 +450,37 @@ class Graduado(models.Model):
     notas = GenericRelation(Nota,
                             related_query_name='historial')
 
+    def __str__(self):
+        return f"{self.estudiante} {self.plan}"
 
+
+class InvitadoJuradoGraduacion(models.Model):
+    graduado = models.ForeignKey(Graduado, on_delete=models.CASCADE)
+    invitado = models.ForeignKey(Invitado,
+                                 on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Invitados en Jurados de Graduación"
+
+    def __str__(self):
+        return f"{self.graduado} {self.invitado}"
+
+
+
+class MiembroJuradoGraduacion(models.Model):
+    graduado = models.ForeignKey(Graduado,
+                                 on_delete=models.CASCADE)
+    academico = models.ForeignKey("Academico",
+                                  on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Académicos en Jurados de Graduación"
+
+    def __str__(self):
+        return f"{self.graduado} {self.academico}"
+    
+
+    
 class Sede(models.Model):
     estudiante = models.ForeignKey(Estudiante, related_name='sedes', on_delete=models.CASCADE)
     plan = models.CharField(
