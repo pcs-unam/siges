@@ -459,6 +459,30 @@ class InvitadoJuradoGraduacion(models.Model):
     invitado = models.ForeignKey(Invitado,
                                  on_delete=models.CASCADE)
 
+    rol_invitado = models.CharField(
+        max_length=25,
+        default='D',
+        choices=(
+            ('presidente', 'presidente'),
+            ('secretario', 'secretario'),
+            ('vocal 1', 'vocal 1'),
+            ('vocal', 'vocal'),
+        )
+    )
+
+    rol_examen = models.CharField(
+        max_length=25,
+        default='D',
+        choices=(
+            ('presidente', 'presidente'),
+            ('secretario', 'secretario'),
+            ('vocal 1', 'vocal 1'),
+            ('vocal', 'vocal'),
+            ('ausente', 'ausente'),            
+        )
+    )
+    
+
     class Meta:
         verbose_name_plural = "Invitados en Jurados de Graduación"
 
@@ -473,6 +497,29 @@ class MiembroJuradoGraduacion(models.Model):
     academico = models.ForeignKey("Academico",
                                   on_delete=models.CASCADE)
 
+    rol_invitado = models.CharField(
+        max_length=25,
+        default='D',
+        choices=(
+            ('presidente', 'presidente'),
+            ('secretario', 'secretario'),
+            ('vocal 1', 'vocal 1'),
+            ('vocal', 'vocal'),
+        )
+    )
+
+    rol_examen = models.CharField(
+        max_length=25,
+        default='D',
+        choices=(
+            ('presidente', 'presidente'),
+            ('secretario', 'secretario'),
+            ('vocal 1', 'vocal 1'),
+            ('vocal', 'vocal'),
+            ('ausente', 'ausente'),            
+        )
+    )
+    
     class Meta:
         verbose_name_plural = "Académicos en Jurados de Graduación"
 
