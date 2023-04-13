@@ -214,7 +214,7 @@ class HistorialInline(admin.TabularInline):
     classes = ('grp-collapse grp-closed',)
 
     fields = ['fecha', 'estado', 'plan', 'year', 'semestre', 'institucion']
-    ordering = ("-fecha", "-year", "-semestre")
+
     readonly_fields = ['institucion',]
 
     

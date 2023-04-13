@@ -314,7 +314,8 @@ class Estudiante(models.Model):
 
     def ultimo_plan(self):
         if self.historial.count() > 0:
-            plan = self.historial.latest('fecha').plan
+            h = e.historial.order_by('year', 'semestre').last()
+            plan = h.plan
         else:
             plan = None
 
@@ -332,7 +333,8 @@ class Estudiante(models.Model):
     
     def ultimo_estado(self):
         if self.historial.count() > 0:
-            ultimo_estado = self.historial.latest('fecha').estado
+            h = e.historial.order_by('year', 'semestre').last()            
+            ultimo_estado = h.estado
         else:
             ultimo_estado = None
 
@@ -604,7 +606,7 @@ class Historial(models.Model):
 
     class Meta:
         verbose_name_plural = "Historial"
-        ordering = ['-fecha', '-year', '-semestre']
+        ordering = ['year', 'semestre']
 
     def __str__(self):
         return u"[%s] %s: %s" % (self.fecha, self.estudiante, self.plan)
