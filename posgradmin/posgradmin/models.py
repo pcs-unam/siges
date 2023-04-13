@@ -436,7 +436,7 @@ class Graduado(models.Model):
     folio_graduacion = models.CharField(u"Folio de acta de examen de grado",
                                         max_length=200, blank=True)
 
-    modo_graduacion = models.CharField(
+    modalidad_graduacion = models.CharField(
         max_length=35,
         default='-',
         choices=(

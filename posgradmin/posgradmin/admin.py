@@ -159,12 +159,12 @@ class GraduadoAdmin(AutoAutor, VersionAdmin):
                     'plan',
                     'year',
                     'semestre',
-                    'modo_graduacion']
+                    'modalidad_graduacion']
 
     list_filter = ['year',
                    'semestre',
                    'plan',
-                   'modo_graduacion']
+                   'modalidad_graduacion']
     inlines = [InvitadosJuradoInline,
                MiembrosJuradoInline,
                NotaInline, ]
