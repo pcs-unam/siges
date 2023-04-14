@@ -1676,7 +1676,6 @@ class MembresiaComite(models.Model):
         max_length=25,
         default='D',
         choices=(
-            ('D', 'tutor'),
             ('M', 'miembro de comité de doctorado'),
             ('T', 'tutor de doctorado'),
             ('A', 'tutor de maestría'),
