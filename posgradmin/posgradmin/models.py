@@ -314,7 +314,7 @@ class Estudiante(models.Model):
 
     def ultimo_plan(self):
         if self.historial.count() > 0:
-            h = e.historial.order_by('year', 'semestre').last()
+            h = self.historial.order_by('year', 'semestre').last()
             plan = h.plan
         else:
             plan = None
@@ -333,7 +333,7 @@ class Estudiante(models.Model):
     
     def ultimo_estado(self):
         if self.historial.count() > 0:
-            h = e.historial.order_by('year', 'semestre').last()            
+            h = self.historial.order_by('year', 'semestre').last()
             ultimo_estado = h.estado
         else:
             ultimo_estado = None
@@ -360,7 +360,9 @@ class Estudiante(models.Model):
     
     def entidad(self):
         if self.historial.count() > 0:
-            e = self.historial.latest('fecha').institucion
+            h = self.historial.filter(
+                estado='inscrito').order_by('year', 'semestre').last()
+            e = h.institucion
         else:
             e = None
 
@@ -381,7 +383,8 @@ class Estudiante(models.Model):
 
     def ultima_inscripcion(self):
         if self.historial.count() > 0:
-            h = self.historial.filter(estado="inscrito").latest('fecha')
+            h = self.historial.filter(
+                estado='inscrito').order_by('year', 'semestre').last()
             y = h.year
             s = h.semestre
             return f"{y}-{s}"
@@ -452,6 +455,19 @@ class Graduado(models.Model):
     notas = GenericRelation(Nota,
                             related_query_name='historial')
 
+
+    def copia_estado_graduado(self):
+        if self.estudiante.historial.filter(estado='graduado',
+                                            plan=self.plan).count() == 0:
+            h = Historial()
+            h.estudiante = self.estudiante
+            h.year = self.year
+            h.semestre = self.semestre
+            h.plan = self.plan
+            h.estado = 'graduado'
+            h.institucion = self.estudiante.entidad()
+            h.save()
+        
     def __str__(self):
         return f"{self.estudiante} {self.plan}"
 
