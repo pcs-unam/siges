@@ -71,13 +71,13 @@ class ProponerAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
         form = self.form_class(initial={'academicos': [request.user.academico, ]})
 
         breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
-                       ('', 'Proponer Asignatura')
+                       ('', 'Proponer curso')
                       )
 
         return render(request,
                       self.template,
                       {
-                          'title': 'Proponer Asignatura',
+                          'title': 'Proponer curso',
                           'breadcrumbs': breadcrumbs,
                           'form': form
                        })

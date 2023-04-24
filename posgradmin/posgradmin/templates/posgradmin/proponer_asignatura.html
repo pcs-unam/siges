@@ -9,7 +9,7 @@
 {% block content %}
 
 <a href="https://github.com/pcs-unam/siges/files/4294692/Formato.cursos.nuevos.docx">
-  Descargue aquí el formato para proponer una nueva asignatura.
+  Descargue aquí el formato para proponer un nuevo curso.
 </a>
 
 
@@ -20,15 +20,17 @@
       {{ form.as_table }}
     </table>
 
-    <p>
-      Una vez propuesto el curso, es necesario ingresar NUEVAMENTE a
-      la convocatoria y elegirlo de la lista.
-    </p>
         
     <button type="submit"
 	    class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700">
       {{ title }}
     </button>
+
+    <p>
+      Una vez propuesto el curso, es necesario ingresar NUEVAMENTE a
+      la convocatoria y elegirlo de la lista.
+    </p>
+
   </form>
 </div>
 
