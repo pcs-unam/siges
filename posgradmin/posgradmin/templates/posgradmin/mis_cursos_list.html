@@ -53,7 +53,7 @@
 	{% for a in curso.academicos.all %}
 	<li>
 	  {% if request.user.is_staff %}
-	  {{ a.perfil_comite_anchor }}
+	  {{ a.perfil_comite_anchor|safe }}
 	  {% else %}
 	  {{ a }}
 	  {% endif %}
@@ -67,6 +67,7 @@
     <li>{{ curso.sede }}</li>
     <li>{{ curso.aula }}</li>
     <li>{{ curso.horario}}</li>
+    <li>{{ curso.observaciones}}</li>    
   </ul>
 
 </div>

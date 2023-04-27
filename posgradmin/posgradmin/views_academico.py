@@ -155,8 +155,10 @@ class SolicitaCurso(LoginRequiredMixin, UserPassesTestMixin, View):
                 semestre=convocatoria.semestre,
                 sede=request.POST['sede'],
                 aula=request.POST['aula'],
+                observaciones=request.POST['observaciones'],
                 horario=request.POST['horario'])
             curso.save()
+            print(curso.observaciones)
 
             for ac_id in request.POST.getlist('academicos'):
                 ac = models.Academico.objects.get(pk=int(ac_id))
@@ -211,12 +213,12 @@ class CursoView(LoginRequiredMixin, UserPassesTestMixin, View):
 
         asignatura = curso.asignatura
 
-
         form = self.form_class(request.POST)
         if form.is_valid():
             curso.sede = request.POST['sede']
             curso.aula = request.POST['aula']
             curso.horario = request.POST['horario']
+            curso.observaciones = request.POST['observaciones']
             curso.save()
 
             curso.academicos.clear()
