@@ -53,6 +53,48 @@ class AcademicoAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplet
 
 
 
+
+
+class PanelConvocatoriaCursos(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+    template = 'posgradmin/panel_convocatoria_cursos.html'
+
+    def test_func(self):
+        if auth.is_academico(self.request.user):
+            if self.request.user.academico.acreditacion in ['D', 'M', 'P',
+                                                            'candidato profesor']:
+                return True
+        return False
+
+
+    def get(self, request, *args, **kwargs):
+
+
+        if datetime.datetime.now().month <= 6:
+            current_year = datetime.datetime.now().year + 1
+            current_semester = 1
+        else:
+            current_year = datetime.datetime.now().year
+            current_semester = 2
+
+        breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
+                       ('', f'Convocatoria {current_year}-{current_semester}')
+                      )
+
+        conv = models.ConvocatoriaCurso.objects.filter(year=current_year,
+                                                       semestre=current_semester,
+                                                       status='cerrada').order_by('year', 'semestre').last()
+
+        
+        return render(request,
+                      self.template,
+                      {
+                          'title': f'Convocatoria {current_year}-{current_semester}',
+                          'breadcrumbs': breadcrumbs,
+                          'conv': conv
+                       })
+
+
 class ProponerAsignatura(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
     template = 'posgradmin/proponer_asignatura.html'
@@ -271,11 +313,11 @@ class CursoConstancia(LoginRequiredMixin, UserPassesTestMixin, View):
         profesor_invitado = request.POST['profesor_invitado']
 
         horas_impartidas = request.POST['horas_impartidas']
-        
+
         outdir = '%s/perfil-academico/%s/' % (MEDIA_ROOT,
                                               request.user.academico.id)
         pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
-        
+
         tmpname = 'cursoplain_%s_%s.pdf' % (curso.id,
                                             slugify(profesor_invitado)
         )
@@ -377,7 +419,7 @@ class CursoConstanciaEstudiante(LoginRequiredMixin, UserPassesTestMixin, View):
             final_name = tmpname.replace('cursoplain', 'constancia_curso')
 
 
-            os.chdir(outdir)            
+            os.chdir(outdir)
             subprocess.run(["pandoc",
                             outdir + tmpname + '.md',
                             "--to",'latex',

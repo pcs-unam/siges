@@ -15,7 +15,7 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     TogglePerfilEditar
 
 from posgradmin.views_academico import \
-    EligeAsignatura, SolicitaCurso, \
+    EligeAsignatura, SolicitaCurso, PanelConvocatoriaCursos,\
     AcademicoAutocomplete, CursoView, MisCursos, ProponerAsignatura, CursoConstancia, CursoConstanciaEstudiante
 
 from django.conf.urls.static import static
@@ -140,6 +140,10 @@ urlpatterns = [
         EligeAsignatura.as_view(),
         name="elige_asignatura"),
 
+    re_path('^convocatoria-cursos/',
+        PanelConvocatoriaCursos.as_view(),
+        name="panel_convocatoria_cursos"),
+    
     re_path('^cursos/mis/',
         MisCursos.as_view(),
         name="mis_cursos"),
