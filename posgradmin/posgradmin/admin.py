@@ -446,7 +446,7 @@ concluye_curso.short_description = "Marcar cursos como concluidos"
 
 
 class CursoAdmin(AutoAutor, VersionAdmin):
-    list_display = ['asignatura', 'lista_academicos',
+    list_display = ['asignatura', 'programa', 'lista_academicos',
                     'year', 'semestre', 'intersemestral', 'sede', 'status']
     list_filter = ['year',
                    'semestre',
@@ -470,6 +470,12 @@ class CursoAdmin(AutoAutor, VersionAdmin):
 
     lista_academicos.short_description = "Académicos"
 
+    def programa(self, obj):
+        return format_html("<a href='%s'>programa</a>" % obj.asignatura.programa_url())
+
+    programa.short_description = "Programa"
+
+    
     autocomplete_fields = ['academicos',]
     readonly_fields = ['profesores', 'contacto', ]
 
