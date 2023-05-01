@@ -62,7 +62,9 @@ def export(outdir):
     for campo in CampoConocimiento.objects.all():
 
         academicos = campo.academico_set.filter(
-            Q(acreditacion='M') | Q(acreditacion='D'),
+            Q(acreditacion='M') |
+            Q(acreditacion='MCT_M') |
+            Q(acreditacion='D'),
         ).order_by('user__last_name')
 
         index_md = path.join(outdir, 'indice_%s.md' % slugify(campo.nombre))

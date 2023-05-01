@@ -31,7 +31,8 @@ class AcademicoAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplet
 
     def test_func(self):
         if auth.is_academico(self.request.user):
-            if self.request.user.academico.acreditacion in ['D', 'M', 'P', 'E',
+            if self.request.user.academico.acreditacion in ['D', 'M', 'MCT_M',
+                                                            'P', 'E',
                                                             'candidato profesor']:
                 return True
         return False
@@ -42,6 +43,7 @@ class AcademicoAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplet
         qs = models.Academico.objects.filter(Q(acreditacion='candidato profesor')
                                              | Q(acreditacion='P')
                                              | Q(acreditacion='M')
+                                             | Q(acreditacion='MCT_M')
                                              | Q(acreditacion='D')
                                              | Q(acreditacion='E'))
 
@@ -85,7 +87,7 @@ class PanelConvocatoriaCursos(LoginRequiredMixin, UserPassesTestMixin, View):
                                                        semestre=current_semester,
                                                        status='cerrada').order_by('year', 'semestre').last()
 
-        
+
         return render(request,
                       self.template,
                       {
