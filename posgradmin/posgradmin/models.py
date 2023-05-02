@@ -241,7 +241,8 @@ class Perfil(models.Model):
 class Invitado(models.Model):
     nombre = models.CharField(max_length=333)
     correo = models.EmailField(blank=True, null=True)
-
+    descripcion = models.TextField(blank=True)
+    
     def __str__(self):
         return self.nombre
 
