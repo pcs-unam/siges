@@ -26,23 +26,25 @@ los temarios de cada uno.
 </p>
 
 
-<hr>
-
-
+<div class="flex flex-col">
 {% if convocatoria.status == 'abierta' %}
+
 {% for as in asignaturas %}
-<h2>{{ as.asignatura}}</h2>
+<div class="mt-3 p-2 bg-gray-100">
+  <div class="text-lg font-medium">{{ as.asignatura}}</div>
+  <ul>
+    <li>creditos: {{ as.creditos }}</li>
+    <li><a href="{{ as.programa.url }}">programa</a></li>  
+  </ul>
 
-<div style="text-align: right;">
-<a href="{% url 'solicita_curso' convocatoria.id as.id %}">solicitar curso</a>
+  <div class="w-full text-right">
+    <a href="{% url 'solicita_curso' convocatoria.id as.id %}">solicitar curso</a>
+  </div>
 </div>
-
-<ul>
-  <li>creditos: {{ as.creditos }}</li>
-  <li><a href="{{ as.programa.url }}">programa</a></li>  
-</ul>
 {% endfor %}
 {% endif %}
+</div>
+
 
 {% endblock %}
 

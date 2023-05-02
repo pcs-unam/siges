@@ -132,15 +132,16 @@ urlpatterns = [
         name='academico-autocomplete',
         ),
 
+
+    re_path('^convocatoria-cursos/(?P<pk>[0-9]+)/asignatura/elegir/',
+        EligeAsignatura.as_view(),
+        name="elige_asignatura"),
+
     re_path('^convocatoria-cursos/(?P<pk>[0-9]+)/asignatura/(?P<as_id>[0-9]+)/',
         SolicitaCurso.as_view(),
         name="solicita_curso"),
 
-    re_path('^convocatoria-cursos/(?P<pk>[0-9]+)/',
-        EligeAsignatura.as_view(),
-        name="elige_asignatura"),
-
-    re_path('^convocatoria-cursos/',
+    re_path('^convocatoria-cursos/(?P<pk>[0-9]+)/panel/',
         PanelConvocatoriaCursos.as_view(),
         name="panel_convocatoria_cursos"),
     

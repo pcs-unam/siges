@@ -609,9 +609,16 @@ admin.site.register(Acreditacion, AcreditacionAdmin)
 
 
 
-
 class ConvocatoriaCursoAdmin(AutoAutor, VersionAdmin):
-    list_display = ['year', 'semestre', 'status']
+    list_display = ['year', 'semestre', 'status', 'panel']
     list_filter = ['status', ]
     inlines = [NotaInline, ]
+
+    def panel(self, convocatoria):
+        path = reverse('panel_convocatoria_cursos',
+                       args=(convocatoria.id,))
+        return format_html("<a href='%s'>panel</a>" % path)
+
+    panel.short_description = u'Panel para revisión por CA'
+    
 admin.site.register(ConvocatoriaCurso, ConvocatoriaCursoAdmin)

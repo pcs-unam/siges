@@ -76,6 +76,7 @@ class ConvocatoriaCurso(models.Model):
         choices=((1, 1), (2, 2)))
     status = models.CharField(max_length=10,
             choices=[('abierta', 'abierta'),
+                     ('rev CA', 'revisión CA'),
                      ('cerrada', 'cerrada')])
 
     notas = GenericRelation(Nota,
@@ -243,8 +244,8 @@ class Invitado(models.Model):
 
     def __str__(self):
         return self.nombre
-    
-    
+
+
 class GradoAcademico(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -300,10 +301,10 @@ class Estudiante(models.Model):
                                            blank=True, null=True,
                                            on_delete=models.CASCADE)
     lineas_investigacion = models.ForeignKey(LineaInvestigacion,
-                                           blank=True, null=True,
+                                             blank=True, null=True,
                                              on_delete=models.CASCADE)
 
-    
+
     notas = GenericRelation(Nota,
                            related_query_name='estudiante')
 
@@ -321,16 +322,19 @@ class Estudiante(models.Model):
 
         return plan
 
-    
-    def ultimo_proyecto(self):
-        if self.proyecto_set.count() > 0:
-            p = self.proyecto_set.latest('fecha')
+
+    def ultimo_proyecto(self, plan=None):
+        if plan is None:
+            plan = self.ultimo_plan()
+
+        if self.proyecto_set.filter(plan=plan).count() > 0:
+            p = self.proyecto_set.filter(plan=plan).latest('fecha')
         else:
             p = None
 
         return p
-    
-    
+
+
     def ultimo_estado(self):
         if self.historial.count() > 0:
             h = self.historial.order_by('year', 'semestre').last()
@@ -339,6 +343,55 @@ class Estudiante(models.Model):
             ultimo_estado = None
 
         return ultimo_estado
+
+
+    def entidad(self):
+        if self.historial.count() > 0:
+            h = self.historial.filter(
+                estado='inscrito').order_by('year', 'semestre').last()
+            e = h.institucion
+        else:
+            e = None
+
+        return e
+
+
+    def comite_vigente(self):
+        return self.comite(self.ultimo_plan())
+
+    
+    def comite(self, plan):
+        if plan == 'Doctorado':
+            tipos = ['M', 'T']
+        elif plan == "Maestría":
+            tipos = ['A', 'X', 'Y', 'Z']
+        else:
+            print(plan)
+            
+        if self.membresiacomite_set.filter(tipo__in=tipos).count() > 0:
+            m = self.membresiacomite_set.filter(tipo__in=tipos).order_by('year', 'semestre').last()
+            y = m.year
+            s = m.semestre
+            tutores = list(self.membresiacomite_set.filter(tipo__in=tipos, year=y, semestre=s))
+            if plan == 'Doctorado':
+                invitados = list(self.invitadomembresiacomite_set.filter(year=y, semestre=s))
+            else:
+                invitados = []
+            return tutores + invitados
+        else:
+            return []
+
+        
+
+    def ultima_inscripcion(self):
+        if self.historial.count() > 0:
+            h = self.historial.filter(
+                estado='inscrito').order_by('year', 'semestre').last()
+            y = h.year
+            s = h.semestre
+            return f"{y}-{s}"
+        else:
+            return None
 
 
     def generacion(self, plan):
@@ -357,39 +410,6 @@ class Estudiante(models.Model):
     def generacion_doctorado(self):
         return self.generacion(plan="Doctorado")
 
-    
-    def entidad(self):
-        if self.historial.count() > 0:
-            h = self.historial.filter(
-                estado='inscrito').order_by('year', 'semestre').last()
-            e = h.institucion
-        else:
-            e = None
-
-        return e
-
-
-    def comite_vigente(self):
-        if self.membresiacomite_set.count() > 0:
-            m = self.membresiacomite_set.order_by('year', 'semestre').last()
-            y = m.year
-            s = m.semestre
-            tutores = self.membresiacomite_set.filter(year=y, semestre=s)
-            invitados = self.invitadomembresiacomite_set.filter(year=y, semestre=s)
-            return list(tutores) + list(invitados)
-        else:
-            return []
-
-
-    def ultima_inscripcion(self):
-        if self.historial.count() > 0:
-            h = self.historial.filter(
-                estado='inscrito').order_by('year', 'semestre').last()
-            y = h.year
-            s = h.semestre
-            return f"{y}-{s}"
-        else:
-            return None
 
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
@@ -401,6 +421,21 @@ class Estudiante(models.Model):
         return u"%s (%s) %s" % (self.user.get_full_name(),
                                 self.cuenta,
                                 self.estado)
+
+
+    def perfil_plan(self, plan):
+        if self.historial.filter(plan=plan).count == 0:
+            return None
+
+        return {
+            'proyecto': self.ultimo_proyecto(plan),
+            'sede': self.sedes.filter(plan=plan),
+            'tema': (self.lineas_investigacion if plan == 'Doctorado'
+                     else self.campo_conocimiento),
+            'historial': self.historial.filter(
+                plan=plan).order_by('year', 'semestre')
+        }
+
 
     def ficha_a(self):
         return u"""<a href='%sestudiante/%s'>%s</a>""" % (APP_PREFIX,
@@ -467,7 +502,7 @@ class Graduado(models.Model):
             h.estado = 'graduado'
             h.institucion = self.estudiante.entidad()
             h.save()
-        
+
     def __str__(self):
         return f"{self.estudiante} {self.plan}"
 
@@ -496,10 +531,10 @@ class InvitadoJuradoGraduacion(models.Model):
             ('secretario', 'secretario'),
             ('vocal 1', 'vocal 1'),
             ('vocal', 'vocal'),
-            ('ausente', 'ausente'),            
+            ('ausente', 'ausente'),
         )
     )
-    
+
 
     class Meta:
         verbose_name_plural = "Invitados en Jurados de Graduación"
@@ -534,18 +569,18 @@ class MiembroJuradoGraduacion(models.Model):
             ('secretario', 'secretario'),
             ('vocal 1', 'vocal 1'),
             ('vocal', 'vocal'),
-            ('ausente', 'ausente'),            
+            ('ausente', 'ausente'),
         )
     )
-    
+
     class Meta:
         verbose_name_plural = "Académicos en Jurados de Graduación"
 
     def __str__(self):
         return f"{self.graduado} {self.academico}"
-    
 
-    
+
+
 class Sede(models.Model):
     estudiante = models.ForeignKey(Estudiante, related_name='sedes', on_delete=models.CASCADE)
     plan = models.CharField(
@@ -560,7 +595,7 @@ class Sede(models.Model):
                  ("Morelia (IIES)", "Morelia (IIES)"),
                  ("Morelia (ENES)", "Morelia (ENES)"),
                  ))
-    
+
     class Meta:
         verbose_name_plural = "Sedes administrativas"
         unique_together = ('estudiante', 'plan')
@@ -568,14 +603,14 @@ class Sede(models.Model):
 
     def __str__(self):
         return f"Sede administrativa para {self.plan}: {self.sede}"
-        
 
-    
+
+
 class Historial(models.Model):
     estudiante = models.ForeignKey(Estudiante, related_name='historial', on_delete=models.CASCADE)
 
     fecha = models.DateField("fecha del registro",
-                             help_text=u"fecha del registro en la bitácora",                             
+                             help_text=u"fecha del registro en la bitácora",
                              default=datetime.date.today)
 
     year = models.PositiveSmallIntegerField("año",
@@ -636,7 +671,7 @@ class ApoyoMovilidad(models.Model):
 
     year = models.PositiveSmallIntegerField("año",
                                             blank=True, null=True)
-    
+
     semestre = models.PositiveSmallIntegerField(
         "semestre",
         choices=((1, 1),
@@ -649,7 +684,7 @@ class ApoyoMovilidad(models.Model):
     internacional = models.BooleanField(default=True)
     ciudad = models.CharField(max_length=200, blank=True, null=True)
     pais = models.CharField(max_length=200, blank=True, null=True)
-    
+
     monto_otorgado = models.DecimalField("Monto otorgado en pesos mexicanos", max_digits=8, decimal_places=2)
 
     tipo_apoyo = models.CharField(
@@ -678,7 +713,7 @@ class ApoyoMovilidad(models.Model):
         choices=(
             ('solicitado', 'solicitado'),
             ('reporte entregado', 'reporte entregado'),
-            ('cancelado', 'cancelado'),            
+            ('cancelado', 'cancelado'),
         ))
 
     notas = GenericRelation(Nota,
@@ -723,11 +758,11 @@ class Proyecto(models.Model):
         choices=[("Maestría", "Maestría"),
                  ("Doctorado", "Doctorado")],
         default="Maestría"
-    )    
-    
+    )
+
     class Meta:
         ordering = ['-fecha', ]
-    
+
     def __str__(self):
         return '"%s" por %s' % (self.titulo,
                                 self.estudiante)
@@ -1641,7 +1676,7 @@ class InvitadoMembresiaComite(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     invitado = models.ForeignKey(Invitado,
                                  on_delete=models.CASCADE)
-    
+
     year = models.PositiveSmallIntegerField("Año")
     semestre = models.PositiveSmallIntegerField(
         choices=((1, 1), (2, 2)))
@@ -1663,12 +1698,12 @@ class InvitadoMembresiaComite(models.Model):
                                   self.semestre,
                                   self.tipo)
 
-    
+
 class MembresiaComite(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     tutor = models.ForeignKey(Academico,
                               on_delete=models.CASCADE)
-    
+
     year = models.PositiveSmallIntegerField("Año")
     semestre = models.PositiveSmallIntegerField(
         choices=((1, 1), (2, 2)))

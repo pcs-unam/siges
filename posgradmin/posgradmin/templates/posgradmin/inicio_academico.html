@@ -1,15 +1,21 @@
-    
+
+
 {% if convocatorias_curso %}
 {% for c in convocatorias_curso %}
-<div class="bg-yellow-200 p-2 shadow">
+<div class="bg-yellow-200 m-2 p-2 shadow">
   <h1>Convocatoria</h1>
   <h2>Para impartir cursos en el semestre {{ c.year}}-{{ c.semestre }}</h2>
   <p><a href="{% url 'elige_asignatura' c.id %}">registra una solicitud</a></p>
 </div>
 {% endfor %}
-{% else %}
-{% if user.academico.comite_academico %}
-<a href="{% url 'panel_convocatoria_cursos' %}">Última convocatoria</a>
-{% endif %}
 {% endif %}
 
+
+
+{% if user.academico.comite_academico %}
+<div class="bg-indigo-100 m-2 p-2 shadow flex flex-col">
+{% for c in convocatorias_revision %}
+<a href="{% url 'panel_convocatoria_cursos' c.id %}">Panel para revisión de la Convocatoria de Cursos {{ c }}</a>
+{% endfor %}
+</div>
+{% endif %}

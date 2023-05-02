@@ -1,0 +1,35 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+
+<h2 class="text-l">Convocatoria {{ convocatoria|default:"" }}</h2>
+
+<div class="flex flex-col">
+  {% for curso in convocatoria.curso_set.all %}
+  <div class="flex flex-col bg-gray-200 border-2 m-2 p-2">
+    <div class="bg-gray-100 p-2">
+      {{ curso.asignatura }}
+      <br />
+      <a href="{{ curso.asignatura.programa_url }}">programa</a>
+    </div>
+    <div class="p-2">
+      <div class="text-l text-indigo-900 font-semibold">Académicos</div>
+      <ul>
+      {% for a in curso.academicos.all %}
+      <li>
+	{{ a.perfil_comite_anchor|safe }}
+      </li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+
+{% endblock %}
+

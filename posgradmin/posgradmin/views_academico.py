@@ -71,29 +71,17 @@ class PanelConvocatoriaCursos(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def get(self, request, *args, **kwargs):
 
-
-        if datetime.datetime.now().month <= 6:
-            current_year = datetime.datetime.now().year + 1
-            current_semester = 1
-        else:
-            current_year = datetime.datetime.now().year
-            current_semester = 2
-
+        convocatoria = models.ConvocatoriaCurso.objects.get(pk=int(kwargs['pk']))        
         breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
-                       ('', f'Convocatoria {current_year}-{current_semester}')
-                      )
-
-        conv = models.ConvocatoriaCurso.objects.filter(year=current_year,
-                                                       semestre=current_semester,
-                                                       status='cerrada').order_by('year', 'semestre').last()
-
+                       ('', f'Convocatoria {convocatoria}')
+                       )
 
         return render(request,
                       self.template,
                       {
-                          'title': f'Convocatoria {current_year}-{current_semester}',
+                          'title': f'Convocatoria {convocatoria}',
                           'breadcrumbs': breadcrumbs,
-                          'conv': conv
+                          'convocatoria': convocatoria
                        })
 
 

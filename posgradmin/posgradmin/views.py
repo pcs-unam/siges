@@ -222,7 +222,8 @@ class InicioView(LoginRequiredMixin, View):
                       self.template_name,
                       {'title': 'Inicio',
                        'breadcrumbs': self.breadcrumbs,
-                       'convocatorias_curso': models.ConvocatoriaCurso.objects.filter(status='abierta')
+                       'convocatorias_curso': models.ConvocatoriaCurso.objects.filter(status='abierta'),
+                       'convocatorias_revision': models.ConvocatoriaCurso.objects.filter(status='rev CA')
                       })
 
 
