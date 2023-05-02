@@ -1862,7 +1862,7 @@ class Curso(models.Model):
                                        ('publicado', 'publicado'),
                                        ('concluido', 'concluido'),])
 
-    observaciones = models.TextField(blank=True)
+    observaciones_profesores = models.TextField(blank=True, help_text="Observaciones de profesores")
 
     notas = GenericRelation(Nota,
                             related_query_name='curso')
