@@ -512,7 +512,7 @@ class InvitadoJuradoGraduacion(models.Model):
     invitado = models.ForeignKey(Invitado,
                                  on_delete=models.CASCADE)
 
-    rol_invitado = models.CharField(
+    rol_asignado = models.CharField(
         max_length=25,
         default='D',
         choices=(
@@ -550,7 +550,7 @@ class MiembroJuradoGraduacion(models.Model):
     academico = models.ForeignKey("Academico",
                                   on_delete=models.CASCADE)
 
-    rol_invitado = models.CharField(
+    rol_asignado = models.CharField(
         max_length=25,
         default='D',
         choices=(
