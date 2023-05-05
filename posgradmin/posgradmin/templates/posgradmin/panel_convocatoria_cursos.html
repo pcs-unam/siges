@@ -17,7 +17,7 @@
     </div>
     <div class="p-2">
       <div class="text-l text-indigo-900 font-semibold">Académicos</div>
-      <ul>
+      <ul class="bg-green-100 p-2">
       {% for a in curso.academicos.all %}
       <li>
 	{{ a.perfil_comite_anchor|safe }}
@@ -25,6 +25,24 @@
       {% endfor %}
       </ul>
     </div>
+    <div class="p-2 bg-blue-100">
+      <table>
+	<tr>
+	  <td>Sede:</td><td> {{ curso.sede }} </td>
+	</tr>
+	<tr>
+	  <td>Aula:</td><td> {{ curso.aula }} </td>
+	</tr>
+	<tr>
+	  <td>Horario:</td><td> {{ curso.horario }} </td>
+	</tr>
+      </table>
+    </div>
+    {% if curso.observaciones %}
+    <div class="p-2 bg-yellow-100">
+      {{ curso.observaciones }}
+    </div>
+    {% endif %}
   </div>
   {% endfor %}
 </div>

@@ -422,7 +422,7 @@ class AsignaturaAdmin(VersionAdmin):
                      'proponente__last_name']
     list_filter = ['tipo', 'estado', 'campos_de_conocimiento']
     list_display = ['asignatura', 'clave', 'tipo', 'estado', 'proponente']
-
+    autocomplete_fields = ['proponente',]
 
 
 def publica_curso(modeladmin, request, queryset):
@@ -446,7 +446,7 @@ concluye_curso.short_description = "Marcar cursos como concluidos"
 
 
 class CursoAdmin(AutoAutor, VersionAdmin):
-    list_display = ['asignatura', 'programa', 'lista_academicos',
+    list_display = ['asignatura', 'asignatura_proponente', 'programa', 'lista_academicos',
                     'year', 'semestre', 'intersemestral', 'sede', 'status']
     list_filter = ['year',
                    'semestre',
@@ -475,6 +475,16 @@ class CursoAdmin(AutoAutor, VersionAdmin):
 
     programa.short_description = "Programa"
 
+
+    def asignatura_proponente(self, obj):
+        a = obj.asignatura
+        if a.proponente:
+            return a.proponente.get_full_name()
+        else:
+            return None
+
+    asignatura_proponente.short_description = "Propuesta por"
+    
     
     autocomplete_fields = ['academicos',]
     readonly_fields = ['profesores', 'contacto', ]

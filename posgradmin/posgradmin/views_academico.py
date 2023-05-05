@@ -62,9 +62,10 @@ class PanelConvocatoriaCursos(LoginRequiredMixin, UserPassesTestMixin, View):
     template = 'posgradmin/panel_convocatoria_cursos.html'
 
     def test_func(self):
+        if self.request.user.is_superuser:
+            return True
         if auth.is_academico(self.request.user):
-            if self.request.user.academico.acreditacion in ['D', 'M', 'P',
-                                                            'candidato profesor']:
+            if self.request.user.academico.comite_academico:
                 return True
         return False
 
