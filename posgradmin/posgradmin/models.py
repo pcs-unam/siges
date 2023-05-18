@@ -1802,6 +1802,10 @@ class Asignatura(models.Model):
                                    on_delete=models.CASCADE, null=True, blank=True)
 
 
+    notas = GenericRelation(Nota,
+                            related_query_name='asignatura')
+
+    
     class Meta:
         ordering = ['asignatura', 'clave', ]
 

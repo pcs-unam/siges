@@ -423,7 +423,8 @@ class AsignaturaAdmin(VersionAdmin):
     list_filter = ['tipo', 'estado', 'campos_de_conocimiento']
     list_display = ['asignatura', 'clave', 'tipo', 'estado', 'proponente']
     autocomplete_fields = ['proponente',]
-
+    inlines = [NotaInline, ]
+    
 
 def publica_curso(modeladmin, request, queryset):
     for c in queryset.all():
