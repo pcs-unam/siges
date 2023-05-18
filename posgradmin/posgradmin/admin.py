@@ -471,7 +471,7 @@ class CursoAdmin(AutoAutor, VersionAdmin):
     lista_academicos.short_description = "Académicos"
 
     def programa(self, obj):
-        return format_html("<a href='%s'>programa</a>" % obj.asignatura.programa_url())
+        return format_html("<a href='%s'>programa</a>" % obj.asignatura.programa.url)
 
     programa.short_description = "Programa"
 

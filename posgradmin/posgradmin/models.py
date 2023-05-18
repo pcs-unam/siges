@@ -1807,9 +1807,7 @@ class Asignatura(models.Model):
 
     def programa_url(self):
         if self.programa:
-            return "%s/cursos/%s/%s" % (MEDIA_URL,
-                                        self.id,
-                                        os.path.basename(self.programa.path))
+            return self.programa.url
         else:
             return None
 
