@@ -382,7 +382,11 @@ class Estudiante(models.Model):
         else:
             return []
 
-        
+    def comite_maestria(self):
+        return self.comite('Maestría')
+
+    def comite_doctorado(self):
+        return self.comite('Doctorado')
 
     def ultima_inscripcion(self):
         if self.historial.count() > 0:
@@ -412,6 +416,27 @@ class Estudiante(models.Model):
         return self.generacion(plan="Doctorado")
 
 
+    def sede_administrativa(self, plan):
+        return self.sedes.filter(plan=plan).first()
+
+    def sede_adm_maestria(self):
+        return self.sede_administrativa('Maestría')
+
+    def sede_adm_doctorado(self):
+        return self.sede_administrativa('Doctorado')
+
+
+    def proyecto(self, plan):
+        return self.proyecto_set.filter(plan=plan).last()
+
+    def proyecto_maestria(self):
+        return self.proyecto('Maestría')
+
+    def proyecto_doctorado(self):
+        return self.proyecto('Doctorado')
+
+    
+    
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
             return True
@@ -603,7 +628,7 @@ class Sede(models.Model):
 
 
     def __str__(self):
-        return f"Sede administrativa para {self.plan}: {self.sede}"
+        return f"{self.sede}"
 
 
 
@@ -765,8 +790,7 @@ class Proyecto(models.Model):
         ordering = ['-fecha', ]
 
     def __str__(self):
-        return '"%s" por %s' % (self.titulo,
-                                self.estudiante)
+        return self.titulo
 
 
 def anexo_path(instance, filename):

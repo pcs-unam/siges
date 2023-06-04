@@ -17,152 +17,165 @@
   </div>
   {% endif %}
 
-  <div class="text-green-800 text-2xl">
+</div>
+
+
+<ul class="rounded shadow mt-4 p-2 bg-gray-100">
+
+  <h2 class="text-lg">
     {{ estudiante }}
+  </h2>
+
+
+  <div class="grid grid-flow-row-dense grid-cols-2 grid-rows-1 gap-2  mt-4">
+
+    <ul class="rounded shadow p-4 bg-amber-50 text-sm">
+      <li>Género {{ estudiante.user.perfil.genero }}</li>
+      <li>Fecha nacimiento {{ estudiante.user.perfil.fecha_nacimiento }}</li>
+      <li>Nacionalidad {{ estudiante.user.perfil.nacionalidad }}</li>
+      {% if estudiante.user.perfil.CVU %}<li>CVU: {{ estudiante.user.perfil.CVU }}</li>{% endif %}
+      {% if estudiante.user.perfil.curp %}<li>CURP: {{ estudiante.user.perfil.curp }}</li>{% endif %}
+      {% if estudiante.user.perfil.rfc %}<li>RFC: {{ estudiante.user.perfil.rfc }}</li>{% endif %}
+    </ul>
+
+    <ul class="rounded shadow p-4 bg-amber-50 text-sm">
+      <div class="text-lg text-green-800">Contacto</div>    
+      {% if estudiante.user.perfil.telefono %}<li>tel.: {{ estudiante.user.perfil.telefono }}</li>{% endif %}
+      {% if estudiante.user.perfil.telefono_movil %}<li>móvil: {{ estudiante.user.perfil.telefono_movil}}</li>{% endif %}
+      {% if estudiante.user.perfil.website %}<li>website: <a href="{{ estudiante.user.perfil.website }}">{{ estudiante.user.perfil.website }}</a></li>{% endif %}
+      <li><a href="mailto:{{ estudiante.user.email }}">{{ estudiante.user.email }}</a></li>
+      {% if estudiante.user.perfil.direccion1 %}<li>dirección: {{ estudiante.user.perfil.direccion1 }} CP {{ estudiante.user.perfil.codigo_postal }}</li>{% endif %}
+    </ul>
   </div>
-</div>
 
-
-
-<ul class="rounded shadow m-2 p-4 bg-gray-100">
-  <li>Género {{ estudiante.user.perfil.genero }}</li>
-  <li>Fecha nacimiento {{ estudiante.user.perfil.fecha_nacimiento }}</li>
-  <li>Nacionalidad {{ estudiante.user.perfil.nacionalidad }}</li>
-</ul>
-
-
-<div class="flex flex-row">
-
-  <ul class="rounded shadow m-2 p-4 bg-blue-100">
-    {% if estudiante.user.perfil.telefono %}<li>tel.: {{ estudiante.user.perfil.telefono }}</li>{% endif %}
-    {% if estudiante.user.perfil.telefono_movil %}<li>móvil: {{ estudiante.user.perfil.telefono_movil}}</li>{% endif %}
-    {% if estudiante.user.perfil.website %}<li>website: <a href="{{ estudiante.user.perfil.website }}">{{ estudiante.user.perfil.website }}</a></li>{% endif %}
-    <li><a href="mailto:{{ estudiante.user.email }}">{{ estudiante.user.email }}</a></li>
-    {% if estudiante.user.perfil.direccion1 %}<li>dirección: {{ estudiante.user.perfil.direccion1 }} CP {{ estudiante.user.perfil.codigo_postal }}</li>{% endif %}
-  </ul>
-
-  <ul class="rounded shadow m-2 p-4 bg-blue-100">
-    {% if estudiante.user.perfil.CVU %}<li>CVU: {{ estudiante.user.perfil.CVU }}</li>{% endif %}
-    <li>CURP: {{ estudiante.user.perfil.curp }}</li>
-    <li>RFC: {{ estudiante.user.perfil.rfc }}</li>
-  </ul>
-
-</div>
-
-<div class="flex flex-row">
-
-  <ul class="rounded shadow m-2 p-4 bg-green-100">
-    <li>Plan de estudios: <strong>{{ estudiante.plan }}</strong></li>
-    {% if estudiante.generacion_maestria %}
-    <li>Generación de Maestría: {{ estudiante.generacion_maestria }}</li>
-    {% endif %}
-    {% if estudiante.generacion_doctorado %}
-    <li>Generación de Doctorado: {{ estudiante.generacion_doctorado }}</li>
-    {% endif %}
-    <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
-    <li>Entidad: {{ estudiante.entidad }}</li>
-    <li>Estatus: {{ estudiante.estado }}</li>
-  </ul>
-
-</div>
-
-
-{% if estudiante.sedes.all %}
-<div class="rounded shadow m-2 p-4 bg-lime-100">  
-  <h2 class="text-l">Sedes administrativas</h2>
-
-  <div class="bg-gray-100">  
-    <table>
-      <tbody>
-	{% for s in  estudiante.sedes.all %}
-	<tr>
-	  <td>{{ s.plan }}</td>
-	  <td>{{ s.sede }}</td>	
-	</tr>
-	{% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-{% endif %}
-
-
-{% if estudiante.proyecto_set.all %}
-<div class="rounded shadow m-2 p-4 bg-lime-100">  
-  <h2 class="text-l">Proyecto</h2>
-
-  <div class="bg-gray-100">  
-    <table>
-      <tbody>
-	{% for p in  estudiante.proyecto_set.all %}
-	<tr>
-	  <td>{{ p.plan }}</td>
-	  <td>{{ p.titulo }}</td>	
-	</tr>
-	{% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-{% endif %}
-
-
-
-{% if estudiante.campo_conocimiento %}
-<div class="rounded shadow m-2 p-4 bg-orange-100">
-  <h2 class="text-l">Campo de Conocimiento</h2>
-  {{ estudiante.campo_conocimiento }}
-</div>
-{% endif %}
-
-
-{% if estudiante.lineas_investigacion %}
-<div class="rounded shadow m-2 p-4 bg-orange-100">
-  <h2 class="text-l">Linea de investigación</h2>
-  {{ estudiante.lineas_investigacion }}
-</div>
-{% endif %}
-
-
-<div class="flex flex-col rounded shadow m-2 p-4 bg-amber-50">
-
-  <h2 class="text-l">Grados Académicos</h2>
-
-  {% for g in estudiante.user.gradoacademico_set.all %}
-  <div class="m-2 p-2 bg-lime-50 shadow">
-    <em>{{ g.fecha_obtencion }}</em><br />
-    <strong>{{ g.grado_obtenido }}</strong>
-    (nivel {{ g.nivel }}) <br />
-    {{ g.institucion }}
-  </div>
-  {% endfor %}
-
-</div>
-
-
-{% if estudiante.comite_vigente %}
-<div class="rounded shadow m-2 p-4 bg-lime-100">
-  <h2 class="text-l">Comité ({{ estudiante.ultima_inscripcion }})</h2>
-  <div class="bg-gray-100">
-  <table>
-    {% for m in estudiante.comite_vigente %}
-    <tr>
-      <td>
-	{{ m.get_tipo_display }}
-      </td>
-      <td>
-	{% if m.tutor %}
-	{{ m.tutor }}
-	{% elif m.invitado %}
-	{{ m.invitado }} (invitado)
-	{% endif %}
-      </td>
-    </tr>
+  <div class="flex flex-col rounded shadow mt-2 p-4 bg-amber-50">
+    <div class="text-lg text-green-800">Grados Académicos</div>
+    
+    {% for g in estudiante.user.gradoacademico_set.all %}
+    <div class="mv-2 p-2 bg-gray-50 shadow">
+      <em>{{ g.fecha_obtencion }}</em><br />
+      <strong>{{ g.grado_obtenido }}</strong>
+      (nivel {{ g.nivel }}) <br />
+      {{ g.institucion }}
+    </div>
     {% endfor %}
-  </table>
+    
   </div>
+  
+</div>
+
+{% if estudiante.generacion_maestria %}
+<div class="flex flex-col rounded shadow m-2 bg-lime-50 p-4">
+  <h2 class="text-l">Maestría</h2>
+
+  <ul class="">
+
+    <li>Generación de Maestría: {{ estudiante.generacion_maestria }}</li>
+    <li>Estatus: {{ estudiante.estado }}</li>
+    <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
+    <!-- <li>Plan de estudios: <strong>{{ estudiante.plan }}</strong></li> -->
+    <li>Entidad: {{ estudiante.entidad.suborganizacion }}</li>
+    <li>Sede administrativa: {{ estudiante.sede_adm_maestria }}</li>    
+    <li>Campo de Conocimiento: {{ estudiante.campo_conocimiento }}</li>
+    <li>Proyecto: {{ estudiante.proyecto_maestria }}</li>
+  </ul>
+
+  <div class="rounded shadow p-4 bg-emerald-50">
+    <div class="text-lg text-green-800">Comité</div>
+    <div class="bg-gray-100">
+      <table>
+	{% for m in estudiante.comite_maestria %}
+	<tr>
+	  <td>
+	    {{ m.get_tipo_display }}
+	  </td>
+	  <td>
+	    {% if m.tutor %}
+	    {{ m.tutor }}
+	    {% elif m.invitado %}
+	    {{ m.invitado }} (invitado)
+	    {% endif %}
+	  </td>
+	</tr>
+	{% endfor %}
+      </table>
+    </div>
+  </div>
+
+    
+    <h3 class="text-l">Historial</h3>
+    <div class="bg-gray-100">
+      <table>
+	{% for h in estudiante.historial_maestria %}
+	<tr>
+	  <td>{{ h.fecha }}</td><td>{{ h.estado }}</td><td>{{ h.plan }}</td><td>{{ h.institucion }}</td><td>{{ h.notas_set.all }}</td>
+	</tr>
+	{% endfor %}
+      </table>
+    </div>
 </div>
 {% endif %}
+
+
+
+{% if estudiante.generacion_doctorado %}
+<div class="flex flex-col rounded shadow m-2 bg-lime-100 p-4">
+  <h2 class="text-l">
+    Doctorado
+  </h2>
+  <ul class="">
+    <li>Generación de Doctorado: {{ estudiante.generacion_doctorado }}</li>
+    <li>Estatus: {{ estudiante.estado }}</li>
+    <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
+    <li>Entidad: {{ estudiante.entidad.suborganizacion }}</li>
+    <li>Sede administrativa: {{ estudiante.sede_adm_doctorado }}</li>
+    <li>Linea de investigación: {{ estudiante.lineas_investigacion }}</li>
+    <li>Proyecto: {{ estudiante.proyecto_doctorado }}</li>    
+  </ul>
+
+
+  <div class="rounded shadow p-4 bg-teal-50">
+    <div class="text-lg text-green-800">Comité</div>
+    <div class="bg-gray-100">
+      <table>
+	{% for m in estudiante.comite_doctorado %}
+	<tr>
+	  <td>
+	    {{ m.get_tipo_display }}
+	  </td>
+	  <td>
+	    {% if m.tutor %}
+	    {{ m.tutor }}
+	    {% elif m.invitado %}
+	    {{ m.invitado }} (invitado)
+	    {% endif %}
+	  </td>
+	</tr>
+	{% endfor %}
+      </table>
+    </div>
+  </div>
+
+  
+    <h3 class="text-l">Historial</h3>
+    <div class="bg-gray-100">
+      <table>
+	{% for h in estudiante.historial_doctorado %}
+	<tr>
+	  <td>{{ h.fecha }}</td><td>{{ h.estado }}</td>
+	  <td>{{ h.plan }}</td><td>{{ h.institucion }}</td>
+	  <td>{{ h.notas_set.all }}</td>
+	</tr>
+	{% endfor %}
+      </table>
+    </div>
+  
+</div>
+{% endif %} {# doctorado #}
+    
+
+
+
 
 
 {% if estudiante.notas.count > 0 %}
@@ -178,17 +191,5 @@
 </div>
 {% endif %}
 
-<div class="rounded shadow m-2 p-4 bg-stone-100">
-  <h2 class="text-l">Historial</h2>
-  <div class="bg-gray-100">
-  <table>
-    {% for h in estudiante.historial.all %}
-    <tr>
-      <td>{{ h.fecha }}</td><td>{{ h.estado }}</td><td>{{ h.plan }}</td><td>{{ h.institucion }}</td><td>{{ h.notas_set.all }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  </div>
-</div>
 
 {% endblock %}
