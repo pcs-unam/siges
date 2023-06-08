@@ -242,7 +242,7 @@ class Invitado(models.Model):
     nombre = models.CharField(max_length=333)
     correo = models.EmailField(blank=True, null=True)
     descripcion = models.TextField(blank=True)
-    
+
     def __str__(self):
         return self.nombre
 
@@ -360,7 +360,7 @@ class Estudiante(models.Model):
     def comite_vigente(self):
         return self.comite(self.ultimo_plan())
 
-    
+
     def comite(self, plan):
         if plan == 'Doctorado':
             tipos = ['M', 'T']
@@ -368,7 +368,7 @@ class Estudiante(models.Model):
             tipos = ['A', 'X', 'Y', 'Z']
         else:
             print(plan)
-            
+
         if self.membresiacomite_set.filter(tipo__in=tipos).count() > 0:
             m = self.membresiacomite_set.filter(tipo__in=tipos).order_by('year', 'semestre').last()
             y = m.year
@@ -435,8 +435,8 @@ class Estudiante(models.Model):
     def proyecto_doctorado(self):
         return self.proyecto('Doctorado')
 
-    
-    
+
+
     def faltan_documentos(self):
         if self.user.gradoacademico_set.count() == 0:
             return True
@@ -1709,7 +1709,8 @@ class InvitadoMembresiaComite(models.Model):
         max_length=25,
         default='D',
         choices=(
-            ('E', 'asesor externo'),
+            ('AEM', 'Asesor externo maestría'),
+            ('AED', 'Asesor Externo Doctorado'),
         ))
 
     class Meta:
@@ -1736,12 +1737,14 @@ class MembresiaComite(models.Model):
         max_length=25,
         default='D',
         choices=(
-            ('M', 'miembro de comité de doctorado'),
-            ('T', 'tutor de doctorado'),
-            ('A', 'tutor de maestría'),
-            ('X', 'miembro de comité de maestría'),
-            ('Y', 'segundo tutor de maestría'),
-            ('Z', 'tutor principal de maestría')))
+            ('TPD', 'Tutor(a) principal de Doctorado'),
+            ('CD', 'Cotutor(a) de Doctorado'),
+            ('MCD', 'Miembro de comité de Doctorado'),
+            ('TPM', 'Tutor(a) principal de Maestría'),
+            ('CM', 'Cotutor(a) de Maestría'),
+            ('MCM', 'Miembro de comité de Maestría'),
+        )
+    )
 
     class Meta:
         verbose_name_plural = "Membresías de Comités Tutorales"
@@ -1829,7 +1832,7 @@ class Asignatura(models.Model):
     notas = GenericRelation(Nota,
                             related_query_name='asignatura')
 
-    
+
     class Meta:
         ordering = ['asignatura', 'clave', ]
 
@@ -1940,8 +1943,3 @@ class Curso(models.Model):
         return u'%s, %s-%s' % (self.asignatura,
                                self.year,
                                self.semestre)
-
-
-class Acta(models.Model):
-    acuerdos = models.TextField(blank=True)
-    sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE)
