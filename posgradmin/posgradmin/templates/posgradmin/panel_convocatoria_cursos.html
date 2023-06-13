@@ -11,14 +11,18 @@
   {% for curso in convocatoria.curso_set.all %}
   <div class="flex flex-col bg-gray-200 border-2 m-2 p-2">
     <div class="bg-gray-100 p-2">
-      {{ curso.asignatura }}
 
+      Materia: <span class="font-semibold text-pink-800">{{ curso.asignatura}}</span>
       {% if curso.asignatura.proponente %}
       <br />      
       propuesta por {{ curso.asignatura.proponente.academico.perfil_comite_anchor|safe }}
       {% endif %}
-      <br />      
-      <a href="{{ curso.asignatura.programa.url }}">programa</a>
+      <br />
+      <ul>
+	<li>clave: {{ curso.asignatura.clave }}</li>
+	<li>creditos: {{ curso.asignatura.creditos }}</li>
+	<li><a href="{{ curso.asignatura.programa.url }}">programa</a></li>
+      </ul>
     </div>
     <div class="p-2">
       <div class="text-l text-indigo-900 font-semibold">Académicos</div>
@@ -32,6 +36,9 @@
     </div>
     <div class="p-2 bg-blue-100">
       <table>
+	<tr>
+	  <td>estado:</td><td> {{ curso.status }} </td>
+	</tr>
 	<tr>
 	  <td>Sede:</td><td> {{ curso.sede }} </td>
 	</tr>
