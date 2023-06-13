@@ -1111,6 +1111,14 @@ class Academico(models.Model):
                             related_query_name='academico')
 
 
+    @property
+    def perfil_profesor_completo(self):
+        if self.ultimo_grado and self.anexo_CV:
+            return True
+        else:
+            return False
+
+
     def verifica_titulo_honorifico(self):
         if self.is_phd():
             if self.user.perfil.genero == 'M':

@@ -291,9 +291,14 @@ class AcademicoAdmin(AutoAutor, VersionAdmin):
 
     inlines = [AcreditacionInline, NotaInline]
 
+    def get_perfil_profesor(self, obj):
+        return obj.perfil_profesor_completo
+    get_perfil_profesor.boolean = True
+    
     list_display = ['fullname',
                     'acreditacion',
                     'perfil_personal_completo',
+                    'get_perfil_profesor',
                     'resumen_completo',
                     'perfil_comite',
     ]
