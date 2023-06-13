@@ -72,7 +72,7 @@ class PanelConvocatoriaCursos(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def get(self, request, *args, **kwargs):
 
-        convocatoria = models.ConvocatoriaCurso.objects.get(pk=int(kwargs['pk']))        
+        convocatoria = models.ConvocatoriaCurso.objects.get(pk=int(kwargs['pk']))
         breadcrumbs = ((settings.APP_PREFIX + 'inicio/', 'Inicio'),
                        ('', f'Convocatoria {convocatoria}')
                        )
@@ -491,20 +491,19 @@ class MisEstudiantesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 
 
-class MisCursos(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class MisCursos(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'
 
     def test_func(self):
         return auth.is_academico(self.request.user)
 
-    model = models.Curso
-    template_name = 'posgradmin/mis_cursos_list.html'
-
-    def get_queryset(self):
-        return self.request.user.academico.curso_set.all()
-
-
-    def get_context_data(self, **kwargs):
-        ctxt = super(MisCursos, self).get_context_data(**kwargs)
-        ctxt['MEDIA_URL'] = MEDIA_URL
-        return ctxt
+    def get(self, request, *args, **kwargs):
+        mis = {f"{c.year}-{c.semestre}": []
+               for c in request.user.academico.curso_set.all().order_by('-year', 'semestre')}
+        for c in request.user.academico.curso_set.all():
+            mis[f"{c.year}-{c.semestre}"].append(c)
+        return render(request,
+                      'posgradmin/mis_cursos_list.html',
+                      {'mis_cursos': mis,
+                       'MEDIA_URL': MEDIA_URL
+                       })
