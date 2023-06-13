@@ -9,8 +9,8 @@ from pyexcel_ods3 import get_data
 import jellyfish
 
 
-acads = {jellyfish.metaphone(a.nombre_completo()): a
-         for a in models.Academico.objects.all()}
+
+
 
 class Command(BaseCommand):
     help = 'Carga usuarios desde un archivo ods'
@@ -23,6 +23,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         load(options['ods'])
 
+
+invs = {jellyfish.metaphone(i.nombre): i
+         for i in models.Invitado.objects.all()}
+        
+def busca_invitado(name):        
+    metaphone = jellyfish.metaphone(name)
+    return invs.get(metaphone, None)
 
 def busca_acad(email):
 
@@ -59,6 +66,9 @@ def busca_acad(email):
 
     return None
 
+
+acads = {jellyfish.metaphone(a.nombre_completo()): a
+         for a in models.Academico.objects.all()}
 
 def busca_acad_name(name):
     metaphone = jellyfish.metaphone(name)
@@ -125,14 +135,34 @@ def load(f):
             if len(row) < 5:
                 print(f"fila {i}: data incompleta: {row}")
                 continue
-            print('externo', row)
+            elif len(row) == 6:
+                email = row[idx['Correo tutor']]
+            else:
+                email = None
+
+            name = row[idx['Nombre tutor']]                
+            
+            i = busca_invitado(name)
+            if not i:
+                i = models.Invitado(nombre=name)
+
+                if email:
+                    i.correo = email
+                i.save()
+                
+            m = models.InvitadoMembresiaComite(
+                estudiante=e,
+                invitado=i,
+                year=year,
+                semestre=semestre,
+                tipo=tipo)
+            m.save()
         else:
             if len(row) < 6:
                 print(f"fila {i}: data incompleta: {row}")
                 continue
 
             email = row[idx['Correo tutor']]
-                
             a = busca_acad(email)
             if not a:
                 name = row[idx['Nombre tutor']]
@@ -140,18 +170,12 @@ def load(f):
                 if not a:
                     print(f"fila {i}: académico no encontrado: {name} <{email}>")
                     continue
-            
-        # validate_email(row['miembro1'].strip().decode('utf8'))
-        # u = User.objects.get(email=row['miembro1'].strip().decode('utf8'))
-        # m1 = u.academico
-        # m1.tutor = True
-        # m1.save()
 
-
-        # c = Comite(estudiante=e,
-        #            miembro1=m1,
-        #            miembro2=m2,
-        #            miembro3=m3,
-        #            tipo="tutoral")
-        # c.save()
+            m = models.MembresiaComite(
+                estudiante=e,
+                tutor=a,
+                year=year,
+                semestre=semestre,
+                tipo=tipo)
+            m.save()
 
