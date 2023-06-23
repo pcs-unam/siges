@@ -39,11 +39,12 @@
 <hr>
 
 {% if user == object and editable %}
-<a class="rounded bg-violet-800 p-4 text-white hover:bg-violet-700" role="button" href="{% url 'editar_perfil' %}">editar perfil personal</a>
+<a class="bg-gray-200 p-2 m-2 rounded-lg"
+   href="{% url 'editar_perfil' %}">editar perfil personal</a>
 {% elif user.is_staff %}
-<a href="{% url 'admin:auth_user_change' object.id %}">editar usuario</a><br />
+<a href="{% url 'admin:auth_user_change' object.id %}">registro en la base de datos</a><br />
 {% if object.perfil %}
-<a href="{% url 'admin:posgradmin_perfil_change' object.perfil.id %}">editar perfil personal</a>
+<a href="{% url 'admin:posgradmin_perfil_change' object.perfil.id %}">perfil personal en la base de datos</a>
 {% endif %}
 {% endif %}
 <br />  <br />
@@ -58,31 +59,31 @@
      src="{{ object.perfil.headshot.url }}" />
 {% endif %}
 
-<ul class="list-group">
-  <li class="list-group-item">Fecha de Nacimiento
+<ul class="my-2 p-2 bg-amber-50">
+  <li>Fecha de Nacimiento
     {{ object.perfil.fecha_nacimiento|default:"" }}</li>
-  <li class="list-group-item">Genero: {{ object.perfil.genero }}</li>
-  <li class="list-group-item">Nacionalidad: {{ object.perfil.nacionalidad }}</li>
-  <li class="list-group-item">CURP: {{ object.perfil.curp }}</li>
-  <li class="list-group-item">RFC: {{ object.perfil.rfc }}</li>
+  <li>Genero: {{ object.perfil.genero }}</li>
+  <li>Nacionalidad: {{ object.perfil.nacionalidad }}</li>
+  <li>CURP: {{ object.perfil.curp }}</li>
+  <li>RFC: {{ object.perfil.rfc }}</li>
 </ul>
 
 <h2>Información de contacto</h2>
-<ul class="list-group">
-  <li class="list-group-item">Teléfono {{ object.perfil.telefono }}</li>
-  <li class="list-group-item">Teléfono Móvil {{ object.perfil.telefono_movil }}</li>
-  <li class="list-group-item">email {{ object.email }}</li>
-  <li class="list-group-item">Sitio Web {{ object.perfil.website }}</li>
-  <li class="list-group-item">Dirección {{ object.perfil.direccion1 }}</li>
-  <li class="list-group-item">Código Postal {{ object.perfil.codigo_postal|default:"" }}</li>
+<ul class="my-2 p-2 bg-amber-50">  
+  <li>Teléfono {{ object.perfil.telefono }}</li>
+  <li>Teléfono Móvil {{ object.perfil.telefono_movil }}</li>
+  <li>email {{ object.email }}</li>
+  <li>Sitio Web {{ object.perfil.website }}</li>
+  <li>Dirección {{ object.perfil.direccion1 }}</li>
+  <li>Código Postal {{ object.perfil.codigo_postal|default:"" }}</li>
 </ul>
 
 {% else %}
 
 <h2>Información de contacto</h2>
 <ul class="list-group">
-  <li class="list-group-item">email {{ object.email }}</li>
-  <li class="list-group-item">Sitio Web {{ object.perfil.website|default:'' }}</li>
+  <li>email {{ object.email }}</li>
+  <li>Sitio Web {{ object.perfil.website|default:'' }}</li>
 </ul>
 {% endif %}
 
@@ -94,7 +95,7 @@
 
 <ul class="list-group">
   {% for grado in object.gradoacademico_set.all %}
-  <li class="list-group-item">
+  <li>
     <strong>{{ grado.grado_obtenido }} </strong>@ {{ grado.institucion }}
     <p class="list-group-item-text">
       nivel {{ grado.nivel }}
@@ -125,7 +126,7 @@
 
 <ul class="list-group">
   {% for ad in user.perfil.adscripcion_set.all %}
-  <li class="list-group-item">
+  <li>
     {{ ad }}
     {% if ad.catedra_conacyt %}
     <br />
@@ -156,7 +157,7 @@
 
 <ul class="list-group">
   {% for anexo in user.anexoexpediente_set.all %}
-  <li class="list-group-item">
+  <li>
     <a href="{{ anexo.url }}">
       {{ anexo }}
     </a> anexado el {{ anexo.fecha }}

@@ -22,7 +22,7 @@ class TogglePerfilEditarForm(forms.Form):
     helper.layout = Layout(
         Field('toggle'),
         FormActions(
-            Submit('OK', 'OK', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700")
+            Submit('OK', 'OK', css_class="bg-gray-200 p-2 m-2 rounded-lg")
         )
     )
 
@@ -41,7 +41,7 @@ class AcademicoInvitarForm(forms.Form):
         Field('tutor_o_profesor'),
         Field('lista'),
         FormActions(
-            Submit('subir', 'Crear candidatos', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700")
+            Submit('subir', 'Crear candidatos', css_class="bg-gray-200 p-2 m-2 rounded-lg")
         )
     )
 
@@ -75,7 +75,7 @@ class SolicitudForm(forms.Form):
         Field('anexo'),
 
         FormActions(
-            Submit('someter', 'Someter Solicitud', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700")
+            Submit('someter', 'Someter Solicitud', css_class="bg-gray-200 p-2 m-2 rounded-lg")
         )
     )
 
@@ -115,7 +115,7 @@ class CursoModelForm(forms.ModelForm):
         
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
-        self.helper.layout.append(Submit('solicitar', 'solicitar'))
+        self.helper.layout.append(Submit('solicitar', 'solicitar', css_class="bg-gray-200 p-2 m-2 rounded-lg shadow-lg"))
         
 
 class CursoConstancia(forms.Form):
@@ -172,7 +172,7 @@ class PerfilModelForm(forms.ModelForm):
                            'codigo_postal'),
                     Class="panel-body"),
                 Class="panel panel-default"),
-            Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"))
+            Submit('guardar', 'guardar', css_class="bg-gray-200 p-2 m-2 rounded-lg"))
 
     class Meta:
         model = Perfil
@@ -191,7 +191,7 @@ class EstudianteAutoregistroForm(forms.Form):
         Field('proyecto', size=70),
         'campo_conocimiento',
         FormActions(
-            Submit('registrarme', 'Registrarme', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"))
+            Submit('registrarme', 'Registrarme', css_class="bg-gray-200 p-2 m-2 rounded-lg"))
     )
 
 
@@ -203,7 +203,7 @@ class EstudianteModelForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
-        self.helper.layout.append(Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"))
+        self.helper.layout.append(Submit('guardar', 'guardar', css_class="bg-gray-200 p-2 m-2 rounded-lg"))
 
     class Meta:
         model = Estudiante
@@ -253,7 +253,7 @@ Consultar los lineamientos para el desarrollo y evaluación de proyectos.</a></l
                          """)),
              Div(Column('disponible_tutor', "disponible_miembro"),
                  Class="panel panel-default"),
-             Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
+             Submit('guardar', 'guardar', css_class="bg-gray-200 p-2 m-2 rounded-lg"),
         )
 
     class Meta:
@@ -282,7 +282,7 @@ class PerfilProfesorModelForm(forms.ModelForm):
                         'anexo_CV',
                         'ultimo_grado'),
                     Class="panel-body")),
-            Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
+            Submit('guardar', 'guardar', css_class="bg-gray-200 p-2 m-2 rounded-lg"),
         )
 
     class Meta:
@@ -340,7 +340,7 @@ class AcademicoResumenCV_reacreditacion_ModelForm(forms.ModelForm):
                 HTML("<h3>Otras publicaciones</h3>"),
                 'otras_publicaciones',
                 Class="panel-body"),
-            Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
+            Submit('guardar', 'guardar', css_class="bg-gray-200 p-2 m-2 rounded-lg"),
         )
 
     class Meta:
@@ -389,7 +389,7 @@ class AcademicoResumenCVModelForm(forms.ModelForm):
                 HTML("<h4>Otras publicaciones</h4>"),
                 'otras_publicaciones',
                 Class="panel-body"),
-            Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
+            Submit('guardar', 'guardar', css_class="bg-gray-200 p-2 m-2 rounded-lg"),
         )
 
     class Meta:
@@ -434,7 +434,7 @@ class AcademicoActividadModelForm(forms.ModelForm):
                 'campos_de_conocimiento',
             ),
                 Class="panel-body"),
-            Submit('guardar', 'guardar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"))
+            Submit('guardar', 'guardar', css_class="bg-gray-200 p-2 m-2 rounded-lg"))
 
     class Meta:
         model = Academico
@@ -458,59 +458,12 @@ class SolicitudCommentForm(forms.Form):
     helper.layout = Layout(
         Field('comentario', rows="3", cols="40", css_class='input-xlarge'),
         FormActions(
-            Submit('comentar', 'comentar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
+            Submit('comentar', 'comentar', css_class="bg-gray-200 p-2 m-2 rounded-lg"),
         )
     )
 
 
-class SolicitudAgendarForm(forms.Form):
 
-    sesion = forms.ModelChoiceField(queryset=Sesion.objects.filter(
-        fecha__gt=datetime.now()),
-                                    label=u"Sesión")
-
-    helper = FormHelper()
-    helper.layout = Layout(
-        Field('sesion'),
-        FormActions(
-            Submit('agendar', 'agendar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
-        )
-    )
-
-
-class SolicitudDictamenForm(forms.Form):
-
-    comentario = forms.CharField(
-        widget=forms.Textarea(),
-        required=True
-    )
-
-    helper = FormHelper()
-    denegar = Submit('denegar', 'denegar', css_class="btn-danger")
-    denegar.field_classes.replace('bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700', 'btn-danger')
-
-    helper.layout = Layout(
-        Field('comentario', rows="3", cols="40", css_class='input-xlarge'),
-        FormActions(
-            Submit('conceder', 'conceder', css_class="btn-success"),
-            denegar
-        )
-    )
-
-
-class SolicitudAnexoForm(forms.Form):
-
-    anexo = forms.FileField(required=True)
-
-    # Uni-form
-    helper = FormHelper()
-#    helper.form_class = 'form-horizontal'
-    helper.layout = Layout(
-        'anexo',
-        FormActions(
-            Submit('anexar', 'anexar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
-        )
-    )
 
 
 class GradoAcademicoModelForm(forms.ModelForm):
@@ -536,7 +489,8 @@ class GradoAcademicoModelForm(forms.ModelForm):
             HTML('<a href="%sinstitucion/agregar/ga/">agregar institucion</a><br /><br />' % settings.APP_PREFIX),
             'facultad',
             'fecha_obtencion',
-            Submit('agregar', 'agregar'))
+            Submit('agregar', 'agregar', css_class="bg-gray-200 p-2 m-2 rounded-lg")
+        )
 
 
 class AdscripcionModelForm(forms.ModelForm):
@@ -558,7 +512,7 @@ class AdscripcionModelForm(forms.ModelForm):
             'catedra_conacyt',
             'nombramiento',
             'anno_nombramiento',
-            Submit('agregar', 'agregar'))
+            Submit('agregar', 'agregar', css_class="bg-gray-200 p-2 m-2 rounded-lg"))
 
 
 class AsociacionModelForm(forms.ModelForm):
@@ -576,7 +530,7 @@ class AsociacionModelForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML(u'<p>Usted no está adscrito en alguna de las entidades participantes del Posgrado. Elija a la que prefiera asociarse para la comunicación con los representantes en el Comité Académico del Programa.</p>'),
             'institucion',
-            Submit('agregar', 'agregar'))
+            Submit('agregar', 'agregar', css_class="bg-gray-200 p-2 m-2 rounded-lg"))
 
 
 class InstitucionModelForm(forms.ModelForm):
@@ -591,7 +545,7 @@ class InstitucionModelForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
-        self.helper.layout.append(Submit('agregar', 'agregar'))
+        self.helper.layout.append(Submit('agregar', 'agregar', css_class="bg-gray-200 p-2 m-2 rounded-lg"))
 
 
 
@@ -608,7 +562,7 @@ class ProyectoModelForm(forms.ModelForm):
 
         self.helper = FormHelper(self)
         self.helper.form_class = 'form-horizontal'
-        self.helper.layout.append(Submit('guardar', 'guardar',css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"))
+        self.helper.layout.append(Submit('guardar', 'guardar', css_class="bg-gray-200 p-2 m-2 rounded-lg"))
 
 
 # class CursoModelForm(forms.ModelForm):
@@ -632,6 +586,6 @@ class EstudianteCargarForm(forms.Form):
         Field('semestre'),
         Field('lista'),
         FormActions(
-            Submit('cargar', 'cargar', css_class="bg-indigo-800 p-2 rounded text-white hover:bg-indigo-700"),
+            Submit('cargar', 'cargar', css_class="bg-gray-200 p-2 m-2 rounded-lg"),
         )
     )
