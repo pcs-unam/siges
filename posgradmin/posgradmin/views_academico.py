@@ -499,7 +499,7 @@ class MisCursos(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def get(self, request, *args, **kwargs):
         mis = {f"{c.year}-{c.semestre}": []
-               for c in request.user.academico.curso_set.all().order_by('-year', 'semestre')}
+               for c in request.user.academico.curso_set.all().order_by('-year', '-semestre')}
         for c in request.user.academico.curso_set.all():
             mis[f"{c.year}-{c.semestre}"].append(c)
         return render(request,
