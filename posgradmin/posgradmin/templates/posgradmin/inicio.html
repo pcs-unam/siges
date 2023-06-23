@@ -67,9 +67,6 @@
       </ul>
     </div>
 
-
-
-
     {% if user.academico.acreditacion == '' or user.academico.acreditacion in "PMDE" or user.academico.acreditacion == 'candidato profesor' %}
     {% include 'posgradmin/inicio_academico.html' %}
     {% endif %}
@@ -82,57 +79,6 @@
   </div><!-- /.col-sm-4 -->
 
 
-  <!-- Solicitudes -->
-  {% if False %} {# deshabilito mientras tanto #}
-{# if user.estudiante or user.academico or user.asistente or user.is_staff #}
-  <div class="col-sm-4">
-    <div class="panel panel-info">
-      <div class="panel-heading">
-	<h3 class="panel-title">
-	  <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
-	  <a href="{% url 'solicitudes' %}">Solicitudes</a></h3>
-      </div>
-      <div class="panel-body">
-	<p>
-	<a href="{% url 'solicitud_nueva' %}">
-	  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-	  nueva solicitud
-	</a>
-	</p>
-	<!-- lista conteo -->
-	<ul class="list-group">
-	  {% if user.is_staff or user.asistente  %}
-
-	  {% for s in user.asistente.cuantas_solicitudes %}
-	  <li class="list-group-item">
-	    <a href="{% url 'solicitudes_estado' s.0 %}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
-	  </li>
-	  {% endfor %}
-
-	  {% elif user.academico %}
-
-	  {% for s in user.academico.cuantas_solicitudes %}
-	  <li class="list-group-item">
-	    <a href="{% url 'solicitudes_estado' s.0 %}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
-	  </li>
-	  {% endfor %}
-
-	  {% elif user.estudiante %}
-
-	  {% for s in user.estudiante.cuantas_solicitudes %}
-	  <li class="list-group-item">
-	    <a href="{% url 'solicitudes_estado' s.0 %}">{{ s.0 }} <span class="badge">{{ s.1 }}</span></a>
-	  </li>
-	  {% endfor %}
-
-	  {% endif %}
-
-	</ul>
-
-      </div>
-    </div>
-  </div>
-  {% endif %}
 
 
 </div>
