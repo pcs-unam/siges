@@ -1,11 +1,25 @@
+{% if not user.academico.perfil_profesor_completo %}
+<div class="bg-red-100 p-4 m-2">
+  Para acreditarse como profesor falta cubrir los siguientes requisitos:
+  <ul class="m-2">
+    {% if not user.academico.ultimo_grado %}<li> - Anexar último grado académico </li>{% endif %}
+    {% if not user.academico.anexo_CV %}<li> - Anexar <i>currículum vitae</i></li> {% endif %}
+  </ul>
+
+  <a class="bg-gray-100 p-2 m-2 rounded-lg"
+     href="{% url 'perfil_profesor_editar' %}">editar perfil de profesor</a>
+</div>
+{% endif %}
 
 
 {% if convocatorias_curso %}
 {% for c in convocatorias_curso %}
-<div class="bg-yellow-200 m-2 p-2 shadow">
-  <h1>Convocatoria</h1>
-  <h2>Para impartir cursos en el semestre {{ c.year}}-{{ c.semestre }}</h2>
-  <p><a href="{% url 'elige_asignatura' c.id %}">registra una solicitud</a></p>
+<div class="bg-yellow-50 m-2 p-2 shadow">
+  <h1 class="text-2xl">Convocatoria</h1>
+  <div class="text-lg font-semibold text-green-900 m-4">
+    Para impartir cursos en el semestre {{ c.year}}-{{ c.semestre }}</div>
+  <a class="bg-gray-100 p-2 m-2 rounded-lg"
+     href="{% url 'elige_asignatura' c.id %}">registra una solicitud</a>
 </div>
 {% endfor %}
 {% endif %}

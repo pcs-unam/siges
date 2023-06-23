@@ -24,56 +24,49 @@
 <hr />
 
 {% if user.is_staff %}
-<a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">editar perfil académico</a><br /><br />
+<a href="{% url 'admin:posgradmin_academico_change' object.academico.id %}">registro en la base de datos</a>
 {% endif %}
 
-<h2>General</h2>
 
+{% if not user.academico.perfil_profesor_completo %}
+<div class="bg-red-100 p-4 m-2 shadow">
+  Para acreditarse como profesor falta cubrir los siguientes requisitos:
+  <ul class="m-2">
+    {% if not user.academico.ultimo_grado %}<li> - Anexar último grado académico </li>{% endif %}
+    {% if not user.academico.anexo_CV %}<li> - Anexar <i>currículum vitae</i></li> {% endif %}
+  </ul>
 
-{% if object.academico.carencias_profesor %}
-<div style="border-style: solid; border-width: 1px; border-color: red; padding: 1em;">
-<strong>Perfil académico incompleto.</strong>
-Atención a los siguientes reactivos:<br />
-{{ object.academico.carencias_profesor|markdown }}
 </div>
 {% endif %}
 
 
-{% if user == object and editable == True %}
-<a
-  class="rounded bg-violet-800 p-4 text-white hover:bg-violet-700"
-  role="button" href="{% url 'perfil_profesor_editar' %}">editar esta sección</a>
-<br /><br />
-{% endif %}
+<div class="rounded-t shadow bg-teal-50 text-sm mt-2">
+  <ul class="p-2 m-2">
 
-<ul class="list-group">
-
-  {% if object.academico.anexo_CV %}
-  <li class="list-group-item">
-    <a href="{{ object.academico.anexo_CV.url }}">CV extenso</a></li>
-  {% endif %}
-
-
-  {% if object.academico.ultimo_grado %}
-  <li class="list-group-item">
-    <a href="{{ object.academico.ultimo_grado.url }}">Último grado académico</a>
-  </li>
-  {% endif %}
-
-  <li class="list-group-item">
-    Acreditación: {{ object.academico.show_acreditacion }}
-
-    {% if object.academico.fecha_acreditacion %}
-    <p>Acreditado el {{ object.academico.fecha_acreditacion }}</p>
+    {% if object.academico.anexo_CV %}
+    <li>
+      <a href="{{ object.academico.anexo_CV.url }}">CV extenso</a></li>
     {% endif %}
 
-  </li>
-</ul>
+    {% if object.academico.ultimo_grado %}
+    <li>
+      <a href="{{ object.academico.ultimo_grado.url }}">Último grado académico</a>
+    </li>
+    {% endif %}
 
+    <li>
+      Acreditación: {{ object.academico.show_acreditacion }}</li>
+    {% if object.academico.fecha_acreditacion %}
+    <li>Acreditado el {{ object.academico.fecha_acreditacion }}</li>
+    {% endif %}
+    
+  </ul>
+
+  <div class="p-2 bg-gray-100 text-sm mt-2 col-span-2">  
+    {% if user == object and editable == True %}
+    <a href="{% url 'perfil_profesor_editar' %}">editar perfil de profesor</a>
+    {% endif %}
+  </div>
 </div>
-
-
-
-
 <!-- academico -->
 {% endblock %}
