@@ -68,24 +68,40 @@
 <div class="flex flex-col rounded shadow m-2 bg-lime-50 p-4">
   <h2 class="text-l">Maestría</h2>
 
-  <ul class="">
+  <div class="grid grid-flow-row-dense grid-cols-2 grid-rows-2 gap-2 text-neutral-700">  
+    <ul class="rounded shadow p-4 bg-teal-50 text-sm">
+      <li>Generación de Maestría: {{ estudiante.generacion_maestria }}</li>
+      <li>Estatus: {{ estudiante.estado }}</li>
+      <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
+    </ul>
+    
+    <ul class="rounded shadow p-4 bg-teal-50 text-sm">  
+      <li>Sede administrativa: {{ estudiante.sede_adm_maestria }}</li>
+      <li>Entidad: {{ estudiante.entidad.suborganizacion }}</li>
+    </ul>
+    
+    <ul class="rounded shadow p-4 bg-teal-50 text-sm col-span-2">
+      <li class="text-right mb-4">      
+	Campo de Conocimiento: {{ estudiante.campo_conocimiento }}</li>
+      <li class="mt-2">	
+	Proyecto:
+	<div class="text-teal-800 text-lg">
+	  {{ estudiante.proyecto_maestria }}
+	</div>
+      </li>
+    </ul>
+  </div>
 
-    <li>Generación de Maestría: {{ estudiante.generacion_maestria }}</li>
-    <li>Estatus: {{ estudiante.estado }}</li>
-    <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
-    <!-- <li>Plan de estudios: <strong>{{ estudiante.plan }}</strong></li> -->
-    <li>Entidad: {{ estudiante.entidad.suborganizacion }}</li>
-    <li>Sede administrativa: {{ estudiante.sede_adm_maestria }}</li>    
-    <li>Campo de Conocimiento: {{ estudiante.campo_conocimiento }}</li>
-    <li>Proyecto: {{ estudiante.proyecto_maestria }}</li>
-  </ul>
-
-  <div class="rounded shadow p-4 bg-emerald-50">
+  
+  <div class="rounded shadow p-4 bg-pink-50 mt-4">
     <div class="text-lg text-green-800">Comité</div>
     <div class="bg-gray-100">
       <table>
 	{% for m in estudiante.comite_maestria %}
 	<tr>
+	  <td>
+	    {{ m.year}}-{{ m.semestre}}
+	  </td>
 	  <td>
 	    {{ m.get_tipo_display }}
 	  </td>
@@ -108,7 +124,7 @@
       <table>
 	{% for h in estudiante.historial_maestria %}
 	<tr>
-	  <td>{{ h.fecha }}</td><td>{{ h.estado }}</td><td>{{ h.plan }}</td><td>{{ h.institucion }}</td><td>{{ h.notas_set.all }}</td>
+	  <td>{{ h.fecha }}</td><td>{{ h.year }}</td><td>{{ h.semestre }}</td><td>{{ h.estado }}</td><td>{{ h.institucion }}</td><td>{{ h.notas_set.all }}</td>
 	</tr>
 	{% endfor %}
       </table>
@@ -123,23 +139,43 @@
   <h2 class="text-l">
     Doctorado
   </h2>
-  <ul class="">
-    <li>Generación de Doctorado: {{ estudiante.generacion_doctorado }}</li>
-    <li>Estatus: {{ estudiante.estado }}</li>
-    <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
-    <li>Entidad: {{ estudiante.entidad.suborganizacion }}</li>
-    <li>Sede administrativa: {{ estudiante.sede_adm_doctorado }}</li>
-    <li>Linea de investigación: {{ estudiante.lineas_investigacion }}</li>
-    <li>Proyecto: {{ estudiante.proyecto_doctorado }}</li>    
-  </ul>
 
+  <div class="grid grid-flow-row-dense grid-cols-2 grid-rows-2 gap-2 text-neutral-700">
+    <ul class="rounded shadow p-4 bg-amber-50 text-sm">
+      <li>Generación de Doctorado: {{ estudiante.generacion_doctorado }}</li>
+      <li>Estatus: {{ estudiante.estado }}</li>
+      <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
+      {% if estudiante.estado == "graduado" %}
+      <li class="text-purple-800 font-semibold text-2xl my-2">
+	Graduado
+      </li>
+      {% endif %}
+    </ul>
+    
+    <ul class="rounded shadow p-4 bg-amber-50 text-sm">  
+      <li>Entidad: {{ estudiante.entidad.suborganizacion }}</li>
+      <li>Sede administrativa: {{ estudiante.sede_adm_doctorado|default:"" }}</li>
+    </ul>
+    
+    <ul class="rounded shadow p-4 bg-amber-50 text-sm col-span-2">
+      <li class="text-right mb-4">
+	Linea de investigación: <div class="text-green-800 text-lg">
+	  {{ estudiante.lineas_investigacion }}</div></li>
+      <li class="mt-2">Proyecto: <div class="text-teal-800 text-lg">
+	  {{ estudiante.proyecto_doctorado }}</div>
+      </li>    
+    </ul>
+  </div>
 
-  <div class="rounded shadow p-4 bg-teal-50">
+  <div class="rounded shadow p-4 bg-teal-50 mt-2">
     <div class="text-lg text-green-800">Comité</div>
     <div class="bg-gray-100">
       <table>
 	{% for m in estudiante.comite_doctorado %}
 	<tr>
+	  <td>
+	    {{ m.year}}-{{ m.semestre}}
+	  </td>	  
 	  <td>
 	    {{ m.get_tipo_display }}
 	  </td>
@@ -162,9 +198,7 @@
       <table>
 	{% for h in estudiante.historial_doctorado %}
 	<tr>
-	  <td>{{ h.fecha }}</td><td>{{ h.estado }}</td>
-	  <td>{{ h.plan }}</td><td>{{ h.institucion }}</td>
-	  <td>{{ h.notas_set.all }}</td>
+	  <td>{{ h.fecha }}</td><td>{{ h.year }}</td><td>{{ h.semestre }}</td><td>{{ h.estado }}</td><td>{{ h.institucion }}</td><td>{{ h.notas_set.all }}</td>	  
 	</tr>
 	{% endfor %}
       </table>

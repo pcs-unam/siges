@@ -361,11 +361,23 @@ class Estudiante(models.Model):
         return self.comite(self.ultimo_plan())
 
 
-    def comite(self, plan):
+    def get_historial(self, plan):
+        return self.historial.filter(plan=plan).order_by('-year', '-semestre')
+
+    
+    def historial_maestria(self):
+        return self.get_historial('Maestría')
+
+    
+    def historial_doctorado(self):
+        return self.get_historial('Doctorado')
+
+    
+    def get_comite(self, plan):
         if plan == 'Doctorado':
-            tipos = ['M', 'T']
+            tipos = ['TPD', 'CD', 'MCD']
         elif plan == "Maestría":
-            tipos = ['A', 'X', 'Y', 'Z']
+            tipos = ['TPM', 'CM', 'MCM']
         else:
             print(plan)
 
@@ -373,6 +385,7 @@ class Estudiante(models.Model):
             m = self.membresiacomite_set.filter(tipo__in=tipos).order_by('year', 'semestre').last()
             y = m.year
             s = m.semestre
+            print(m, y, s)
             tutores = list(self.membresiacomite_set.filter(tipo__in=tipos, year=y, semestre=s))
             if plan == 'Doctorado':
                 invitados = list(self.invitadomembresiacomite_set.filter(year=y, semestre=s))
@@ -383,10 +396,10 @@ class Estudiante(models.Model):
             return []
 
     def comite_maestria(self):
-        return self.comite('Maestría')
+        return self.get_comite('Maestría')
 
     def comite_doctorado(self):
-        return self.comite('Doctorado')
+        return self.get_comite('Doctorado')
 
     def ultima_inscripcion(self):
         if self.historial.count() > 0:
@@ -1748,6 +1761,7 @@ class MembresiaComite(models.Model):
             ('TPD', 'Tutor(a) principal de Doctorado'),
             ('CD', 'Cotutor(a) de Doctorado'),
             ('MCD', 'Miembro de comité de Doctorado'),
+
             ('TPM', 'Tutor(a) principal de Maestría'),
             ('CM', 'Cotutor(a) de Maestría'),
             ('MCM', 'Miembro de comité de Maestría'),
