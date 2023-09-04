@@ -156,104 +156,28 @@ def importa(solicitud, status, inscritos):
             extra = get_extra(metaphone=metaphone)
 
         print(est['tipo']) 
-        if est['tipo'] == 'Reingreso':
-
-            if models.Estudiante.objects.filter(cuenta=est['cuenta']).count() > 1:
-                print(f"[error] cuenta {est['cuenta']} encontrada más de una vez en tabla de estudiantes")
-                continue
-            elif models.Estudiante.objects.filter(cuenta=est['cuenta']).count() < 1:
-                print(f"[error] cuenta {est['cuenta']} no encontrada en tabla de estudiantes")
-                continue
-
-            e = models.Estudiante.objects.get(cuenta=est['cuenta'])
-            print(f'reingresando {e}')
-
-            if extra != {}:
-                p, p_created = models.Perfil.objects.get_or_create(user=e.user)
-                p.curp = extra.get('curp', None)
-                if 'curp' not in extra:
-                    print(est, 'EXTRAAAA', extra)
-                
-                if 'telefono' in extra and 'pais_telefono' in extra:
-                    p.telefono = f"({extra['pais_telefono']}) extra['telefono']"
-                if 'celular' in extra and 'pais_celular' in extra:
-                    p.telefono_movil = f"({extra['pais_celular']}) extra['celular']"
-                p.direccion1 = extra.get('direccion', '')
-                if 'genero' in extra:
-                    p.genero = extra['genero']
-                if 'nacionalidad' in extra:
-                    p.nacionalidad = extra['nacionalidad']
-                if 'fecha_nacimiento' in extra:
-                    anyo, mes, dia = [int(n) for n in extra['fecha_nacimiento'].split('-')]
-                    p.fecha_nacimiento = datetime(anyo, mes, dia)
-                p.save()
-
-                if p_created:
-                    print('nuevo perfil', p)
-                else:
-                    print('update perfil', p)
-                
-                
+        e = get_estudiante(est, extra)
+        u = e.user
+        
+        if extra != {}:
+            p, p_created = models.Perfil.objects.get_or_create(user=u)
+            p.curp = extra['curp']
+            p.telefono = f"({extra['pais_telefono']}) extra['telefono']"
+            p.telefono_movil = f"({extra['pais_celular']}) extra['celular']"
+            p.direccion1 = extra.get('direccion', '')
+            p.genero = extra['genero']
+            p.nacionalidad = extra['nacionalidad']
+            anyo, mes, dia = [int(n) for n in extra['fecha_nacimiento'].split('-')]
+            p.fecha_nacimiento = datetime(anyo, mes, dia)
+            p.save()
             
-        elif est['tipo'] == 'Primer ingreso':
-
-            if models.Estudiante.objects.filter(cuenta=est['cuenta']).count() > 0:
-                print(f"[error] cuenta {est['cuenta']} previa en primer ingreso")
-                continue
-
-            u = get_user(est, extra)
-
-            if extra != {}:
-                p, p_created = models.Perfil.objects.get_or_create(user=u)
-                p.curp = extra['curp']
-                p.telefono = f"({extra['pais_telefono']}) extra['telefono']"
-                p.telefono_movil = f"({extra['pais_celular']}) extra['celular']"
-                p.direccion1 = extra.get('direccion', '')
-                p.genero = extra['genero']
-                p.nacionalidad = extra['nacionalidad']
-                anyo, mes, dia = [int(n) for n in extra['fecha_nacimiento'].split('-')]
-                p.fecha_nacimiento = datetime(anyo, mes, dia)
-                p.save()
-
-                if p_created:
-                    print('nuevo perfil', p)
-                else:
-                    print('update perfil', p)
+            if p_created:
+                print('nuevo perfil', p)
+            else:
+                print('update perfil', p)
+                
 
 
-    
-
-
-    
-            
-    # for a in aceptados:
-
-    #     u = get_user(a)
-
-    #     p, created = models.Perfil.objects.get_or_create(user=u)
-
-    #     p.curp = a['curp']
-    #     p.telefono = str(a['telefono'])
-    #     p.direccion1 = a['direccion']
-    #     p.genero = a['genero']
-    #     p.nacionalidad = a['nacionalidad']
-    #     dia, mes, anyo = [int(n) for n in a['fecha_nacimiento'].split('/')]
-    #     p.fecha_nacimiento = datetime(anyo, mes, dia)
-    #     p.save()
-
-    #     if created:
-    #         print('nuevo perfil', p)
-    #     else:
-    #         print('update perfil', p)
-
-    #     e, created = models.Estudiante.objects.get_or_create(user=u,
-    #                                                          cuenta=a['cuenta'])
-    #     e.save()
-
-    #     if created:
-    #         print('creado estudiante', e)
-    #     else:
-    #         print('update estudiante', e)
 
     #     # crear registro en historial
     #     year, semestre = a['semestre'].split('-')
@@ -275,17 +199,6 @@ def importa(solicitud, status, inscritos):
     #     )
 
     #     h.institucion = get_institucion(int(a['entidad']))
-
-    #     if 'campo_conocimiento_seleccionado' in a:
-    #         if plan == 'Maestría':
-    #             h.campo_conocimiento = models.CampoConocimiento.objects.get(
-    #                 nombre__icontains=a['campo_conocimiento_seleccionado'])
-    #         elif plan == 'Doctorado':
-    #             h.lineas_investigacion = models.LineaInvestigacion.objects.get(
-    #                 nombre__icontains=a['campo_conocimiento_seleccionado'])
-    #     else:
-    #         print('[NUEVOS][WARN] sin campo de conocimiento')
-
     #     h.save()
 
     #     e.estado = e.ultimo_estado()
@@ -321,82 +234,83 @@ def importa(solicitud, status, inscritos):
     #             # TODO: 'promedio': '8.67',
     #             # TODO: en proceso o trunca
 
-    # # Cargar todos los reingresos a la base de datos
-    # print('-------------------------------- cargando reingresos ----------------------')
-    # for m in reingresos:
-
-    #     a = reingresos[m]
-
-    #     if models.Estudiante.objects.filter(cuenta=a['cuenta']).count() == 0:
-    #         print("[REINGRESO][ERROR] fila", m, a, 'imposible reingresar estudiante sin registro previo')
-    #         continue
-
-    #     e = models.Estudiante.objects.get(cuenta=a['cuenta'])
-    #     year, semestre = a['semestre'].split('-')
-    #     if a['nivel'] == 'M':
-    #         plan = 'Maestría'
-    #     elif a['nivel'] == 'D':
-    #         plan = 'Doctorado'
-    #     else:
-    #         print('[REINGRESO][ERROR] plan no válido', a)
-
-
-    #     h, created = models.Historial.objects.get_or_create(
-    #         fecha = date.today(),
-    #         estudiante = e,
-    #         year = year,
-    #         semestre = semestre,
-    #         plan = plan,
-    #         estado = 'inscrito',
-    #     )
-
-    #     h.institucion = get_institucion(int(a['entidad']))
-    #     h.save()
-
-    #     e.estado = e.ultimo_estado()
-    #     e.plan = e.ultimo_plan()
-    #     e.save()
-
-    #     print('historial actualizado', h)
 
 
 
 
 
-def get_user(a, extra):
-    # usamos el lado izquierdo de su correo como username, o su cuenta
-    username = a['correo'].split('@')[0]
-    if models.User.objects.filter(username=username).count() > 0:
-        # ya existe usuario con ese username!
-        u = models.User.objects.get(username=username)
-        if models.Estudiante.objects.filter(user=u,
-                                            cuenta=a['cuenta']).count() == 0:
-            # pero no hay estudiante con esa cuenta, de modo que es alguien más
-            # para evitar colisión usar su cuenta como nombre de usuario
-            username = a['cuenta']
+def get_estudiante(a, extra):
 
-    u, created = models.User.objects.get_or_create(
-        username = username,
-        email = a['correo']
-    )
+    if models.Estudiante.objects.filter(cuenta=a['cuenta']).count() > 0:
+        # estudiante ya existe
+        e = models.Estudiante.objects.get(cuenta=a['cuenta'])
+        
+        # revisar aqui que sea reingreso
+        if a['tipo'] == 'Reingreso':
+            print(f"Reingreso de estudiante encontrado por cuenta {e}")
+        else:
+            print(f"[alerta] {a['tipo']} con estudiante ya existente {e}")
 
-    if created:
+        if 'campo_conocimiento' in extra:
+            if a['plan'] == 'Maestría':
+                e.campo_conocimiento = models.CampoConocimiento.objects.get(
+                    nombre__icontains=extra['campo_conocimiento'])
+            elif a['plan'] == 'Doctorado':
+                e.lineas_investigacion = models.LineaInvestigacion.objects.get(
+                    nombre__icontains=extra['campo_conocimiento'])
+            
+        e.save()
+        
+    else:
+        # nuevo estudiante
+        if a['tipo'] != 'Primer ingreso':
+            print(f"[alerta] {a['tipo']} pero no existe estudiante {a['cuenta']}")
+            
+        username = a['correo'].split('@')[0]
+        if models.User.objects.filter(username=username).count() > 0:
+            # username ya en uso, usemos cuenta como username
+            if models.User.objects.filter(username=a['cuenta']).count() > 0:
+                # ya hay usuario con cuenta por username
+                print(f"ya existe {a['cuenta']} pero no hay estudiante con esa cuenta")
+                u = models.User.objects.get(username=a['cuenta'])
+            else:
+                u = models.User(
+                    username = a['cuenta'],
+                    email = a['correo']
+                )
+        else:
+            u = models.User(
+                username = username,
+                email = a['correo']
+            )
+
         if extra != {}:
             u.first_name = extra['nombre']
             u.last_name = "%s %s" % (extra['apellido1'], extra['apellido2'])
-
-        else:
-            u.first_name = a['nombre_completo']
             
-        print('nuevo usuario', u.username)
         u.save()
+        print(f'nuevo usuario {u.username}')
+
         
+        e = models.Estudiante(user=u,
+                              cuenta=a['cuenta'])
 
-    else:
-        print('usuario encontrado', u)
+        if 'campo_conocimiento' in extra:
+            if a['plan'] == 'Maestría':
+                e.campo_conocimiento = models.CampoConocimiento.objects.get(
+                    nombre__icontains=extra['campo_conocimiento'])
+            elif a['plan'] == 'Doctorado':
+                e.lineas_investigacion = models.LineaInvestigacion.objects.get(
+                    nombre__icontains=extra['campo_conocimiento'])
+        else:
+            print('[alerta] nuevo ingreso sin campo o linea')
+        
+        e.save()
 
-    return u
-
+        print(f'nuevo estudiante {e}')
+        
+    return e
+        
 
 def get_institucion(entidad_num):
     if entidad_num == 600:
