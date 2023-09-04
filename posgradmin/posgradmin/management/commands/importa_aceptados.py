@@ -62,7 +62,7 @@ def importa(solicitud, status, inscritos):
             print(f'[ERROR] fila {i} sin cuenta imposible importar')
             continue
 
-        # diccionario de inscritos, correo por llave, row es valor
+        # diccionario de inscritos, cuenta por llave, row es valor
         institucion = get_institucion(int(a[idx['entidad_nombre']].split(' ')[0]))
         if '4172' in a[idx['plan_nombre']]:
             plan = 'Maestría'
@@ -118,24 +118,20 @@ def importa(solicitud, status, inscritos):
 
     # aqui los tenemos, aceptados con los datos de la solicitud
     extra_correo = {}
-    for folio in aceptados:
-        a = aceptados[folio]
-        extra_correo[a['correo']] = aceptados[folio]
-
     extra_cuenta = {}
+    extra_metaphone = {}   
     for folio in aceptados:
         a = aceptados[folio]
-        if 'cuenta' in a:
-            extra_cuenta[a['cuenta']] = aceptados[folio]
+        
+        extra_correo[a['correo']] = a
 
-    extra_metaphone = {}
-    for folio in aceptados:
-        a = aceptados[folio]
-    
+        if 'cuenta' in a:
+            extra_cuenta[a['cuenta']] = a
+
         metaphone = jellyfish.metaphone("%s %s %s" % (a['apellido1'],
                                                       a['apellido2'],
                                                       a['nombre']))
-        extra_metaphone[metaphone] = aceptados[folio]
+        extra_metaphone[metaphone] = a
 
 
     def get_extra(cuenta=None, correo=None, metaphone=None):
@@ -147,21 +143,89 @@ def importa(solicitud, status, inscritos):
             return extra_metaphone.get(metaphone, {})
         else:
             return {}
-        
-        
+
+
     for a in ins:
         est = ins[a]
 
         extra = get_extra(cuenta=est['cuenta'])
         if extra == {}:
             extra = get_extra(correo=est['correo'])
-        if extra == {}:            
+        if extra == {}:
             metaphone = jellyfish.metaphone(est['nombre_completo'])
             extra = get_extra(metaphone=metaphone)
 
-        print(est, extra)
+        print(est['tipo']) 
+        if est['tipo'] == 'Reingreso':
+
+            if models.Estudiante.objects.filter(cuenta=est['cuenta']).count() > 1:
+                print(f"[error] cuenta {est['cuenta']} encontrada más de una vez en tabla de estudiantes")
+                continue
+            elif models.Estudiante.objects.filter(cuenta=est['cuenta']).count() < 1:
+                print(f"[error] cuenta {est['cuenta']} no encontrada en tabla de estudiantes")
+                continue
+
+            e = models.Estudiante.objects.get(cuenta=est['cuenta'])
+            print(f'reingresando {e}')
+
+            if extra != {}:
+                p, p_created = models.Perfil.objects.get_or_create(user=e.user)
+                p.curp = extra.get('curp', None)
+                if 'curp' not in extra:
+                    print(est, 'EXTRAAAA', extra)
+                
+                if 'telefono' in extra and 'pais_telefono' in extra:
+                    p.telefono = f"({extra['pais_telefono']}) extra['telefono']"
+                if 'celular' in extra and 'pais_celular' in extra:
+                    p.telefono_movil = f"({extra['pais_celular']}) extra['celular']"
+                p.direccion1 = extra.get('direccion', '')
+                if 'genero' in extra:
+                    p.genero = extra['genero']
+                if 'nacionalidad' in extra:
+                    p.nacionalidad = extra['nacionalidad']
+                if 'fecha_nacimiento' in extra:
+                    anyo, mes, dia = [int(n) for n in extra['fecha_nacimiento'].split('-')]
+                    p.fecha_nacimiento = datetime(anyo, mes, dia)
+                p.save()
+
+                if p_created:
+                    print('nuevo perfil', p)
+                else:
+                    print('update perfil', p)
+                
+                
+            
+        elif est['tipo'] == 'Primer ingreso':
+
+            if models.Estudiante.objects.filter(cuenta=est['cuenta']).count() > 0:
+                print(f"[error] cuenta {est['cuenta']} previa en primer ingreso")
+                continue
+
+            u = get_user(est, extra)
+
+            if extra != {}:
+                p, p_created = models.Perfil.objects.get_or_create(user=u)
+                p.curp = extra['curp']
+                p.telefono = f"({extra['pais_telefono']}) extra['telefono']"
+                p.telefono_movil = f"({extra['pais_celular']}) extra['celular']"
+                p.direccion1 = extra.get('direccion', '')
+                p.genero = extra['genero']
+                p.nacionalidad = extra['nacionalidad']
+                anyo, mes, dia = [int(n) for n in extra['fecha_nacimiento'].split('-')]
+                p.fecha_nacimiento = datetime(anyo, mes, dia)
+                p.save()
+
+                if p_created:
+                    print('nuevo perfil', p)
+                else:
+                    print('update perfil', p)
 
 
+    
+
+
+    
+            
     # for a in aceptados:
 
     #     u = get_user(a)
@@ -299,7 +363,7 @@ def importa(solicitud, status, inscritos):
 
 
 
-def get_user(a):
+def get_user(a, extra):
     # usamos el lado izquierdo de su correo como username, o su cuenta
     username = a['correo'].split('@')[0]
     if models.User.objects.filter(username=username).count() > 0:
@@ -317,10 +381,17 @@ def get_user(a):
     )
 
     if created:
-        u.first_name = a['nombre']
-        u.last_name = "%s %s" % (a['apellido1'], a['apellido2'])
+        if extra != {}:
+            u.first_name = extra['nombre']
+            u.last_name = "%s %s" % (extra['apellido1'], extra['apellido2'])
+
+        else:
+            u.first_name = a['nombre_completo']
+            
+        print('nuevo usuario', u.username)
         u.save()
-        print('nuevo usuario', u, u.first_name, u.last_name)
+        
+
     else:
         print('usuario encontrado', u)
 
