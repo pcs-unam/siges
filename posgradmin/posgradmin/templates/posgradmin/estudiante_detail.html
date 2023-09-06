@@ -43,7 +43,15 @@
       {% if estudiante.user.perfil.telefono %}<li>tel.: {{ estudiante.user.perfil.telefono }}</li>{% endif %}
       {% if estudiante.user.perfil.telefono_movil %}<li>móvil: {{ estudiante.user.perfil.telefono_movil}}</li>{% endif %}
       {% if estudiante.user.perfil.website %}<li>website: <a href="{{ estudiante.user.perfil.website }}">{{ estudiante.user.perfil.website }}</a></li>{% endif %}
-      <li><a href="mailto:{{ estudiante.user.email }}">{{ estudiante.user.email }}</a></li>
+      <li>
+	<a href="mailto:{{ estudiante.user.email }}">{{ estudiante.user.email }}</a>
+      </li>
+      {% for e in estudiante.user.emailaddress_set.all %}
+      <li>
+	<a href="mailto:{{ e }}">{{ e }}</a>
+      </li>
+      {% endfor %}
+      
       {% if estudiante.user.perfil.direccion1 %}<li>dirección: {{ estudiante.user.perfil.direccion1 }} CP {{ estudiante.user.perfil.codigo_postal }}</li>{% endif %}
     </ul>
   </div>
