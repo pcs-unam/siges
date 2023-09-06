@@ -177,60 +177,57 @@ def importa(solicitud, status, inscritos):
                 print('update perfil', p)
                 
 
+        # crear registro en historial
+        #year, semestre = a['semestre'].split('-')
+        now = datetime.now()
+        year = now.year + 1
+        if now.month > 6:
+            semestre = 1
+        else:
+            semestre = 2
+        
+        h, h_created = models.Historial.objects.get_or_create(
+            fecha = date.today(),
+            estudiante = e,
+            year = year,
+            semestre = semestre,
+            plan = est['plan'],
+            estado = 'inscrito',
+            institucion = est['institucion']
+        )
 
+        e.estado = e.ultimo_estado()
+        e.plan = e.ultimo_plan()
+        e.save()
 
-    #     # crear registro en historial
-    #     year, semestre = a['semestre'].split('-')
-    #     if a['nivel'] == 'M':
-    #         plan = 'Maestría'
-    #     elif a['nivel'] == 'D':
-    #         plan = 'Doctorado'
-    #     else:
-    #         print('[NUEVOS][ERROR] plan no válido', a)
+        if 'grados' in extra:
+            # cargar grados
+            for g in extra['grados']:
+                
+                if g['nivel_antecedente_academico'] == 'L':
+                    nivel = 'licenciatura'
+                elif g['nivel_antecedente_academico'] == 'M':
+                    nivel = 'maestria'
+                elif g['nivel_antecedente_academico'] == 'D':
+                    nivel = 'doctorado'
 
+                institucion = get_institucion_by_names(entidad=g['entidad_academica'],
+                                                       institucion=g['institucion'],
+                                                       estado=g['estado_antecedente_academico'],
+                                                       pais=g['pais_antecedente_academico'])
 
-    #     h, created = models.Historial.objects.get_or_create(
-    #         fecha = date.today(),
-    #         estudiante = e,
-    #         year = year,
-    #         semestre = semestre,
-    #         plan = plan,
-    #         estado = 'inscrito',
-    #     )
+            
 
-    #     h.institucion = get_institucion(int(a['entidad']))
-    #     h.save()
+                if g['estatus_graduacion'] == 'Titulado o graduado':
+                    year, month, day = g['fecha_graduacion'].split('-')
+                    g, created = models.GradoAcademico.objects.get_or_create(
+                        user=u,
+                        nivel=nivel,
+                        institucion=institucion,
+                        grado_obtenido=g['antecedente_academico'],
+                        fecha_obtencion=datetime(int(year), int(month), int(day)))
 
-    #     e.estado = e.ultimo_estado()
-    #     e.plan = e.ultimo_plan()
-    #     e.save()
-
-    #     # cargar grados,
-    #     for g in a['grados']:
-
-    #         if g['nivel_antecedente_academico'] == 'L':
-    #             nivel = 'licenciatura'
-    #         elif g['nivel_antecedente_academico'] == 'M':
-    #             nivel = 'maestria'
-    #         elif g['nivel_antecedente_academico'] == 'D':
-    #             nivel = 'doctorado'
-
-    #         institucion = get_institucion_by_names(entidad=g['entidad_academica'],
-    #                                                institucion=g['institucion'],
-    #                                                estado=g['estado_antecedente_academico'],
-    #                                                pais=g['pais_antecedente_academico'])
-
-
-    #         if g['estatus_graduacion'] == 'Titulado o graduado':
-    #             day, month, year = g['fecha_graduacion'].split('/')
-    #             g, created = models.GradoAcademico.objects.get_or_create(
-    #                 user=u,
-    #                 nivel=nivel,
-    #                 institucion=institucion,
-    #                 grado_obtenido=g['antecedente_academico'],
-    #                 fecha_obtencion=datetime(int(year), int(month), int(day)))
-
-    #             print('grado academico', e, g)
+                    print(f'grado academico e<{e}> g<{g}>')
     #             # TODO: 'promedio': '8.67',
     #             # TODO: en proceso o trunca
 
