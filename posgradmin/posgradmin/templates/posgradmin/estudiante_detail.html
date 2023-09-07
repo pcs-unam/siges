@@ -72,74 +72,6 @@
   
 </div>
 
-{% if estudiante.generacion_maestria %}
-<div class="flex flex-col rounded shadow m-2 bg-lime-50 p-4">
-  <h2 class="text-l">Maestría</h2>
-
-  <div class="grid grid-flow-row-dense grid-cols-2 grid-rows-2 gap-2 text-neutral-700">  
-    <ul class="rounded shadow p-4 bg-teal-50 text-sm">
-      <li>Generación de Maestría: {{ estudiante.generacion_maestria }}</li>
-      <li>Estatus: {{ estudiante.estado }}</li>
-      <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
-    </ul>
-    
-    <ul class="rounded shadow p-4 bg-teal-50 text-sm">  
-      <li>Sede administrativa: {{ estudiante.sede_adm_maestria }}</li>
-      <li>Entidad: {{ estudiante.entidad.suborganizacion }}</li>
-    </ul>
-    
-    <ul class="rounded shadow p-4 bg-teal-50 text-sm col-span-2">
-      <li class="text-right mb-4">      
-	Campo de Conocimiento: {{ estudiante.campo_conocimiento }}</li>
-      <li class="mt-2">	
-	Proyecto:
-	<div class="text-teal-800 text-lg">
-	  {{ estudiante.proyecto_maestria }}
-	</div>
-      </li>
-    </ul>
-  </div>
-
-  
-  <div class="rounded shadow p-4 bg-pink-50 mt-4">
-    <div class="text-lg text-green-800">Comité</div>
-    <div class="bg-gray-100">
-      <table>
-	{% for m in estudiante.comite_maestria %}
-	<tr>
-	  <td>
-	    {{ m.year}}-{{ m.semestre}}
-	  </td>
-	  <td>
-	    {{ m.get_tipo_display }}
-	  </td>
-	  <td>
-	    {% if m.tutor %}
-	    {{ m.tutor }}
-	    {% elif m.invitado %}
-	    {{ m.invitado }} (invitado)
-	    {% endif %}
-	  </td>
-	</tr>
-	{% endfor %}
-      </table>
-    </div>
-  </div>
-
-    
-    <h3 class="text-l">Historial</h3>
-    <div class="bg-gray-100">
-      <table>
-	{% for h in estudiante.historial_maestria %}
-	<tr>
-	  <td>{{ h.fecha }}</td><td>{{ h.year }}</td><td>{{ h.semestre }}</td><td>{{ h.estado }}</td><td>{{ h.institucion }}</td><td>{{ h.notas_set.all }}</td>
-	</tr>
-	{% endfor %}
-      </table>
-    </div>
-</div>
-{% endif %}
-
 
 
 {% if estudiante.generacion_doctorado %}
@@ -214,6 +146,80 @@
   
 </div>
 {% endif %} {# doctorado #}
+
+
+
+
+{% if estudiante.generacion_maestria %}
+<div class="flex flex-col rounded shadow m-2 bg-lime-50 p-4">
+  <h2 class="text-l">Maestría</h2>
+
+  <div class="grid grid-flow-row-dense grid-cols-2 grid-rows-2 gap-2 text-neutral-700">  
+    <ul class="rounded shadow p-4 bg-teal-50 text-sm">
+      <li>Generación de Maestría: {{ estudiante.generacion_maestria }}</li>
+      <li>Estatus: {{ estudiante.estado }}</li>
+      <li>Última inscripción: {{ estudiante.ultima_inscripcion }}</li>
+    </ul>
+    
+    <ul class="rounded shadow p-4 bg-teal-50 text-sm">  
+      <li>Sede administrativa: {{ estudiante.sede_adm_maestria }}</li>
+      <li>Entidad: {{ estudiante.entidad.suborganizacion }}</li>
+    </ul>
+    
+    <ul class="rounded shadow p-4 bg-teal-50 text-sm col-span-2">
+      <li class="text-right mb-4">      
+	Campo de Conocimiento: {{ estudiante.campo_conocimiento }}</li>
+      <li class="mt-2">	
+	Proyecto:
+	<div class="text-teal-800 text-lg">
+	  {{ estudiante.proyecto_maestria }}
+	</div>
+      </li>
+    </ul>
+  </div>
+
+  
+  <div class="rounded shadow p-4 bg-pink-50 mt-4">
+    <div class="text-lg text-green-800">Comité</div>
+    <div class="bg-gray-100">
+      <table>
+	{% for m in estudiante.comite_maestria %}
+	<tr>
+	  <td>
+	    {{ m.year}}-{{ m.semestre}}
+	  </td>
+	  <td>
+	    {{ m.get_tipo_display }}
+	  </td>
+	  <td>
+	    {% if m.tutor %}
+	    {{ m.tutor }}
+	    {% elif m.invitado %}
+	    {{ m.invitado }} (invitado)
+	    {% endif %}
+	  </td>
+	</tr>
+	{% endfor %}
+      </table>
+    </div>
+  </div>
+
+    
+    <h3 class="text-l">Historial</h3>
+    <div class="bg-gray-100">
+      <table>
+	{% for h in estudiante.historial_maestria %}
+	<tr>
+	  <td>{{ h.fecha }}</td><td>{{ h.year }}</td><td>{{ h.semestre }}</td><td>{{ h.estado }}</td><td>{{ h.institucion }}</td><td>{{ h.notas_set.all }}</td>
+	</tr>
+	{% endfor %}
+      </table>
+    </div>
+</div>
+{% endif %}
+
+
+
     
 
 
