@@ -18,3 +18,4 @@ django-reversion==4.0.1
 Impostor==3.0.0
 pdfrw
 django-tailwind
+django-markdownify

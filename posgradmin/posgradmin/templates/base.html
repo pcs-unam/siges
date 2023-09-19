@@ -2,121 +2,114 @@
 {% load i18n static %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
-<head>
-<title>{% block title %}{% endblock %}</title>
 
 
-<link rel="stylesheet" href="https://sostenibilidad.posgrado.unam.mx/assets/main.css">
-{% tailwind_css %}
-</head>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    {% tailwind_css %}
+
+  </head>
 
 
-<body>
+  <body class="bg-stone-200 leading-normal tracking-normal">
 
-<header class="site-header" role="banner"
-	style="background-image: url(/assets/plecas/default.jpg); background-size: cover;">
+    <header >
+      
+      <div class="p-4 bg-green-800">
+	<a class="text-2xl text-white "
+	   href="/">Posgrado en Ciencias de la Sostenibilidad
+	</a>
+      </div>
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Posgrado en Ciencias de la Sostenibilidad</a><nav class="site-nav">
-	<input type="checkbox" id="nav-trigger" class="nav-trigger" />
-	<label for="nav-trigger">
-	  <span class="menu-icon">
-	    <svg viewBox="0 0 18 15" width="18px" height="15px">
-	      <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
-	    </svg>
-	  </span>
-	</label>
 
-	<div class="trigger">
-	  
-	  <a class="page-link" href="/posgrado/">Acerca del Posgrado</a>
-	  
-	  <a class="page-link" href="/aspirantes/">Aspirantes</a>
-	  
-	  <a class="page-link" href="/maestria/">Maestría</a>
-	  
-	  <a class="page-link" href="/doctorado/">Doctorado</a>
-	  
-	  <a class="page-link" href="/comite/">Comité Académico</a>
-	  
-	  <a class="page-link" href="/comite-etica/">Comité de Ética</a>
-	  
-	  <a class="page-link" href="/movilidad">Movilidad</a>
-	  
-	  <a class="page-link" href="/apoyos/">Apoyos</a>
-	  
-	  <a class="page-link" href="/publicaciones/">Publicaciones</a>
-	  
-	  <a class="page-link" href="/cursos/">Cursos y horarios</a>
-	  
-	  <a class="page-link" href="/tutores/">Tutores</a>
-	  
-	  <a class="page-link" href="https://sostenibilidad.posgrado.unam.mx/siges">Sistema</a>
-	  
-	  <a class="page-link" href="/avisos/">Avisos</a>
-	  
-	</div>
-      </nav></div>
-</header>
+      <div class="flex flex-wrap py-8 bg-cover"
+	   style="background-image: url({% static 'assets/plecas/default.jpg' %})">
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/posgrado/">Acerca del Posgrado</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/aspirantes/">Aspirantes</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/maestria/">Maestría</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/doctorado/">Doctorado</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/comite/">Comité Académico</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/comite-etica/">Comité de Ética</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/movilidad">Movilidad</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/apoyos/">Apoyos</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/publicaciones/">Publicaciones</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/cursos/">Cursos y horarios</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/tutores/">Tutores</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="https://sostenibilidad.posgrado.unam.mx/siges">Sistema</a>
+	
+	<a class="m-2 p-2 bg-purple-800 text-white inline-block align-middle rounded-md hover:text-white hover:bg-orange-700" href="/avisos/">Avisos</a>
+	
+      </div>
+
+
+      <div class="bg-stone-200 flex flex-wrap p-4 justify-right">
+	
+	{% if user.is_authenticated %}
+	
+	{{ user.get_full_name}}
+	
+	{% if user.is_staff %}
+	<a class="mx-4 hover:text-white hover:bg-stone-500" href="{% url 'admin:index' %}">Base de Datos</a>
+	<a class="mx-4 hover:text-white hover:bg-stone-500" href="{% url 'toggle_perfil_editar' %}">Des/Bloquear formularios</a>
+	<a class="mx-4 hover:text-white hover:bg-stone-500" href="{% url 'academico_invitar' %}">Invitar académicos</a>
+	{% endif %}
+	
+	<a class="mx-4 hover:text-white hover:bg-stone-500" href="{{ APP_PREFIX }}accounts/password/change/">Cambiar contraseña</a>
+	<a class="mx-4 hover:text-white hover:bg-stone-500" href="{{ APP_PREFIX }}accounts/logout/">Terminar sesión</a>
+	{% else %}
+	<a class="mx-4 hover:text-white hover:bg-stone-500" href="{{ APP_PREFIX }}accounts/login/">Iniciar sesión</a>
+	{% endif %}
+      </div>
+    </header>
 
   
-  <main class="page-content" aria-label="Content">
+    <div class="bg-gray-50 p-4">
+    
+      <div>
+	{% block breadcrumbs %}
+	{% endblock %}
+      </div>
 
 
-      <div class="wrapper">
-	<div class="home">
-
-	  <div style="padding: 1em; text-align: right;">
-
-	    {% if user.is_authenticated %}
-
-	    {{ user.get_full_name}} |
-
-	    {% if user.is_staff %}
-	    <a href="{% url 'admin:index' %}">Base de Datos</a> |
-	    <a href="{% url 'toggle_perfil_editar' %}">Des/Bloquear formularios</a> |
-	    <a href="{% url 'academico_invitar' %}">Invitar académicos</a> |
-	    {% endif %}
-	    
-	    <a href="{{ APP_PREFIX }}accounts/password/change/">Cambiar contraseña</a> |
-	    <a href="{{ APP_PREFIX }}accounts/logout/">Terminar sesión</a>
-	    {% else %}
-	    <a href="{{ APP_PREFIX }}accounts/login/">Iniciar sesión</a>
-	    {% endif %}
-	  </div>
-
-	  <div style="margin-bottom: 1em; border-style: none none solid none; border-width: 1px; ">
-	  {% block breadcrumbs %}
-	  {% endblock %}
-	  </div>
-
-
+      <div class="text-stone-800 p-2 px-4 mx-4 max-w-prose min-h-[40rem] text-base">
 	{% block content %}
 	{{ content }}
 	{% endblock %}
-</main><footer class="site-footer h-card">
-  <data class="u-url" href="/"></data>
-
-  <div class="wrapper">
-
-    <h2 class="footer-heading">Posgrado en Ciencias de la Sostenibilidad</h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-	<ul class="contact-list"><li><a class="u-email" href="mailto:sostenibilidad@posgrado.unam.mx">sostenibilidad@posgrado.unam.mx</a></li></ul>
-	<img src="https://sostenibilidad.posgrado.unam.mx/assets/logo-posgradounam.png" />
       </div>
 
-      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
-</div>
-
-      <div class="footer-col footer-col-3">
-	<p>Posgrado en Ciencias de la Sostenibilidad, Unidad de Posgrado Edificio D primer piso Ciudad Universitaria CDMX Teléfono 5623-7012. Atención de lunes a viernes de 9:00 a 13:00 hrs.</p>
-      </div>
     </div>
 
-  </div>
 
-</footer>
 
-</body>
+    <div class="bg-stone-200 p-24 flex justify-center">
+      <div class="flex flex-col">
+	<p class="w-96">
+	  Posgrado en Ciencias de la Sostenibilidad, Unidad de Posgrado
+	  Edificio D primer piso Ciudad Universitaria CDMX Teléfono
+	  5623-7012. Atención de lunes a viernes de 9:00 a 13:00 hrs.</p>
+
+	<a href="mailto:sostenibilidad@posgrado.unam.mx">sostenibilidad@posgrado.unam.mx</a>
+	
+	<img class="w-48 mt-8"
+	     src="https://sostenibilidad.posgrado.unam.mx/assets/logo-posgradounam.png" />
+	
+      </div>
+    </div>
+  </body>
 </html>

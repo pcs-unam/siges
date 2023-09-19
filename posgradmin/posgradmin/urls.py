@@ -1,7 +1,6 @@
-# coding: utf-8
-
 from django.urls import path, re_path, include
 from django.contrib import admin
+
 
 from posgradmin.views import PerfilEditar, PerfilDetail, \
     PerfilAcademicoDetail, PerfilProfesorDetail, PerfilProfesorEditar,\
@@ -20,9 +19,12 @@ from posgradmin.views_academico import \
 
 from django.conf.urls.static import static
 
-from posgradmin.settings import MEDIA_ROOT, MEDIA_URL
+from posgradmin.settings import MEDIA_ROOT, MEDIA_URL, STATIC_ROOT, STATIC_URL
 
 urlpatterns = [
+
+    path("__reload__/", include("django_browser_reload.urls")),
+    
     re_path(r'^admin/posgradmin/toggle_perfil_editar/', TogglePerfilEditar.as_view(),
         name="toggle_perfil_editar"),
 
@@ -168,6 +170,7 @@ urlpatterns = [
 
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 
+urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
 
 # ./coordinacion/alimentar_saep.md
 # ./coordinacion/oficios_para_firma_de_los_miembros_del_Jurado.md

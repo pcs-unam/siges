@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'markdownify.apps.MarkdownifyConfig',    
     'crispy_forms',
     'sortable_listview',
     'django_markdown2',
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",    
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
@@ -151,7 +153,11 @@ DATE_FORMAT = 'Y-m-d'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR + '/static'
+
+
 
 APP_PREFIX = 'http://localhost:8000/'
 
