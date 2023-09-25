@@ -1,4 +1,3 @@
-# coding: utf-8
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q
@@ -20,6 +19,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 import pickle
 from os import path
+from patoolib import extract_archive
+import tempfile
 
 
 def get_perfiles_editables():
@@ -31,6 +32,54 @@ def get_perfiles_editables():
         with open(path.join(settings.BASE_DIR, 'toggle_perfiles.pickle'), 'wb') as f:
             pickle.dump(editables, f)
     return editables
+
+
+
+
+class UploadAssets(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.APP_PREFIX + 'accounts/login/'
+    template = 'posgradmin/upload_assets.html'
+
+    form_class = forms.UploadAssets
+
+    def test_func(self):
+        if self.request.user.is_superuser:
+            return True
+        else:
+            return False
+
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request,
+                      self.template,
+                      {'form': form,
+                       'title': 'Actualizar Assets',
+                       })
+
+
+    def unzip(self, f):
+        try:
+            with tempfile.NamedTemporaryFile() as tmp:
+                for chunk in f.chunks():
+                    tmp.write(chunk)
+                    tmp.flush()
+                extract_archive(archive=tmp.name,
+                                verbosity=0,
+                                outdir=settings.ASSETS_ROOT)
+            return True
+        except:
+            return False
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+
+        if form.is_valid():
+            if self.unzip(request.FILES['assets']):
+                return HttpResponseRedirect(settings.ASSETS_URL)
+
+        return HttpResponseRedirect(reverse('upload_assets'))
+
 
 
 class TogglePerfilEditar(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -85,8 +134,8 @@ class AcademicoSearch(View):
 
             last_year = datetime.datetime.now().year - 1
             results = results.filter(
-                Q(acreditacion='M') 
-                | Q(acreditacion='MCT_M') 
+                Q(acreditacion='M')
+                | Q(acreditacion='MCT_M')
                 | Q(acreditacion='D')
             ).order_by('user__last_name')
 
@@ -172,7 +221,7 @@ class AcademicoInvitar(LoginRequiredMixin, UserPassesTestMixin, View):
                     else:
                         u = models.User()
                         u.first_name = nombre
-                        u.last_name = apellidos                        
+                        u.last_name = apellidos
                         u.email = email
                         u.username = username
                         u.save()

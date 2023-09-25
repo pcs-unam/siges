@@ -11,7 +11,7 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     AcademicoSortableView, \
     UserDetail, PerfilComite, \
     EstudianteFichaDetail, AcademicoInvitar, AcademicoSearch, \
-    TogglePerfilEditar
+    TogglePerfilEditar, UploadAssets
 
 from posgradmin.views_academico import \
     EligeAsignatura, SolicitaCurso, PanelConvocatoriaCursos,\
@@ -24,6 +24,8 @@ from posgradmin.settings import MEDIA_ROOT, MEDIA_URL, STATIC_ROOT, STATIC_URL
 urlpatterns = [
 
     path("__reload__/", include("django_browser_reload.urls")),
+
+    path('admin/upload_assets/', UploadAssets.as_view(), name='upload_assets'),
     
     re_path(r'^admin/posgradmin/toggle_perfil_editar/', TogglePerfilEditar.as_view(),
         name="toggle_perfil_editar"),

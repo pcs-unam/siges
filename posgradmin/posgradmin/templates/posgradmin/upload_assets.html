@@ -1,0 +1,16 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+
+Subir archivos en formato Zip o TGZ.
+
+<form method='POST'  enctype="multipart/form-data" action="{% url 'upload_assets' %}">
+  <div id='form-errors'>{{ form_errors }}</div>
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="subir assets" class="bg-purple-800 text-white hover:bg-purple-500 hover:text-white rounded p-2">
+</form>
+{% endblock %}

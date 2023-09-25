@@ -15,6 +15,13 @@ from dal import autocomplete
 from pprint import pprint
 
 
+
+
+class UploadAssets(forms.Form):
+    assets = forms.FileField(required=True)
+
+    
+
 class TogglePerfilEditarForm(forms.Form):
     toggle = forms.BooleanField(required=False,
                                 label='Perfiles editables')
