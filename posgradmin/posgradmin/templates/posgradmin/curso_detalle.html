@@ -1,0 +1,38 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load markdownify %}
+
+{% block title %}
+{{ curso.asignatura.asignatura  }}
+{% endblock %}
+
+
+{% block content %}
+<h1>
+{{ curso.asignatura.asignatura  }}
+</h1>
+
+
+<div class="flex flex-col bg-slate-100 p-2 m-2">
+  <div> Semestre : {{ curso.year }}-{{ curso.semestre }} </div>
+  <div> Entidad : {{ curso.entidad|default:"" }} </div>
+  <div> Clave : {{ curso.asignatura.clave|default:"" }} </div>
+  <div> Grupo : {{ curso.grupo|default:"" }} </div>
+  <div> Créditos : {{ curso.asignatura.creditos }} </div>
+  <div> Tipo : {{ curso.asignatura.tipo }}  </div>
+  
+  {% if curso.asignatura.campos_de_conocimiento.count %}
+  <div> Campo de Conocimiento : {{ curso.asignatura.campos_de_conocimiento.all|join:" / " }}  </div>
+  {% endif %}
+
+</div>
+
+<div class="flex flex-col bg-green-100 p-2 m-2">
+  <div> Sede : {{ curso.sede|default:"" }} </div>
+  <div> Aula : {{ curso.aula|default:"" }} </div>
+  <div> Día(s) y horario : {{ curso.horario|default:"" }} </div>
+  <div> Profesores : {{ curso.academicos.all|safeseq|join:', ' }} </div>
+  {% if curso.contacto %}<div> Contacto : {{ curso.contacto|linebreaksbr|default:"" }} </div>{% endif %}
+  
+  {% if curso.asignatura.programa_url %}<div> Descargables :  <a href="{{ curso.asignatura.programa.url }}">Programa</a> </div>{% endif %}
+</div>
+{% endblock %}

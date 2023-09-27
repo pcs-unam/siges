@@ -1,0 +1,14 @@
+{% extends "posgradmin/posgradmin_base.html" %}
+{% load markdownify %}
+
+{% block title %}
+Cursos y horarios
+{% endblock %}
+
+
+{% block content %}
+<h1>Cursos y horarios</h1>
+
+{{ cursos_md|markdownify }}
+
+{% endblock %}

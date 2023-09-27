@@ -21,6 +21,8 @@ import pickle
 from os import path
 from patoolib import extract_archive
 import tempfile
+from django.utils.text import slugify
+
 
 
 def get_perfiles_editables():
@@ -35,6 +37,79 @@ def get_perfiles_editables():
 
 
 
+
+
+class CursoIndexView(View):
+    template = 'posgradmin/cursos_index.html'
+    
+    def get(self, request, *args, **kwargs):
+
+        intersemestral = [True, False]
+
+        tipos = [
+            (u"Cursos obligatorios", 'Obligatoria'),
+            (u"Cursos obligatorios por campo", 'Obligatorias por campo'),
+            (u"Cursos optativos", 'Optativa'),
+            (u"Seminarios de Doctorado", u"Seminario de Doctorado")
+        ]
+        sedes = [
+            'en línea',
+            'CDMX',
+            'Morelia',
+            u'León'
+        ]
+
+        cursos_md = """
+
+### Semestre 2024-1
+
+El semestre 2024-1 inicia el 7 de agosto de 2023.
+
+Las ligas para las sesiones virtuales de los cursos que se impartirán en línea se deben solicitar directamente a la(o)s profesora(e)s de cada curso, enviando un mensaje al correo registrado. 
+
+El registro a los cursos intersemestrales se debe realizar antes del inicio del curso, directamente al correo de la(o)s profesora(e)s. Dicho cursos se deben inscribir en el sistema de SIAEP en el periodo de inscripción al semestre 2024-1.
+
+Esta página se actualiza constantemente, sugerimos revisarla con frecuencia.
+
+"""
+        for inter in intersemestral:
+            for tipo in tipos:
+                for sede in sedes:
+                    cursos = models.Curso.objects.filter(
+                        status='publicado').filter(
+                            intersemestral=inter).filter(
+                                asignatura__tipo=tipo[1]).filter(
+                                    sede=sede).order_by('asignatura__asignatura')
+                    
+                    if cursos:
+                        if inter:
+                            cursos_md += "\n\n\n# Cursos Intersemestrales\n\n"
+                        else:
+                            cursos_md += "\n\n\n# Cursos Semestrales\n\n"
+
+                        cursos_md += u"\n\n## %s %s\n\n" % (tipo[0], sede)
+                        for c in cursos:
+                            curso_slug = slugify(c.asignatura.asignatura
+                                                 + '_'
+                                                 + c.sede)
+                            cursos_md += " - [%s](/cursos/detalle/%s/)\n" % (c.asignatura.asignatura, c.id)
+                            
+        
+        return render(request,
+                      self.template,
+                      {'title': 'Cursos y horarios',
+                       'cursos_md': cursos_md
+                       })
+
+
+class CursoDetalle(View):
+    template = 'posgradmin/curso_detalle.html'
+    def get(self, request, *args, **kwargs):
+        curso = models.Curso.objects.get(pk=kwargs['curso_id'])
+        return render(request,
+                      self.template,
+                      {'curso': curso})
+    
 
 class UploadAssets(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.APP_PREFIX + 'accounts/login/'

@@ -11,7 +11,7 @@ from posgradmin.views import PerfilEditar, PerfilDetail, \
     AcademicoSortableView, \
     UserDetail, PerfilComite, \
     EstudianteFichaDetail, AcademicoInvitar, AcademicoSearch, \
-    TogglePerfilEditar, UploadAssets
+    TogglePerfilEditar, UploadAssets, CursoIndexView, CursoDetalle
 
 from posgradmin.views_academico import \
     EligeAsignatura, SolicitaCurso, PanelConvocatoriaCursos,\
@@ -160,10 +160,20 @@ urlpatterns = [
     re_path('^cursos/(?P<pk>[0-9]+)/constancia/',
         CursoConstancia.as_view(),
         name="curso_constancia"),
+
+    path('cursos/detalle/<int:curso_id>/', CursoDetalle.as_view(),
+         name='curso_detalle'),
     
     re_path('^cursos/(?P<pk>[0-9]+)/',
         CursoView.as_view(),
         name="curso"),
+
+
+    
+    path('cursos/', CursoIndexView.as_view(),
+         name='cursos'),
+
+    
 
     re_path('^proponer-asignatura/',
         ProponerAsignatura.as_view(),
